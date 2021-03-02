@@ -12,5 +12,20 @@ namespace ACO
         {
 
         }
+
+        private void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnCreateProgect_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
     }
 }
