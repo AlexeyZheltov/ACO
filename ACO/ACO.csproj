@@ -156,9 +156,19 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ExcelHelpers\ExcelFile.cs" />
+    <Compile Include="ExcelHelpers\ExcelHelper.cs" />
+    <Compile Include="ExcelHelpers\ExcelReader.cs" />
+    <Compile Include="HierarchyDictionary.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TargetItem.cs" />
+    <Compile Include="XMLSetting\Mapping.cs" />
+    <Compile Include="XMLSetting\MappingManager.cs" />
+    <Compile Include="XMLSetting\SettingManager.cs" />
+    <Compile Include="XMLSetting\XMLManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -172,6 +182,7 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
+    <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -196,6 +207,7 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="XMLSetting\XMLSettingDiagramm.cd" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -105,6 +105,7 @@
             this.BtnLoadLvl12.Label = "Урв 12";
             this.BtnLoadLvl12.Name = "BtnLoadLvl12";
             this.BtnLoadLvl12.ShowImage = true;
+            this.BtnLoadLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl12_Click);
             // 
             // BtnLoadLvl11
             // 
@@ -134,6 +135,7 @@
             this.BtnUpdateLvl12.Label = "Урв 12";
             this.BtnUpdateLvl12.Name = "BtnUpdateLvl12";
             this.BtnUpdateLvl12.ShowImage = true;
+            this.BtnUpdateLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl12_Click);
             // 
             // BtnUpdateLvl11
             // 
