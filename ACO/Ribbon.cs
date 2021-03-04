@@ -92,5 +92,11 @@ namespace ACO
         {
 
         }
+
+        private void BtnProjectManager_Click(object sender, RibbonControlEventArgs e)
+        {
+            ProjectManager.FormManager manager = new ProjectManager.FormManager();
+            manager.ShowDialog();
+        }
     }
 }

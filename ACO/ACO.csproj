@@ -159,6 +159,7 @@
   -->
   <ItemGroup>
     <Compile Include="AddInException.cs" />
+    <Compile Include="ExcelHelpers\Cell.cs" />
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
     <Compile Include="ExcelHelpers\ExcelReader.cs" />
@@ -174,6 +175,18 @@
     <Compile Include="ProgressBarWithLog.Designer.cs">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectManager\ColumnsMapping.cs" />
+    <Compile Include="ProjectManager\CustomDataGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\FormManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\FormManager.Designer.cs">
+      <DependentUpon>FormManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectManager\ProjectManager.cs" />
+    <Compile Include="ProjectManager\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -184,6 +197,9 @@
     <Compile Include="XMLSetting\XMLManager.cs" />
     <EmbeddedResource Include="ProgressBarWithLog.resx">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManager\FormManager.resx">
+      <DependentUpon>FormManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -198,6 +214,7 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -224,6 +241,9 @@
     </Compile>
     <AppDesigner Include="Properties\" />
     <None Include="XMLSetting\XMLSettingDiagramm.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Settings\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

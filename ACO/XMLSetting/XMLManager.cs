@@ -41,8 +41,6 @@ namespace Spectrum.SpLoader.XMLSetting
             public const string Root = "Settings";
             public const string Parameter = "Parameter";
         }
-
-
         
         /// <summary>
         /// Сохраняет в файл без кеширования

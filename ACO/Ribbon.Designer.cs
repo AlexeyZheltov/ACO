@@ -47,12 +47,19 @@
             this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl0 = this.Factory.CreateRibbonButton();
+            this.group5 = this.Factory.CreateRibbonGroup();
+            this.BtnProjectManager = this.Factory.CreateRibbonButton();
+            this.BtnSettings = this.Factory.CreateRibbonButton();
+            this.group6 = this.Factory.CreateRibbonGroup();
+            this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
+            this.group5.SuspendLayout();
+            this.group6.SuspendLayout();
             this.group4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +68,8 @@
             this.RbnTab.Groups.Add(this.group1);
             this.RbnTab.Groups.Add(this.group2);
             this.RbnTab.Groups.Add(this.group3);
+            this.RbnTab.Groups.Add(this.group5);
+            this.RbnTab.Groups.Add(this.group6);
             this.RbnTab.Groups.Add(this.group4);
             this.RbnTab.Label = "Спектрум";
             this.RbnTab.Name = "RbnTab";
@@ -151,6 +160,44 @@
             this.BtnUpdateLvl0.Name = "BtnUpdateLvl0";
             this.BtnUpdateLvl0.ShowImage = true;
             // 
+            // group5
+            // 
+            this.group5.Items.Add(this.BtnProjectManager);
+            this.group5.Items.Add(this.BtnSettings);
+            this.group5.Label = "Настройки";
+            this.group5.Name = "group5";
+            // 
+            // BtnProjectManager
+            // 
+            this.BtnProjectManager.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnProjectManager.Image = ((System.Drawing.Image)(resources.GetObject("BtnProjectManager.Image")));
+            this.BtnProjectManager.Label = "Диспетчер проекта";
+            this.BtnProjectManager.Name = "BtnProjectManager";
+            this.BtnProjectManager.ShowImage = true;
+            this.BtnProjectManager.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnProjectManager_Click);
+            // 
+            // BtnSettings
+            // 
+            this.BtnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
+            this.BtnSettings.Label = "Настройки";
+            this.BtnSettings.Name = "BtnSettings";
+            this.BtnSettings.ShowImage = true;
+            // 
+            // group6
+            // 
+            this.group6.Items.Add(this.BtnUpdateFormuls);
+            this.group6.Label = "Этап 1";
+            this.group6.Name = "group6";
+            // 
+            // BtnUpdateFormuls
+            // 
+            this.BtnUpdateFormuls.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnUpdateFormuls.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateFormuls.Image")));
+            this.BtnUpdateFormuls.Label = "Обновление формул";
+            this.BtnUpdateFormuls.Name = "BtnUpdateFormuls";
+            this.BtnUpdateFormuls.ShowImage = true;
+            // 
             // group4
             // 
             this.group4.Items.Add(this.BtnAbout);
@@ -180,6 +227,10 @@
             this.group2.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
+            this.group5.ResumeLayout(false);
+            this.group5.PerformLayout();
+            this.group6.ResumeLayout(false);
+            this.group6.PerformLayout();
             this.group4.ResumeLayout(false);
             this.group4.PerformLayout();
             this.ResumeLayout(false);
@@ -201,6 +252,11 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab RbnTab;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group5;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnProjectManager;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSettings;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group6;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateFormuls;
     }
 
     partial class ThisRibbonCollection
