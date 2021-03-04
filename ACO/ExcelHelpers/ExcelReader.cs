@@ -4,7 +4,7 @@ using System.Linq;
 using Spectrum.SpLoader.XMLSetting;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace Spectrum.SpLoader.ExcelHelpers
+namespace ACO.ExcelHelpers
 {
     /// <summary>
     /// Считывает разнообразные данные с листов
@@ -62,8 +62,8 @@ namespace Spectrum.SpLoader.ExcelHelpers
                             break;
                     }
 
-                    if (!buffer.All(x => string.IsNullOrEmpty(x)) && !result.ContainsKey(omni))
-                        result.Add(omni, buffer.CopyFilled());
+                   // if (!buffer.All(x => string.IsNullOrEmpty(x)) && !result.ContainsKey(omni))
+                   //     result.Add(omni, buffer.CopyFilled());
                 }
             }
 
@@ -77,44 +77,44 @@ namespace Spectrum.SpLoader.ExcelHelpers
         /// </summary>
         /// <remarks>Выполнить через yield return</remarks>
         /// <returns>Итератор с типов TargetItem</returns>
-        public static IEnumerable<TargetItem> ReadSourceItems(Excel.Worksheet ws, Mapping mapping, string[] omniClasses)
-        {
-            foreach(Excel.Range row in ws.UsedRange.Rows)
-            {
-                string key = ws.Range[$"{mapping.Omni}{row.Row}"].Text;
-                if (key != "" && omniClasses.Contains(key))
-                    yield return TrimAllProp(new TargetItem
-                    {
-                        OmniClass = ws.Range[$"{mapping.Omni}{row.Row}"].Text,
-                        WorkName = ws.Range[$"{mapping.WorkName}{row.Row}"].Text,
-                        Marking = ws.Range[$"{mapping.Marking}{row.Row}"].Text,
-                        Material = ws.Range[$"{mapping.Material}{row.Row}"].Text,
-                        Format = ws.Range[$"{mapping.Format}{row.Row}"].Text,
-                        Type = ws.Range[$"{mapping.Type}{row.Row}"].Text,
-                        Article = ws.Range[$"{mapping.Article}{row.Row}"].Text,
-                        Maker = ws.Range[$"{mapping.Maker}{row.Row}"].Text,
-                        Unit = ws.Range[$"{mapping.Unit}{row.Row}"].Text,
-                        Amount = ws.Range[$"{mapping.Amount}{row.Row}"].Text,
-                        Note = ws.Range[$"{mapping.Note}{row.Row}"].Text
-                    });
-                else yield return null;
-            }
-        }
+        //public static IEnumerable<TargetItem> ReadSourceItems(Excel.Worksheet ws, Mapping mapping, string[] omniClasses)
+        //{
+        //    foreach(Excel.Range row in ws.UsedRange.Rows)
+        //    {
+        //        string key = ws.Range[$"{mapping.Omni}{row.Row}"].Text;
+        //        if (key != "" && omniClasses.Contains(key))
+        //            yield return TrimAllProp(new TargetItem
+        //            {
+        //                OmniClass = ws.Range[$"{mapping.Omni}{row.Row}"].Text,
+        //                WorkName = ws.Range[$"{mapping.WorkName}{row.Row}"].Text,
+        //                Marking = ws.Range[$"{mapping.Marking}{row.Row}"].Text,
+        //                Material = ws.Range[$"{mapping.Material}{row.Row}"].Text,
+        //                Format = ws.Range[$"{mapping.Format}{row.Row}"].Text,
+        //                Type = ws.Range[$"{mapping.Type}{row.Row}"].Text,
+        //                Article = ws.Range[$"{mapping.Article}{row.Row}"].Text,
+        //                Maker = ws.Range[$"{mapping.Maker}{row.Row}"].Text,
+        //                Unit = ws.Range[$"{mapping.Unit}{row.Row}"].Text,
+        //                Amount = ws.Range[$"{mapping.Amount}{row.Row}"].Text,
+        //                Note = ws.Range[$"{mapping.Note}{row.Row}"].Text
+        //            });
+        //        else yield return null;
+        //    }
+        //}
 
-        private static TargetItem TrimAllProp(TargetItem item)
-        {
-            item.OmniClass = item.OmniClass.Trim();
-            item.WorkName = item.WorkName.Trim();
-            item.WorkName = item.WorkName.Trim();
-            item.Material = item.Material.Trim();
-            item.Format = item.Format.Trim();
-            item.Type = item.Type.Trim();
-            item.Article = item.Article.Trim();
-            item.Maker = item.Maker.Trim();
-            item.Unit = item.Unit.Trim();
-            item.Amount = item.Amount.Trim();
-            item.Note = item.Note.Trim();
-            return item;
-        }
+        //private static TargetItem TrimAllProp(TargetItem item)
+        //{
+        //    item.OmniClass = item.OmniClass.Trim();
+        //    item.WorkName = item.WorkName.Trim();
+        //    item.WorkName = item.WorkName.Trim();
+        //    item.Material = item.Material.Trim();
+        //    item.Format = item.Format.Trim();
+        //    item.Type = item.Type.Trim();
+        //    item.Article = item.Article.Trim();
+        //    item.Maker = item.Maker.Trim();
+        //    item.Unit = item.Unit.Trim();
+        //    item.Amount = item.Amount.Trim();
+        //    item.Note = item.Note.Trim();
+        //    return item;
+        //}
     }
 }

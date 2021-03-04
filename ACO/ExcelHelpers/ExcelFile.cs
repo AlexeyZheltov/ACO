@@ -3,7 +3,7 @@ using System.Linq;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace Spectrum.SpLoader.ExcelHelpers
+namespace ACO.ExcelHelpers
 {
     /// <summary>
     /// Класс представляющий рабочую книгу
