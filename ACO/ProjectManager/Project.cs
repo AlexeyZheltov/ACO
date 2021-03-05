@@ -8,10 +8,10 @@ namespace ACO.ProjectManager
 {
     class Project
     {
-        private string _file;
 
-        public string FileName { get; set; }
+        public bool Active { get; set; }
         public string Name { get; set; }
+        public string FileName { get; set; }
         public List<ColumnMapping> Columns { get; set; }
 
         //public ColumnsMapping MyProperty { get; set; }
@@ -20,12 +20,5 @@ namespace ACO.ProjectManager
         {
 
         }
-
-        public Project(string file)
-        {
-            _file = file;
-        }
-        
-
     }
 }
