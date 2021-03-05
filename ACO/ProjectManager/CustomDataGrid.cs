@@ -12,9 +12,10 @@ namespace ACO.ProjectManager
             DoubleBuffered = true;
             SetColumns();
             RowHeadersVisible = false;
+            SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            MultiSelect = false;
             //ColumnHeadersVisible = true;
-            //BackgroundColor = System.Drawing.Color.White;
-            
+            //BackgroundColor = System.Drawing.Color.White;            
         }
 
 

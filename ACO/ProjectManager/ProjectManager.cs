@@ -63,8 +63,6 @@ namespace ACO.ProjectManager
             }
         }
 
-
-
         private List<Project> _Projects;
         public void CreateProject(string name)
         {
@@ -80,19 +78,14 @@ namespace ACO.ProjectManager
 
         public void CreateNewProjectXML(string projectname, string path)
         {
-            Projects?.ForEach(x => x.Active = false);
-            //XDocument xdoc = new XDocument();
+            Projects?.ForEach(x => x.Active = false);         
             XElement root = new XElement("project");
             XAttribute xaName = new XAttribute("ProjectName", projectname);
             XAttribute xaActive = new XAttribute("Active", true);
             root.Add(xaName);
             root.Add(xaActive);
             XElement xeColumns = new XElement("Columns");
-            root.Add(xeColumns);
-            // XElement root = new XElement("project");
-            // XElement xeName = new XElement("ProjectName", projectname);            
-            //// XElement xeActive = new XElement("Active", true);            
-            // root.Add(xe);
+            root.Add(xeColumns);         
             XDocument xdoc = new XDocument(root);
             xdoc.Save(path);
         }
@@ -116,38 +109,9 @@ namespace ACO.ProjectManager
             return path;
         }
 
-        /// <summary>
-        /// Сохраняет в файл без кеширования
-        /// </summary>
-        /// <param name="data">Словарь ключ: имя меппинга, значение: сам меппинг</param>
-        //public static void Save(Dictionary<string, string> data, string selectedMapping)
-        //{
-        //    //  XElement root = new XElement(MappingConsts.Root, new XAttribute(MappingConsts.Selected, selectedMapping));
-        //    XElement root = new XElement("ProjectName", "");
-        //    ///  foreach (var item in data.Values)
-        //    //root.Add(new XElement(MappingConsts.ElementName,
-        //    //            new XAttribute(MappingConsts.Name, item.Name),
-        //    //            new XElement(MappingConsts.Omni, item.Omni),
-        //    //            new XElement(MappingConsts.WorkName, item.WorkName),
-        //    //            new XElement(MappingConsts.Marking, item.Marking),
-        //    //            new XElement(MappingConsts.Material, item.Material),
-        //    //            new XElement(MappingConsts.Format, item.Format),
-        //    //            new XElement(MappingConsts.Type, item.Type),
-        //    //            new XElement(MappingConsts.Article, item.Article),
-        //    //            new XElement(MappingConsts.Maker, item.Maker),
-        //    //            new XElement(MappingConsts.Unit, item.Unit),
-        //    //            new XElement(MappingConsts.Amount, item.Amount),
-        //    //            new XElement(MappingConsts.Note, item.Note)));
-
-        //    XDocument xdoc = new XDocument(root);
-        //    xdoc.Save("");
-
-        //}
-
         private Project LoadProject(string file)
         {
             Project project = new Project();
-
             XDocument xdoc = XDocument.Load(file);
             XElement root = xdoc.Root;
             project.FileName = file;
@@ -155,65 +119,21 @@ namespace ACO.ProjectManager
             project.Name = root.Attribute("ProjectName").Value?.ToString() ?? "";
             project.Active = bool.Parse(root.Attribute("Active").Value?.ToString() ?? "false");
             project.Columns = LoadColumnsFromXElement(root.Element("Columns"));
-
-
-
-
-            //Dictionary<string, Mapping> buffer = new Dictionary<string, Mapping>();
-            //(from xe in root.Elements(ProjectName)
-            // select new Mapping()
-            // {
-            //   project.Name = xe.Attribute(ProjectName).Value
-            // })
-            // .ToList()
-            // .ForEach(i => buffer.Add(i.Name, i));
-
-            //return (buffer, root.Attribute(MappingConsts.Selected).Value);
-            //project.Name = 
             return project;
         }
 
-        private List<Cell> LoadColumnsFromXElement(XElement xElement)
+        private List<ColumnMapping> LoadColumnsFromXElement(XElement xElement)
         {
-            List<Cell> columns = new List<Cell>();
+            List<ColumnMapping> columns = new List<ColumnMapping>();
             if (xElement != null)
             {
-
                 foreach (XElement xcol in xElement.Elements())
                 {
-                    columns.Add(Cell.GetCellFromXElement(xcol));
+                    columns.Add(ColumnMapping.GetCellFromXElement(xcol));
                 }
             }
             return columns;
         }
-        //private List<ColumnMapping> LoadColumnsFromXElement(XElement xElement)
-        //{
-        //    List<ColumnMapping> columns = new List<ColumnMapping>();
-
-        //    foreach (XElement xcol in xElement.Elements("Column"))
-        //    {
-        //        ColumnMapping mapping = new ColumnMapping()
-        //        {
-        //            Name = xcol.Element("Name").Value,
-        //            Cell = GetCellFromXElement(xcol.Element("Cell"))
-        //        };
-        //        columns.Add(mapping);
-        //    }
-        //    return columns;
-        //}
-
-        //private Cell GetCellFromXElement(XElement xElement)
-        //{
-        //    return new Cell()
-        //    {
-        //        Name = xElement.Element("Name").Value,
-        //        Value = xElement.Element("Value").Value,
-        //        Row =int.Parse( xElement.Element("Row").Value),
-        //        Column =int.Parse(xElement.Element("Column").Value),
-        //        ColumnString = xElement.Element("ColumnString").Value,
-        //        Address = xElement.Element("Address").Value
-        //    };
-
-        //}
+       
     }
 }

@@ -10,18 +10,12 @@ namespace ACO.ProjectManager
 {
     class Project
     {
-
         public bool Active { get; set; }
         public string Name { get; set; }
         public string FileName { get; set; }
-        public List<Cell> Columns { get; set; }
+        public List<ColumnMapping> Columns { get; set; }
 
-        //public ColumnsMapping MyProperty { get; set; }
-        //public class SettingsProject
-        public Project()
-        {
-
-        }
+        public Project(){}
 
         public void Save()
         {
@@ -32,7 +26,7 @@ namespace ACO.ProjectManager
             root.Add(xaActive);
             XElement xeColumns = new XElement("Columns");           
           
-            foreach (Cell cell in Columns)
+            foreach (ColumnMapping cell in Columns)
             {
                 XElement xeColumn = cell.GetXElement();
                 //XElement xeColumn = new XElement("Column");
