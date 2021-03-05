@@ -57,6 +57,8 @@
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.TextBoxValue = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.PageProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -232,6 +234,8 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.TextBoxValue);
             this.groupBox1.Controls.Add(this.BtnAdd);
             this.groupBox1.Controls.Add(this.BtnActiveCell);
             this.groupBox1.Controls.Add(this.label6);
@@ -274,25 +278,27 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 73);
+            this.label6.Location = new System.Drawing.Point(193, 77);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(49, 13);
             this.label6.TabIndex = 1;
             this.label6.Text = "Столбец";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 50);
+            this.label5.Location = new System.Drawing.Point(195, 54);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(43, 13);
             this.label5.TabIndex = 1;
             this.label5.Text = "Строка";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(175, 27);
+            this.label7.Location = new System.Drawing.Point(203, 27);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(38, 13);
             this.label7.TabIndex = 1;
@@ -306,34 +312,38 @@
             this.label4.Size = new System.Drawing.Size(44, 13);
             this.label4.TabIndex = 1;
             this.label4.Text = "Ячейка";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // TextBoxColumn
             // 
-            this.TextBoxColumn.Location = new System.Drawing.Point(62, 69);
+            this.TextBoxColumn.Location = new System.Drawing.Point(247, 73);
             this.TextBoxColumn.Name = "TextBoxColumn";
-            this.TextBoxColumn.Size = new System.Drawing.Size(100, 20);
+            this.TextBoxColumn.Size = new System.Drawing.Size(75, 20);
             this.TextBoxColumn.TabIndex = 0;
+            this.TextBoxColumn.TextChanged += new System.EventHandler(this.TextBoxColumn_TextChanged);
             // 
             // TextBoxRow
             // 
-            this.TextBoxRow.Location = new System.Drawing.Point(62, 46);
+            this.TextBoxRow.Location = new System.Drawing.Point(247, 50);
             this.TextBoxRow.Name = "TextBoxRow";
-            this.TextBoxRow.Size = new System.Drawing.Size(100, 20);
+            this.TextBoxRow.Size = new System.Drawing.Size(75, 20);
             this.TextBoxRow.TabIndex = 0;
+            this.TextBoxRow.TextChanged += new System.EventHandler(this.TextBoxRow_TextChanged);
             // 
             // TextBoxAddres
             // 
-            this.TextBoxAddres.Location = new System.Drawing.Point(219, 23);
+            this.TextBoxAddres.Location = new System.Drawing.Point(247, 23);
             this.TextBoxAddres.Name = "TextBoxAddres";
             this.TextBoxAddres.Size = new System.Drawing.Size(75, 20);
             this.TextBoxAddres.TabIndex = 0;
             // 
             // TextBoxCellName
             // 
-            this.TextBoxCellName.Location = new System.Drawing.Point(62, 23);
+            this.TextBoxCellName.Location = new System.Drawing.Point(70, 23);
             this.TextBoxCellName.Name = "TextBoxCellName";
             this.TextBoxCellName.Size = new System.Drawing.Size(100, 20);
             this.TextBoxCellName.TabIndex = 0;
+            this.TextBoxCellName.TextChanged += new System.EventHandler(this.TextBoxCellName_TextChanged);
             // 
             // TableColumns
             // 
@@ -367,6 +377,22 @@
             this.BtnCancel.TabIndex = 1;
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(8, 54);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Значение";
+            // 
+            // TextBoxValue
+            // 
+            this.TextBoxValue.Location = new System.Drawing.Point(70, 50);
+            this.TextBoxValue.Name = "TextBoxValue";
+            this.TextBoxValue.Size = new System.Drawing.Size(99, 20);
+            this.TextBoxValue.TabIndex = 3;
             // 
             // FormManager
             // 
@@ -428,5 +454,7 @@
         private System.Windows.Forms.Button BtnActiveCell;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox TextBoxAddres;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox TextBoxValue;
     }
 }
