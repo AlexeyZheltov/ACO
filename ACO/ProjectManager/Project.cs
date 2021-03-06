@@ -29,18 +29,38 @@ namespace ACO.ProjectManager
             foreach (ColumnMapping cell in Columns)
             {
                 XElement xeColumn = cell.GetXElement();
-                //XElement xeColumn = new XElement("Column");
-                //xeColumn.Add( new XAttribute("Name", cell.Name));
-                //xeColumn.Add( new XAttribute("Value", cell.Value));
-                //xeColumn.Add( new XAttribute("Row", cell.Row));
-                //xeColumn.Add( new XAttribute("Column", cell.Column));
-                //xeColumn.Add( new XAttribute("Address", cell.Address));
                 xeColumns.Add(xeColumn);
             }
             root.Add(xeColumns);
             XDocument xdoc = new XDocument(root);
             xdoc.Save(FileName);
         }
+
+        public static Project GetFromXML(string filename)
+        {
+            Project project = new Project();
+            XDocument xdoc = XDocument.Load(filename);
+            XElement root = xdoc.Root;
+            project.FileName = filename;
+            XAttribute xeName = root.Attribute("Name");
+            project.Name = root.Attribute("ProjectName").Value?.ToString() ?? "";
+            project.Active = bool.Parse(root.Attribute("Active").Value?.ToString() ?? "false");
+            project.Columns = LoadColumnsFromXElement(root.Element("Columns"));
+            return project;
+        }
+        private static List<ColumnMapping> LoadColumnsFromXElement(XElement xElement)
+        {
+            List<ColumnMapping> columns = new List<ColumnMapping>();
+            if (xElement != null)
+            {
+                foreach (XElement xcol in xElement.Elements())
+                {
+                    columns.Add(ColumnMapping.GetCellFromXElement(xcol));
+                }
+            }
+            return columns;
+        }
+
         public void CreateXML()
         {
 

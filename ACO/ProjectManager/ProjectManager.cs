@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ACO.ProjectManager
@@ -22,8 +23,15 @@ namespace ACO.ProjectManager
                     {
                         if (project.Active)
                         {
-                            _ActiveProject = project;
-                            break;
+                            if (_ActiveProject == null)
+                            {
+                                _ActiveProject = project;
+                            }
+                            else
+                            {
+                                project.Active = false;
+                                project.Save();
+                            }
                         }
                     }
                     if (_ActiveProject is null && Projects.Count > 0)
@@ -31,12 +39,16 @@ namespace ACO.ProjectManager
                 }
                 return _ActiveProject;
             }
-            set
+           private set
             {
                 _ActiveProject = value;
             }
         }
         private Project _ActiveProject;
+
+        /// <summary>
+        ///  Коллекция всех проектов
+        /// </summary>
         public List<Project> Projects
         {
             get
@@ -50,14 +62,14 @@ namespace ACO.ProjectManager
                     {
                         if (new FileInfo(file).Extension == ".xml")
                         {
-                            Project project = LoadProject(file);
+                            Project project = Project.GetFromXML(file);
                             _Projects.Add(project);
                         }
                     }
                 }
                 return _Projects;
             }
-            set
+            private set
             {
                 _Projects = value;
             }
@@ -66,29 +78,53 @@ namespace ACO.ProjectManager
         private List<Project> _Projects;
         public void CreateProject(string name)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name)) { return; }
+            string path = GetFolderProjects();
+            string filename = Path.Combine(path, name + ".xml");
+            if (!File.Exists(filename))
             {
-                string filename = GetPathTo(name + ".xml");
-                if (!File.Exists(filename))
+                CreateNewProjectXML(name, filename);
+            }
+            else
+            {
+                if (MessageBox.Show("Удалить старый файл?", "Файл уже существует!", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    File.Delete(filename);
                     CreateNewProjectXML(name, filename);
                 }
             }
         }
 
+        /// <summary>
+        ///  Создать новый файл проекта
+        /// </summary>
+        /// <param name="projectname"></param>
+        /// <param name="path"></param>
         public void CreateNewProjectXML(string projectname, string path)
         {
-            Projects?.ForEach(x => x.Active = false);         
+            foreach (Project project in Projects)
+            {
+                project.Active = false;
+                project.Save();
+            }
             XElement root = new XElement("project");
-            XAttribute xaName = new XAttribute("ProjectName", projectname);
-            XAttribute xaActive = new XAttribute("Active", true);
-            root.Add(xaName);
-            root.Add(xaActive);
+            root.Add(new XAttribute("ProjectName", projectname));
+            root.Add(new XAttribute("Active", true));
             XElement xeColumns = new XElement("Columns");
-            root.Add(xeColumns);         
+
+            /// Скопировать настройки столбцов из активного проекта
+            if ((ActiveProject?.Columns?.Count ?? 0) > 0)
+            {
+                foreach (ColumnMapping column in ActiveProject.Columns)
+                {
+                    xeColumns.Add(column.GetXElement());
+                }
+            }
+            root.Add(xeColumns);
             XDocument xdoc = new XDocument(root);
             xdoc.Save(path);
         }
+
         /// <summary>
         /// Генерирует путь к файлу
         /// </summary>
@@ -104,36 +140,21 @@ namespace ACO.ProjectManager
             string path = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "Spectrum",
-            "ACO");
+            "ACO",
+            "Projects");
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             return path;
         }
-
-        private Project LoadProject(string file)
+        private static string GetApplicationSettingsFilename()
         {
-            Project project = new Project();
-            XDocument xdoc = XDocument.Load(file);
-            XElement root = xdoc.Root;
-            project.FileName = file;
-            XAttribute xeName = root.Attribute("Name");
-            project.Name = root.Attribute("ProjectName").Value?.ToString() ?? "";
-            project.Active = bool.Parse(root.Attribute("Active").Value?.ToString() ?? "false");
-            project.Columns = LoadColumnsFromXElement(root.Element("Columns"));
-            return project;
+            string path = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Spectrum",
+            "ACO");
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            string filename = Path.Combine(path, "settings.xml");
+            return filename;
         }
 
-        private List<ColumnMapping> LoadColumnsFromXElement(XElement xElement)
-        {
-            List<ColumnMapping> columns = new List<ColumnMapping>();
-            if (xElement != null)
-            {
-                foreach (XElement xcol in xElement.Elements())
-                {
-                    columns.Add(ColumnMapping.GetCellFromXElement(xcol));
-                }
-            }
-            return columns;
-        }
-       
     }
 }

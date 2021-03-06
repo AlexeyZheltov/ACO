@@ -14,7 +14,9 @@ namespace ACO.ProjectManager
             RowHeadersVisible = false;
             SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             MultiSelect = false;
-            //ColumnHeadersVisible = true;
+            AllowUserToAddRows = false;
+            EditMode = DataGridViewEditMode.EditProgrammatically;
+            
             //BackgroundColor = System.Drawing.Color.White;            
         }
 
