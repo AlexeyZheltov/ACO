@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ACO.ExcelHelpers
+namespace ACO
 {
     public partial class ProgressBarWithLog : Form, IProgressBarWithLogUI
     {
@@ -27,7 +27,7 @@ namespace ACO.ExcelHelpers
             string directoryPath = Path.Combine(
                                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                 "Spectrum",
-                                "SpLoader",
+                                "ACO",
                                 "Logs");
 
             if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);

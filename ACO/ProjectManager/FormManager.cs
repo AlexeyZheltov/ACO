@@ -82,7 +82,6 @@ namespace ACO.ProjectManager
         //    }
         //}
 
-
         //private void BtnAdd_Click(object sender, EventArgs e)
         //{
         //    ColumnMapping cell = new ColumnMapping();
@@ -197,10 +196,8 @@ namespace ACO.ProjectManager
 
         private void Sheet_SelectionChange(Excel.Range Target)
         {
-            Show();
-           
+            Show();           
             _selectedCell = new ColumnMapping(Target);
-
             if (_selectedCell != null)
             {               
                 TextBoxAddres.Text = _selectedCell.Address;
@@ -208,9 +205,7 @@ namespace ACO.ProjectManager
                 ChkBoxObligatory.Checked = false;
                 TextBoxValue.Text = _selectedCell.Value?.ToString() ?? "";
             }
-        }
-
-    
+        }    
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {

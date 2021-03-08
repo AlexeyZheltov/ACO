@@ -61,7 +61,6 @@ namespace ACO.ExcelHelpers
                         if (!string.IsNullOrEmpty(temp))
                             break;
                     }
-
                    // if (!buffer.All(x => string.IsNullOrEmpty(x)) && !result.ContainsKey(omni))
                    //     result.Add(omni, buffer.CopyFilled());
                 }

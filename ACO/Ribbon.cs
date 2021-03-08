@@ -40,11 +40,16 @@ namespace ACO
         {
             string[] files = GetFiles();
             if ( files.Length < 1) { return; }
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
                 List<Offer> offers = new List<Offer>();
                 ExcelHelpers.ExcelFile.Init();
                 ExcelHelpers.ExcelFile.Acselerate(true);
+            pb.SetMainBarVolum(files.Length);
+            pb.Show(new AddinWindow(Globals.ThisAddIn));
                 foreach (string fileName in files)
                 {
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                pb.MainBarTick(fileName);
                     ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
                     excelBook.Open(fileName);
                     Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
@@ -53,18 +58,18 @@ namespace ACO
                     { offers.Add(reader.Offer); }
                         excelBook.Close();
                 }
-                WriteOffers(offers);
+                WriteOffers(offers,pb);
                 ExcelHelpers.ExcelFile.Acselerate(false);
                 ExcelHelpers.ExcelFile.Finish();            
         }
 
-        private void WriteOffers(List<Offer> offers)
+        private void WriteOffers(List<Offer> offers, IProgressBarWithLogUI pb )
         {
             Excel.Workbook mainBook = Globals.ThisAddIn.Application.ActiveWorkbook;
-            
             foreach(Offer offer in offers)
             {
-
+                pb.SubBarTick();
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
             }
         }
 
@@ -96,7 +101,7 @@ namespace ACO
         private void BtnProjectManager_Click(object sender, RibbonControlEventArgs e)
         {
             ProjectManager.FormManager manager = new ProjectManager.FormManager();
-            manager.Show();
+            manager.Show(new AddinWindow(Globals.ThisAddIn));
         }
     }
 }

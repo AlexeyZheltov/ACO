@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ACO.ExcelHelpers
+namespace ACO
 {
     /// <summary>
     /// Интерфейс взаимодействия с окном прогрессбара
@@ -60,5 +60,6 @@ namespace ACO.ExcelHelpers
         TextBox GetLogTextBox();
 
         void Show();
+        void Show(IWin32Window window);
     }
 }

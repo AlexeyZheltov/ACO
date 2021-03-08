@@ -72,7 +72,7 @@
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(638, 502);
+            this.tabControl1.Size = new System.Drawing.Size(648, 503);
             this.tabControl1.TabIndex = 0;
             // 
             // PageProject
@@ -85,7 +85,7 @@
             this.PageProject.Location = new System.Drawing.Point(4, 22);
             this.PageProject.Name = "PageProject";
             this.PageProject.Padding = new System.Windows.Forms.Padding(3);
-            this.PageProject.Size = new System.Drawing.Size(630, 476);
+            this.PageProject.Size = new System.Drawing.Size(640, 477);
             this.PageProject.TabIndex = 1;
             this.PageProject.Text = "Проект";
             this.PageProject.UseVisualStyleBackColor = true;
@@ -93,7 +93,7 @@
             // BtnDelete
             // 
             this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnDelete.Location = new System.Drawing.Point(536, 396);
+            this.BtnDelete.Location = new System.Drawing.Point(546, 397);
             this.BtnDelete.Name = "BtnDelete";
             this.BtnDelete.Size = new System.Drawing.Size(71, 24);
             this.BtnDelete.TabIndex = 4;
@@ -103,7 +103,7 @@
             // BtnSelect
             // 
             this.BtnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSelect.Location = new System.Drawing.Point(455, 396);
+            this.BtnSelect.Location = new System.Drawing.Point(465, 397);
             this.BtnSelect.Name = "BtnSelect";
             this.BtnSelect.Size = new System.Drawing.Size(71, 24);
             this.BtnSelect.TabIndex = 4;
@@ -118,7 +118,7 @@
             this.groupBox2.Controls.Add(this.BtnAddProject);
             this.groupBox2.Location = new System.Drawing.Point(15, 34);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(592, 60);
+            this.groupBox2.Size = new System.Drawing.Size(602, 60);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
@@ -128,13 +128,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TboxProjectName.Location = new System.Drawing.Point(18, 25);
             this.TboxProjectName.Name = "TboxProjectName";
-            this.TboxProjectName.Size = new System.Drawing.Size(471, 20);
+            this.TboxProjectName.Size = new System.Drawing.Size(481, 20);
             this.TboxProjectName.TabIndex = 3;
             // 
             // BtnAddProject
             // 
             this.BtnAddProject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAddProject.Location = new System.Drawing.Point(507, 20);
+            this.BtnAddProject.Location = new System.Drawing.Point(517, 20);
             this.BtnAddProject.Name = "BtnAddProject";
             this.BtnAddProject.Size = new System.Drawing.Size(71, 30);
             this.BtnAddProject.TabIndex = 2;
@@ -164,7 +164,7 @@
             this.TableProjects.Name = "TableProjects";
             this.TableProjects.RowHeadersVisible = false;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableProjects.Size = new System.Drawing.Size(592, 272);
+            this.TableProjects.Size = new System.Drawing.Size(602, 273);
             this.TableProjects.TabIndex = 0;
             // 
             // PageColumns
@@ -176,7 +176,7 @@
             this.PageColumns.Location = new System.Drawing.Point(4, 22);
             this.PageColumns.Name = "PageColumns";
             this.PageColumns.Padding = new System.Windows.Forms.Padding(3);
-            this.PageColumns.Size = new System.Drawing.Size(630, 476);
+            this.PageColumns.Size = new System.Drawing.Size(640, 477);
             this.PageColumns.TabIndex = 0;
             this.PageColumns.Text = "Столбцы";
             this.PageColumns.UseVisualStyleBackColor = true;
@@ -184,7 +184,7 @@
             // BtnCheckCells
             // 
             this.BtnCheckCells.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCheckCells.Location = new System.Drawing.Point(398, 10);
+            this.BtnCheckCells.Location = new System.Drawing.Point(408, 10);
             this.BtnCheckCells.Name = "BtnCheckCells";
             this.BtnCheckCells.Size = new System.Drawing.Size(104, 29);
             this.BtnCheckCells.TabIndex = 5;
@@ -195,7 +195,7 @@
             // BtnUpdateColumns
             // 
             this.BtnUpdateColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnUpdateColumns.Location = new System.Drawing.Point(508, 10);
+            this.BtnUpdateColumns.Location = new System.Drawing.Point(518, 10);
             this.BtnUpdateColumns.Name = "BtnUpdateColumns";
             this.BtnUpdateColumns.Size = new System.Drawing.Size(104, 29);
             this.BtnUpdateColumns.TabIndex = 5;
@@ -218,7 +218,7 @@
             this.BtnDeleteColumnMapping.Controls.Add(this.TextBoxAddres);
             this.BtnDeleteColumnMapping.Location = new System.Drawing.Point(11, 45);
             this.BtnDeleteColumnMapping.Name = "BtnDeleteColumnMapping";
-            this.BtnDeleteColumnMapping.Size = new System.Drawing.Size(611, 77);
+            this.BtnDeleteColumnMapping.Size = new System.Drawing.Size(621, 77);
             this.BtnDeleteColumnMapping.TabIndex = 1;
             this.BtnDeleteColumnMapping.TabStop = false;
             // 
@@ -257,13 +257,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TextBoxValue.Location = new System.Drawing.Point(67, 23);
             this.TextBoxValue.Name = "TextBoxValue";
-            this.TextBoxValue.Size = new System.Drawing.Size(320, 20);
+            this.TextBoxValue.Size = new System.Drawing.Size(330, 20);
             this.TextBoxValue.TabIndex = 3;
             // 
             // BtnDel
             // 
             this.BtnDel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnDel.Location = new System.Drawing.Point(399, 43);
+            this.BtnDel.Location = new System.Drawing.Point(409, 43);
             this.BtnDel.Name = "BtnDel";
             this.BtnDel.Size = new System.Drawing.Size(92, 24);
             this.BtnDel.TabIndex = 2;
@@ -274,7 +274,7 @@
             // BtnAdd
             // 
             this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAdd.Location = new System.Drawing.Point(399, 18);
+            this.BtnAdd.Location = new System.Drawing.Point(409, 18);
             this.BtnAdd.Name = "BtnAdd";
             this.BtnAdd.Size = new System.Drawing.Size(92, 24);
             this.BtnAdd.TabIndex = 2;
@@ -285,7 +285,7 @@
             // BtnActiveCell
             // 
             this.BtnActiveCell.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnActiveCell.Location = new System.Drawing.Point(497, 19);
+            this.BtnActiveCell.Location = new System.Drawing.Point(507, 19);
             this.BtnActiveCell.Name = "BtnActiveCell";
             this.BtnActiveCell.Size = new System.Drawing.Size(104, 47);
             this.BtnActiveCell.TabIndex = 2;
@@ -297,7 +297,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(267, 50);
+            this.label7.Location = new System.Drawing.Point(277, 50);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(38, 13);
             this.label7.TabIndex = 1;
@@ -306,7 +306,7 @@
             // TextBoxAddres
             // 
             this.TextBoxAddres.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBoxAddres.Location = new System.Drawing.Point(311, 46);
+            this.TextBoxAddres.Location = new System.Drawing.Point(321, 46);
             this.TextBoxAddres.Name = "TextBoxAddres";
             this.TextBoxAddres.Size = new System.Drawing.Size(75, 20);
             this.TextBoxAddres.TabIndex = 0;
@@ -323,14 +323,14 @@
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableColumns.Size = new System.Drawing.Size(615, 331);
+            this.TableColumns.Size = new System.Drawing.Size(625, 332);
             this.TableColumns.TabIndex = 0;
             this.TableColumns.SelectionChanged += new System.EventHandler(this.TableColumns_SelectionChanged);
             // 
             // BtnAccept
             // 
             this.BtnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAccept.Location = new System.Drawing.Point(427, 517);
+            this.BtnAccept.Location = new System.Drawing.Point(437, 518);
             this.BtnAccept.Name = "BtnAccept";
             this.BtnAccept.Size = new System.Drawing.Size(106, 23);
             this.BtnAccept.TabIndex = 1;
@@ -342,7 +342,7 @@
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnCancel.Location = new System.Drawing.Point(539, 517);
+            this.BtnCancel.Location = new System.Drawing.Point(549, 518);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(106, 23);
             this.BtnCancel.TabIndex = 1;
@@ -355,12 +355,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnCancel;
-            this.ClientSize = new System.Drawing.Size(663, 542);
+            this.ClientSize = new System.Drawing.Size(673, 543);
             this.Controls.Add(this.BtnCancel);
             this.Controls.Add(this.BtnAccept);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormManager";
-            this.Text = "Диспетчер";
+            this.Text = "Диспетчер";            
             this.tabControl1.ResumeLayout(false);
             this.PageProject.ResumeLayout(false);
             this.PageProject.PerformLayout();

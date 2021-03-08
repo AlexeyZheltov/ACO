@@ -8,10 +8,10 @@ namespace ACO.ExcelHelpers
     /// <remarks>Создание подъуровней и расположение эллемента происходят автоматически</remarks>
     class HierarchyDictionary
     {
-        /// <summary>
-        /// Вложенные словари иерархии
-        /// </summary>
-        readonly Dictionary<string, HierarchyDictionary> _hierarchy = new Dictionary<string, HierarchyDictionary>();
+      /// <summary>
+      /// Вложенные словари иерархии
+      /// </summary>
+      // readonly Dictionary<string, HierarchyDictionary> _hierarchy = new Dictionary<string, HierarchyDictionary>();
       //  readonly List<TargetItem> _items = new List<TargetItem>();
 
         /// <summary>
@@ -70,7 +70,6 @@ namespace ACO.ExcelHelpers
         //    foreach (var item in _items)
         //        yield return item;
         //}
-
         /// <summary>
         /// Производит нумерацию всех эллементов иерархии
         /// </summary>

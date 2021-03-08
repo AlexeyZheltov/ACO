@@ -159,6 +159,7 @@
   -->
   <ItemGroup>
     <Compile Include="AddInException.cs" />
+    <Compile Include="AddinWindow.cs" />
     <Compile Include="ExcelHelpers\Cell.cs" />
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
@@ -190,7 +191,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TargetItem.cs" />
     <Compile Include="XMLSetting\Mapping.cs" />
     <Compile Include="XMLSetting\MappingManager.cs" />
     <Compile Include="XMLSetting\SettingManager.cs" />

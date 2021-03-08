@@ -1,5 +1,5 @@
 ﻿
-namespace ACO.ExcelHelpers
+namespace ACO
 {
     partial class ProgressBarWithLog
     {
@@ -54,7 +54,7 @@ namespace ACO.ExcelHelpers
             // 
             // SubProgressBar
             // 
-            this.SubProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.SubProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SubProgressBar.Location = new System.Drawing.Point(12, 72);
             this.SubProgressBar.Name = "SubProgressBar";
@@ -81,7 +81,7 @@ namespace ACO.ExcelHelpers
             // 
             // MainProgressBar
             // 
-            this.MainProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.MainProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MainProgressBar.Location = new System.Drawing.Point(12, 32);
             this.MainProgressBar.Name = "MainProgressBar";
@@ -90,7 +90,7 @@ namespace ACO.ExcelHelpers
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.Location = new System.Drawing.Point(12, 45);
@@ -100,7 +100,7 @@ namespace ACO.ExcelHelpers
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Location = new System.Drawing.Point(12, 85);
@@ -110,8 +110,8 @@ namespace ACO.ExcelHelpers
             // 
             // LogGroupBox
             // 
-            this.LogGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.LogGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogGroupBox.Controls.Add(this.LogTextBox);
             this.LogGroupBox.Location = new System.Drawing.Point(12, 89);
