@@ -58,8 +58,8 @@ namespace ACO
                     Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
                    OfferManager offerReader = new OfferManager(sheet);
 
-                    if (offerReader.ReadOffer())
-                    { offers.Add(offerReader.Offer); }
+                   // if (offerReader.ReadOffer())
+                 //   { offers.Add(offerReader.Offer); }
                     excelBook.Close();
                 }
 
@@ -116,6 +116,11 @@ namespace ACO
         {
             ProjectManager.FormManager manager = new ProjectManager.FormManager();
             manager.Show(new AddinWindow(Globals.ThisAddIn));
+        }
+
+        private void BtnKP_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Offers.FormManagerKP().Show(new AddinWindow(Globals.ThisAddIn));
         }
     }
 }

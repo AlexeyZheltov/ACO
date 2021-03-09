@@ -54,6 +54,7 @@
             this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
+            this.BtnKP = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -163,6 +164,7 @@
             // group5
             // 
             this.group5.Items.Add(this.BtnProjectManager);
+            this.group5.Items.Add(this.BtnKP);
             this.group5.Items.Add(this.BtnSettings);
             this.group5.Label = "Настройки";
             this.group5.Name = "group5";
@@ -213,6 +215,15 @@
             this.BtnAbout.ShowImage = true;
             this.BtnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
+            // BtnKP
+            // 
+            this.BtnKP.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnKP.Image = ((System.Drawing.Image)(resources.GetObject("BtnKP.Image")));
+            this.BtnKP.Label = "Диспетчер КП";
+            this.BtnKP.Name = "BtnKP";
+            this.BtnKP.ShowImage = true;
+            this.BtnKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnKP_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -257,6 +268,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group6;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateFormuls;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnKP;
     }
 
     partial class ThisRibbonCollection

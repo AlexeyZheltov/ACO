@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using ACO.Offers;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace ACO
 {
@@ -13,27 +17,71 @@ namespace ACO
     class OfferManager
     {
         private Excel.Worksheet _sheet;
-       
+
+        public OfferManager() { }
         public OfferManager(Excel.Worksheet sheet)
         {
             _sheet = sheet;
         }
-        public Offer Offer
+
+        private List<OfferMapping> _OffersMapping;
+        public List<OfferMapping> OffersMapping
         {
-            get
-            {
-                if (_Offer is null)
+            get 
+            { 
+                if (_OffersMapping == null)
                 {
-                    _Offer = SetOffer(_sheet);
+                    _OffersMapping = GetOffers();
                 }
-                return _Offer;
+                return _OffersMapping; 
             }
-            private set
-            {
-                _Offer = value;
-            }
+            set { _OffersMapping = value; }
         }
-        private Offer _Offer;
+
+       
+
+        private List<OfferMapping> GetOffers()
+        {
+          List<OfferMapping> offers  = new List<OfferMapping>();
+            string folder = GetFolderSettingsKP();
+            string[] files = Directory.GetFiles(folder); 
+            foreach(string file in files)
+            {
+                offers.Add(new OfferMapping(file));
+            }
+            return offers;
+        }
+        private static string GetFolderSettingsKP()
+        {
+            string path = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Spectrum",
+            "ACO",
+            "Offers"
+            );
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            //string filename = Path.Combine(path, "settings.xml");
+            return path;
+        }
+
+    
+
+        //public Offer Offer
+        //{
+        //    get
+        //    {
+        //        if (_Offer is null)
+        //        {
+        //            _Offer = SetOffer(_sheet);
+        //        }
+        //        return _Offer;
+        //    }
+        //    private set
+        //    {
+        //        _Offer = value;
+        //    }
+        //}
+        //private Offer _Offer;
 
         /// <summary>
         /// 
@@ -50,7 +98,7 @@ namespace ACO
             return offer;
         }
 
-               
+        
         public bool ReadOffer()
         {
             bool validation = CheckColumns();
@@ -63,9 +111,7 @@ namespace ACO
                     Item rowItem = new Item();
                     /// Сохранение  строки 
                     //rowItem.
-
-
-                    Offer.Items.Add(rowItem);
+                    //Offer.Items.Add(rowItem);
                 }
                 catch (AddInException ex)
                 {

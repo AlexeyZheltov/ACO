@@ -63,9 +63,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.customDataGrid1 = new ACO.ProjectManager.CustomDataGrid();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.PageProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -477,6 +477,16 @@
             this.customDataGrid1.Size = new System.Drawing.Size(625, 332);
             this.customDataGrid1.TabIndex = 2;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(640, 477);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "КП";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // BtnAccept
             // 
             this.BtnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -498,16 +508,6 @@
             this.BtnCancel.TabIndex = 1;
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(640, 477);
-            this.tabPage2.TabIndex = 3;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // FormManager
             // 

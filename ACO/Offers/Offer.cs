@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACO.ProjectManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,5 +40,6 @@ namespace ACO
         /// Список строк 
         /// </summary>
         public List<Item> Items { get; set; }
+      
     }
 }
