@@ -51,8 +51,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.TextBoxAddres = new System.Windows.Forms.TextBox();
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
-            this.BtnAccept = new System.Windows.Forms.Button();
-            this.BtnCancel = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -65,6 +63,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.customDataGrid1 = new ACO.ProjectManager.CustomDataGrid();
+            this.BtnAccept = new System.Windows.Forms.Button();
+            this.BtnCancel = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.PageProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -85,6 +86,7 @@
             this.tabControl1.Controls.Add(this.PageProject);
             this.tabControl1.Controls.Add(this.PageColumns);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -344,28 +346,6 @@
             this.TableColumns.TabIndex = 0;
             this.TableColumns.SelectionChanged += new System.EventHandler(this.TableColumns_SelectionChanged);
             // 
-            // BtnAccept
-            // 
-            this.BtnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAccept.Location = new System.Drawing.Point(437, 518);
-            this.BtnAccept.Name = "BtnAccept";
-            this.BtnAccept.Size = new System.Drawing.Size(106, 23);
-            this.BtnAccept.TabIndex = 1;
-            this.BtnAccept.Text = "Сохранить";
-            this.BtnAccept.UseVisualStyleBackColor = true;
-            this.BtnAccept.Click += new System.EventHandler(this.BtnAccept_Click);
-            // 
-            // BtnCancel
-            // 
-            this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnCancel.Location = new System.Drawing.Point(549, 518);
-            this.BtnCancel.Name = "BtnCancel";
-            this.BtnCancel.Size = new System.Drawing.Size(106, 23);
-            this.BtnCancel.TabIndex = 1;
-            this.BtnCancel.Text = "Отмена";
-            this.BtnCancel.UseVisualStyleBackColor = true;
-            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -497,6 +477,38 @@
             this.customDataGrid1.Size = new System.Drawing.Size(625, 332);
             this.customDataGrid1.TabIndex = 2;
             // 
+            // BtnAccept
+            // 
+            this.BtnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnAccept.Location = new System.Drawing.Point(437, 518);
+            this.BtnAccept.Name = "BtnAccept";
+            this.BtnAccept.Size = new System.Drawing.Size(106, 23);
+            this.BtnAccept.TabIndex = 1;
+            this.BtnAccept.Text = "Сохранить";
+            this.BtnAccept.UseVisualStyleBackColor = true;
+            this.BtnAccept.Click += new System.EventHandler(this.BtnAccept_Click);
+            // 
+            // BtnCancel
+            // 
+            this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.BtnCancel.Location = new System.Drawing.Point(549, 518);
+            this.BtnCancel.Name = "BtnCancel";
+            this.BtnCancel.Size = new System.Drawing.Size(106, 23);
+            this.BtnCancel.TabIndex = 1;
+            this.BtnCancel.Text = "Отмена";
+            this.BtnCancel.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(640, 477);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // FormManager
             // 
             this.AcceptButton = this.BtnAccept;
@@ -566,5 +578,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox2;
         private CustomDataGrid customDataGrid1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
