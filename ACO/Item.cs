@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ACO.ProjectManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace ACO
 {
-   /// <summary>
-   ///  Строка КП   
-   /// </summary>
-   class Item
+    /// <summary>
+    ///  Строка КП   
+    /// </summary>
+    class Item
     {
+
+        public int Row { get; internal set; }
+        public string Header { get; internal set; }
+
+        public Dictionary<string,string> Record { get; set; }
+        // public List<ColumnMapping> MyProperty { get; set; }
+
         /// <summary>
         ///  Наименование работ
         /// </summary>
@@ -19,7 +27,7 @@ namespace ACO
         ///// 
         ///// </summary>
         //public string Number { get; set; }
-        
+
         ///// <summary>
         ///// Еденица измерения
         ///// </summary>
@@ -62,5 +70,6 @@ namespace ACO
         ///// Комментарий
         ///// </summary>
         //public string Note { get; set; }
+
     }
 }

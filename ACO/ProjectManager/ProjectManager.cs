@@ -39,7 +39,7 @@ namespace ACO.ProjectManager
                 }
                 return _ActiveProject;
             }
-           private set
+            private set
             {
                 _ActiveProject = value;
             }
@@ -156,5 +156,24 @@ namespace ACO.ProjectManager
             return filename;
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="offer"></param>
+        internal void AddOffer(Offer offer)
+        {
+            foreach (Item itm in offer.Items)
+            {
+                int row = itm.Row;
+                int col = ActiveProject.Columns.Find(c => c.Value == itm.Header)?.Column ?? 0;
+
+                foreach (ColumnMapping column in ActiveProject.Columns )
+                {
+                //column.Column
+                //cell
+                }
+            }
+
+        }
     }
 }

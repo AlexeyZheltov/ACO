@@ -38,6 +38,8 @@ namespace ACO
         /// <param name="e"></param>
         private void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
         {
+            try
+            {
             string[] files = GetFiles();
             if ( files.Length < 1) { return; }
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
@@ -58,18 +60,28 @@ namespace ACO
                     { offers.Add(reader.Offer); }
                         excelBook.Close();
                 }
+
                 WriteOffers(offers,pb);
                 ExcelHelpers.ExcelFile.Acselerate(false);
-                ExcelHelpers.ExcelFile.Finish();            
+                ExcelHelpers.ExcelFile.Finish(); 
+                //pb.ClearMainBar
+            }
+            catch (AddInException ex)
+            {
+                MessageBox.Show(ex.Message,"Ошибка",MessageBoxButtons.OK);
+            }
         }
 
         private void WriteOffers(List<Offer> offers, IProgressBarWithLogUI pb )
         {
             Excel.Workbook mainBook = Globals.ThisAddIn.Application.ActiveWorkbook;
-            foreach(Offer offer in offers)
+            pb.SetSubBarVolume(offers.Count);
+            ProjectManager.ProjectManager project = new ProjectManager.ProjectManager();
+            foreach (Offer offer in offers)
             {
                 pb.SubBarTick();
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                project.AddOffer(offer);
             }
         }
 

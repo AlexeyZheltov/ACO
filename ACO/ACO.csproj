@@ -216,6 +216,7 @@
     <None Include="ACO_TemporaryKey.pfx" />
     <None Include="ClassDiagram1.cd" />
     <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
+    <None Include="MainClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
