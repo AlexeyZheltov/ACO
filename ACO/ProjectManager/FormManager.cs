@@ -11,9 +11,10 @@ namespace ACO.ProjectManager
 {
     public partial class FormManager : Form
     {
+        private Excel.Application _app = Globals.ThisAddIn.Application;
         private ProjectManager _projectManager;
         private List<ColumnMapping> _mappingColumns;
-        private ColumnMapping _selectedCell ; 
+        private ColumnMapping _selectedCell;
         public FormManager()
         {
             InitializeComponent();
@@ -49,7 +50,9 @@ namespace ACO.ProjectManager
                     TableColumns.Columns[2].HeaderText = "Обязательный";
                     TableColumns.Columns[3].HeaderText = "Адрес";
                     TableColumns.Columns[4].HeaderText = "Строка";
+                    TableColumns.Columns[4].Visible = false;
                     TableColumns.Columns[5].HeaderText = "Столбец";
+                    TableColumns.Columns[5].Visible = false;
                     TableColumns.Columns[6].HeaderText = "Значение";
                 }
             }
@@ -118,7 +121,7 @@ namespace ACO.ProjectManager
             {
                 Source.Add(_mappingColumns[i]);
             };
-            TableColumns.DataSource = Source;            
+            TableColumns.DataSource = Source;
         }
 
         private void BtnAccept_Click(object sender, EventArgs e)
@@ -126,19 +129,19 @@ namespace ACO.ProjectManager
             _projectManager.ActiveProject.Columns = _mappingColumns;
             _projectManager.ActiveProject.Save();
         }
-        
+
         private void BtnUpdateColumns_Click(object sender, EventArgs e)
-        {          
-            Excel.Application app = Globals.ThisAddIn.Application;         
+        {
+            Excel.Application app = Globals.ThisAddIn.Application;
             Excel.Range rng = app.Selection;
-            if ((rng?.Cells?.Count ?? 0) == 0) return;            
+            if ((rng?.Cells?.Count ?? 0) == 0) return;
             foreach (Excel.Range cell in rng.Cells)
             {
-                if (!string.IsNullOrEmpty(cell.Value))
+                if (!string.IsNullOrEmpty(cell.Text))
                 {
                     ColumnMapping mapping = new ColumnMapping(cell);
                     ColumnMapping findMapping = _mappingColumns.Find(m => m.Address == mapping.Address);
-                    if (findMapping == null)  _mappingColumns.Add(mapping);
+                    if (findMapping == null) _mappingColumns.Add(mapping);
                 }
             }
             UpdateTableColumns();
@@ -148,8 +151,8 @@ namespace ACO.ProjectManager
         {
             if (TableColumns.SelectedRows.Count > 0)
             {
-                DataGridViewRow row = TableColumns.SelectedRows[0];             
-                string address= row.Cells[3].Value?.ToString() ?? "";
+                DataGridViewRow row = TableColumns.SelectedRows[0];
+                string address = row.Cells[3].Value?.ToString() ?? "";
                 ColumnMapping cell = _mappingColumns.Find(c => c.Address == address);
                 if (cell != null)
                 {
@@ -183,29 +186,26 @@ namespace ACO.ProjectManager
             if (findcell != null)
             {
                 _mappingColumns.Remove(findcell);
-            }          
+            }
             UpdateTableColumns();
         }
 
         private void BtnActiveCell_Click(object sender, EventArgs e)
         {
-            Excel.Worksheet sheet = Globals.ThisAddIn.Application.ActiveSheet;
-            Hide();
-            sheet. SelectionChange += Sheet_SelectionChange;
-        }
 
-        private void Sheet_SelectionChange(Excel.Range Target)
-        {
-            Show();           
-            _selectedCell = new ColumnMapping(Target);
+            Excel.Range activeCell = _app.Selection;
+            Show();
+            _selectedCell = new ColumnMapping(activeCell);
             if (_selectedCell != null)
-            {               
+            {
                 TextBoxAddres.Text = _selectedCell.Address;
                 ChkBoxCheck.Checked = false;
                 ChkBoxObligatory.Checked = false;
                 TextBoxValue.Text = _selectedCell.Value?.ToString() ?? "";
             }
-        }    
+        }
+
+
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
@@ -216,7 +216,7 @@ namespace ACO.ProjectManager
                 Excel.Range xlCell = sheet.Range[address];
                 _selectedCell = new ColumnMapping(xlCell);
                 string value = TextBoxValue.Text;
-                    if (!string.IsNullOrEmpty(value)) _selectedCell.Value = value;
+                if (!string.IsNullOrEmpty(value)) _selectedCell.Value = value;
                 _selectedCell.Check = ChkBoxCheck.Checked;
                 _selectedCell.Obligatory = ChkBoxObligatory.Checked;
                 ColumnMapping findcell = _mappingColumns.Find(c => c.Address == _selectedCell.Address);
@@ -226,6 +226,19 @@ namespace ACO.ProjectManager
                 }
                 _mappingColumns.Add(_selectedCell);
                 UpdateTableColumns();
+            }
+        }
+
+        private void BtnSelect_Click(object sender, EventArgs e)
+        {
+            if (TableProjects.SelectedRows.Count > 0)
+            {
+                string name = TableProjects.SelectedRows[0].Cells[0].Value.ToString() ?? "";
+                Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
+                {
+                    if (newActiveProject != null)
+                        _projectManager.ActiveProject = newActiveProject;
+                }
             }
         }
     }

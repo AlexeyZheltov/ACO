@@ -48,6 +48,7 @@ namespace ACO
                 ExcelHelpers.ExcelFile.Acselerate(true);
             pb.SetMainBarVolum(files.Length);
             pb.Show(new AddinWindow(Globals.ThisAddIn));
+
                 foreach (string fileName in files)
                 {
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
@@ -55,16 +56,17 @@ namespace ACO
                     ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
                     excelBook.Open(fileName);
                     Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
-                    OfferReader reader = new OfferReader(sheet);
-                    if (reader.ReadOffer())
-                    { offers.Add(reader.Offer); }
-                        excelBook.Close();
+                   OfferManager offerReader = new OfferManager(sheet);
+
+                    if (offerReader.ReadOffer())
+                    { offers.Add(offerReader.Offer); }
+                    excelBook.Close();
                 }
 
                 WriteOffers(offers,pb);
                 ExcelHelpers.ExcelFile.Acselerate(false);
                 ExcelHelpers.ExcelFile.Finish(); 
-                //pb.ClearMainBar
+               
             }
             catch (AddInException ex)
             {

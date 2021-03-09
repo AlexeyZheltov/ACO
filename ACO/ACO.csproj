@@ -159,17 +159,17 @@
   -->
   <ItemGroup>
     <Compile Include="AddInException.cs" />
-    <Compile Include="AddinWindow.cs" />
+    <Compile Include="ExcelHelpers\AddinWindow.cs" />
     <Compile Include="ExcelHelpers\Cell.cs" />
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
     <Compile Include="ExcelHelpers\ExcelReader.cs" />
-    <Compile Include="HierarchyDictionary.cs" />
     <Compile Include="IProgressBarWithLogUI.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Numberer.cs" />
-    <Compile Include="Offer.cs" />
-    <Compile Include="OfferReader.cs" />
+    <Compile Include="Offers\Offer.cs" />
+    <Compile Include="Offers\OfferManager.cs" />
+    <Compile Include="Offers\OfferMapping.cs" />
+    <Compile Include="Offers\Record.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,9 +192,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="XMLSetting\Mapping.cs" />
-    <Compile Include="XMLSetting\MappingManager.cs" />
     <Compile Include="XMLSetting\SettingManager.cs" />
-    <Compile Include="XMLSetting\XMLManager.cs" />
     <EmbeddedResource Include="ProgressBarWithLog.resx">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </EmbeddedResource>
@@ -214,7 +212,6 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
     <None Include="MainClassDiagram.cd" />
     <None Include="Properties\Settings.settings">

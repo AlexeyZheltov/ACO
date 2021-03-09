@@ -53,6 +53,18 @@
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.customDataGrid1 = new ACO.ProjectManager.CustomDataGrid();
             this.tabControl1.SuspendLayout();
             this.PageProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -60,6 +72,9 @@
             this.PageColumns.SuspendLayout();
             this.BtnDeleteColumnMapping.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.customDataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -69,6 +84,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.PageProject);
             this.tabControl1.Controls.Add(this.PageColumns);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -109,6 +125,7 @@
             this.BtnSelect.TabIndex = 4;
             this.BtnSelect.Text = "Выбрать";
             this.BtnSelect.UseVisualStyleBackColor = true;
+            this.BtnSelect.Click += new System.EventHandler(this.BtnSelect_Click);
             // 
             // groupBox2
             // 
@@ -178,7 +195,7 @@
             this.PageColumns.Padding = new System.Windows.Forms.Padding(3);
             this.PageColumns.Size = new System.Drawing.Size(640, 477);
             this.PageColumns.TabIndex = 0;
-            this.PageColumns.Text = "Столбцы";
+            this.PageColumns.Text = "Столбцы 1";
             this.PageColumns.UseVisualStyleBackColor = true;
             // 
             // BtnCheckCells
@@ -349,6 +366,137 @@
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.customDataGrid1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(640, 477);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Столбцы КП";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Location = new System.Drawing.Point(12, 26);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(621, 77);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(113, 49);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(101, 17);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Обязательный";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(9, 49);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(81, 17);
+            this.checkBox2.TabIndex = 6;
+            this.checkBox2.Text = "Проверять";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Значение";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(67, 23);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(330, 20);
+            this.textBox1.TabIndex = 3;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(409, 43);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(92, 24);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Удалить";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Location = new System.Drawing.Point(409, 18);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(92, 24);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Добавить";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.Location = new System.Drawing.Point(507, 19);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(104, 47);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Определить ячейку";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(277, 50);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Адрес";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.Location = new System.Drawing.Point(321, 46);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(75, 20);
+            this.textBox2.TabIndex = 0;
+            // 
+            // customDataGrid1
+            // 
+            this.customDataGrid1.AllowUserToAddRows = false;
+            this.customDataGrid1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.customDataGrid1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.customDataGrid1.Location = new System.Drawing.Point(8, 118);
+            this.customDataGrid1.MultiSelect = false;
+            this.customDataGrid1.Name = "customDataGrid1";
+            this.customDataGrid1.RowHeadersVisible = false;
+            this.customDataGrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.customDataGrid1.Size = new System.Drawing.Size(625, 332);
+            this.customDataGrid1.TabIndex = 2;
+            // 
             // FormManager
             // 
             this.AcceptButton = this.BtnAccept;
@@ -360,7 +508,7 @@
             this.Controls.Add(this.BtnAccept);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormManager";
-            this.Text = "Диспетчер";            
+            this.Text = "Диспетчер";
             this.tabControl1.ResumeLayout(false);
             this.PageProject.ResumeLayout(false);
             this.PageProject.PerformLayout();
@@ -371,6 +519,10 @@
             this.BtnDeleteColumnMapping.ResumeLayout(false);
             this.BtnDeleteColumnMapping.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.customDataGrid1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -402,5 +554,17 @@
         private System.Windows.Forms.CheckBox ChkBoxCheck;
         private System.Windows.Forms.Button BtnCheckCells;
         private System.Windows.Forms.Button BtnDel;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox2;
+        private CustomDataGrid customDataGrid1;
     }
 }

@@ -39,9 +39,17 @@ namespace ACO.ProjectManager
                 }
                 return _ActiveProject;
             }
-            private set
+            set
             {
                 _ActiveProject = value;
+               
+
+                    foreach (Project p in Projects)
+                    {
+                        p.Active = p.Name == _ActiveProject.Name;
+                        p.Save();
+                    }               
+
             }
         }
         private Project _ActiveProject;
@@ -167,10 +175,10 @@ namespace ACO.ProjectManager
                 int row = itm.Row;
                 int col = ActiveProject.Columns.Find(c => c.Value == itm.Header)?.Column ?? 0;
 
-                foreach (ColumnMapping column in ActiveProject.Columns )
+                foreach (ColumnMapping column in ActiveProject.Columns)
                 {
-                //column.Column
-                //cell
+                    //column.Column
+                    //cell
                 }
             }
 

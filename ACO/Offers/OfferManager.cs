@@ -1,14 +1,23 @@
-﻿using System;
-using Excel = Microsoft.Office.Interop.Excel;
+﻿using Excel = Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ACO
 {
     /// <summary>
-    /// Собирает данные и 
+    /// Собирает данные из КП
     /// </summary>
-    class OfferReader
+    class OfferManager
     {
-        Excel.Worksheet _sheet;
+        private Excel.Worksheet _sheet;
+       
+        public OfferManager(Excel.Worksheet sheet)
+        {
+            _sheet = sheet;
+        }
         public Offer Offer
         {
             get
@@ -41,14 +50,10 @@ namespace ACO
             return offer;
         }
 
-
-        public OfferReader(Excel.Worksheet sheet)
-        {
-            _sheet = sheet;
-        }
+               
         public bool ReadOffer()
         {
-            bool validation = true;
+            bool validation = CheckColumns();
             int rowStart = GetRowStart(_sheet);
             int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
             for (int row = rowStart; row <= rowEnd; row++)
@@ -56,6 +61,10 @@ namespace ACO
                 try
                 {
                     Item rowItem = new Item();
+                    /// Сохранение  строки 
+                    //rowItem.
+
+
                     Offer.Items.Add(rowItem);
                 }
                 catch (AddInException ex)
@@ -65,6 +74,15 @@ namespace ACO
                 }
             }
             return validation;
+        }
+
+        /// <summary>
+        ///  проверить столбцы КП
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckColumns()
+        {
+            return false;
         }
 
         private int GetRowStart(Excel.Worksheet sheet)
