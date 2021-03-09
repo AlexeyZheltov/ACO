@@ -49,12 +49,12 @@
             this.BtnUpdateLvl0 = this.Factory.CreateRibbonButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
+            this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.group6 = this.Factory.CreateRibbonGroup();
             this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.BtnKP = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -178,6 +178,15 @@
             this.BtnProjectManager.ShowImage = true;
             this.BtnProjectManager.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnProjectManager_Click);
             // 
+            // BtnKP
+            // 
+            this.BtnKP.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnKP.Image = ((System.Drawing.Image)(resources.GetObject("BtnKP.Image")));
+            this.BtnKP.Label = "Диспетчер КП";
+            this.BtnKP.Name = "BtnKP";
+            this.BtnKP.ShowImage = true;
+            this.BtnKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnKP_Click);
+            // 
             // BtnSettings
             // 
             this.BtnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -214,15 +223,6 @@
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
             this.BtnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
-            // 
-            // BtnKP
-            // 
-            this.BtnKP.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnKP.Image = ((System.Drawing.Image)(resources.GetObject("BtnKP.Image")));
-            this.BtnKP.Label = "Диспетчер КП";
-            this.BtnKP.Name = "BtnKP";
-            this.BtnKP.ShowImage = true;
-            this.BtnKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnKP_Click);
             // 
             // Ribbon
             // 

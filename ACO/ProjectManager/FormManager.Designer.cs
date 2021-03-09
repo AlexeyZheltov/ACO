@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.PageProject = new System.Windows.Forms.TabPage();
             this.BtnDelete = new System.Windows.Forms.Button();
@@ -182,9 +185,13 @@
             this.TableProjects.MultiSelect = false;
             this.TableProjects.Name = "TableProjects";
             this.TableProjects.RowHeadersVisible = false;
+            this.TableProjects.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableProjects.Size = new System.Drawing.Size(602, 273);
             this.TableProjects.TabIndex = 0;
+            this.TableProjects.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellValueChanged);
             // 
             // PageColumns
             // 
@@ -341,6 +348,9 @@
             this.TableColumns.MultiSelect = false;
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
+            this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(625, 332);
             this.TableColumns.TabIndex = 0;
@@ -473,6 +483,9 @@
             this.customDataGrid1.MultiSelect = false;
             this.customDataGrid1.Name = "customDataGrid1";
             this.customDataGrid1.RowHeadersVisible = false;
+            this.customDataGrid1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.customDataGrid1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.customDataGrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.customDataGrid1.Size = new System.Drawing.Size(625, 332);
             this.customDataGrid1.TabIndex = 2;

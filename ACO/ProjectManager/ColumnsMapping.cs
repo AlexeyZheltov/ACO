@@ -9,6 +9,9 @@ using System.Xml.Linq;
 
 namespace ACO.ProjectManager
 {
+    /// <summary>
+    ///  Ячейка для сохранения в настройках
+    /// </summary>
     class ColumnMapping : Cell
     {
         /// <summary>

@@ -49,11 +49,11 @@ namespace ACO.ProjectManager
                     TableColumns.Columns[1].HeaderText = "Проверять";
                     TableColumns.Columns[2].HeaderText = "Обязательный";
                     TableColumns.Columns[3].HeaderText = "Адрес";
-                    TableColumns.Columns[4].HeaderText = "Строка";
+                    //TableColumns.Columns[4].HeaderText = "Строка";
                     TableColumns.Columns[4].Visible = false;
-                    TableColumns.Columns[5].HeaderText = "Столбец";
+                    //TableColumns.Columns[5].HeaderText = "Столбец";
                     TableColumns.Columns[5].Visible = false;
-                    TableColumns.Columns[6].HeaderText = "Значение";
+                  // TableColumns.Columns[6].HeaderText = "Значение";
                 }
             }
         }
@@ -124,10 +124,16 @@ namespace ACO.ProjectManager
             TableColumns.DataSource = Source;
         }
 
-        private void BtnAccept_Click(object sender, EventArgs e)
+        private void Save()
         {
             _projectManager.ActiveProject.Columns = _mappingColumns;
             _projectManager.ActiveProject.Save();
+        }
+
+        private void BtnAccept_Click(object sender, EventArgs e)
+        {
+            Save();
+            Close();
         }
 
         private void BtnUpdateColumns_Click(object sender, EventArgs e)
@@ -241,5 +247,35 @@ namespace ACO.ProjectManager
                 }
             }
         }
+
+        private void TableProjects_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //e.RowIndex
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
+            string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
+            ColumnMapping mapping = _mappingColumns.Find(f => f.Address == address);
+            if (mapping is null) return;
+            object value = null;
+            switch (col)
+            {
+                case 1:
+                    value = TableColumns.Rows[row].Cells[3].Value;
+                    mapping.Check = (bool)value;
+                    break;
+                case 2:
+                    value = TableColumns.Rows[row].Cells[3].Value;
+                    mapping.Obligatory = (bool)value;
+                    break;
+                case 3:
+                    mapping.Address = address;
+                    break;
+                    //default:
+                    //    break;
+            }
+            Save();
+        }
+
+      
     }
 }

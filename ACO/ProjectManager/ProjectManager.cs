@@ -12,7 +12,6 @@ namespace ACO.ProjectManager
 {
     class ProjectManager
     {
-
         public Project ActiveProject
         {
             get

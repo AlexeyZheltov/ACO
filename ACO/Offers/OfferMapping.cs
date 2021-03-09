@@ -10,23 +10,26 @@ using System.Xml.Linq;
 
 namespace ACO.Offers
 {
+    /// <summary>
+    ///  Настройки КП. Чтение\ Создание XML
+    /// </summary>
     class OfferMapping
     {
         public string Name { get; set; }
         public string FileName { get; set; }
-
-
         public OfferMapping() { }
         public OfferMapping(string filename)
         {
              GetFromXML(filename);
         }
+
+        /// <summary>
+        /// Ячейки заголовков
+        /// </summary>
         public List<ColumnMapping> Columns { get; set; }
 
         //public List<> Mapping { get; set; }
-
-     
-
+            
 
         internal static void Create(string name)
         {

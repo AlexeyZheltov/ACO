@@ -9,21 +9,19 @@ namespace ACO.ProjectManager
     {
       public  CustomDataGrid() 
         {
-            DoubleBuffered = true;
-            SetColumns();
+            DoubleBuffered = true;           
             RowHeadersVisible = false;
             SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             MultiSelect = false;
             AllowUserToAddRows = false;
-            EditMode = DataGridViewEditMode.EditProgrammatically;
-            
-            //BackgroundColor = System.Drawing.Color.White;            
+            RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            AllowUserToResizeRows = false;
+           // EditMode = DataGridViewEditMode.EditProgrammatically;
+           // RowsDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+           //BackgroundColor = System.Drawing.Color.White;
         }
 
 
-        private void SetColumns()
-        {
-           
-        }
+       
     }
 }
