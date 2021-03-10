@@ -18,6 +18,7 @@ namespace ACO.ProjectManager
         public FormManager()
         {
             InitializeComponent();
+            TableColumns.ReadOnly = false;
             LoadProjects();
         }
 
@@ -36,13 +37,11 @@ namespace ACO.ProjectManager
                 _mappingColumns = _projectManager.ActiveProject.Columns;
                 if ((_mappingColumns?.Count ?? 0) > 0)
                 {
-                    //  TableColumns.DataSource = _mappingColumns;
                     UpdateTableColumns();
-                    TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;                    
-                    TableColumns.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    TableColumns.Columns[0].Width = 60;
+                    TableColumns.Columns[1].Width = 60;
+                    TableColumns.Columns[3].Width = 80;
                     TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                   // TableColumns.Columns[TableColumns.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     TableColumns.Columns[0].HeaderText = "Проверять";
                     TableColumns.Columns[1].HeaderText = "Обязательный";
                     TableColumns.Columns[2].HeaderText = "Значение";
@@ -271,6 +270,6 @@ namespace ACO.ProjectManager
             Save();
         }
 
-      
+
     }
 }
