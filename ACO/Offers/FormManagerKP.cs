@@ -20,21 +20,13 @@ namespace ACO.Offers
         public FormManagerKP()
         {
             InitializeComponent();
-            TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            TableColumns.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            TableColumns.Columns[4].Visible = false;
-            TableColumns.Columns[5].Visible = false;
-            TableColumns.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            _manager = new OfferManager();
+            TableColumns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+                _manager = new OfferManager();
             _offersMapping = _manager.OffersMapping;
             ListKP.FullRowSelect = true;
             ListKP.MultiSelect = false;
         }
-
-
 
         private void BtnAddColumns_Click(object sender, EventArgs e)
         {
@@ -61,14 +53,17 @@ namespace ACO.Offers
 
         private void UpdateTable()
         {
-            if (_mappingColumnsKP is null) return;
+            if ((_mappingColumnsKP?.Count ?? 0) == 0) return;
             BindingSource Source = new BindingSource();
             for (int i = 0; i < _mappingColumnsKP.Count; i++)
             {
                 Source.Add(_mappingColumnsKP[i]);
             };
-            TableColumns.DataSource = Source;
+            TableColumns.DataSource = Source;           
+                SetTableColumns();
+           
         }
+
 
        private void Save()
         {
@@ -88,7 +83,23 @@ namespace ACO.Offers
         private void FormManagerKP_Load(object sender, EventArgs e)
         {
             LoadOffersMapping();
-            UpdateTable();
+            UpdateTable();          
+        }
+
+        private void SetTableColumns()
+        {
+            if (TableColumns.Columns.Count >=7)
+            TableColumns.Columns[1].Width = 50;
+            TableColumns.Columns[2].Width = 50;
+            TableColumns.Columns[3].Width = 80;
+            TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            //TableColumns.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            TableColumns.Columns[4].Visible = false;
+            TableColumns.Columns[5].Visible = false;
+            TableColumns.Columns[6].Visible = false;
+            //TableColumns.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private void LoadOffersMapping()
@@ -96,22 +107,29 @@ namespace ACO.Offers
             ListKP.Items.Clear();
             if (_offersMapping != null)
             {
+             if (_CurrentMapping ==null && (_offersMapping?.Count??0)>0)  _CurrentMapping = _offersMapping?.First();
+                _mappingColumnsKP = _CurrentMapping?.Columns;
                 foreach (OfferMapping offer in _offersMapping)
                 {
-                    ListViewItem itm = new ListViewItem(offer.Name);
-                    itm.SubItems.Add(offer.FileName);
-                    ListKP.Items.Add(itm);
+                    //ListViewItem itm = new ListViewItem(offer.Name);
+                    // itm.SubItems.Add(offer.FileName);
+                    ListKP.Items.Add(offer.Name);//itm);
                 }
-                ListKP.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                ListKP.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                //  ListKP.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                ListKP.View = View.List;
             }
+
         }
+
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
             string name = textBox1.Text;
             OfferMapping.Create(name);
+            _offersMapping = _manager.OffersMapping;
+            _CurrentMapping = _offersMapping.Find(m => m.Name == name); 
             LoadOffersMapping();
+            UpdateTable();
         }
 
         private void ListKP_SelectedIndexChanged(object sender, EventArgs e)
@@ -135,6 +153,23 @@ namespace ACO.Offers
             TableColumns.DataSource = source;
         }
 
+        /// <summary>
+        ///  Удалить выделенную строку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (TableColumns.SelectedRows.Count > 0 && _mappingColumnsKP !=null)
+            {
+                DataGridViewRow row = TableColumns.SelectedRows[0];
+                string address = row.Cells[3].Value?.ToString();                
+                ColumnMapping mapping = _mappingColumnsKP.Find(x => x.Address == address);
+                TableColumns.Rows.Remove(row);
+                if (mapping != null) _mappingColumnsKP.Remove(mapping);
+            }
+        }
+
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             int row = e.RowIndex;
@@ -146,11 +181,11 @@ namespace ACO.Offers
             switch (col)
             {
                 case 1:
-                    value = TableColumns.Rows[row].Cells[3].Value;
+                    value = TableColumns.Rows[row].Cells[1].Value;
                     mapping.Check = (bool)value;
                     break;
                 case 2:
-                    value = TableColumns.Rows[row].Cells[3].Value;
+                    value = TableColumns.Rows[row].Cells[2].Value;
                     mapping.Obligatory = (bool)value;
                     break;
                 case 3:
@@ -161,5 +196,7 @@ namespace ACO.Offers
             }
             Save();
         }
+
+      
     }
 }

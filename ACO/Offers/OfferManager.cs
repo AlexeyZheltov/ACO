@@ -28,11 +28,9 @@ namespace ACO
         public List<OfferMapping> OffersMapping
         {
             get 
-            { 
-                if (_OffersMapping == null)
-                {
-                    _OffersMapping = GetOffers();
-                }
+            {                 
+                 _OffersMapping = GetOffers();
+                
                 return _OffersMapping; 
             }
             set { _OffersMapping = value; }
@@ -59,29 +57,10 @@ namespace ACO
             "ACO",
             "Offers"
             );
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            //string filename = Path.Combine(path, "settings.xml");
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);           
             return path;
         }
 
-    
-
-        //public Offer Offer
-        //{
-        //    get
-        //    {
-        //        if (_Offer is null)
-        //        {
-        //            _Offer = SetOffer(_sheet);
-        //        }
-        //        return _Offer;
-        //    }
-        //    private set
-        //    {
-        //        _Offer = value;
-        //    }
-        //}
-        //private Offer _Offer;
 
         /// <summary>
         /// 
