@@ -60,7 +60,7 @@
             // BtnSave
             // 
             this.BtnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSave.Location = new System.Drawing.Point(329, 207);
+            this.BtnSave.Location = new System.Drawing.Point(428, 207);
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(95, 23);
             this.BtnSave.TabIndex = 2;
@@ -78,7 +78,7 @@
             this.ListKP.HideSelection = false;
             this.ListKP.Location = new System.Drawing.Point(6, 60);
             this.ListKP.Name = "ListKP";
-            this.ListKP.Size = new System.Drawing.Size(410, 120);
+            this.ListKP.Size = new System.Drawing.Size(509, 120);
             this.ListKP.TabIndex = 3;
             this.ListKP.UseCompatibleStateImageBehavior = false;
             this.ListKP.View = System.Windows.Forms.View.Details;
@@ -95,13 +95,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(59, 25);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(258, 20);
+            this.textBox1.Size = new System.Drawing.Size(357, 20);
             this.textBox1.TabIndex = 4;
             // 
             // BtnCreate
             // 
             this.BtnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCreate.Location = new System.Drawing.Point(323, 23);
+            this.BtnCreate.Location = new System.Drawing.Point(422, 23);
             this.BtnCreate.Name = "BtnCreate";
             this.BtnCreate.Size = new System.Drawing.Size(93, 23);
             this.BtnCreate.TabIndex = 5;
@@ -150,7 +150,7 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableColumns.Size = new System.Drawing.Size(421, 220);
+            this.TableColumns.Size = new System.Drawing.Size(520, 245);
             this.TableColumns.TabIndex = 1;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
             // 
@@ -174,7 +174,7 @@
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Location = new System.Drawing.Point(6, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(422, 186);
+            this.groupBox1.Size = new System.Drawing.Size(521, 186);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки КП";
@@ -192,13 +192,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 461);
+            this.ClientSize = new System.Drawing.Size(533, 486);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.BtnDelete);
             this.Controls.Add(this.BtnSave);
             this.Controls.Add(this.BtnAddColumns);
             this.Controls.Add(this.TableColumns);
-            this.MinimumSize = new System.Drawing.Size(450, 500);
+            this.MinimumSize = new System.Drawing.Size(450, 450);
             this.Name = "FormManagerKP";
             this.ShowIcon = false;
             this.Text = "Диспетчер КП";
