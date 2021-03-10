@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.BtnAddColumns = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.ListKP = new System.Windows.Forms.ListView();
@@ -38,9 +40,9 @@
             this.projectNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.customDataGrid1 = new ACO.ProjectManager.CustomDataGrid();
+            this.BtnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customDataGrid1)).BeginInit();
             this.SuspendLayout();
@@ -69,8 +71,7 @@
             // ListKP
             // 
             this.ListKP.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.ColName,
-            this.ColHeader});
+            this.ColName});
             this.ListKP.HideSelection = false;
             this.ListKP.Location = new System.Drawing.Point(13, 38);
             this.ListKP.Name = "ListKP";
@@ -123,27 +124,25 @@
             // 
             // ColName
             // 
-            this.ColName.Text = "Название";
-            this.ColName.Width = 186;
-            // 
-            // ColHeader
-            // 
-            this.ColHeader.Text = "Путь";
-            this.ColHeader.Width = 274;
+            this.ColName.Text = "Настройки  КП";
+            this.ColName.Width = 268;
             // 
             // TableColumns
             // 
             this.TableColumns.AllowUserToAddRows = false;
+            this.TableColumns.AllowUserToResizeRows = false;
             this.TableColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TableColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TableColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.TableColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.TableColumns.Location = new System.Drawing.Point(13, 159);
             this.TableColumns.MultiSelect = false;
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
-            this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(798, 295);
             this.TableColumns.TabIndex = 1;
@@ -152,22 +151,36 @@
             // customDataGrid1
             // 
             this.customDataGrid1.AllowUserToAddRows = false;
+            this.customDataGrid1.AllowUserToResizeRows = false;
             this.customDataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.customDataGrid1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.customDataGrid1.Location = new System.Drawing.Point(487, 11);
+            this.customDataGrid1.Location = new System.Drawing.Point(671, 11);
             this.customDataGrid1.MultiSelect = false;
             this.customDataGrid1.Name = "customDataGrid1";
             this.customDataGrid1.RowHeadersVisible = false;
             this.customDataGrid1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.customDataGrid1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.customDataGrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.customDataGrid1.Size = new System.Drawing.Size(324, 88);
+            this.customDataGrid1.Size = new System.Drawing.Size(140, 88);
             this.customDataGrid1.TabIndex = 0;
+            // 
+            // BtnDelete
+            // 
+            this.BtnDelete.Location = new System.Drawing.Point(487, 12);
+            this.BtnDelete.Name = "BtnDelete";
+            this.BtnDelete.Size = new System.Drawing.Size(85, 23);
+            this.BtnDelete.TabIndex = 6;
+            this.BtnDelete.Text = "Удалить";
+            this.BtnDelete.UseVisualStyleBackColor = true;
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
             // FormManagerKP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(821, 490);
+            this.Controls.Add(this.BtnDelete);
             this.Controls.Add(this.BtnCreate);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.ListKP);
@@ -199,6 +212,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button BtnCreate;
         private System.Windows.Forms.ColumnHeader ColName;
-        private System.Windows.Forms.ColumnHeader ColHeader;
+        private System.Windows.Forms.Button BtnDelete;
     }
 }

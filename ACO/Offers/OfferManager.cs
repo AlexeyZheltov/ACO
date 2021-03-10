@@ -28,11 +28,9 @@ namespace ACO
         public List<OfferMapping> OffersMapping
         {
             get 
-            { 
-                if (_OffersMapping == null)
-                {
-                    _OffersMapping = GetOffers();
-                }
+            {                 
+                 _OffersMapping = GetOffers();
+                
                 return _OffersMapping; 
             }
             set { _OffersMapping = value; }
