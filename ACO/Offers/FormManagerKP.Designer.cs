@@ -28,23 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.BtnAddColumns = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.ListKP = new System.Windows.Forms.ListView();
+            this.ColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.BtnCreate = new System.Windows.Forms.Button();
             this.projectNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.customerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.projectNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
-            this.customDataGrid1 = new ACO.ProjectManager.CustomDataGrid();
             this.BtnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customDataGrid1)).BeginInit();
             this.SuspendLayout();
             // 
             // BtnAddColumns
@@ -80,6 +77,11 @@
             this.ListKP.UseCompatibleStateImageBehavior = false;
             this.ListKP.View = System.Windows.Forms.View.Details;
             this.ListKP.SelectedIndexChanged += new System.EventHandler(this.ListKP_SelectedIndexChanged);
+            // 
+            // ColName
+            // 
+            this.ColName.Text = "Настройки  КП";
+            this.ColName.Width = 448;
             // 
             // textBox1
             // 
@@ -122,11 +124,6 @@
             this.dateDataGridViewTextBoxColumn.HeaderText = "Date";
             this.dateDataGridViewTextBoxColumn.Name = "dateDataGridViewTextBoxColumn";
             // 
-            // ColName
-            // 
-            this.ColName.Text = "Настройки  КП";
-            this.ColName.Width = 268;
-            // 
             // TableColumns
             // 
             this.TableColumns.AllowUserToAddRows = false;
@@ -141,29 +138,12 @@
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(798, 295);
             this.TableColumns.TabIndex = 1;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
-            // 
-            // customDataGrid1
-            // 
-            this.customDataGrid1.AllowUserToAddRows = false;
-            this.customDataGrid1.AllowUserToResizeRows = false;
-            this.customDataGrid1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.customDataGrid1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.customDataGrid1.Location = new System.Drawing.Point(671, 11);
-            this.customDataGrid1.MultiSelect = false;
-            this.customDataGrid1.Name = "customDataGrid1";
-            this.customDataGrid1.RowHeadersVisible = false;
-            this.customDataGrid1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.customDataGrid1.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.customDataGrid1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.customDataGrid1.Size = new System.Drawing.Size(140, 88);
-            this.customDataGrid1.TabIndex = 0;
             // 
             // BtnDelete
             // 
@@ -187,20 +167,16 @@
             this.Controls.Add(this.BtnSave);
             this.Controls.Add(this.BtnAddColumns);
             this.Controls.Add(this.TableColumns);
-            this.Controls.Add(this.customDataGrid1);
             this.Name = "FormManagerKP";
             this.Text = "FormManagerKP";
             this.Load += new System.EventHandler(this.FormManagerKP_Load);
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customDataGrid1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private ProjectManager.CustomDataGrid customDataGrid1;
         private System.Windows.Forms.DataGridViewTextBoxColumn projectNameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn customerDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn projectNumberDataGridViewTextBoxColumn;

@@ -17,7 +17,8 @@ namespace ACO.ProjectManager
         /// <summary>
         ///  Название ячейки
         /// </summary>
-      //  public string Name { get; set; }
+        // public string Name { get; set; }
+        
         /// <summary>
         ///  Проверять
         /// </summary>

@@ -39,21 +39,16 @@ namespace ACO.ProjectManager
                     //  TableColumns.DataSource = _mappingColumns;
                     UpdateTableColumns();
                     TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;                    
                     TableColumns.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    TableColumns.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    TableColumns.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    TableColumns.Columns[TableColumns.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    TableColumns.Columns[0].HeaderText = "Ячейка";
-                    TableColumns.Columns[1].HeaderText = "Проверять";
-                    TableColumns.Columns[2].HeaderText = "Обязательный";
+                    TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                   // TableColumns.Columns[TableColumns.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    TableColumns.Columns[0].HeaderText = "Проверять";
+                    TableColumns.Columns[1].HeaderText = "Обязательный";
+                    TableColumns.Columns[2].HeaderText = "Значение";
                     TableColumns.Columns[3].HeaderText = "Адрес";
-                    //TableColumns.Columns[4].HeaderText = "Строка";
                     TableColumns.Columns[4].Visible = false;
-                    //TableColumns.Columns[5].HeaderText = "Столбец";
                     TableColumns.Columns[5].Visible = false;
-                  // TableColumns.Columns[6].HeaderText = "Значение";
                 }
             }
         }

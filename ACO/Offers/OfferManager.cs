@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using Microsoft.Office.Interop.Excel;
 using ACO.ProjectManager;
+using System.Diagnostics;
+using ACO.ExcelHelpers;
 
 namespace ACO
 {
@@ -21,10 +23,15 @@ namespace ACO
         private Excel.Worksheet _sheet;
 
         public OfferManager() { }
-        public OfferManager(Excel.Worksheet sheet)
+
+        public OfferManager(ExcelFile excelBook)
         {
-            _sheet = sheet;
+            ExcelBook = excelBook;
+            //  Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
+            _sheet = excelBook.GetSheet(Offer.SheetName);
         }
+        public ExcelFile ExcelBook { get; }
+
         public Offer Offer { get; set; }
 
         private List<OfferMapping> _Mappings;
@@ -40,6 +47,7 @@ namespace ACO
             }
             set { _Mappings = value; }
         }
+
 
         public List<OfferMapping> GetMappings()
         {
@@ -88,7 +96,7 @@ namespace ACO
         {
             OfferMapping mapping = FindColumnsMapping();
             bool validation = mapping != null;
-            if (!validation)
+            if (validation)
             {
                 int rowStart = GetRowStart(_sheet);
                 int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
@@ -101,12 +109,17 @@ namespace ACO
                     {
                         Record record = new Record();
                         foreach (ColumnMapping col in mapping.Columns)
-                        { 
-                            if (col.Value== "П.П.")
+                        {
+                            if (col.Value == "П.П.")
                             {
                                 record.Number = _sheet.Cells[row, col.Column].Value ?? "";
                             }
-                            record.Values.Add(col.Value,  _sheet.Cells[row,col.Column].Value ?? "");
+                            object val = _sheet.Cells[row, col.Column].Value;
+                            string key = col.Value; // Заголовок
+                            if (!record.Values.ContainsKey(key))
+                            { //TODO Поправить ключ для составной шапки
+                                record.Values.Add(key, val);
+                            }
                         }
                         /// Сохранение  строки 
                         Offer.Records.Add(record);
@@ -130,7 +143,23 @@ namespace ACO
             OfferMapping checkedMapping = null;
             foreach (OfferMapping mapping in Mappings)
             {
-                
+                foreach (ColumnMapping col in mapping.Columns)
+                {
+                    try
+                    {
+                        string val = _sheet.Range[col.Address].Value?.ToString() ?? "";
+                        if (val != col.Value)
+                        {
+                            throw new ApplicationException("Значение в ячейке не соответствует файлу");
+                        }
+                    }
+                    catch (AddInException ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        // При возникновении ошибки выбрать другой файл маппинга
+                        continue;
+                    }
+                }
                 checkedMapping = mapping;
             }
             return checkedMapping;

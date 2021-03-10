@@ -13,6 +13,10 @@ namespace ACO.ExcelHelpers
     class Cell
     {     
         /// <summary>
+        ///  Значение столбца
+        /// </summary>
+        public string Value { get; set; }
+        /// <summary>
         /// Адрес ячейки
         /// </summary>
         public string Address { get; set; }
@@ -24,9 +28,5 @@ namespace ACO.ExcelHelpers
         ///  Номер столбца
         /// </summary>
         public int Column { get; set; }
-        /// <summary>
-        ///  Значение столбца
-        /// </summary>
-        public string Value { get; set; }
     }
 }

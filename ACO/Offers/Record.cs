@@ -51,13 +51,13 @@ namespace ACO.Offers
         /// <summary>
         ///  Библииотека заголовок/ значение
         /// </summary>
-        public Dictionary<string,string> Values 
+        public Dictionary<string,object> Values 
         {
             get
             {
                 if (_Values == null)
                 {
-                    _Values = new Dictionary<string, string>();
+                    _Values = new Dictionary<string, object>();
                 }
                 return _Values;
             }
@@ -66,7 +66,7 @@ namespace ACO.Offers
                 _Values = value;
             }
         }
-        public Dictionary<string, string> _Values;
+        public Dictionary<string, object> _Values;
         
     }
 }
