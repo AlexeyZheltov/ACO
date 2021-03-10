@@ -102,7 +102,9 @@
     <Reference Include="Accessibility" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -156,9 +158,56 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="AddInException.cs" />
+    <Compile Include="ExcelHelpers\AddinWindow.cs" />
+    <Compile Include="ExcelHelpers\Cell.cs" />
+    <Compile Include="ExcelHelpers\ExcelFile.cs" />
+    <Compile Include="ExcelHelpers\ExcelHelper.cs" />
+    <Compile Include="ExcelHelpers\ExcelReader.cs" />
+    <Compile Include="IProgressBarWithLogUI.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Offers\FormManagerKP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Offers\FormManagerKP.Designer.cs">
+      <DependentUpon>FormManagerKP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Offers\Offer.cs" />
+    <Compile Include="Offers\OfferManager.cs" />
+    <Compile Include="Offers\OfferMapping.cs" />
+    <Compile Include="Offers\Record.cs" />
+    <Compile Include="ProgressBarWithLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgressBarWithLog.Designer.cs">
+      <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectManager\ColumnsMapping.cs" />
+    <Compile Include="ProjectManager\CustomDataGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\FormManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectManager\FormManager.Designer.cs">
+      <DependentUpon>FormManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectManager\ProjectManager.cs" />
+    <Compile Include="ProjectManager\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XMLSetting\Mapping.cs" />
+    <Compile Include="XMLSetting\SettingManager.cs" />
+    <EmbeddedResource Include="Offers\FormManagerKP.resx">
+      <DependentUpon>FormManagerKP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressBarWithLog.resx">
+      <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManager\FormManager.resx">
+      <DependentUpon>FormManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -168,6 +217,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Ribbon.resx">
+      <DependentUpon>Ribbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="ACO_TemporaryKey.pfx" />
+    <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
+    <None Include="MainClassDiagram.cd" />
+    <None Include="Properties\DataSources\Offer.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -175,6 +231,12 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ribbon.Designer.cs">
+      <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -186,10 +248,23 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="XMLSetting\XMLSettingDiagramm.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Settings\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ACO_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>5298EDF1155350F6D5D036C7C84EFC86FDB3490B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -201,7 +276,7 @@
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
         <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="Excel" GeneratedCodeNamespace="ACO" IconIndex="0">
-          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="ThisAddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
+          <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>
       </FlavorProperties>
     </VisualStudio>
