@@ -14,14 +14,59 @@ namespace ACO.Offers
         /// <summary>
         /// Уровень
         /// </summary>
-        public string Level { get; set; }
-
+        public int Level
+        {
+            get
+            {
+                if (_Level==0)
+                {                  
+                    string[] numbers = Number.Split('.');
+                    _Level = numbers.Length + 1;
+                }
+                return _Level;
+            }
+            private set
+            {
+                _Level = value;
+            }
+        }
+        int _Level;
         /// <summary>
         /// Номер пункта
         /// </summary>
-        public string Number { get; set; }
+        public string Number 
+        {
+            get
+            {
+                return _Number;
+            }
+            set 
+            {
+                _Number = value;
+                _Number =  _Number.Trim(new Char[] {' ', '.'});
+            }
+        }
+        string _Number;
 
-        public Dictionary<string,string> Values { get; set; }
+        /// <summary>
+        ///  Библииотека заголовок/ значение
+        /// </summary>
+        public Dictionary<string,string> Values 
+        {
+            get
+            {
+                if (_Values == null)
+                {
+                    _Values = new Dictionary<string, string>();
+                }
+                return _Values;
+            }
+            set 
+            {
+                _Values = value;
+            }
+        }
+        public Dictionary<string, string> _Values;
         
     }
 }

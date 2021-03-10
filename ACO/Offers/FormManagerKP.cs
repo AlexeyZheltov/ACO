@@ -23,7 +23,7 @@ namespace ACO.Offers
 
             TableColumns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
                 _manager = new OfferManager();
-            _offersMapping = _manager.OffersMapping;
+            _offersMapping = _manager.Mappings;
             ListKP.FullRowSelect = true;
             ListKP.MultiSelect = false;
         }
@@ -126,7 +126,7 @@ namespace ACO.Offers
         {
             string name = textBox1.Text;
             OfferMapping.Create(name);
-            _offersMapping = _manager.OffersMapping;
+            _offersMapping = _manager.GetMappings();
             _CurrentMapping = _offersMapping.Find(m => m.Name == name); 
             LoadOffersMapping();
             UpdateTable();

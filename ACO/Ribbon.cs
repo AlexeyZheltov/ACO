@@ -56,10 +56,11 @@ namespace ACO
                     ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
                     excelBook.Open(fileName);
                     Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
-                   OfferManager offerReader = new OfferManager(sheet);
-
-                   // if (offerReader.ReadOffer())
-                 //   { offers.Add(offerReader.Offer); }
+                    OfferManager offerReader = new OfferManager(sheet);//new OfferManager(sheet);
+                    //
+                   // Offer offer = offerReader.ReadFromSheet(sheet);
+                   if (offerReader.ReadOffer())
+                     { offers.Add(offerReader.Offer); }
                     excelBook.Close();
                 }
 

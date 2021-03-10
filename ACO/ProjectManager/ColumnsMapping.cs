@@ -17,7 +17,7 @@ namespace ACO.ProjectManager
         /// <summary>
         ///  Название ячейки
         /// </summary>
-        public string Name { get; set; }
+      //  public string Name { get; set; }
         /// <summary>
         ///  Проверять
         /// </summary>
@@ -30,7 +30,7 @@ namespace ACO.ProjectManager
        public ColumnMapping() { }
        public ColumnMapping(Excel.Range cell) 
         {
-            Name = cell.Value;
+          //  Name = cell.Value;
             Value = cell.Value;
             Check = false;
             Obligatory = false;
@@ -42,7 +42,7 @@ namespace ACO.ProjectManager
         {
             return new ColumnMapping()
             {
-                Name = xElement.Attribute("Name").Value,
+                //Value = xElement.Attribute("Name").Value,
                 Value = xElement.Attribute("Value").Value,
                 Row = int.Parse(xElement.Attribute("Row").Value),
                 Column = int.Parse(xElement.Attribute("Column").Value),
@@ -55,7 +55,7 @@ namespace ACO.ProjectManager
         public XElement GetXElement()
         {
             XElement xeColumn = new XElement("column");
-            xeColumn.Add(new XAttribute("Name", Name));
+           // xeColumn.Add(new XAttribute("Name", Name));
             xeColumn.Add(new XAttribute("Value", Value));
             xeColumn.Add(new XAttribute("Row", Row));
             xeColumn.Add(new XAttribute("Column", Column));

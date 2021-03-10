@@ -8,6 +8,8 @@ using System.IO;
 using ACO.Offers;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Microsoft.Office.Interop.Excel;
+using ACO.ProjectManager;
 
 namespace ACO
 {
@@ -23,31 +25,32 @@ namespace ACO
         {
             _sheet = sheet;
         }
+        public Offer Offer { get; set; }
 
-        private List<OfferMapping> _OffersMapping;
-        public List<OfferMapping> OffersMapping
+        private List<OfferMapping> _Mappings;
+        public List<OfferMapping> Mappings
         {
-            get 
-            {                 
-                 _OffersMapping = GetOffers();
-                
-                return _OffersMapping; 
+            get
+            {
+                if (_Mappings == null)
+                {
+                    _Mappings = GetMappings();
+                }
+                return _Mappings;
             }
-            set { _OffersMapping = value; }
+            set { _Mappings = value; }
         }
 
-       
-
-        private List<OfferMapping> GetOffers()
+        public List<OfferMapping> GetMappings()
         {
-          List<OfferMapping> offers  = new List<OfferMapping>();
+            List<OfferMapping> mappings = new List<OfferMapping>();
             string folder = GetFolderSettingsKP();
-            string[] files = Directory.GetFiles(folder); 
-            foreach(string file in files)
+            string[] files = Directory.GetFiles(folder);
+            foreach (string file in files)
             {
-                offers.Add(new OfferMapping(file));
+                mappings.Add(new OfferMapping(file));
             }
-            return offers;
+            return mappings;
         }
         private static string GetFolderSettingsKP()
         {
@@ -57,7 +60,7 @@ namespace ACO
             "ACO",
             "Offers"
             );
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);           
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             return path;
         }
 
@@ -77,37 +80,60 @@ namespace ACO
             return offer;
         }
 
-        
+        /// <summary>
+        ///  считать КП
+        /// </summary>
+        /// <returns></returns>
         public bool ReadOffer()
         {
-            bool validation = CheckColumns();
-            int rowStart = GetRowStart(_sheet);
-            int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
-            for (int row = rowStart; row <= rowEnd; row++)
+            OfferMapping mapping = FindColumnsMapping();
+            bool validation = mapping != null;
+            if (!validation)
             {
-                try
+                int rowStart = GetRowStart(_sheet);
+                int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
+                Offer = new Offer();
+                //int columnNumber = mapping.Columns.Find(c => c.Value == "П.П.").Column;
+
+                for (int row = rowStart; row <= rowEnd; row++)
                 {
-                    Item rowItem = new Item();
-                    /// Сохранение  строки 
-                    //rowItem.
-                    //Offer.Items.Add(rowItem);
-                }
-                catch (AddInException ex)
-                {
-                    validation = ex.StopProcess;
-                    if (ex.StopProcess) break;
+                    try
+                    {
+                        Record record = new Record();
+                        foreach (ColumnMapping col in mapping.Columns)
+                        { 
+                            if (col.Value== "П.П.")
+                            {
+                                record.Number = _sheet.Cells[row, col.Column].Value ?? "";
+                            }
+                            record.Values.Add(col.Value,  _sheet.Cells[row,col.Column].Value ?? "");
+                        }
+                        /// Сохранение  строки 
+                        Offer.Records.Add(record);
+                    }
+                    catch (AddInException ex)
+                    {
+                        validation = ex.StopProcess;
+                        if (ex.StopProcess) break;
+                    }
                 }
             }
             return validation;
         }
 
         /// <summary>
-        ///  проверить столбцы КП
+        /// Выбрать маппинг. Проверить столбцы КП на листе. 
         /// </summary>
         /// <returns></returns>
-        private bool CheckColumns()
+        private OfferMapping FindColumnsMapping()
         {
-            return false;
+            OfferMapping checkedMapping = null;
+            foreach (OfferMapping mapping in Mappings)
+            {
+                
+                checkedMapping = mapping;
+            }
+            return checkedMapping;
         }
 
         private int GetRowStart(Excel.Worksheet sheet)
