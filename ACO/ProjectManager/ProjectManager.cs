@@ -1,4 +1,5 @@
-﻿using ACO.ExcelHelpers;
+﻿using Excel = Microsoft.Office.Interop.Excel;
+using ACO.Offers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,38 +17,36 @@ namespace ACO.ProjectManager
         {
             get
             {
-                if (_ActiveProject is null)
+                foreach (Project project in Projects)
                 {
-                    foreach (Project project in Projects)
+                    if (project.Active)
                     {
-                        if (project.Active)
+                        if (_ActiveProject == null)
                         {
-                            if (_ActiveProject == null)
-                            {
-                                _ActiveProject = project;
-                            }
-                            else
-                            {
-                                project.Active = false;
-                                project.Save();
-                            }
+                            _ActiveProject = project;
+                        }
+                        else
+                        {
+                            project.Active = false;
+                            project.Save();
                         }
                     }
-                    if (_ActiveProject is null && Projects.Count > 0)
-                        _ActiveProject = Projects[0];
                 }
+                if (_ActiveProject is null && Projects.Count > 0)
+                    _ActiveProject = Projects[0];
+
                 return _ActiveProject;
             }
             set
             {
                 _ActiveProject = value;
-               
 
-                    foreach (Project p in Projects)
-                    {
-                        p.Active = p.Name == _ActiveProject.Name;
-                        p.Save();
-                    }               
+
+                foreach (Project p in Projects)
+                {
+                    p.Active = p.Name == _ActiveProject.Name;
+                    p.Save();
+                }
 
             }
         }
@@ -142,7 +141,7 @@ namespace ACO.ProjectManager
             string path = GetFolderProjects();
             return Path.Combine(path, file);
         }
-        private static string GetFolderProjects()
+        public static string GetFolderProjects()
         {
             string path = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -152,6 +151,8 @@ namespace ACO.ProjectManager
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             return path;
         }
+
+
         private static string GetApplicationSettingsFilename()
         {
             string path = Path.Combine(
@@ -182,7 +183,48 @@ namespace ACO.ProjectManager
             //}
         }
 
+        internal void PrintOffer(Offer offer)
+        {
+          Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            //
+            //TODO Определить место вставки  
+            List<ColumnMapping> columnsMapping = ActiveProject.Columns;
 
 
+            foreach (Record record in offer.Records)
+            {
+            int rowPrint = GetRow(record.Number);
+            if (rowPrint == 0) throw new AddInException("Не удалось определить строку вставки. Номер перечня: "+ record.Number);
+                foreach (ColumnMapping col in columnsMapping)
+                {
+                    int columnPrint = 0; //TODO определить столбец вставки 
+                    if (record.Values.ContainsKey(col.Value ))
+                    {
+                       object val = record.Values[col.Value];
+                        Excel.Range cellPrint = sh.Cells[rowPrint, columnPrint];
+                        cellPrint.Value = val;
+                    }
+
+                }
+            }
+        }
+
+        private int GetRow(string number)
+        {
+                //TODO определить строку вставки 
+            int row = 0;
+            if (row == 0) row = InsertRow(number);
+
+            return row;
+        }
+
+        private int InsertRow(string number)
+        {
+                //TODO если такого пункта нет вставить строку
+            int row = 0;
+
+            
+            return row;
+        }
     }
 }

@@ -28,8 +28,11 @@ namespace ACO.ProjectManager
             if (_projectManager.Projects.Count > 0)
             {
                 TableProjects.DataSource = _projectManager.Projects;
-                TableProjects.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                TableProjects.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                TableProjects.Columns[0].HeaderText = "Текущий";
+                TableProjects.Columns[1].HeaderText = "Проект";
+                TableProjects.Columns[2].HeaderText = "Путь";
+                TableProjects.Columns[0].Width = 60;
+                TableProjects.Columns[1].Width = 180;
                 TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             if (_projectManager.ActiveProject != null)
@@ -247,29 +250,59 @@ namespace ACO.ProjectManager
             //e.RowIndex
             int row = e.RowIndex;
             int col = e.ColumnIndex;
-            string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
-            ColumnMapping mapping = _mappingColumns.Find(f => f.Address == address);
-            if (mapping is null) return;
-            object value = null;
-            switch (col)
+            if (e.RowIndex >= 0)
             {
-                case 1:
-                    value = TableColumns.Rows[row].Cells[3].Value;
-                    mapping.Check = (bool)value;
-                    break;
-                case 2:
-                    value = TableColumns.Rows[row].Cells[3].Value;
-                    mapping.Obligatory = (bool)value;
-                    break;
-                case 3:
-                    mapping.Address = address;
-                    break;
-                    //default:
-                    //    break;
+                string name = TableProjects.Rows[e.RowIndex].Cells[1].Value?.ToString() ?? "";
+                string filePath = TableProjects.Rows[e.RowIndex].Cells[2].Value?.ToString() ?? "";
+                Project project = _projectManager.Projects.Find(x => x.FileName == filePath);
+                if (project != null)
+                {
+                    if (e.ColumnIndex == 0)
+                    {
+
+                        _projectManager.Projects.FindAll(x => x.Name != name).ForEach(
+                                                p => { p.Active = false; p.Save(); });
+                        var active = TableProjects.Rows[e.RowIndex].Cells[0].Value;
+                        project.Active = (bool)active;
+                        LoadProjects();
+                    }
+                    else if (e.ColumnIndex == 1 && !string.IsNullOrEmpty(name))
+                    {
+                        project.Name = name;
+                    }
+                    project.Save();
+                }
             }
-            Save();
+         
+            //string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
+            //ColumnMapping mapping = _mappingColumns.Find(f => f.Address == address);
+            //if (mapping is null) return;
+            //object value = null;
+            //switch (col)
+            //{
+            //    case 1:
+            //        value = TableColumns.Rows[row].Cells[3].Value;
+            //        mapping.Check = (bool)value;
+            //        break;
+            //    case 2:
+            //        value = TableColumns.Rows[row].Cells[3].Value;
+            //        mapping.Obligatory = (bool)value;
+            //        break;
+            //    case 3:
+            //        mapping.Address = address;
+            //        break;
+            //        //default:
+            //        //    break;
+            //}
+
         }
 
 
+
+        private void BtnOpenFolserSettings_Click(object sender, EventArgs e)
+        {
+            string folder = ProjectManager.GetFolderProjects();
+            System.Diagnostics.Process.Start(folder);
+        }
     }
 }

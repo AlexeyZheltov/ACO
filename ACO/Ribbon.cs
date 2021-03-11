@@ -4,11 +4,15 @@ using Microsoft.Office.Tools.Ribbon;
 using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ACO
 {
     public partial class Ribbon
     {
+        Excel.Application _app = Globals.ThisAddIn.Application;
+        IProgressBarWithLogUI _pb;
+
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
 
@@ -33,7 +37,7 @@ namespace ACO
         }
 
 
-        IProgressBarWithLogUI _pb;
+     
 
         /// <summary>
         /// Загрузка КП
@@ -81,7 +85,9 @@ namespace ACO
                         }
                         catch (AddInException ex)
                         {
-                            MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            TextBox tb = _pb.GetLogTextBox();
+                            tb.Text += "Ошибка:" + ex.Message +" ("+ ex.InnerException.Message+ ")" + Environment.NewLine;
+                          //  MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         finally
                         {
@@ -104,21 +110,23 @@ namespace ACO
 
                 });
             }
-            catch (AddInException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
 
         private void WriteOffers(List<Offer> offers, IProgressBarWithLogUI pb)
         {
-            Excel.Workbook mainBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Workbook mainBook =_app.ActiveWorkbook;
             pb.SetSubBarVolume(offers.Count);
             ProjectManager.ProjectManager project = new ProjectManager.ProjectManager();
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             foreach (Offer offer in offers)
             {
                 pb.SubBarTick();
+                projectManager.PrintOffer(offer);
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                 project.AddOffer(offer);
             }
@@ -131,6 +139,39 @@ namespace ACO
         /// <param name="e"></param>
         private void BtnCreateProgect_Click(object sender, RibbonControlEventArgs e)
         {
+            string pathTamplate = Properties.Settings.Default.TamplateProgectPath;
+            string path = default;
+            if (!File.Exists(pathTamplate))
+            {
+                
+                     OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
+                openFileDialog.Title = "Выберите файл шаблона проекта";
+                openFileDialog.Multiselect = false;
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    path = openFileDialog.FileName;
+                    if (!File.Exists(path)) return;
+                }
+            }
+            else { path = pathTamplate; }
+            Excel.Workbook newProjectBook =  _app.Workbooks.Open(path);
+            newProjectBook.Activate();
+            _app.Dialogs[Excel.XlBuiltInDialog.xlDialogSaveAs].Show();
+            /*  Dim varResult As Variant
+        Dim ActBook As Workbook
+
+        'displays the save file dialog
+        varResult = Application.GetSaveAsFilename(FileFilter:= _
+                 "Excel Files (*.xlsx), *.xlsx", Title:="Save PO", _
+                InitialFileName:="\\showdog\service\Service_job_PO\")
+
+        'checks to make sure the user hasn't canceled the dialog
+        If varResult <> False Then
+            ActiveWorkbook.SaveAs Filename:=varResult, _
+            FileFormat:=xlWorkbookNormal
+            Exit Sub
+        End If*/
 
         }
 

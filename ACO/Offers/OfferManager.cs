@@ -60,7 +60,7 @@ namespace ACO
             }
             return mappings;
         }
-        private static string GetFolderSettingsKP()
+        public static string GetFolderSettingsKP()
         {
             string path = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),

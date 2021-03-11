@@ -198,6 +198,10 @@ namespace ACO.Offers
             Save();
         }
 
-
+        private void BtnOpenFolder_Click(object sender, EventArgs e)
+        {
+            string folder = OfferManager.GetFolderSettingsKP();
+            System.Diagnostics.Process.Start(folder);
+        }
     }
 }

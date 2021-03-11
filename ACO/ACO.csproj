@@ -218,6 +218,7 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
+    <None Include="app.config" />
     <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
     <None Include="MainClassDiagram.cd" />
     <None Include="Properties\DataSources\Offer.datasource" />
@@ -228,6 +229,7 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Ribbon.cs">
       <SubType>Component</SubType>
