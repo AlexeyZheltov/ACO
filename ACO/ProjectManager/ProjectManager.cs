@@ -17,24 +17,10 @@ namespace ACO.ProjectManager
         {
             get
             {
-                foreach (Project project in Projects)
+                if (_ActiveProject == null)
                 {
-                    if (project.Active)
-                    {
-                        if (_ActiveProject == null)
-                        {
-                            _ActiveProject = project;
-                        }
-                        else
-                        {
-                            project.Active = false;
-                            project.Save();
-                        }
-                    }
+                     SetActiveProject();
                 }
-                if (_ActiveProject is null && Projects.Count > 0)
-                    _ActiveProject = Projects[0];
-
                 return _ActiveProject;
             }
             set
@@ -99,6 +85,26 @@ namespace ACO.ProjectManager
                     CreateNewProjectXML(name, filename);
                 }
             }
+        }
+
+        public void SetActiveProject()
+        {
+            //Project activeProject = null;
+            foreach (Project project in Projects)
+            {
+                if (project.Active)
+                {
+                        _ActiveProject = project;
+                    
+                    //else
+                    //{
+                    //    project.Active = false;
+                    //    project.Save();
+                    //}
+                }
+            }
+            if (_ActiveProject is null && Projects.Count > 0)
+                _ActiveProject = Projects[0];           
         }
 
         /// <summary>
@@ -185,22 +191,21 @@ namespace ACO.ProjectManager
 
         internal void PrintOffer(Offer offer)
         {
-          Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             //
             //TODO Определить место вставки  
             List<ColumnMapping> columnsMapping = ActiveProject.Columns;
 
-
             foreach (Record record in offer.Records)
             {
-            int rowPrint = GetRow(record.Number);
-            if (rowPrint == 0) throw new AddInException("Не удалось определить строку вставки. Номер перечня: "+ record.Number);
+                int rowPrint = GetRow(record.Key);
+                if (rowPrint == 0) throw new AddInException("Не удалось определить строку вставки. Номер перечня: " + record.Number);
                 foreach (ColumnMapping col in columnsMapping)
                 {
                     int columnPrint = 0; //TODO определить столбец вставки 
-                    if (record.Values.ContainsKey(col.Value ))
+                    if (record.Values.ContainsKey(col.Value))
                     {
-                       object val = record.Values[col.Value];
+                        object val = record.Values[col.Value];
                         Excel.Range cellPrint = sh.Cells[rowPrint, columnPrint];
                         cellPrint.Value = val;
                     }
@@ -211,7 +216,7 @@ namespace ACO.ProjectManager
 
         private int GetRow(string number)
         {
-                //TODO определить строку вставки 
+            //TODO определить строку вставки 
             int row = 0;
             if (row == 0) row = InsertRow(number);
 
@@ -220,10 +225,10 @@ namespace ACO.ProjectManager
 
         private int InsertRow(string number)
         {
-                //TODO если такого пункта нет вставить строку
+            //TODO если такого пункта нет вставить строку
             int row = 0;
 
-            
+
             return row;
         }
     }
