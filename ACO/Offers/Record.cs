@@ -48,6 +48,26 @@ namespace ACO.Offers
         }
         string _Number;
 
+
+        public string Key { get; set; }
+        //{
+        //    get
+        //    {
+        //        if (string.IsNullOrEmpty(_Key) )
+        //        {
+        //            string name = Values.ContainsKey("Наименование работ и затрат")? Values["Наименование работ и затрат"]?.ToString()??"":"";
+        //            string unit = Values.ContainsKey("Ед. изм.")? Values["Ед. изм."]?.ToString()??"" : "";
+        //            string count = Values.ContainsKey("Кол-во СХ") ? Values["Кол-во СХ"]?.ToString() ?? "" : "";
+        //            _Key = $"{name}_{unit}_{count}";
+        //        }
+        //        return _Key; 
+        //    }
+        //    set { _Key = value; }
+        //}
+        //private string _Key;
+
+
+
         /// <summary>
         ///  Библииотека заголовок/ значение
         /// </summary>

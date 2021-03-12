@@ -19,7 +19,14 @@ namespace ACO.ProjectManager
         {
             InitializeComponent();
             TableColumns.ReadOnly = false;
+            TableProjects.ReadOnly = false;
+            LoadData();
+        }
+        private void LoadData()
+        {
             LoadProjects();
+            LoadColumns();
+            LoadRangeValues();
         }
 
         private void LoadProjects()
@@ -27,23 +34,40 @@ namespace ACO.ProjectManager
             _projectManager = new ProjectManager();
             if (_projectManager.Projects.Count > 0)
             {
-                TableProjects.DataSource = _projectManager.Projects;
+                // TableProjects.DataSource = _projectManager.Projects;
+                UpdateTableProject();
+                
                 TableProjects.Columns[0].HeaderText = "Текущий";
                 TableProjects.Columns[1].HeaderText = "Проект";
                 TableProjects.Columns[2].HeaderText = "Путь";
+                TableProjects.Columns[3].Visible = false;
+                TableProjects.Columns[4].Visible = false;
+                TableProjects.Columns[5].Visible = false;
+                TableProjects.Columns[6].Visible = false;
+
                 TableProjects.Columns[0].Width = 60;
-                TableProjects.Columns[1].Width = 180;
+                TableProjects.Columns[1].Width = 120;
+                
                 TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
+            else
+            {
+                TableProjects.Rows.Clear();
+                TableProjects.ColumnHeadersVisible = false;
+            }          
+        }
+
+        private void LoadColumns()
+        {
             if (_projectManager.ActiveProject != null)
             {
                 _mappingColumns = _projectManager.ActiveProject.Columns;
                 if ((_mappingColumns?.Count ?? 0) > 0)
                 {
                     UpdateTableColumns();
-                    TableColumns.Columns[0].Width = 60;
-                    TableColumns.Columns[1].Width = 60;
-                    TableColumns.Columns[3].Width = 80;
+                    TableColumns.Columns[0].Width = 80;
+                    TableColumns.Columns[1].Width = 80;
+                    TableColumns.Columns[3].Width = 70;
                     TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     TableColumns.Columns[0].HeaderText = "Проверять";
                     TableColumns.Columns[1].HeaderText = "Обязательный";
@@ -52,14 +76,42 @@ namespace ACO.ProjectManager
                     TableColumns.Columns[4].Visible = false;
                     TableColumns.Columns[5].Visible = false;
                 }
+                else
+                {
+                    TableColumns.Rows.Clear();
+                    TableColumns.ColumnHeadersVisible = false;
+                }
+            }
+        }
+        private void LoadRangeValues()
+        {
+            if (_projectManager.ActiveProject != null)
+            {
+                TBoxFirstColumnRangeValues.Text =
+                    _projectManager.ActiveProject.RangeValuesStart.ToString();
+                TBoxLastColumnRangeValues.Text =
+                    _projectManager.ActiveProject.RangeValuesEnd.ToString();
+                TBoxFirstRowRangeValues.Text =
+                    _projectManager.ActiveProject.RowStart.ToString();
+                TBoxSheetName.Text = _projectManager.ActiveProject.AnalysisSheetName;
+            }
+            else
+            {
+                TBoxFirstColumnRangeValues.Text = "";
+                TBoxLastColumnRangeValues.Text = "";
+                TBoxFirstRowRangeValues.Text = "";
             }
         }
 
         private void BtnAddProject_Click(object sender, EventArgs e)
         {
             string name = TboxProjectName.Text;
-            new ProjectManager().CreateProject(name);
-            LoadProjects();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                ProjectManager projectManager = new ProjectManager();
+                projectManager.CreateProject(name);
+                LoadData();
+            }
         }
 
         //private void BtnActiveCell_Click(object sender, EventArgs e)
@@ -111,6 +163,17 @@ namespace ACO.ProjectManager
         //    UpdateTableColumns();
         //}
 
+        private void UpdateTableProject()
+        {
+            BindingSource Source = new BindingSource();
+            for (int i = 0; i < _projectManager.Projects.Count; i++)
+            {
+                Source.Add(_projectManager.Projects[i]);
+            };
+
+            TableProjects.DataSource = Source;
+        }
+
         private void UpdateTableColumns()
         {
             BindingSource Source = new BindingSource();
@@ -121,17 +184,7 @@ namespace ACO.ProjectManager
             TableColumns.DataSource = Source;
         }
 
-        private void Save()
-        {
-            _projectManager.ActiveProject.Columns = _mappingColumns;
-            _projectManager.ActiveProject.Save();
-        }
-
-        private void BtnAccept_Click(object sender, EventArgs e)
-        {
-            Save();
-            Close();
-        }
+    
 
         private void BtnUpdateColumns_Click(object sender, EventArgs e)
         {
@@ -192,6 +245,24 @@ namespace ACO.ProjectManager
             }
             UpdateTableColumns();
         }
+        /// <summary>
+        ///  Удалить строку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TableColumns_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            if (e.RowIndex > 0)
+            {
+                DataGridViewRow row = TableColumns.Rows[e.RowIndex];
+                string address = row.Cells[3].Value?.ToString() ?? "";
+                ColumnMapping columnMapping = _mappingColumns.Find(x => x.Address == address);
+                if (columnMapping != null)
+                {
+                    _mappingColumns.Remove(columnMapping);
+                }
+            }
+        }
 
         private void BtnActiveCell_Click(object sender, EventArgs e)
         {
@@ -234,20 +305,29 @@ namespace ACO.ProjectManager
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
-            if (TableProjects.SelectedRows.Count > 0)
+            //if (TableProjects.SelectedRows.Count > 0)
+            //{
+            //    string name = TableProjects.SelectedRows[0].Cells[0].Value.ToString() ?? "";
+            //    Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
+            //    {
+            //        if (newActiveProject != null)
+            //            _projectManager.ActiveProject = newActiveProject;
+            //    }
+            //}
+        }
+
+        private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
             {
-                string name = TableProjects.SelectedRows[0].Cells[0].Value.ToString() ?? "";
-                Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
-                {
-                    if (newActiveProject != null)
-                        _projectManager.ActiveProject = newActiveProject;
-                }
+                _projectManager.ActiveProject.Save();
             }
         }
 
+        // bool programmaticlyChange = false;
         private void TableProjects_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            //e.RowIndex
+            //  if (programmaticlyChange) return;
             int row = e.RowIndex;
             int col = e.ColumnIndex;
             if (e.RowIndex >= 0)
@@ -257,52 +337,123 @@ namespace ACO.ProjectManager
                 Project project = _projectManager.Projects.Find(x => x.FileName == filePath);
                 if (project != null)
                 {
-                    if (e.ColumnIndex == 0)
-                    {
+                    //if (e.ColumnIndex == 0)
+                    //{
+                    //    var active = TableProjects.Rows[e.RowIndex].Cells[0].Value;
+                    //    if (!(bool)active || string.IsNullOrWhiteSpace(name)) return;
 
-                        _projectManager.Projects.FindAll(x => x.Name != name).ForEach(
-                                                p => { p.Active = false; p.Save(); });
-                        var active = TableProjects.Rows[e.RowIndex].Cells[0].Value;
-                        project.Active = (bool)active;
-                        LoadProjects();
-                    }
-                    else if (e.ColumnIndex == 1 && !string.IsNullOrEmpty(name))
+                    //    Properties.Settings.Default.ActiveProjectName = name;
+                    //    _projectManager.SetActiveProject();
+
+                    //    LoadProjects();
+                    //}
+                    //else 
+                    if (e.ColumnIndex == 1 && !string.IsNullOrEmpty(name))
                     {
                         project.Name = name;
+                        project.Save();
                     }
-                    project.Save();
                 }
             }
-         
-            //string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
-            //ColumnMapping mapping = _mappingColumns.Find(f => f.Address == address);
-            //if (mapping is null) return;
-            //object value = null;
-            //switch (col)
-            //{
-            //    case 1:
-            //        value = TableColumns.Rows[row].Cells[3].Value;
-            //        mapping.Check = (bool)value;
-            //        break;
-            //    case 2:
-            //        value = TableColumns.Rows[row].Cells[3].Value;
-            //        mapping.Obligatory = (bool)value;
-            //        break;
-            //    case 3:
-            //        mapping.Address = address;
-            //        break;
-            //        //default:
-            //        //    break;
-            //}
-
         }
+        private void TableProjects_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int row = e.RowIndex;
+            int col = e.ColumnIndex;
 
-
+            if (row >= 0)
+            {
+                string name = TableProjects.Rows[e.RowIndex].Cells[1].Value?.ToString() ?? "";
+                string filePath = TableProjects.Rows[e.RowIndex].Cells[2].Value?.ToString() ?? "";
+                Project project = _projectManager.Projects.Find(x => x.FileName == filePath);
+                if (e.ColumnIndex == 0)
+                {
+                    var active = TableProjects.Rows[e.RowIndex].Cells[0].Value;
+                    if ((bool)active || string.IsNullOrWhiteSpace(name)) return;
+                    TableProjects.Rows[e.RowIndex].Cells[0].Value = true;
+                    Properties.Settings.Default.ActiveProjectName = name;
+                    _projectManager.SetActiveProject();
+                    LoadData();
+                }
+            }
+        }
+        //string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
+        //ColumnMapping mapping = _mappingColumns.Find(f => f.Address == address);
+        //if (mapping is null) return;
+        //object value = null;
+        //switch (col)
+        //{
+        //    case 1:
+        //        value = TableColumns.Rows[row].Cells[3].Value;
+        //        mapping.Check = (bool)value;
+        //        break;
+        //    case 2:
+        //        value = TableColumns.Rows[row].Cells[3].Value;
+        //        mapping.Obligatory = (bool)value;
+        //        break;
+        //    case 3:
+        //        mapping.Address = address;
+        //        break;
+        //        //default:
+        //        //    break;
+        //}
 
         private void BtnOpenFolserSettings_Click(object sender, EventArgs e)
         {
             string folder = ProjectManager.GetFolderProjects();
             System.Diagnostics.Process.Start(folder);
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        ///  Кнопка Выделенный диапазон \ вкладка 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSetSelectedRangeValues_Click(object sender, EventArgs e)
+        {
+            Excel.Range rng = _app.Selection;
+            if (rng is null) return;
+            TBoxSheetName.Text = rng.Parent.name;
+            TBoxFirstColumnRangeValues.Text = rng.Column.ToString();
+            int lastCol = rng.Column + rng.Columns.Count - 1;
+            TBoxLastColumnRangeValues.Text = lastCol.ToString();
+            int rowStart = rng.Row + rng.Rows.Count;
+            TBoxFirstRowRangeValues.Text = rowStart.ToString();
+        }
+
+        /// <summary>
+        ///  Сохранение активного проекта
+        /// </summary>
+        private void Save()
+        {
+            _projectManager.ActiveProject.Columns = _mappingColumns;
+            _projectManager.ActiveProject.Save();
+
+            _projectManager.ActiveProject.AnalysisSheetName = TBoxSheetName.Text;
+            _projectManager.ActiveProject.RowStart = int.TryParse(TBoxFirstRowRangeValues.Text, out int fr) ? fr : 0;
+            _projectManager.ActiveProject.RangeValuesStart = int.TryParse(TBoxFirstColumnRangeValues.Text, out int fc) ? fc : 0;
+            _projectManager.ActiveProject.RangeValuesEnd = int.TryParse(TBoxLastColumnRangeValues.Text, out int lc) ? lc : 0;
+        }
+
+        /// <summary>
+        ///  Кнопка сохранить
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAccept_Click(object sender, EventArgs e)
+        {
+            Save();
+            Close();
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

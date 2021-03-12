@@ -10,12 +10,12 @@ namespace ACO
 {
     public partial class Ribbon
     {
-        Excel.Application _app = Globals.ThisAddIn.Application;
+        Excel.Application _app = null ;
         IProgressBarWithLogUI _pb;
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-
+            _app = Globals.ThisAddIn.Application;
         }
 
         /// <summary>
@@ -37,8 +37,6 @@ namespace ACO
         }
 
 
-     
-
         /// <summary>
         /// Загрузка КП
         /// </summary>
@@ -54,7 +52,6 @@ namespace ACO
                 ExcelHelpers.ExcelFile.Init();
                 ExcelHelpers.ExcelFile.Acselerate(true);
 
-
                 if (_pb is null)
                 {
                     _pb = new ProgressBarWithLog();
@@ -68,6 +65,8 @@ namespace ACO
                 await Task.Run(() =>
                 {
                     ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+                    ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+
                     foreach (string fileName in files)
                     {
                         try
@@ -81,13 +80,16 @@ namespace ACO
                             //
                             // Offer offer = offerReader.ReadFromSheet(sheet);
                             if (offerReader.ReadOffer())
-                            { offers.Add(offerReader.Offer); }
+                            {
+                                //projectManager.PrintOffer(offerReader.Offer);
+                                offers.Add(offerReader.Offer);
+                            }
                         }
                         catch (AddInException ex)
                         {
                             TextBox tb = _pb.GetLogTextBox();
-                            tb.Text += "Ошибка:" + ex.Message +" ("+ ex.InnerException.Message+ ")" + Environment.NewLine;
-                          //  MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            tb.Text += "Ошибка:" + ex.Message + " (" + ex.InnerException.Message + ")" + Environment.NewLine;
+                            //  MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         finally
                         {
@@ -106,7 +108,7 @@ namespace ACO
                         MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
-                    
+
 
                 });
             }
@@ -119,16 +121,18 @@ namespace ACO
 
         private void WriteOffers(List<Offer> offers, IProgressBarWithLogUI pb)
         {
-            Excel.Workbook mainBook =_app.ActiveWorkbook;
+            Excel.Workbook mainBook = _app.ActiveWorkbook;
             pb.SetSubBarVolume(offers.Count);
-            ProjectManager.ProjectManager project = new ProjectManager.ProjectManager();
-            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            //  ProjectManager.ProjectManager project = new ProjectManager.ProjectManager();
+            //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            Offers.OfferWriter offerWriter = new Offers.OfferWriter();
+
             foreach (Offer offer in offers)
             {
                 pb.SubBarTick();
-                projectManager.PrintOffer(offer);
+                offerWriter.PrintOffer(offer);
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-                project.AddOffer(offer);
+                //    project.AddOffer(offer);
             }
         }
 
@@ -143,8 +147,7 @@ namespace ACO
             string path = default;
             if (!File.Exists(pathTamplate))
             {
-                
-                     OpenFileDialog openFileDialog = new OpenFileDialog();
+                OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
                 openFileDialog.Title = "Выберите файл шаблона проекта";
                 openFileDialog.Multiselect = false;
@@ -155,24 +158,23 @@ namespace ACO
                 }
             }
             else { path = pathTamplate; }
-            Excel.Workbook newProjectBook =  _app.Workbooks.Open(path);
+            Excel.Workbook newProjectBook = _app.Workbooks.Open(path);
             newProjectBook.Activate();
             _app.Dialogs[Excel.XlBuiltInDialog.xlDialogSaveAs].Show();
+
+
             /*  Dim varResult As Variant
-        Dim ActBook As Workbook
-
-        'displays the save file dialog
-        varResult = Application.GetSaveAsFilename(FileFilter:= _
-                 "Excel Files (*.xlsx), *.xlsx", Title:="Save PO", _
-                InitialFileName:="\\showdog\service\Service_job_PO\")
-
-        'checks to make sure the user hasn't canceled the dialog
-        If varResult <> False Then
-            ActiveWorkbook.SaveAs Filename:=varResult, _
-            FileFormat:=xlWorkbookNormal
-            Exit Sub
-        End If*/
-
+            Dim ActBook As Workbook
+            'displays the save file dialog
+            varResult = Application.GetSaveAsFilename(FileFilter:= _
+                     "Excel Files (*.xlsx), *.xlsx", Title:="Save PO", _
+                    InitialFileName:="\\showdog\service\Service_job_PO\")
+            'checks to make sure the user hasn't canceled the dialog
+            If varResult <> False Then
+                ActiveWorkbook.SaveAs Filename:=varResult, _
+                FileFormat:=xlWorkbookNormal
+                Exit Sub
+            End If*/
         }
 
         private void BtnAbout_Click(object sender, RibbonControlEventArgs e)

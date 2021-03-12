@@ -107,20 +107,32 @@ namespace ACO
                 {
                     try
                     {
+                        string key = "";
                         Record record = new Record();
-                        foreach (ColumnMapping col in mapping.Columns)
+                        List<ColumnMapping> mappings = mapping.Columns.OrderBy(x => x.Column).ToList();
+                        foreach (ColumnMapping col in mappings)
                         {
-                            if (col.Value == "П.П.")
+                            if (col.Check)
                             {
-                                record.Number = _sheet.Cells[row, col.Column].Value ?? "";
+                                key += col.Value;
                             }
-                            object val = _sheet.Cells[row, col.Column].Value;
-                            string key = col.Value; // Заголовок
-                            if (!record.Values.ContainsKey(key))
-                            { //TODO Поправить ключ для составной шапки
-                                record.Values.Add(key, val);
+                            else
+                            {
+                                //if (col.Value == "П.П.")
+                                //{
+                                //    record.Number = _sheet.Cells[row, col.Column].Value ?? "";
+                                //}
+                                object val = _sheet.Cells[row, col.Column].Value;
+                                //string key = col.Value; // Заголовок
+                                if (!record.Values.ContainsKey(key))
+                                { 
+                                    //TODO Поправить ключ для составной шапки
+                                    record.Values.Add(key, val);
+                                }
                             }
+                            record.Key = key;
                         }
+
                         /// Сохранение  строки 
                         Offer.Records.Add(record);
                     }
@@ -133,6 +145,10 @@ namespace ACO
             }
             return validation;
         }
+
+
+
+
 
         /// <summary>
         /// Выбрать маппинг. Проверить столбцы КП на листе. 

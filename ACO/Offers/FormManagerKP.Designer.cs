@@ -43,8 +43,8 @@
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.BtnDelete = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.BtnOpenFolder = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -72,18 +72,25 @@
             // 
             // ListKP
             // 
+            this.ListKP.Alignment = System.Windows.Forms.ListViewAlignment.Left;
             this.ListKP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ListKP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ListKP.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ColName});
+            this.ListKP.FullRowSelect = true;
+            this.ListKP.GridLines = true;
+            this.ListKP.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.ListKP.HideSelection = false;
             this.ListKP.Location = new System.Drawing.Point(6, 60);
+            this.ListKP.MultiSelect = false;
             this.ListKP.Name = "ListKP";
+            this.ListKP.ShowGroups = false;
             this.ListKP.Size = new System.Drawing.Size(410, 120);
             this.ListKP.TabIndex = 3;
             this.ListKP.UseCompatibleStateImageBehavior = false;
-            this.ListKP.View = System.Windows.Forms.View.Details;
+            this.ListKP.View = System.Windows.Forms.View.List;
             this.ListKP.SelectedIndexChanged += new System.EventHandler(this.ListKP_SelectedIndexChanged);
             // 
             // ColName
@@ -182,15 +189,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки КП";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Новый";
-            // 
             // BtnOpenFolder
             // 
             this.BtnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -202,6 +200,15 @@
             this.BtnOpenFolder.TabIndex = 9;
             this.BtnOpenFolder.UseVisualStyleBackColor = true;
             this.BtnOpenFolder.Click += new System.EventHandler(this.BtnOpenFolder_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Новый";
             // 
             // FormManagerKP
             // 
