@@ -304,7 +304,7 @@ namespace ACO.ProjectManager
                     UpdateTableColumns();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return;
             }

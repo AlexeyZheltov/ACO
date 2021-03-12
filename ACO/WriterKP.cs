@@ -117,7 +117,7 @@ namespace ACO.Offers
         
         private int GetRowBy(Record record)
         {
-            string key = "";
+            // string key = "";
             //foreach (ColumnMapping col in record.Key)
             return _rowKeys[record.Key];
 
@@ -140,7 +140,6 @@ namespace ACO.Offers
             //        }
             //    }
             //}
-            return 2;
         }
 
     }
