@@ -36,7 +36,7 @@ namespace ACO.ProjectManager
             {
                 // TableProjects.DataSource = _projectManager.Projects;
                 UpdateTableProject();
-                
+
                 TableProjects.Columns[0].HeaderText = "Текущий";
                 TableProjects.Columns[1].HeaderText = "Проект";
                 TableProjects.Columns[2].HeaderText = "Путь";
@@ -47,14 +47,14 @@ namespace ACO.ProjectManager
 
                 TableProjects.Columns[0].Width = 60;
                 TableProjects.Columns[1].Width = 120;
-                
+
                 TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             else
             {
                 TableProjects.Rows.Clear();
                 TableProjects.ColumnHeadersVisible = false;
-            }          
+            }
         }
 
         private void LoadColumns()
@@ -100,6 +100,7 @@ namespace ACO.ProjectManager
                 TBoxFirstColumnRangeValues.Text = "";
                 TBoxLastColumnRangeValues.Text = "";
                 TBoxFirstRowRangeValues.Text = "";
+                TBoxSheetName.Text = "";
             }
         }
 
@@ -184,7 +185,7 @@ namespace ACO.ProjectManager
             TableColumns.DataSource = Source;
         }
 
-    
+
 
         private void BtnUpdateColumns_Click(object sender, EventArgs e)
         {
@@ -216,9 +217,6 @@ namespace ACO.ProjectManager
                     TextBoxAddres.Text = cell.Address;
                     ChkBoxCheck.Checked = cell.Check;
                     ChkBoxObligatory.Checked = cell.Obligatory;
-                    //TextBoxCellName.Text = cell.Name;
-                    //TextBoxRow.Text = cell.Row.ToString();
-                    //TextBoxColumn.Text = cell.Column.ToString();
                 }
             }
         }
@@ -285,35 +283,45 @@ namespace ACO.ProjectManager
         {
             Excel.Worksheet sheet = Globals.ThisAddIn.Application.ActiveSheet;
             string address = TextBoxAddres.Text;
-            if (!string.IsNullOrEmpty(address))
+            try
             {
                 Excel.Range xlCell = sheet.Range[address];
-                _selectedCell = new ColumnMapping(xlCell);
-                string value = TextBoxValue.Text;
-                if (!string.IsNullOrEmpty(value)) _selectedCell.Value = value;
-                _selectedCell.Check = ChkBoxCheck.Checked;
-                _selectedCell.Obligatory = ChkBoxObligatory.Checked;
-                ColumnMapping findcell = _mappingColumns.Find(c => c.Address == _selectedCell.Address);
-                if (findcell != null)
+
+
+                if (!string.IsNullOrEmpty(address))
                 {
-                    _mappingColumns.Remove(findcell);
+                    _selectedCell = new ColumnMapping(xlCell);
+                    string value = TextBoxValue.Text;
+                    if (!string.IsNullOrEmpty(value)) _selectedCell.Value = value;
+                    _selectedCell.Check = ChkBoxCheck.Checked;
+                    _selectedCell.Obligatory = ChkBoxObligatory.Checked;
+                    ColumnMapping findcell = _mappingColumns.Find(c => c.Address == _selectedCell.Address);
+                    if (findcell != null)
+                    {
+                        _mappingColumns.Remove(findcell);
+                    }
+                    _mappingColumns.Add(_selectedCell);
+                    UpdateTableColumns();
                 }
-                _mappingColumns.Add(_selectedCell);
-                UpdateTableColumns();
+            }
+            catch (Exception ex)
+            {
+                return;
             }
         }
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
-            //if (TableProjects.SelectedRows.Count > 0)
-            //{
-            //    string name = TableProjects.SelectedRows[0].Cells[0].Value.ToString() ?? "";
-            //    Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
-            //    {
-            //        if (newActiveProject != null)
-            //            _projectManager.ActiveProject = newActiveProject;
-            //    }
-            //}
+            if (TableProjects.SelectedRows.Count > 0)
+            {
+                string name = TableProjects.SelectedRows[0].Cells[0].Value.ToString() ?? "";
+                Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
+                if (newActiveProject != null)
+                {
+                    _projectManager.ActiveProject = newActiveProject;
+                    LoadData();
+                }
+            }
         }
 
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -324,35 +332,20 @@ namespace ACO.ProjectManager
             }
         }
 
-        // bool programmaticlyChange = false;
         private void TableProjects_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            //  if (programmaticlyChange) return;
             int row = e.RowIndex;
             int col = e.ColumnIndex;
-            if (e.RowIndex >= 0)
+            if (e.ColumnIndex == 1 && e.RowIndex >= 0)
             {
                 string name = TableProjects.Rows[e.RowIndex].Cells[1].Value?.ToString() ?? "";
                 string filePath = TableProjects.Rows[e.RowIndex].Cells[2].Value?.ToString() ?? "";
                 Project project = _projectManager.Projects.Find(x => x.FileName == filePath);
-                if (project != null)
+
+                if (!string.IsNullOrEmpty(name) && project != null)
                 {
-                    //if (e.ColumnIndex == 0)
-                    //{
-                    //    var active = TableProjects.Rows[e.RowIndex].Cells[0].Value;
-                    //    if (!(bool)active || string.IsNullOrWhiteSpace(name)) return;
-
-                    //    Properties.Settings.Default.ActiveProjectName = name;
-                    //    _projectManager.SetActiveProject();
-
-                    //    LoadProjects();
-                    //}
-                    //else 
-                    if (e.ColumnIndex == 1 && !string.IsNullOrEmpty(name))
-                    {
-                        project.Name = name;
-                        project.Save();
-                    }
+                    project.Name = name;
+                    project.Save();
                 }
             }
         }
@@ -377,27 +370,7 @@ namespace ACO.ProjectManager
                 }
             }
         }
-        //string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
-        //ColumnMapping mapping = _mappingColumns.Find(f => f.Address == address);
-        //if (mapping is null) return;
-        //object value = null;
-        //switch (col)
-        //{
-        //    case 1:
-        //        value = TableColumns.Rows[row].Cells[3].Value;
-        //        mapping.Check = (bool)value;
-        //        break;
-        //    case 2:
-        //        value = TableColumns.Rows[row].Cells[3].Value;
-        //        mapping.Obligatory = (bool)value;
-        //        break;
-        //    case 3:
-        //        mapping.Address = address;
-        //        break;
-        //        //default:
-        //        //    break;
-        //}
-
+    
         private void BtnOpenFolserSettings_Click(object sender, EventArgs e)
         {
             string folder = ProjectManager.GetFolderProjects();

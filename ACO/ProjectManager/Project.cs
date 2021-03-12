@@ -8,6 +8,11 @@ using System.Xml.Linq;
 
 namespace ACO.ProjectManager
 {
+    public enum StaticColumns 
+    { 
+        Number,
+        Name
+    }
     class Project
     {
         /// <summary>
@@ -19,7 +24,7 @@ namespace ACO.ProjectManager
         ///  Название проекта
         /// </summary>
         public string Name { get; set; }
-              
+
 
         /// <summary>
         ///  Путь к файлу
@@ -30,7 +35,7 @@ namespace ACO.ProjectManager
         ///  Название листа 
         /// </summary>
         public string AnalysisSheetName { get; set; }
-      
+
         public int RangeValuesStart { get; set; }
         public int RangeValuesEnd { get; set; }
         public int RowStart { get; set; }
@@ -39,6 +44,15 @@ namespace ACO.ProjectManager
         ///  Адреса ячеек шапки используемых столбцов
         /// </summary>
         public List<ColumnMapping> Columns { get; set; }
+
+        public static Dictionary<StaticColumns, string> staticColumns =
+            new Dictionary<StaticColumns, string>
+            {
+                { StaticColumns.Number, "№ п/п" },                
+                { StaticColumns.Name, "Наименование работ и затрат" } 
+            };
+            
+
 
         public Project() { }
 
@@ -93,7 +107,9 @@ namespace ACO.ProjectManager
             XElement xeRows = xeAnalysisSheet.Element("Rows");
             XElement xeRowStart = xeRows.Element("RowStart");
             project.RowStart = int.TryParse(xeRowStart.Attribute("Row").Value, out int r) ? r : 0;
-
+            XElement xeRangeValues = xeAnalysisSheet.Element("RangeValues");
+            project.RangeValuesStart = int.TryParse(xeRangeValues.Attribute("StartColumn").Value, out int sc) ? sc : 0; 
+            project.RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("EndColumn").Value, out int ec) ? ec : 0; 
             project.Columns = LoadColumnsFromXElement(xeAnalysisSheet.Element("Columns"));
 
             return project;

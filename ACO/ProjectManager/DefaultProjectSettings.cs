@@ -78,7 +78,7 @@ namespace ACO.ProjectManager
                 defProject = new Project()
                 {
                     FileName = Path.Combine(ProjectManager.GetFolderProjects(), name + ".xml"),
-                    AnalysisSheetName = "Анализ NEBO",
+                    AnalysisSheetName = "Анализ",
                     Name = name,
                     RowStart = 7,
                     RangeValuesStart = 20,

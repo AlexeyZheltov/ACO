@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -41,6 +41,7 @@
             this.TBoxLastColumnRangeValues = new System.Windows.Forms.TextBox();
             this.TBoxFirstColumnRangeValues = new System.Windows.Forms.TextBox();
             this.PageColumns = new System.Windows.Forms.TabPage();
+            this.BtnCheckCells = new System.Windows.Forms.Button();
             this.BtnUpdateColumns = new System.Windows.Forms.Button();
             this.BtnDeleteColumnMapping = new System.Windows.Forms.GroupBox();
             this.ChkBoxObligatory = new System.Windows.Forms.CheckBox();
@@ -66,7 +67,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.TbInfo = new System.Windows.Forms.TextBox();
-            this.BtnCheckCells = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
             this.TBoxSheetName = new System.Windows.Forms.TextBox();
@@ -103,6 +103,7 @@
             this.BtnCancel.TabIndex = 1;
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
+            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // tabPage2
             // 
@@ -192,6 +193,16 @@
             this.PageColumns.TabIndex = 0;
             this.PageColumns.Text = "Столбцы";
             this.PageColumns.UseVisualStyleBackColor = true;
+            // 
+            // BtnCheckCells
+            // 
+            this.BtnCheckCells.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnCheckCells.Location = new System.Drawing.Point(466, 8);
+            this.BtnCheckCells.Name = "BtnCheckCells";
+            this.BtnCheckCells.Size = new System.Drawing.Size(114, 29);
+            this.BtnCheckCells.TabIndex = 7;
+            this.BtnCheckCells.Text = "Проверка";
+            this.BtnCheckCells.UseVisualStyleBackColor = true;
             // 
             // BtnUpdateColumns
             // 
@@ -326,8 +337,8 @@
             this.TableColumns.ReadOnly = true;
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(573, 315);
@@ -450,8 +461,8 @@
             this.TableProjects.ReadOnly = true;
             this.TableProjects.RowHeadersVisible = false;
             this.TableProjects.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableProjects.Size = new System.Drawing.Size(576, 318);
             this.TableProjects.TabIndex = 0;
@@ -492,16 +503,6 @@
             this.TbInfo.Name = "TbInfo";
             this.TbInfo.Size = new System.Drawing.Size(579, 413);
             this.TbInfo.TabIndex = 7;
-            // 
-            // BtnCheckCells
-            // 
-            this.BtnCheckCells.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCheckCells.Location = new System.Drawing.Point(466, 8);
-            this.BtnCheckCells.Name = "BtnCheckCells";
-            this.BtnCheckCells.Size = new System.Drawing.Size(114, 29);
-            this.BtnCheckCells.TabIndex = 7;
-            this.BtnCheckCells.Text = "Проверка";
-            this.BtnCheckCells.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 

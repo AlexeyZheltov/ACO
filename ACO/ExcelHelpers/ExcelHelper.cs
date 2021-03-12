@@ -103,34 +103,6 @@ namespace ACO.ExcelHelpers
             }
 
         }
-
-        /// <summary>
-        /// Записывает итоговые данные
-        /// </summary>
-        /// <param name="ws">Лист шаблона</param>
-        /// <param name="data">Считанные и структурированные данные</param>
-        /// <param name="markColumn">Столбцец маркеров</param>
-        //public static void WriteResult(Excel.Worksheet ws, HierarchyDictionary data, IProgressBarWithLogUI pb)
-        //{
-        //  //  int ptr = 10;
-        //  //  foreach(var item in data.Items())
-        //    //{
-        //     //   if (pb.IsAborted) break;
-        //        //pb.SubBarTick();
-        //        //ws.Cells[ptr, 1].Value = item.Level;
-        //        //ws.Cells[ptr, 2].Value = item.Number;
-        //        //ws.Cells[ptr, 4].Value = item.WorkName;
-        //        //ws.Cells[ptr, 5].Value = item.Marking;
-        //        //ws.Cells[ptr, 6].Value = item.Material;
-        //        //ws.Cells[ptr, 7].Value = item.Format;
-        //        //ws.Cells[ptr, 8].Value = item.Type;
-        //        //ws.Cells[ptr, 9].Value = item.Article;
-        //        //ws.Cells[ptr, 10].Value = item.Maker;
-        //        //ws.Cells[ptr, 11].Value = item.Unit;
-        //        //ws.Cells[ptr, 12].Value = item.Amount;
-        //        //ws.Cells[ptr, 19].Value = item.Note;
-        //        //ptr++;
-        //   // }
-        //}
+      
     }
 }

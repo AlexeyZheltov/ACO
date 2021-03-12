@@ -186,7 +186,6 @@
     <Compile Include="ExcelHelpers\Cell.cs" />
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
-    <Compile Include="ExcelHelpers\ExcelReader.cs" />
     <Compile Include="IProgressBarWithLogUI.cs" />
     <Compile Include="Offers\FormManagerKP.cs">
       <SubType>Form</SubType>
@@ -245,7 +244,6 @@
     </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
     <None Include="app.config" />
-    <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
     <None Include="MainClassDiagram.cd" />
     <None Include="Properties\DataSources\Offer.datasource" />
     <None Include="Properties\Settings.settings">
