@@ -124,11 +124,13 @@ namespace ACO
             Excel.Workbook mainBook = _app.ActiveWorkbook;
             pb.SetSubBarVolume(offers.Count);
             //  ProjectManager.ProjectManager project = new ProjectManager.ProjectManager();
-            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            Offers.OfferWriter offerWriter = new Offers.OfferWriter();
+
             foreach (Offer offer in offers)
             {
                 pb.SubBarTick();
-                projectManager.PrintOffer(offer);
+                offerWriter.PrintOffer(offer);
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                 //    project.AddOffer(offer);
             }

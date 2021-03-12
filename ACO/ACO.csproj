@@ -185,6 +185,7 @@
     <Compile Include="ProjectManager\CustomDataGrid.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ProjectManager\DefaultProjectSettings.cs" />
     <Compile Include="ProjectManager\FormManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,9 +194,11 @@
     </Compile>
     <Compile Include="ProjectManager\ProjectManager.cs" />
     <Compile Include="ProjectManager\Project.cs" />
+    <Compile Include="ProjectManager\ProjectValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WriterKP.cs" />
     <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>

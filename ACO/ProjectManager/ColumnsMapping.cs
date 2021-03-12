@@ -32,7 +32,7 @@ namespace ACO.ProjectManager
        public ColumnMapping(Excel.Range cell) 
         {
           //  Name = cell.Value;
-            Value = cell.Value;
+            Value = cell.Value?.ToString()??"";
             Check = false;
             Obligatory = false;
             Address = cell.Address;
