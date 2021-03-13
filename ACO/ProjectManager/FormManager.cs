@@ -370,7 +370,7 @@ namespace ACO.ProjectManager
                 }
             }
         }
-    
+
         private void BtnOpenFolserSettings_Click(object sender, EventArgs e)
         {
             string folder = ProjectManager.GetFolderProjects();
@@ -424,9 +424,20 @@ namespace ACO.ProjectManager
             Close();
         }
 
-        private void BtnCancel_Click(object sender, EventArgs e)
+        private void tabPage2_Click(object sender, EventArgs e)
         {
-            Close();
+
+        }
+
+
+        private void BtnRangeOffer_Click(object sender, EventArgs e)
+        {
+            Excel.Range rng = _app.Selection;
+            if (rng is null) return;
+            TBoxSheetName.Text = rng.Parent.name;
+            TBoxFirstColumnOffer .Text = rng.Column.ToString();
+            int lastCol = rng.Column + rng.Columns.Count - 1;
+            TBoxLastColumnOffer.Text = lastCol.ToString();            
         }
     }
 }

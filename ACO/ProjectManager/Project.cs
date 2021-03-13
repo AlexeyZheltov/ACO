@@ -35,9 +35,21 @@ namespace ACO.ProjectManager
         ///  Название листа 
         /// </summary>
         public string AnalysisSheetName { get; set; }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public int RangeValuesStart { get; set; }
         public int RangeValuesEnd { get; set; }
+
+        /// <summary>
+        /// Начало вставки КП
+        /// </summary>
+        public int FirstColumnOffer { get; set; }
+        public int SecondColumnOffer { get; set; }
+
+        /// <summary>
+        /// Строка начала данных
+        /// </summary>
         public int RowStart { get; set; }
 
         /// <summary>
@@ -51,8 +63,6 @@ namespace ACO.ProjectManager
                 { StaticColumns.Number, "№ п/п" },                
                 { StaticColumns.Name, "Наименование работ и затрат" } 
             };
-            
-
 
         public Project() { }
 
@@ -60,8 +70,7 @@ namespace ACO.ProjectManager
         {
             XElement root = new XElement("project");
             XAttribute xaName = new XAttribute("ProjectName", Name);           
-            root.Add(xaName);
-           
+            root.Add(xaName);           
 
             XElement xeSheets = new XElement("Sheets");
             XElement xeAnalysisSheet = new XElement("AnalysisSheet");

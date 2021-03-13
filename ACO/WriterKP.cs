@@ -43,6 +43,8 @@ namespace ACO.Offers
             Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             //
             //TODO Определить место вставки  
+            Excel.Range rng  =  CopyRange();
+
             List<ColumnMapping> columnsMapping = _project.Columns;
 
             foreach (Record record in offer.Records)
@@ -55,11 +57,19 @@ namespace ACO.Offers
                     if (record.Values.ContainsKey(col.Value))
                     {
                         object val = record.Values[col.Value];
-                        Excel.Range cellPrint = sh.Cells[rowPrint, columnPrint];
+                        Excel.Range cellPrint = rng.Cells[rowPrint, columnPrint];
                         cellPrint.Value = val;
                     }
                 }
             }
+        }
+
+        private Excel.Range   CopyRange()
+        {
+            int colEnd = 0;
+            int lastRow = 0;
+             Excel.Range rng = _sheet.Range[_sheet.Cells[_project.RowStart, 1], _sheet.Cells[lastRow, colEnd]];
+            return rng;
         }
 
         private int GetRow(string number)
@@ -75,10 +85,10 @@ namespace ACO.Offers
         {
             //TODO если такого пункта нет вставить строку
             int row = 0;
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            //Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             row = GetRowByLevel();
             //Excel.Worksheet sh= 
-            Excel.Range rowToInsert = sh.Rows[row];
+            Excel.Range rowToInsert = _sheet.Rows[row];
             rowToInsert.Insert(Excel.XlInsertShiftDirection.xlShiftDown);
 
             return row;
