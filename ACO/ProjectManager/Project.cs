@@ -25,7 +25,6 @@ namespace ACO.ProjectManager
         /// </summary>
         public string Name { get; set; }
 
-
         /// <summary>
         ///  Путь к файлу
         /// </summary>
@@ -45,7 +44,7 @@ namespace ACO.ProjectManager
         /// Начало вставки КП
         /// </summary>
         public int FirstColumnOffer { get; set; }
-        public int SecondColumnOffer { get; set; }
+        public int LastColumnOffer { get; set; }
 
         /// <summary>
         /// Строка начала данных
@@ -66,6 +65,9 @@ namespace ACO.ProjectManager
 
         public Project() { }
 
+        /// <summary>
+        ///  Сохранить XML - Файл
+        /// </summary>
         public void Save()
         {
             XElement root = new XElement("project");
@@ -82,7 +84,7 @@ namespace ACO.ProjectManager
             xeAnalysisSheet.Add(xeRows);
 
             XElement xeColumns = new XElement("Columns");
-            // Диапазон значения
+            /// Диапазон значения
             XElement xeRangeValues = new XElement("RangeValues");
             xeRangeValues.Add(new XAttribute("StartColumn", RangeValuesStart.ToString()));
             xeRangeValues.Add(new XAttribute("EndColumn", RangeValuesEnd.ToString()));
@@ -93,14 +95,22 @@ namespace ACO.ProjectManager
                 XElement xeColumn = cell.GetXElement();
                 xeColumns.Add(xeColumn);
             }
-
             xeAnalysisSheet.Add(xeColumns);
+            /// Диапазон предложения 
+            XElement xeRangeOffer = new XElement("RangeOffer");
+            xeRangeOffer.Add(new XAttribute("FirstColumnOffer", FirstColumnOffer.ToString()));
+            xeRangeOffer.Add(new XAttribute("LastColumnOffer", LastColumnOffer.ToString()));
+            xeAnalysisSheet.Add(xeRangeOffer);
+
             xeSheets.Add(xeAnalysisSheet);
             root.Add(xeSheets);
             XDocument xdoc = new XDocument(root);
             xdoc.Save(FileName);
         }
 
+        /// <summary>
+        ///  Загрузить Project из XML файла
+        /// </summary>
         public static Project GetFromXML(string filename)
         {
             Project project = new Project();
@@ -108,21 +118,35 @@ namespace ACO.ProjectManager
             XElement root = xdoc.Root;
             project.FileName = filename;           
             project.Name = root.Attribute("ProjectName").Value?.ToString() ?? "";
-            XElement xeSheets = root.Element("Sheets");
-            XElement xeAnalysisSheet = xeSheets.Element("AnalysisSheet");
 
+            XElement xeSheets = root.Element("Sheets");
+            /// Лист Анализ
+            XElement xeAnalysisSheet = xeSheets.Element("AnalysisSheet");
             project.AnalysisSheetName = xeAnalysisSheet.Attribute("Name").Value?.ToString() ?? "";
 
+            /// Строки
             XElement xeRows = xeAnalysisSheet.Element("Rows");
             XElement xeRowStart = xeRows.Element("RowStart");
             project.RowStart = int.TryParse(xeRowStart.Attribute("Row").Value, out int r) ? r : 0;
+            /// Диапазон значений
             XElement xeRangeValues = xeAnalysisSheet.Element("RangeValues");
             project.RangeValuesStart = int.TryParse(xeRangeValues.Attribute("StartColumn").Value, out int sc) ? sc : 0; 
             project.RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("EndColumn").Value, out int ec) ? ec : 0; 
+            /// Столбцы
             project.Columns = LoadColumnsFromXElement(xeAnalysisSheet.Element("Columns"));
+            /// Диапазон предложения
+            XElement xeRangeOffer = xeAnalysisSheet.Element("RangeOffer");
+            project.FirstColumnOffer = int.TryParse(xeRangeOffer.Attribute("FirstColumnOffer").Value, out int fco) ? fco : 0;
+            project.LastColumnOffer = int.TryParse(xeRangeOffer.Attribute("LastColumnOffer").Value, out int lco) ? lco : 0;
 
             return project;
         }
+
+        /// <summary>
+        ///  Прочитать столбцы 
+        /// </summary>
+        /// <param name="xElement"></param>
+        /// <returns></returns>
         private static List<ColumnMapping> LoadColumnsFromXElement(XElement xElement)
         {
             List<ColumnMapping> columns = new List<ColumnMapping>();

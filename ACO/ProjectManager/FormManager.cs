@@ -44,8 +44,10 @@ namespace ACO.ProjectManager
                 TableProjects.Columns[4].Visible = false;
                 TableProjects.Columns[5].Visible = false;
                 TableProjects.Columns[6].Visible = false;
+                TableProjects.Columns[7].Visible = false;
+                TableProjects.Columns[8].Visible = false;
 
-                TableProjects.Columns[0].Width = 60;
+                TableProjects.Columns[0].Width = 70;
                 TableProjects.Columns[1].Width = 120;
 
                 TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -65,16 +67,19 @@ namespace ACO.ProjectManager
                 if ((_mappingColumns?.Count ?? 0) > 0)
                 {
                     UpdateTableColumns();
-                    TableColumns.Columns[0].Width = 80;
-                    TableColumns.Columns[1].Width = 80;
-                    TableColumns.Columns[3].Width = 70;
+                    TableColumns.Columns[0].Width = 70;
+                    TableColumns.Columns[1].Width = 90;
+                    TableColumns.Columns[4].Width = 60;
+                    TableColumns.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                     TableColumns.Columns[0].HeaderText = "Проверять";
                     TableColumns.Columns[1].HeaderText = "Обязательный";
-                    TableColumns.Columns[2].HeaderText = "Значение";
-                    TableColumns.Columns[3].HeaderText = "Адрес";
-                    TableColumns.Columns[4].Visible = false;
+                    TableColumns.Columns[2].HeaderText = "Название";
+                    TableColumns.Columns[3].HeaderText = "Значение";
+                    TableColumns.Columns[4].HeaderText = "Адрес";
                     TableColumns.Columns[5].Visible = false;
+                    TableColumns.Columns[6].Visible = false;
                 }
                 else
                 {
@@ -94,6 +99,9 @@ namespace ACO.ProjectManager
                 TBoxFirstRowRangeValues.Text =
                     _projectManager.ActiveProject.RowStart.ToString();
                 TBoxSheetName.Text = _projectManager.ActiveProject.AnalysisSheetName;
+
+                TBoxFirstColumnOffer.Text = _projectManager.ActiveProject.FirstColumnOffer.ToString();
+                TBoxLastColumnOffer.Text = _projectManager.ActiveProject.LastColumnOffer.ToString(); 
             }
             else
             {
@@ -101,6 +109,8 @@ namespace ACO.ProjectManager
                 TBoxLastColumnRangeValues.Text = "";
                 TBoxFirstRowRangeValues.Text = "";
                 TBoxSheetName.Text = "";
+                TBoxFirstColumnOffer.Text = "";
+                TBoxLastColumnOffer.Text = "";
             }
         }
 
@@ -114,55 +124,6 @@ namespace ACO.ProjectManager
                 LoadData();
             }
         }
-
-        //private void BtnActiveCell_Click(object sender, EventArgs e)
-        //{
-        //    Excel.Range cell = Globals.ThisAddIn.Application.ActiveCell;
-        //    if (cell != null)
-        //    {
-        //        TextBoxRow.Text = cell.Row.ToString();
-        //        TextBoxColumn.Text = cell.Column.ToString();
-        //        TextBoxAddres.Text = cell.Address;
-        //        ChkBoxCheck.Checked = false;
-        //        ChkBoxObligatory.Checked = false;
-        //        try
-        //        {
-        //            TextBoxCellName.Text = cell.Value?.ToString() ?? "";
-        //            TextBoxCellName.Text = cell.Name?.Range?.Name ?? "";
-        //        }
-        //        catch (Exception) { }
-        //        TextBoxValue.Text = cell.Value?.ToString() ?? "";
-        //    }
-        //}
-
-        //private void BtnAdd_Click(object sender, EventArgs e)
-        //{
-        //    ColumnMapping cell = new ColumnMapping();
-        //    string name = TextBoxCellName.Text;
-        //    if (string.IsNullOrEmpty(name)) return;
-        //    cell.Name = name;
-
-        //    string value = TextBoxValue.Text;
-        //    if (string.IsNullOrEmpty(value)) return;
-        //    cell.Value = TextBoxValue.Text;
-
-        //    if (!int.TryParse(TextBoxRow.Text, out int row)) return;
-        //    cell.Row = row;
-
-        //    if (!int.TryParse(TextBoxColumn.Text, out int col)) return;
-        //    cell.Column = col;
-
-        //    cell.Address = TextBoxAddres.Text;
-        //    cell.Check = ChkBoxCheck.Checked;
-        //    cell.Obligatory = ChkBoxObligatory.Checked;
-        //    ColumnMapping findcell = _mappingColumns.Find(c => c.Address == cell.Address);
-        //    if (findcell != null)
-        //    {
-        //        _mappingColumns.Remove(findcell);
-        //    }
-        //    _mappingColumns.Add(cell);
-        //    UpdateTableColumns();
-        //}
 
         private void UpdateTableProject()
         {
@@ -184,8 +145,6 @@ namespace ACO.ProjectManager
             };
             TableColumns.DataSource = Source;
         }
-
-
 
         private void BtnUpdateColumns_Click(object sender, EventArgs e)
         {
@@ -277,8 +236,6 @@ namespace ACO.ProjectManager
             }
         }
 
-
-
         private void BtnAdd_Click(object sender, EventArgs e)
         {
             Excel.Worksheet sheet = Globals.ThisAddIn.Application.ActiveSheet;
@@ -349,6 +306,7 @@ namespace ACO.ProjectManager
                 }
             }
         }
+
         private void TableProjects_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int row = e.RowIndex;
@@ -405,12 +363,15 @@ namespace ACO.ProjectManager
         private void Save()
         {
             _projectManager.ActiveProject.Columns = _mappingColumns;
-            _projectManager.ActiveProject.Save();
 
             _projectManager.ActiveProject.AnalysisSheetName = TBoxSheetName.Text;
             _projectManager.ActiveProject.RowStart = int.TryParse(TBoxFirstRowRangeValues.Text, out int fr) ? fr : 0;
             _projectManager.ActiveProject.RangeValuesStart = int.TryParse(TBoxFirstColumnRangeValues.Text, out int fc) ? fc : 0;
             _projectManager.ActiveProject.RangeValuesEnd = int.TryParse(TBoxLastColumnRangeValues.Text, out int lc) ? lc : 0;
+            _projectManager.ActiveProject.FirstColumnOffer = int.TryParse(TBoxFirstColumnOffer.Text, out int fco) ? fco : 0;
+            _projectManager.ActiveProject.LastColumnOffer = int.TryParse(TBoxLastColumnOffer.Text, out int lco) ? lco : 0;
+
+            _projectManager.ActiveProject.Save();
         }
 
         /// <summary>
@@ -424,12 +385,6 @@ namespace ACO.ProjectManager
             Close();
         }
 
-        private void tabPage2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void BtnRangeOffer_Click(object sender, EventArgs e)
         {
             Excel.Range rng = _app.Selection;
@@ -439,5 +394,79 @@ namespace ACO.ProjectManager
             int lastCol = rng.Column + rng.Columns.Count - 1;
             TBoxLastColumnOffer.Text = lastCol.ToString();            
         }
+
+        private void BtnCheckCells_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TableColumns_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void BtnDeleteColumnMapping_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PageColumns_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //private void BtnActiveCell_Click(object sender, EventArgs e)
+        //{
+        //    Excel.Range cell = Globals.ThisAddIn.Application.ActiveCell;
+        //    if (cell != null)
+        //    {
+        //        TextBoxRow.Text = cell.Row.ToString();
+        //        TextBoxColumn.Text = cell.Column.ToString();
+        //        TextBoxAddres.Text = cell.Address;
+        //        ChkBoxCheck.Checked = false;
+        //        ChkBoxObligatory.Checked = false;
+        //        try
+        //        {
+        //            TextBoxCellName.Text = cell.Value?.ToString() ?? "";
+        //            TextBoxCellName.Text = cell.Name?.Range?.Name ?? "";
+        //        }
+        //        catch (Exception) { }
+        //        TextBoxValue.Text = cell.Value?.ToString() ?? "";
+        //    }
+        //}
+
+        //private void BtnAdd_Click(object sender, EventArgs e)
+        //{
+        //    ColumnMapping cell = new ColumnMapping();
+        //    string name = TextBoxCellName.Text;
+        //    if (string.IsNullOrEmpty(name)) return;
+        //    cell.Name = name;
+
+        //    string value = TextBoxValue.Text;
+        //    if (string.IsNullOrEmpty(value)) return;
+        //    cell.Value = TextBoxValue.Text;
+
+        //    if (!int.TryParse(TextBoxRow.Text, out int row)) return;
+        //    cell.Row = row;
+
+        //    if (!int.TryParse(TextBoxColumn.Text, out int col)) return;
+        //    cell.Column = col;
+
+        //    cell.Address = TextBoxAddres.Text;
+        //    cell.Check = ChkBoxCheck.Checked;
+        //    cell.Obligatory = ChkBoxObligatory.Checked;
+        //    ColumnMapping findcell = _mappingColumns.Find(c => c.Address == cell.Address);
+        //    if (findcell != null)
+        //    {
+        //        _mappingColumns.Remove(findcell);
+        //    }
+        //    _mappingColumns.Add(cell);
+        //    UpdateTableColumns();
+        //}
     }
 }

@@ -31,6 +31,7 @@ namespace ACO.ProjectManager
 
                 columns.Add(new ColumnMapping()
                 {
+                    Name = "",
                     Value = "№ п/п",
                     Check = false,
                     Obligatory = true,
@@ -40,6 +41,7 @@ namespace ACO.ProjectManager
                 });
                 columns.Add(new ColumnMapping()
                 {
+                    Name = "Наименование работ и затрат",
                     Value = "Наименование работ и затрат",
                     Check = true,
                     Obligatory = false,
@@ -49,6 +51,7 @@ namespace ACO.ProjectManager
                 });
                 columns.Add(new ColumnMapping()
                 {
+                    Name = "Ед. изм.",
                     Value = "Ед. изм.",
                     Check = true,
                     Obligatory = false,
@@ -59,6 +62,7 @@ namespace ACO.ProjectManager
                 columns.Add(new ColumnMapping()
                 {
                     Value = "Кол-во по проекту",
+                    Name = "Кол-во по проекту",
                     Check = true,
                     Obligatory = false,
                     Address = "$R$3",
@@ -68,6 +72,7 @@ namespace ACO.ProjectManager
                 columns.Add(new ColumnMapping()
                 {
                     Value = "Кол-во СХ",
+                    Name = "Кол-во СХ",
                     Check = true,
                     Obligatory = false,
                     Address = "$S$3",
@@ -83,13 +88,13 @@ namespace ACO.ProjectManager
                     RowStart = 7,
                     RangeValuesStart = 20,
                     RangeValuesEnd = 25,
+                    FirstColumnOffer = 27,
+                    LastColumnOffer = 47,
                     Columns = columns
                 };
                 defProject.Save();
             }
             return defProject;
         }
-
-       
-    }    
+    }
 }

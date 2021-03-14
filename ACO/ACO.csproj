@@ -194,6 +194,7 @@
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </Compile>
     <Compile Include="Offers\Offer.cs" />
+    <Compile Include="Offers\OfferColumnMapping.cs" />
     <Compile Include="Offers\OfferManager.cs" />
     <Compile Include="Offers\OfferMapping.cs" />
     <Compile Include="Offers\Record.cs" />

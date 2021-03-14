@@ -40,20 +40,19 @@ namespace ACO.Offers
         /// <param name="offer"></param>
         internal void PrintOffer(Offer offer)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            //
             //TODO Определить место вставки  
-            Excel.Range rng  =  CopyRange();
+            Excel.Range rng = CopyRange();
 
             List<ColumnMapping> columnsMapping = _project.Columns;
 
             foreach (Record record in offer.Records)
             {
-                int rowPrint = GetRow(record.Key);
+                int rowPrint = GetRow(record.KeyFilds);
                 if (rowPrint == 0) throw new AddInException("Не удалось определить строку вставки. Номер перечня: " + record.Number);
                 foreach (ColumnMapping col in columnsMapping)
                 {
-                    int columnPrint = 0; //TODO определить столбец вставки 
+                    int columnPrint = 0;
+                    //TODO определить столбец вставки 
                     if (record.Values.ContainsKey(col.Value))
                     {
                         object val = record.Values[col.Value];
@@ -64,24 +63,35 @@ namespace ACO.Offers
             }
         }
 
-        private Excel.Range   CopyRange()
+        private Excel.Range CopyRange()
         {
-            int colEnd = 0;
-            int lastRow = 0;
-             Excel.Range rng = _sheet.Range[_sheet.Cells[_project.RowStart, 1], _sheet.Cells[lastRow, colEnd]];
+            int firstCol = _project.FirstColumnOffer;
+            int lastCol = _project.LastColumnOffer;
+            int lastRow = _project.RowStart;
+
+            Excel.Range rng = _sheet.Range[_sheet.Cells[1, firstCol], _sheet.Cells[lastRow, lastCol]];
+            int col = _project.FirstColumnOffer;
+            int colCount = _project.LastColumnOffer - _project.FirstColumnOffer + 1;
+
+            while (_sheet.Cells[1, col].Value != "")
+            {
+                col = col + colCount;
+            }
+            rng.Copy(_sheet.Cells[1, col]);
+            rng = _sheet.Range[_sheet.Cells[1, col], _sheet.Cells[lastRow, col + colCount - 1]];
             return rng;
         }
 
-        private int GetRow(string number)
+        //TODO определить строку вставки 
+        private int GetRow(List<string> keyFild)
         {
-            //TODO определить строку вставки 
             int row = 0;
-            if (row == 0) row = InsertRow(number);
 
+            if (row == 0) row = InsertRow(keyFild);
             return row;
         }
 
-        private int InsertRow(string number)
+        private int InsertRow(List<string> keyFild)
         {
             //TODO если такого пункта нет вставить строку
             int row = 0;
@@ -119,17 +129,17 @@ namespace ACO.Offers
                         string val = data[i, col.Column]?.ToString() ?? "";
                         key += val;
                     }
-                    int row = i + _project.RowStart-1 ;
+                    int row = i + _project.RowStart - 1;
                     _rowKeys.Add(key, row);
                 }
             }
         }
-        
+
         private int GetRowBy(Record record)
         {
             // string key = "";
             //foreach (ColumnMapping col in record.Key)
-            return _rowKeys[record.Key];
+            // return _rowKeys[record.Key];
 
             //int columnNumbr = 10;//Project.staticColumns[StaticColumns.Number]
             //int colEnd = 13;
@@ -150,6 +160,7 @@ namespace ACO.Offers
             //        }
             //    }
             //}
+            return 1;
         }
 
     }

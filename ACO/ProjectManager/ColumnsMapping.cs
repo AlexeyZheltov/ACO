@@ -15,11 +15,6 @@ namespace ACO.ProjectManager
     class ColumnMapping : Cell
     {
         /// <summary>
-        ///  Название ячейки
-        /// </summary>
-        // public string Name { get; set; }
-        
-        /// <summary>
         ///  Проверять
         /// </summary>
         public bool Check { get; set; }
@@ -27,11 +22,14 @@ namespace ACO.ProjectManager
         /// Обязательный
         /// </summary>
         public bool Obligatory { get; set; }
+        /// <summary>
+        ///  Наименование столбца на листе анализ
+        /// </summary>
+        public string Name { get; set; }
 
-       public ColumnMapping() { }
+        public ColumnMapping() { }
        public ColumnMapping(Excel.Range cell) 
-        {
-          //  Name = cell.Value;
+        {          
             Value = cell.Value?.ToString()??"";
             Check = false;
             Obligatory = false;
@@ -43,7 +41,7 @@ namespace ACO.ProjectManager
         {
             return new ColumnMapping()
             {
-                //Value = xElement.Attribute("Name").Value,
+                Name = xElement.Attribute("Name").Value,
                 Value = xElement.Attribute("Value").Value,
                 Row = int.Parse(xElement.Attribute("Row").Value),
                 Column = int.Parse(xElement.Attribute("Column").Value),
@@ -56,7 +54,7 @@ namespace ACO.ProjectManager
         public XElement GetXElement()
         {
             XElement xeColumn = new XElement("column");
-           // xeColumn.Add(new XAttribute("Name", Name));
+            xeColumn.Add(new XAttribute("Name", Name));
             xeColumn.Add(new XAttribute("Value", Value));
             xeColumn.Add(new XAttribute("Row", Row));
             xeColumn.Add(new XAttribute("Column", Column));

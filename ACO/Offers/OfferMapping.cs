@@ -17,6 +17,22 @@ namespace ACO.Offers
     {
         public string Name { get; set; }
         public string FileName { get; set; }
+
+        public string SheetName { get; set; }
+        /// <summary>
+        ///  Номер столбца начала значний
+        /// </summary>
+        public int RangeValuesStart { get; set; }
+        /// <summary>
+        /// последний номер столбцов значений
+        /// </summary>
+        public int RangeValuesEnd { get; set; }
+        
+        /// <summary>
+        /// Строка начала данных
+        /// </summary>
+        public int RowStart { get; set; }
+
         public OfferMapping() { }
         public OfferMapping(string filename)
         {
@@ -26,7 +42,7 @@ namespace ACO.Offers
         /// <summary>
         /// Ячейки заголовков
         /// </summary>
-        public List<ColumnMapping> Columns { get; set; }
+        public List<OfferColumnMapping> Columns { get; set; }
 
         //public List<> Mapping { get; set; }
             
@@ -87,14 +103,14 @@ namespace ACO.Offers
             //mapping.Active = bool.Parse(root.Attribute("Active").Value?.ToString() ?? "false");
             Columns = LoadColumnsFromXElement(root.Element("Columns"));
         }
-        private static List<ColumnMapping> LoadColumnsFromXElement(XElement xElement)
+        private static List<OfferColumnMapping> LoadColumnsFromXElement(XElement xElement)
         {
-            List<ColumnMapping> columns = new List<ColumnMapping>();
+            List<OfferColumnMapping> columns = new List<OfferColumnMapping>();
             if (xElement != null)
             {
                 foreach (XElement xcol in xElement.Elements())
                 {
-                    columns.Add(ColumnMapping.GetCellFromXElement(xcol));
+                    columns.Add(OfferColumnMapping.GetCellFromXElement(xcol));
                 }
             }
             return columns;
@@ -105,14 +121,27 @@ namespace ACO.Offers
             XElement root = new XElement("OfferSettings");
             XAttribute xaName = new XAttribute("OfferName", Name);
             root.Add(xaName);
+
+            XElement xeSheets = new XElement("Sheets");
+            XElement xeSheetName = new XElement("AnalysisSheet");
+            xeSheetName.Add(new XAttribute("SheetName", SheetName));
+            XElement xeRows = new XElement("Rows");
+            XElement xeRowStart = new XElement("RowStart");
+            xeRowStart.Add(new XAttribute("Row", RowStart.ToString()));
+            xeRows.Add(xeRowStart);
+            xeSheetName.Add(xeRows);
+
             XElement xeColumns = new XElement("Columns");
 
-            foreach (ColumnMapping cell in Columns)
+            foreach (OfferColumnMapping cell in Columns)
             {
                 XElement xeColumn = cell.GetXElement();
                 xeColumns.Add(xeColumn);
             }
-            root.Add(xeColumns);
+            xeSheetName.Add(xeColumns);
+            xeSheets.Add(xeSheetName);
+            root.Add(xeSheets);
+
             XDocument xdoc = new XDocument(root);
             xdoc.Save(FileName);
         }

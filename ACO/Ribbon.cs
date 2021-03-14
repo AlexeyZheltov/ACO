@@ -10,7 +10,7 @@ namespace ACO
 {
     public partial class Ribbon
     {
-        Excel.Application _app = null ;
+        Excel.Application _app = null;
         IProgressBarWithLogUI _pb;
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
@@ -43,6 +43,56 @@ namespace ACO
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private async void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
+        {
+            string[] files = GetFiles();
+            if (files.Length < 1) { return; }
+
+            ExcelHelpers.ExcelFile.Init();
+            ExcelHelpers.ExcelFile.Acselerate(true);
+            if (_pb is null)
+            {
+                _pb = new ProgressBarWithLog();
+                _pb.CloseForm += () => { _pb = null; };
+                _pb.Show(new AddinWindow(Globals.ThisAddIn));
+            }
+            _pb.ClearMainBar();
+            _pb.ClearSubBar();
+            _pb.SetMainBarVolum(files.Length);
+
+            await Task.Run(() =>
+            {
+                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+                foreach (string fileName in files)
+                {
+                    try
+                    {
+                        if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
+                        _pb.MainBarTick(fileName);
+
+                        excelBook.Open(fileName);
+                       //new OfferManager
+                        OfferManager offerManager = new OfferManager(excelBook);
+                        //offerManager.Offer.
+                    }
+                    catch (AddInException ex)
+                    {
+                        TextBox tb = _pb.GetLogTextBox();
+                        tb.Text += "Ошибка:" + ex.Message + " (" + ex.InnerException.Message + ")" + Environment.NewLine;
+                    }
+                    finally
+                    {
+                        excelBook.Close();
+                        ExcelHelpers.ExcelFile.Acselerate(false);
+                        ExcelHelpers.ExcelFile.Finish();
+                    }
+                }
+            });
+
+        }
+
+
+        private async void BtnLoadKP_Click1(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -77,7 +127,6 @@ namespace ACO
                             excelBook.Open(fileName);
                             OfferManager offerReader = new OfferManager(excelBook);
                             //new OfferManager(sheet);
-                            //
                             // Offer offer = offerReader.ReadFromSheet(sheet);
                             if (offerReader.ReadOffer())
                             {
@@ -202,5 +251,7 @@ namespace ACO
         {
             new Offers.FormManagerKP().Show(new AddinWindow(Globals.ThisAddIn));
         }
+
+
     }
 }

@@ -48,8 +48,33 @@ namespace ACO.Offers
         }
         string _Number;
 
+        public bool KeyEqual(List<string> keyFilds)
+        {
+            bool keyEqual = true;
+            foreach (string key in keyFilds)
+            {
+                if (!KeyFilds.Contains(key)) return false;
 
-        public string Key { get; set; }
+            }
+            return keyEqual;
+        }
+
+        public List<string> KeyFilds 
+        {
+            get
+            {
+                if (_KeyFilds == null)
+                {
+                    _KeyFilds = new List<string>();
+                }
+                return _KeyFilds;
+            }
+            set
+            {
+                _KeyFilds = value;
+            }
+        }
+        List<string> _KeyFilds;
         //{
         //    get
         //    {

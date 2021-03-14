@@ -28,7 +28,8 @@ namespace ACO
         {
             ExcelBook = excelBook;
             //  Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
-            _sheet = excelBook.GetSheet(Offer.SheetName);
+            //string sheetName = 
+            //_sheet = excelBook.GetSheet(Offer.SheetName);
         }
         public ExcelFile ExcelBook { get; }
 
@@ -101,38 +102,27 @@ namespace ACO
                 int rowStart = GetRowStart(_sheet);
                 int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
                 Offer = new Offer();
-                //int columnNumber = mapping.Columns.Find(c => c.Value == "П.П.").Column;
-
                 for (int row = rowStart; row <= rowEnd; row++)
                 {
                     try
                     {
-                        string key = "";
                         Record record = new Record();
-                        List<ColumnMapping> mappings = mapping.Columns.OrderBy(x => x.Column).ToList();
-                        foreach (ColumnMapping col in mappings)
+                        List<OfferColumnMapping> mappings = mapping.Columns.OrderBy(x => x.Column).ToList();
+                        foreach (OfferColumnMapping col in mappings)
                         {
-                            if (col.Check)
+                            object val = _sheet.Cells[row, col.Column].Value;
+                            if (false) ;//col.Check)
                             {
-                                key += col.Value;
+                                string keyFild = val?.ToString() ?? "";
+                                record.KeyFilds.Add(keyFild);
                             }
-                            else
+                            //string key = col.Value; // Заголовок
+                            if (!record.Values.ContainsKey(col.Value))
                             {
-                                //if (col.Value == "П.П.")
-                                //{
-                                //    record.Number = _sheet.Cells[row, col.Column].Value ?? "";
-                                //}
-                                object val = _sheet.Cells[row, col.Column].Value;
-                                //string key = col.Value; // Заголовок
-                                if (!record.Values.ContainsKey(key))
-                                { 
-                                    //TODO Поправить ключ для составной шапки
-                                    record.Values.Add(key, val);
-                                }
+                                //TODO Поправить ключ для составной шапки
+                                record.Values.Add(col.Value, val);
                             }
-                            record.Key = key;
                         }
-
                         /// Сохранение  строки 
                         Offer.Records.Add(record);
                     }
@@ -159,7 +149,7 @@ namespace ACO
             OfferMapping checkedMapping = null;
             foreach (OfferMapping mapping in Mappings)
             {
-                foreach (ColumnMapping col in mapping.Columns)
+                foreach (OfferColumnMapping col in mapping.Columns)
                 {
                     try
                     {
