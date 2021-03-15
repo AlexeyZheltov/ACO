@@ -102,7 +102,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.CostWorksTotal, "ЦЕНА РАБОТ, РУБ БЕЗ НДС. ВСЕГО" },
                 { StaticColumns.CostTotalPerUnit, "ЦЕНА ЗА ЕДИНИЦУ. РУБ БЕЗ НДС" },
                 { StaticColumns.CostTotal, "ЦЕНА ЗА ЕДИНИЦУ. РУБ БЕЗ НДС" },
-                { StaticColumns.Comment, "ПРИМЕЧАНИЕ" },
+                { StaticColumns.Comment, "ПРИМЕЧАНИЕ" }
             };
                 //{ StaticColumns.CountProject, "Кол-во по проекту" },
                 //{ StaticColumns.NoEstimatesAndCalculations, "№ смет и расчетов" },

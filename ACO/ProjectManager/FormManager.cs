@@ -41,10 +41,10 @@ namespace ACO.ProjectManager
                 TableProjects.Columns[2].HeaderText = "Путь";
                 TableProjects.Columns[3].Visible = false;
                 TableProjects.Columns[4].Visible = false;
-                TableProjects.Columns[5].Visible = false;
-                TableProjects.Columns[6].Visible = false;
-                TableProjects.Columns[7].Visible = false;
-                TableProjects.Columns[8].Visible = false;
+                //TableProjects.Columns[5].Visible = false;
+                //TableProjects.Columns[6].Visible = false;
+                //TableProjects.Columns[7].Visible = false;
+                //TableProjects.Columns[8].Visible = false;
 
                 TableProjects.Columns[0].Width = 70;
                 TableProjects.Columns[1].Width = 120;

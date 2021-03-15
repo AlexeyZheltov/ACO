@@ -50,14 +50,6 @@ namespace ACO.Offers
             //xeColumn.Add(new XAttribute("Address", Address));
             return xeColumn;
         }
-
-        //internal bool CheckSheet(Excel.Worksheet sheet)
-        //{
-        //    bool VeiwCheck = true;          
-        //        Excel.Range cell = sheet.Cells[Row, Column];
-        //        VeiwCheck = cell.Value == Value;            
-        //    return VeiwCheck;
-        //}
-
+            
     }
 }

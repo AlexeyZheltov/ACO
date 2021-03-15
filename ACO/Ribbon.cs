@@ -111,7 +111,6 @@ namespace ACO
             return file;
         }
 
-
         //private async void BtnLoadKP_Click1(object sender, RibbonControlEventArgs e)
         //{
         //    try
@@ -135,7 +134,7 @@ namespace ACO
         //        await Task.Run(() =>
         //        {
         //            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-        //            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+        //            ProjectManager.ProjectManager projectManager = new                                    ProjectManager.ProjectManager();
 
         //            foreach (string fileName in files)
         //            {
@@ -157,8 +156,8 @@ namespace ACO
         //                catch (AddInException ex)
         //                {
         //                    TextBox tb = _pb.GetLogTextBox();
-        //                    tb.Text += "Ошибка:" + ex.Message + " (" + ex.InnerException.Message + ")" + Environment.NewLine;
-        //                    //  MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //                    tb.Text += "Ошибка:" + ex.Message + " (" +                                        ex.InnerException.Message + ")" + Environment.NewLine;
+        //                    //  MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,                       MessageBoxIcon.Information);
         //                }
         //                finally
         //                {
@@ -174,7 +173,7 @@ namespace ACO
         //                _pb.ClearMainBar();
         //                _pb.ClearSubBar();
         //                _pb.IsAborted = false;
-        //                MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //                MessageBox.Show("Выполнение было прервано", "Внимание",                               MessageBoxButtons.OK, MessageBoxIcon.Information);
         //                return;
         //            }
 
@@ -230,35 +229,6 @@ namespace ACO
             Excel.Workbook newProjectBook = _app.Workbooks.Open(path);
             newProjectBook.Activate();
             _app.Dialogs[Excel.XlBuiltInDialog.xlDialogSaveAs].Show();
-
-
-            /*  Dim varResult As Variant
-            Dim ActBook As Workbook
-            'displays the save file dialog
-            varResult = Application.GetSaveAsFilename(FileFilter:= _
-                     "Excel Files (*.xlsx), *.xlsx", Title:="Save PO", _
-                    InitialFileName:="\\showdog\service\Service_job_PO\")
-            'checks to make sure the user hasn't canceled the dialog
-            If varResult <> False Then
-                ActiveWorkbook.SaveAs Filename:=varResult, _
-                FileFormat:=xlWorkbookNormal
-                Exit Sub
-            End If*/
-        }
-
-        private void BtnAbout_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
-
-        private void BtnLoadLvl12_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
-
-        private void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)
-        {
-
         }
 
         private void BtnProjectManager_Click(object sender, RibbonControlEventArgs e)

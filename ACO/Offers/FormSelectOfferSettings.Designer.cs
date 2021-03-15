@@ -42,14 +42,14 @@ namespace ACO.Offers
             this.listBoxOffers.FormattingEnabled = true;
             this.listBoxOffers.Location = new System.Drawing.Point(2, 17);
             this.listBoxOffers.Name = "listBoxOffers";
-            this.listBoxOffers.Size = new System.Drawing.Size(245, 197);
+            this.listBoxOffers.Size = new System.Drawing.Size(245, 171);
             this.listBoxOffers.TabIndex = 0;
-            this.listBoxOffers.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBoxOffers.SelectedIndexChanged += new System.EventHandler(this.listBoxOffers_SelectedIndexChanged);
             // 
             // BtnOK
             // 
             this.BtnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnOK.Location = new System.Drawing.Point(84, 217);
+            this.BtnOK.Location = new System.Drawing.Point(84, 190);
             this.BtnOK.Name = "BtnOK";
             this.BtnOK.Size = new System.Drawing.Size(84, 23);
             this.BtnOK.TabIndex = 1;
@@ -59,9 +59,10 @@ namespace ACO.Offers
             // 
             // FormSelectOfferSettings
             // 
+            this.AcceptButton = this.BtnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(248, 242);
+            this.ClientSize = new System.Drawing.Size(248, 215);
             this.Controls.Add(this.BtnOK);
             this.Controls.Add(this.listBoxOffers);
             this.KeyPreview = true;
