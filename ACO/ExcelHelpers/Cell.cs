@@ -20,6 +20,9 @@ namespace ACO.ExcelHelpers
         /// Адрес ячейки
         /// </summary>
         public string Address { get; set; }
+
+        
+
         /// <summary>
         ///  Номер строки
         /// </summary>

@@ -79,15 +79,15 @@ namespace ACO
         /// </summary>
         /// <param name="sheet"></param>
         /// <returns></returns>
-        private Offer SetOffer(Excel.Worksheet sheet)
-        {
-            Offer offer = new Offer();
-            offer.Date = sheet.Cells[1, 1].Value?.ToSting() ?? "";
-            offer.Customer = sheet.Cells[1, 1].Value?.ToSting() ?? "";
-            offer.ProjectName = sheet.Cells[1, 1].Value?.ToSting() ?? "";
-            offer.ProjectNumber = sheet.Cells[1, 1].Value?.ToSting() ?? "";
-            return offer;
-        }
+        //private Offer SetOffer(Excel.Worksheet sheet)
+        //{
+        //    Offer offer = new Offer();
+        //    offer.Date = sheet.Cells[1, 1].Value?.ToSting() ?? "";
+        //    offer.Customer = sheet.Cells[1, 1].Value?.ToSting() ?? "";
+        //    offer.ProjectName = sheet.Cells[1, 1].Value?.ToSting() ?? "";
+        //    offer.ProjectNumber = sheet.Cells[1, 1].Value?.ToSting() ?? "";
+        //    return offer;
+        //}
 
         /// <summary>
         ///  считать КП
@@ -144,32 +144,32 @@ namespace ACO
         /// Выбрать маппинг. Проверить столбцы КП на листе. 
         /// </summary>
         /// <returns></returns>
-        private OfferSettings FindColumnsMapping()
-        {
-            OfferSettings checkedMapping = null;
-            foreach (OfferSettings mapping in Mappings)
-            {
-                foreach (OfferColumnMapping col in mapping.Columns)
-                {
-                    try
-                    {
-                        string val = _sheet.Range[col.Address].Value?.ToString() ?? "";
-                        if (val != col.Value)
-                        {
-                            throw new ApplicationException("Значение в ячейке не соответствует файлу");
-                        }
-                    }
-                    catch (AddInException ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                        // При возникновении ошибки выбрать другой файл маппинга
-                        continue;
-                    }
-                }
-                checkedMapping = mapping;
-            }
-            return checkedMapping;
-        }
+        //private OfferSettings FindColumnsMapping()
+        //{
+        //    OfferSettings checkedMapping = null;
+        //    foreach (OfferSettings mapping in Mappings)
+        //    {
+        //        foreach (OfferColumnMapping col in mapping.Columns)
+        //        {
+        //            try
+        //            {
+        //                string val = _sheet.Range[$"{col.ColumnSymbol}${}"].Value?.ToString() ?? "";
+        //                if (val != col.Value)
+        //                {
+        //                    throw new ApplicationException("Значение в ячейке не соответствует файлу");
+        //                }
+        //            }
+        //            catch (AddInException ex)
+        //            {
+        //                Debug.WriteLine(ex.Message);
+        //                // При возникновении ошибки выбрать другой файл маппинга
+        //                continue;
+        //            }
+        //        }
+        //        checkedMapping = mapping;
+        //    }
+        //    return checkedMapping;
+        //}
 
         private int GetRowStart(Excel.Worksheet sheet)
         {

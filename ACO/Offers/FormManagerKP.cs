@@ -64,15 +64,17 @@ namespace ACO.Offers
                 foreach (OfferSettings offer in _offersMapping)
                 {
                     ListKP.Items.Add(offer.Name);
-                }
-                
+                }                
             }
         }
 
         private void LoadData()
        {
             _offersMapping = _manager.GetMappings();
-            _CurrentMapping = _offersMapping.First();
+            if ((_offersMapping?.Count ?? 0 )>0)
+            {
+                _CurrentMapping = _offersMapping.First();
+            }
 
             LoadOffersMapping();
             UpdateTable();
@@ -84,47 +86,47 @@ namespace ACO.Offers
             TBoxLastColumnRangeValues.Text = _CurrentMapping.RangeValuesEnd.ToString();
         }
 
-        private void BtnAddColumns_Click(object sender, EventArgs e)
-        {
+        //private void BtnAddColumns_Click(object sender, EventArgs e)
+        //{
 
-            Excel.Range rng = _app.Selection;
+        //    Excel.Range rng = _app.Selection;
 
-            if ((rng?.Cells?.Count ?? 0) == 0 || rng == null) return;
-            if (_mappingColumnsOffer == null) _mappingColumnsOffer = new List<OfferColumnMapping>();
-            foreach (Excel.Range cell in rng.Cells)
-            {
-                string cellText = cell.Text;
-                cellText = cellText.Replace("\n", "");
-                if (!string.IsNullOrEmpty(cellText))
-                {
-                    OfferColumnMapping findMapping = null;
-                    OfferColumnMapping mappingFromCell = new OfferColumnMapping(cell);
+        //    if ((rng?.Cells?.Count ?? 0) == 0 || rng == null) return;
+        //    if (_mappingColumnsOffer == null) _mappingColumnsOffer = new List<OfferColumnMapping>();
+        //    foreach (Excel.Range cell in rng.Cells)
+        //    {
+        //        string cellText = cell.Text;
+        //        cellText = cellText.Replace("\n", "");
+        //        if (!string.IsNullOrEmpty(cellText))
+        //        {
+        //            OfferColumnMapping findMapping = null;
+        //            OfferColumnMapping mappingFromCell = new OfferColumnMapping(cell);
 
-                    /// Искать соответствующий столбец в настройках проекта
-                    ColumnMapping findProjectMapping =
-                        _projectManager.ActiveProject.Columns.Find(c => c.Value == cellText);
-                    if (findProjectMapping != null)
-                    {
-                        mappingFromCell.Link = cellText;
+        //            /// Искать соответствующий столбец в настройках проекта
+        //            ColumnMapping findProjectMapping =
+        //                _projectManager.ActiveProject.Columns.Find(c => c.Name== cellText);
+        //            if (findProjectMapping != null)
+        //            {
+        //                mappingFromCell.Link = cellText;
 
-                        findMapping = _mappingColumnsOffer.Find(m => m.Link == cellText);
-                        if (findMapping != null)
-                        {
-                            _mappingColumnsOffer.Remove(findMapping);
-                        }
-                    }
+        //                findMapping = _mappingColumnsOffer.Find(m => m.Link == cellText);
+        //                if (findMapping != null)
+        //                {
+        //                    _mappingColumnsOffer.Remove(findMapping);
+        //                }
+        //            }
 
-                    findMapping = _mappingColumnsOffer.Find(
-                                   m => m.Address == mappingFromCell.Address);
-                    if (findMapping != null)
-                    {
-                        _mappingColumnsOffer.Remove(findMapping);
-                    }
-                    _mappingColumnsOffer.Add(mappingFromCell);
-                }
-            }
-            UpdateTable();
-        }
+        //            findMapping = _mappingColumnsOffer.Find(
+        //                           m => m.Address == mappingFromCell.Address);
+        //            if (findMapping != null)
+        //            {
+        //                _mappingColumnsOffer.Remove(findMapping);
+        //            }
+        //            _mappingColumnsOffer.Add(mappingFromCell);
+        //        }
+        //    }
+        //    UpdateTable();
+        //}
 
 
         private void UpdateTable()
@@ -135,11 +137,11 @@ namespace ACO.Offers
             {
                 foreach (ColumnMapping col in _projectManager.ActiveProject.Columns)
                 {
-                    OfferColumnMapping columnMapping = _mappingColumnsOffer.Find(x => x.Link == col.Value);
-                    if (col is null)
-                    {
-                        _mappingColumnsOffer.Add(new OfferColumnMapping() { Link = col.Value });
-                    }
+                    //OfferColumnMapping columnMapping = _mappingColumnsOffer.Find(x => x.Link == col.Value);
+                    //if (col is null)
+                    //{
+                    //    _mappingColumnsOffer.Add(new OfferColumnMapping() { Link = col.Value });
+                    //}
                 }
             }
             BindingSource Source = new BindingSource();
@@ -215,8 +217,8 @@ namespace ACO.Offers
             if (TableColumns.SelectedRows.Count > 0 && _mappingColumnsOffer != null)
             {
                 DataGridViewRow row = TableColumns.SelectedRows[0];
-                string address = row.Cells[2].Value?.ToString();
-                OfferColumnMapping mapping = _mappingColumnsOffer.Find(x => x.Address == address);
+                string name = row.Cells[0].Value?.ToString();
+                OfferColumnMapping mapping = _mappingColumnsOffer.Find(x => x.Name == name);
                 TableColumns.Rows.Remove(row);
                 if (mapping != null) _mappingColumnsOffer.Remove(mapping);
             }
@@ -227,19 +229,19 @@ namespace ACO.Offers
             int row = e.RowIndex;
             int col = e.ColumnIndex;
             if (!(row >= 0 && col >= 0)) return;
-            string address = TableColumns.Rows[row].Cells[2].Value?.ToString() ?? "";
-            OfferColumnMapping mapping = _CurrentMapping.Columns.Find(f => f.Address == address);
+            string name = TableColumns.Rows[row].Cells[0].Value?.ToString() ?? "";
+            OfferColumnMapping mapping = _CurrentMapping.Columns.Find(f => f.Name == name);
             if (mapping is null) return;
             object value = null;
             switch (col)
             {
                 case 0:
                     value = TableColumns.Rows[row].Cells[0].Value;
-                    mapping.Link = value.ToString() ;
+                    mapping.Name = value.ToString() ;
                     break;
                 case 1:
                     value = TableColumns.Rows[row].Cells[1].Value;
-                    mapping.Value = value.ToString();                   
+                    mapping.ColumnSymbol = value.ToString();                   
                     break;                
                     //default:
                     //    break;

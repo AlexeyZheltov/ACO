@@ -8,10 +8,24 @@ using System.Xml.Linq;
 
 namespace ACO.ProjectManager
 {
-    public enum StaticColumns 
-    { 
+    public enum StaticColumns
+    {
         Number,
-        Name
+        NoEstimatesAndCalculations,
+        Name,
+        NameVOR,
+        Code,
+        Producer,
+        ProductCode,
+        Unit,
+        CountProject,
+        CountSH,
+        CostMaterialsPerUnit,
+        CostMaterialsTotal,
+        CostWorksPerUnit,
+        CostWorksTotal,
+        CostTotalPerUnit,
+        CostTotal
     }
     class Project
     {
@@ -56,11 +70,25 @@ namespace ACO.ProjectManager
         /// </summary>
         public List<ColumnMapping> Columns { get; set; }
 
-        public static Dictionary<StaticColumns, string> staticColumns =
+        public static Dictionary<StaticColumns, string> ColumnsNames =
             new Dictionary<StaticColumns, string>
             {
-                { StaticColumns.Number, "№ п/п" },                
-                { StaticColumns.Name, "Наименование работ и затрат" } 
+                { StaticColumns.Number, "№ п/п" },
+                { StaticColumns.NoEstimatesAndCalculations, "№ смет и расчетов" },
+                { StaticColumns.NameVOR, "Наименование ВОР" },
+                { StaticColumns.Code, "МАРКИРОВКА/ ОБОЗНАЧЕНИЕ" },
+                { StaticColumns.ProductCode, "КОД ПРОДУКЦИИ" },
+                { StaticColumns.Producer, "ПРОИЗВОДИТЕЛЬ" },
+                { StaticColumns.Name, "Наименование работ и затрат" },
+                { StaticColumns.Unit, "Ед. изм." },
+                { StaticColumns.CountProject, "Кол-во по проекту" },
+                { StaticColumns.CountSH, "Кол-во СХ" },
+                { StaticColumns.CostMaterialsPerUnit, "Стоимость материалов/оборудования. Стоимость за ед. без НДС, руб." },
+                { StaticColumns.CostMaterialsTotal, "Стоимость материалов/оборудования. Всего без НДС, руб" },
+                { StaticColumns.CostWorksPerUnit, "Стоимость работ. Стоимость за ед. без НДС, руб." },
+                { StaticColumns.CostWorksTotal, "Стоимость материалов/оборудования. Всего без НДС, руб" },
+                { StaticColumns.CostTotalPerUnit, "Стоимость всего. Стоимость за ед. без НДС, руб." },
+                { StaticColumns.CostTotal, "Стоимость всего. Всего без НДС, руб" },
             };
 
         public Project() { }
@@ -71,8 +99,8 @@ namespace ACO.ProjectManager
         public void Save()
         {
             XElement root = new XElement("project");
-            XAttribute xaName = new XAttribute("ProjectName", Name);           
-            root.Add(xaName);           
+            XAttribute xaName = new XAttribute("ProjectName", Name);
+            root.Add(xaName);
 
             XElement xeSheets = new XElement("Sheets");
             XElement xeAnalysisSheet = new XElement("AnalysisSheet");
@@ -116,7 +144,7 @@ namespace ACO.ProjectManager
             Project project = new Project();
             XDocument xdoc = XDocument.Load(filename);
             XElement root = xdoc.Root;
-            project.FileName = filename;           
+            project.FileName = filename;
             project.Name = root.Attribute("ProjectName").Value?.ToString() ?? "";
 
             XElement xeSheets = root.Element("Sheets");
@@ -130,8 +158,8 @@ namespace ACO.ProjectManager
             project.RowStart = int.TryParse(xeRowStart.Attribute("Row").Value, out int r) ? r : 0;
             /// Диапазон значений
             XElement xeRangeValues = xeAnalysisSheet.Element("RangeValues");
-            project.RangeValuesStart = int.TryParse(xeRangeValues.Attribute("StartColumn").Value, out int sc) ? sc : 0; 
-            project.RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("EndColumn").Value, out int ec) ? ec : 0; 
+            project.RangeValuesStart = int.TryParse(xeRangeValues.Attribute("StartColumn").Value, out int sc) ? sc : 0;
+            project.RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("EndColumn").Value, out int ec) ? ec : 0;
             /// Столбцы
             project.Columns = LoadColumnsFromXElement(xeAnalysisSheet.Element("Columns"));
             /// Диапазон предложения

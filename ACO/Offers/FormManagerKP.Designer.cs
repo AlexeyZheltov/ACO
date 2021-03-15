@@ -56,8 +56,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
-            this.BtnAddColumns = new System.Windows.Forms.Button();
-            this.BtnDelete = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -211,7 +209,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(562, 435);
+            this.tabPage2.Size = new System.Drawing.Size(553, 435);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Диапазон";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -309,12 +307,10 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.TableColumns);
-            this.tabPage3.Controls.Add(this.BtnAddColumns);
-            this.tabPage3.Controls.Add(this.BtnDelete);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(562, 435);
+            this.tabPage3.Size = new System.Drawing.Size(553, 435);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Столбцы";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -329,7 +325,7 @@
             this.TableColumns.BackgroundColor = System.Drawing.Color.White;
             this.TableColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TableColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.TableColumns.Location = new System.Drawing.Point(6, 39);
+            this.TableColumns.Location = new System.Drawing.Point(6, 6);
             this.TableColumns.MultiSelect = false;
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
@@ -337,29 +333,9 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableColumns.Size = new System.Drawing.Size(550, 390);
+            this.TableColumns.Size = new System.Drawing.Size(544, 423);
             this.TableColumns.TabIndex = 7;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
-            // 
-            // BtnAddColumns
-            // 
-            this.BtnAddColumns.Location = new System.Drawing.Point(6, 10);
-            this.BtnAddColumns.Name = "BtnAddColumns";
-            this.BtnAddColumns.Size = new System.Drawing.Size(190, 23);
-            this.BtnAddColumns.TabIndex = 8;
-            this.BtnAddColumns.Text = "Добавить выделенные ячейки";
-            this.BtnAddColumns.UseVisualStyleBackColor = true;
-            this.BtnAddColumns.Click += new System.EventHandler(this.BtnAddColumns_Click);
-            // 
-            // BtnDelete
-            // 
-            this.BtnDelete.Location = new System.Drawing.Point(202, 10);
-            this.BtnDelete.Name = "BtnDelete";
-            this.BtnDelete.Size = new System.Drawing.Size(120, 23);
-            this.BtnDelete.TabIndex = 10;
-            this.BtnDelete.Text = "Удалить строку";
-            this.BtnDelete.UseVisualStyleBackColor = true;
-            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
             // BtnSave
             // 
@@ -436,8 +412,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tabPage3;
         private ProjectManager.CustomDataGrid TableColumns;
-        private System.Windows.Forms.Button BtnAddColumns;
-        private System.Windows.Forms.Button BtnDelete;
         private System.Windows.Forms.Button BtnSave;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox TBoxSheetName;

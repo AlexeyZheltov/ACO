@@ -20,6 +20,8 @@ namespace ACO.Offers
         Project _CurrentProject = null;
 
         int _offsetPasteRange = 0;
+
+
         public OfferWriter()
         {
             //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
@@ -72,24 +74,25 @@ namespace ACO.Offers
                 pb.SubBarTick();
                 Record record = new Record();
                 //string nameColumnNumber
-                record.Number = _CurrentProject.Columns.Find(a => a.Value == "№ п/п").Value;
-                OfferColumnMapping colNm = offerSettings.Columns.Find(x => x.Link == record.Number);
+                //record.Number 
+               string columnName = _CurrentProject.Columns.Find(a => a.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
+                OfferColumnMapping colNm = offerSettings.Columns.Find(x => x.Name == record.Number);
                 foreach (OfferColumnMapping col in offerSettings.Columns)
                 {
-                    if (!string.IsNullOrEmpty(col.Link))
+                    if (!string.IsNullOrEmpty(col.Name))
                     {
-                        ColumnMapping projectCol = _CurrentProject.Columns.Find(a => a.Value == col.Link);
+                        ColumnMapping projectCol = _CurrentProject.Columns.Find(a => a.Name == col.Name);
                         if (projectCol is null) continue;
                         //string val = offerSheet.Cells[row, col.Column].value?.ToString() ?? "";
                         //if (string.IsNullOrWhiteSpace(val))
-                        object val = offerSheet.Cells[row, col.Column].value;
+                        object val = offerSheet.Range[$"${col.ColumnSymbol}${row}"].Value;
                         if(val != null)
                         {
                             if (projectCol.Check)
                             {
                                 string v = val.ToString();
                                 record.KeyFilds.Add(v);
-                            record.Values.Add(col.Link, val);
+                            record.Values.Add(col.Name, val);
                             }
                         }
 
@@ -100,8 +103,8 @@ namespace ACO.Offers
                 //вывод по столбцам
                 foreach (string key in record.Values.Keys)
                 {
-                    ColumnMapping projectCol = _CurrentProject.Columns.Find(a => a.Value == key);
-                    _sheet.Cells[rowPaste, projectCol.Column].value = record.Values[key];
+                   // ColumnMapping projectCol = _CurrentProject.Columns.Find(a => a.Value == key);
+                   // _sheet.Cells[rowPaste, projectCol.Column].value = record.Values[key];
                 }
 
                 /// Вставка диазазона сумм
@@ -227,8 +230,8 @@ namespace ACO.Offers
                 {
                     if (col.Check)
                     {   //columnNumbr
-                        string val = data[i, col.Column]?.ToString() ?? "";
-                        key += val;
+                       // string val = data[i, col.Column]?.ToString() ?? "";
+                       // key += val;
                     }
                     int row = i + _project.RowStart - 1;
                     _rowKeys.Add(key, row);
