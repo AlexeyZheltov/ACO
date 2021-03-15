@@ -42,11 +42,9 @@
             this.group2 = this.Factory.CreateRibbonGroup();
             this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
-            this.BtnLoadLvl0 = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
             this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
-            this.BtnUpdateLvl0 = this.Factory.CreateRibbonButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
@@ -105,7 +103,6 @@
             // 
             this.group2.Items.Add(this.BtnLoadLvl12);
             this.group2.Items.Add(this.BtnLoadLvl11);
-            this.group2.Items.Add(this.BtnLoadLvl0);
             this.group2.Label = "Загрузить";
             this.group2.Name = "group2";
             // 
@@ -124,18 +121,10 @@
             this.BtnLoadLvl11.Name = "BtnLoadLvl11";
             this.BtnLoadLvl11.ShowImage = true;
             // 
-            // BtnLoadLvl0
-            // 
-            this.BtnLoadLvl0.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl0.Image")));
-            this.BtnLoadLvl0.Label = "Урв 0";
-            this.BtnLoadLvl0.Name = "BtnLoadLvl0";
-            this.BtnLoadLvl0.ShowImage = true;
-            // 
             // group3
             // 
             this.group3.Items.Add(this.BtnUpdateLvl12);
             this.group3.Items.Add(this.BtnUpdateLvl11);
-            this.group3.Items.Add(this.BtnUpdateLvl0);
             this.group3.Label = "Обновить";
             this.group3.Name = "group3";
             // 
@@ -153,13 +142,6 @@
             this.BtnUpdateLvl11.Label = "Урв 11";
             this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
             this.BtnUpdateLvl11.ShowImage = true;
-            // 
-            // BtnUpdateLvl0
-            // 
-            this.BtnUpdateLvl0.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl0.Image")));
-            this.BtnUpdateLvl0.Label = "Урв 0";
-            this.BtnUpdateLvl0.Name = "BtnUpdateLvl0";
-            this.BtnUpdateLvl0.ShowImage = true;
             // 
             // group5
             // 
@@ -254,11 +236,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadLvl12;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadLvl11;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadLvl0;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateLvl12;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateLvl11;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateLvl0;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadKP;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group4;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAbout;
