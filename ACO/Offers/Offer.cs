@@ -13,7 +13,7 @@ namespace ACO
     /// </summary>
     class Offer
     {
-        public static readonly string SheetName = "Лист1";//"Расчет по проекту";
+       // public static readonly string SheetName = "Лист1";//"Расчет по проекту";
 
        public Offer()
         {

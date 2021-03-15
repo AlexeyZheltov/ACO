@@ -15,20 +15,73 @@ namespace ACO.Offers
     {
         private Excel.Application _app = Globals.ThisAddIn.Application;
         private List<OfferColumnMapping> _mappingColumnsOffer;
-        List<OfferMapping> _offersMapping;
-        OfferMapping _CurrentMapping;
+        List<OfferSettings> _offersMapping;
+        OfferSettings _CurrentMapping;
         OfferManager _manager;
         ProjectManager.ProjectManager _projectManager;
         public FormManagerKP()
         {
             InitializeComponent();
 
-            TableColumns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+          //  TableColumns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             _projectManager = new ProjectManager.ProjectManager();
             _manager = new OfferManager();
-            _offersMapping = _manager.Mappings;
+            _mappingColumnsOffer = new List<OfferColumnMapping>();
+
             ListKP.FullRowSelect = true;
             ListKP.MultiSelect = false;
+            ListKP.View = View.List;           
+        }
+        private void FormManagerKP_Load(object sender, EventArgs e)
+        {           
+            LoadData();
+        }
+
+        /// <summary>
+        ///  Таблица с ячейками 
+        /// </summary>
+        private void SetTableColumns()
+        {
+            if (TableColumns.Columns.Count < 5) return;
+
+            TableColumns.Columns[2].Width = 70;
+            TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TableColumns.Columns[0].HeaderText = "Ссылка \"Анализ\"";
+            TableColumns.Columns[1].HeaderText = "Наименование столбцa";
+            TableColumns.Columns[2].HeaderText = "Адрес";
+            TableColumns.Columns[3].Visible = false;
+            TableColumns.Columns[4].Visible = false;
+        }
+
+        private void LoadOffersMapping()
+        {
+            ListKP.Items.Clear();
+            if (_offersMapping != null)
+            {
+                if (_CurrentMapping == null && (_offersMapping?.Count ?? 0) > 0) _CurrentMapping = _offersMapping?.First();
+                _mappingColumnsOffer = _CurrentMapping?.Columns;
+                foreach (OfferSettings offer in _offersMapping)
+                {
+                    ListKP.Items.Add(offer.Name);
+                }
+                
+            }
+        }
+
+        private void LoadData()
+       {
+            _offersMapping = _manager.GetMappings();
+            _CurrentMapping = _offersMapping.First();
+
+            LoadOffersMapping();
+            UpdateTable();
+            
+            if (_CurrentMapping is null) return;
+            TBoxSheetName.Text =  _CurrentMapping.SheetName ;
+            TBoxFirstRowRangeValues.Text = _CurrentMapping.RowStart.ToString();
+            TBoxFirstColumnRangeValues.Text = _CurrentMapping.RangeValuesStart.ToString();
+            TBoxLastColumnRangeValues.Text = _CurrentMapping.RangeValuesEnd.ToString();
         }
 
         private void BtnAddColumns_Click(object sender, EventArgs e)
@@ -76,6 +129,7 @@ namespace ACO.Offers
 
         private void UpdateTable()
         {
+
             if ((_mappingColumnsOffer?.Count ?? 0) == 0) return;
             if ((_projectManager.ActiveProject?.Columns.Count ?? 0) > 0)
             {
@@ -100,9 +154,11 @@ namespace ACO.Offers
 
         private void Save()
         {
+            if (_CurrentMapping == null) return;
             _CurrentMapping.SheetName = TBoxSheetName.Text;
-            _CurrentMapping.RangeValuesStart = int.TryParse(TBoxFirstRowRangeValues.Text, out int fr) ? fr : 0;
-            _CurrentMapping.RangeValuesEnd = int.TryParse(TBoxFirstRowRangeValues.Text, out int lr) ? lr : 0;
+            _CurrentMapping.RowStart = int.TryParse(TBoxFirstRowRangeValues.Text, out int rs) ? rs : 0;
+            _CurrentMapping.RangeValuesStart = int.TryParse(TBoxFirstColumnRangeValues.Text, out int fr) ? fr : 0;
+            _CurrentMapping.RangeValuesEnd = int.TryParse(TBoxLastColumnRangeValues.Text, out int lr) ? lr : 0;
 
             if (_mappingColumnsOffer != null)
             {
@@ -116,50 +172,12 @@ namespace ACO.Offers
             Save();
             Close();
         }
-
-        private void FormManagerKP_Load(object sender, EventArgs e)
-        {
-            LoadOffersMapping();
-            UpdateTable();
-        }
-
-        /// <summary>
-        ///  Таблица с ячейками 
-        /// </summary>
-        private void SetTableColumns()
-        {
-            if (TableColumns.Columns.Count < 5) return;
-
-            TableColumns.Columns[2].Width = 70;
-            TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;           
-            TableColumns.Columns[0].HeaderText = "Ссылка \"Анализ\"";
-            TableColumns.Columns[1].HeaderText = "Наименование столбцa";
-            TableColumns.Columns[2].HeaderText = "Адрес";
-            TableColumns.Columns[3].Visible = false;
-            TableColumns.Columns[4].Visible = false;
-        }
-
-        private void LoadOffersMapping()
-        {
-            ListKP.Items.Clear();
-            if (_offersMapping != null)
-            {
-                if (_CurrentMapping == null && (_offersMapping?.Count ?? 0) > 0) _CurrentMapping = _offersMapping?.First();
-                _mappingColumnsOffer = _CurrentMapping?.Columns;
-                foreach (OfferMapping offer in _offersMapping)
-                {
-                    ListKP.Items.Add(offer.Name);
-                }
-                ListKP.View = View.List;
-            }
-        }
-
-
+      
+      
         private void BtnCreate_Click(object sender, EventArgs e)
         {
             string name = textBox1.Text;
-            OfferMapping.Create(name);
+            OfferSettings.Create(name);
             _offersMapping = _manager.GetMappings();
             _CurrentMapping = _offersMapping.Find(m => m.Name == name);
             LoadOffersMapping();
@@ -176,7 +194,7 @@ namespace ACO.Offers
                 string name = ListKP.SelectedItems[0].SubItems[0].Text;
                 if (!string.IsNullOrEmpty(name))
                 {
-                    OfferMapping mapping = _offersMapping.Find(X => X.Name == name);
+                    OfferSettings mapping = _offersMapping.Find(X => X.Name == name);
                     if (mapping != null)
                     {
                         _CurrentMapping = mapping;

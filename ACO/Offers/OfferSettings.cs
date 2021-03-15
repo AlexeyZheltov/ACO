@@ -13,7 +13,7 @@ namespace ACO.Offers
     /// <summary>
     ///  Настройки КП. Чтение\ Создание XML
     /// </summary>
-    class OfferMapping
+    class OfferSettings
     {
         public string Name { get; set; }
         public string FileName { get; set; }
@@ -27,16 +27,16 @@ namespace ACO.Offers
         /// последний номер столбцов значений
         /// </summary>
         public int RangeValuesEnd { get; set; }
-        
+
         /// <summary>
         /// Строка начала данных
         /// </summary>
         public int RowStart { get; set; }
 
-        public OfferMapping() { }
-        public OfferMapping(string filename)
+        public OfferSettings() { }
+        public OfferSettings(string filename)
         {
-             GetFromXML(filename);
+            GetFromXML(filename);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace ACO.Offers
         public List<OfferColumnMapping> Columns { get; set; }
 
         //public List<> Mapping { get; set; }
-            
+
 
         internal static void Create(string name)
         {
@@ -74,7 +74,7 @@ namespace ACO.Offers
             "Offers"
             );
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-          //  string filename = Path.Combine(path, $"{name}.xml");
+            //  string filename = Path.Combine(path, $"{name}.xml");
             return path;
         }
 
@@ -84,25 +84,44 @@ namespace ACO.Offers
         /// <param name="projectname"></param>
         /// <param name="path"></param>
         public static void CreateNewProjectXML(string projectname, string path)
-        {            
-            XElement root = new XElement("OfferSettings");
-            root.Add(new XAttribute("OfferName", projectname));         
-            XElement xeColumns = new XElement("Columns");
-            root.Add(xeColumns);
-            XDocument xdoc = new XDocument(root);
-            xdoc.Save(path);
+        {
+            OfferSettings offerMapping = new OfferSettings();
+            offerMapping.Name = projectname;
+            offerMapping.FileName = path;
+            offerMapping.Save();
+
+            //XElement root = new XElement("OfferSettings");
+            //root.Add(new XAttribute("OfferName", projectname));         
+            //XElement xeColumns = new XElement("Columns");
+            //root.Add(xeColumns);
+            //XDocument xdoc = new XDocument(root);
+            //xdoc.Save(path);
         }
         public void GetFromXML(string filename)
         {
-            // OfferMapping mapping = new OfferMapping();
             XDocument xdoc = XDocument.Load(filename);
             XElement root = xdoc.Root;
             FileName = filename;
-            // XAttribute xeName = root.Attribute("Name");
             Name = root.Attribute("OfferName").Value?.ToString() ?? "";
-            //mapping.Active = bool.Parse(root.Attribute("Active").Value?.ToString() ?? "false");
-            Columns = LoadColumnsFromXElement(root.Element("Columns"));
+            XElement xeSheets = root.Element("Sheets");
+            XElement xeDataSheet = xeSheets.Element("DataSheet");
+            SheetName = xeDataSheet.Attribute("SheetName").Value?.ToString()??"";
+            XElement xeRows = xeDataSheet.Element("Rows");
+            XElement xeRowStart = xeRows.Element("RowStart");
+            RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;
+
+            XElement xeRangeValues = xeDataSheet.Element("RangeVaues");
+            RangeValuesStart = int.TryParse(xeRangeValues.Attribute("Start").Value?.ToString() ?? "", out int rvs) ? rvs : 0;
+            RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("End").Value?.ToString() ?? "", out int rve) ? rve : 0;
+
+            Columns = LoadColumnsFromXElement(xeDataSheet.Element("Columns"));
         }
+
+        /// <summary>
+        ///  Получить столбцы из XML.
+        /// </summary>
+        /// <param name="xElement"></param>
+        /// <returns></returns>
         private static List<OfferColumnMapping> LoadColumnsFromXElement(XElement xElement)
         {
             List<OfferColumnMapping> columns = new List<OfferColumnMapping>();
@@ -119,27 +138,36 @@ namespace ACO.Offers
         public void Save()
         {
             XElement root = new XElement("OfferSettings");
-            XAttribute xaName = new XAttribute("OfferName", Name);
+            XAttribute xaName = new XAttribute("OfferName", Name ?? "");
             root.Add(xaName);
 
             XElement xeSheets = new XElement("Sheets");
-            XElement xeSheetName = new XElement("AnalysisSheet");
-            xeSheetName.Add(new XAttribute("SheetName", SheetName));
+            XElement xeDataSheet = new XElement("DataSheet");
+            xeDataSheet.Add(new XAttribute("SheetName", SheetName ?? ""));
+            XElement xeRangeValues = new XElement("RangeVaues");
+            XAttribute xaStart = new XAttribute("Start", RangeValuesStart.ToString());
+            XAttribute xaEnd = new XAttribute("End", RangeValuesEnd.ToString());
+            xeRangeValues.Add(xaStart);
+            xeRangeValues.Add(xaEnd);
+            xeDataSheet.Add(xeRangeValues);
+
             XElement xeRows = new XElement("Rows");
             XElement xeRowStart = new XElement("RowStart");
             xeRowStart.Add(new XAttribute("Row", RowStart.ToString()));
             xeRows.Add(xeRowStart);
-            xeSheetName.Add(xeRows);
+            xeDataSheet.Add(xeRows);
 
             XElement xeColumns = new XElement("Columns");
-
-            foreach (OfferColumnMapping cell in Columns)
+            if ((Columns?.Count ?? 0) > 0)
             {
-                XElement xeColumn = cell.GetXElement();
-                xeColumns.Add(xeColumn);
+                foreach (OfferColumnMapping cell in Columns)
+                {
+                    XElement xeColumn = cell.GetXElement();
+                    xeColumns.Add(xeColumn);
+                }
             }
-            xeSheetName.Add(xeColumns);
-            xeSheets.Add(xeSheetName);
+            xeDataSheet.Add(xeColumns);
+            xeSheets.Add(xeDataSheet);
             root.Add(xeSheets);
 
             XDocument xdoc = new XDocument(root);

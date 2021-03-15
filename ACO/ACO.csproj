@@ -196,7 +196,7 @@
     <Compile Include="Offers\Offer.cs" />
     <Compile Include="Offers\OfferColumnMapping.cs" />
     <Compile Include="Offers\OfferManager.cs" />
-    <Compile Include="Offers\OfferMapping.cs" />
+    <Compile Include="Offers\OfferSettings.cs" />
     <Compile Include="Offers\Record.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
@@ -221,7 +221,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WriterKP.cs" />
+    <Compile Include="OfferWriter.cs" />
     <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>

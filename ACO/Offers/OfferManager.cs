@@ -24,19 +24,19 @@ namespace ACO
 
         public OfferManager() { }
 
-        public OfferManager(ExcelFile excelBook)
-        {
-            ExcelBook = excelBook;
-            //  Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
-            //string sheetName = 
-            //_sheet = excelBook.GetSheet(Offer.SheetName);
-        }
-        public ExcelFile ExcelBook { get; }
+        //public OfferManager(ExcelFile excelBook)
+        //{
+        //    ExcelBook = excelBook;
+        //    Excel.Worksheet sheet = excelBook.GetSheet(Offer.SheetName);
+        //    string sheetName =
+        //    _sheet = excelBook.GetSheet(Offer.SheetName);
+        //}
+        ///  public ExcelFile ExcelBook { get; }
 
         public Offer Offer { get; set; }
 
-        private List<OfferMapping> _Mappings;
-        public List<OfferMapping> Mappings
+        private List<OfferSettings> _Mappings;
+        public List<OfferSettings> Mappings
         {
             get
             {
@@ -50,14 +50,14 @@ namespace ACO
         }
 
 
-        public List<OfferMapping> GetMappings()
+        public List<OfferSettings> GetMappings()
         {
-            List<OfferMapping> mappings = new List<OfferMapping>();
+            List<OfferSettings> mappings = new List<OfferSettings>();
             string folder = GetFolderSettingsKP();
             string[] files = Directory.GetFiles(folder);
             foreach (string file in files)
             {
-                mappings.Add(new OfferMapping(file));
+                mappings.Add(new OfferSettings(file));
             }
             return mappings;
         }
@@ -93,48 +93,48 @@ namespace ACO
         ///  считать КП
         /// </summary>
         /// <returns></returns>
-        public bool ReadOffer()
-        {
-            OfferMapping mapping = FindColumnsMapping();
-            bool validation = mapping != null;
-            if (validation)
-            {
-                int rowStart = GetRowStart(_sheet);
-                int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
-                Offer = new Offer();
-                for (int row = rowStart; row <= rowEnd; row++)
-                {
-                    try
-                    {
-                        Record record = new Record();
-                        List<OfferColumnMapping> mappings = mapping.Columns.OrderBy(x => x.Column).ToList();
-                        foreach (OfferColumnMapping col in mappings)
-                        {
-                            object val = _sheet.Cells[row, col.Column].Value;
-                            if (false) ;//col.Check)
-                            {
-                                string keyFild = val?.ToString() ?? "";
-                                record.KeyFilds.Add(keyFild);
-                            }
-                            //string key = col.Value; // Заголовок
-                            if (!record.Values.ContainsKey(col.Value))
-                            {
-                                //TODO Поправить ключ для составной шапки
-                                record.Values.Add(col.Value, val);
-                            }
-                        }
-                        /// Сохранение  строки 
-                        Offer.Records.Add(record);
-                    }
-                    catch (AddInException ex)
-                    {
-                        validation = ex.StopProcess;
-                        if (ex.StopProcess) break;
-                    }
-                }
-            }
-            return validation;
-        }
+        //public bool ReadOffer()
+        //{
+        //    OfferMapping mapping = FindColumnsMapping();
+        //    bool validation = mapping != null;
+        //    if (validation)
+        //    {
+        //        int rowStart = GetRowStart(_sheet);
+        //        int rowEnd = _sheet.UsedRange.Row + _sheet.UsedRange.Rows.Count - 1;
+        //        Offer = new Offer();
+        //        for (int row = rowStart; row <= rowEnd; row++)
+        //        {
+        //            try
+        //            {
+        //                Record record = new Record();
+        //                List<OfferColumnMapping> mappings = mapping.Columns.OrderBy(x => x.Column).ToList();
+        //                foreach (OfferColumnMapping col in mappings)
+        //                {
+        //                    object val = _sheet.Cells[row, col.Column].Value;
+        //                    if (false) ;//col.Check)
+        //                    {
+        //                        string keyFild = val?.ToString() ?? "";
+        //                        record.KeyFilds.Add(keyFild);
+        //                    }
+        //                    //string key = col.Value; // Заголовок
+        //                    if (!record.Values.ContainsKey(col.Value))
+        //                    {
+        //                        //TODO Поправить ключ для составной шапки
+        //                        record.Values.Add(col.Value, val);
+        //                    }
+        //                }
+        //                /// Сохранение  строки 
+        //                Offer.Records.Add(record);
+        //            }
+        //            catch (AddInException ex)
+        //            {
+        //                validation = ex.StopProcess;
+        //                if (ex.StopProcess) break;
+        //            }
+        //        }
+        //    }
+        //    return validation;
+        //}
 
 
 
@@ -144,10 +144,10 @@ namespace ACO
         /// Выбрать маппинг. Проверить столбцы КП на листе. 
         /// </summary>
         /// <returns></returns>
-        private OfferMapping FindColumnsMapping()
+        private OfferSettings FindColumnsMapping()
         {
-            OfferMapping checkedMapping = null;
-            foreach (OfferMapping mapping in Mappings)
+            OfferSettings checkedMapping = null;
+            foreach (OfferSettings mapping in Mappings)
             {
                 foreach (OfferColumnMapping col in mapping.Columns)
                 {
