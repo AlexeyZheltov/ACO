@@ -10,29 +10,38 @@ namespace ACO.ProjectManager
 {
     public enum StaticColumns
     {
+        Level,
+        File,
         Number,
-        NoEstimatesAndCalculations,
+        Cipher,
+        Classifier,
         Name,
-        NameVOR,
         Code,
+        Material,
+        Size,
+        Type,
+        VendorCode,
         Producer,
-        ProductCode,
         Unit,
-        CountProject,
-        CountSH,
+        Count,
         CostMaterialsPerUnit,
         CostMaterialsTotal,
         CostWorksPerUnit,
         CostWorksTotal,
         CostTotalPerUnit,
-        CostTotal
+        CostTotal,
+        Comment
     }
+
+    //NoEstimatesAndCalculations,
+    //NameVOR,
+    //ProductCode,
+    //CountProject,
+    //CountSH,
+
     class Project
     {
-        /// <summary>
-        ///  является ли проект активным // Используется в DataGridView
-        /// </summary>
-        public bool Active { get; set; }
+        public  bool Active {get;set;}
 
         /// <summary>
         ///  Название проекта
@@ -51,19 +60,19 @@ namespace ACO.ProjectManager
         /// <summary>
         /// 
         /// </summary>
-        public int RangeValuesStart { get; set; }
-        public int RangeValuesEnd { get; set; }
+        //public int RangeValuesStart { get; set; }
+        //public int RangeValuesEnd { get; set; }
 
         /// <summary>
         /// Начало вставки КП
         /// </summary>
-        public int FirstColumnOffer { get; set; }
-        public int LastColumnOffer { get; set; }
+        //public int FirstColumnOffer { get; set; }
+        //public int LastColumnOffer { get; set; }
 
         /// <summary>
         /// Строка начала данных
         /// </summary>
-        public int RowStart { get; set; }
+        public int RowStart { get; set; } = 10;
 
         /// <summary>
         ///  Адреса ячеек шапки используемых столбцов
@@ -73,23 +82,32 @@ namespace ACO.ProjectManager
         public static Dictionary<StaticColumns, string> ColumnsNames =
             new Dictionary<StaticColumns, string>
             {
+                { StaticColumns.Level, "Маркер иерархии 1-2-3-4" },
+                { StaticColumns.File, "Файл" },
                 { StaticColumns.Number, "№ п/п" },
-                { StaticColumns.NoEstimatesAndCalculations, "№ смет и расчетов" },
-                { StaticColumns.NameVOR, "Наименование ВОР" },
+                { StaticColumns.Cipher, "ШИФР" },
+                { StaticColumns.Classifier, "Классификатор" },
+                { StaticColumns.Name, " НАИМЕНОВАНИЕ РАБОТ" },
                 { StaticColumns.Code, "МАРКИРОВКА/ ОБОЗНАЧЕНИЕ" },
-                { StaticColumns.ProductCode, "КОД ПРОДУКЦИИ" },
+                { StaticColumns.Material, "МАТЕРИАЛ" },
+                { StaticColumns.Size, "ФОРМАТ / ГАБАРИТНЫЕ РАЗМЕРЫ / ДИАМЕТР (Ф) ММ" },
+                { StaticColumns.Type, "ТИП, МАРКА, ОБОЗНАЧЕНИЕ ДОКУМЕНТА, ОПРОСНОГО ЛИСТА" },
+                { StaticColumns.VendorCode, "АРТИКУЛ" },
                 { StaticColumns.Producer, "ПРОИЗВОДИТЕЛЬ" },
-                { StaticColumns.Name, "Наименование работ и затрат" },
-                { StaticColumns.Unit, "Ед. изм." },
-                { StaticColumns.CountProject, "Кол-во по проекту" },
-                { StaticColumns.CountSH, "Кол-во СХ" },
-                { StaticColumns.CostMaterialsPerUnit, "Стоимость материалов/оборудования. Стоимость за ед. без НДС, руб." },
-                { StaticColumns.CostMaterialsTotal, "Стоимость материалов/оборудования. Всего без НДС, руб" },
-                { StaticColumns.CostWorksPerUnit, "Стоимость работ. Стоимость за ед. без НДС, руб." },
-                { StaticColumns.CostWorksTotal, "Стоимость материалов/оборудования. Всего без НДС, руб" },
-                { StaticColumns.CostTotalPerUnit, "Стоимость всего. Стоимость за ед. без НДС, руб." },
-                { StaticColumns.CostTotal, "Стоимость всего. Всего без НДС, руб" },
+                { StaticColumns.Unit, "ЕД.ИЗМ." },
+                { StaticColumns.Count, "КОЛ-ВО" },
+                { StaticColumns.CostMaterialsPerUnit, "ЦЕНА МАТЕРИАЛОВ, РУБ БЕЗ НДС. ЗА ЕДИНИЦУ" },
+                { StaticColumns.CostMaterialsTotal, "ЦЕНА МАТЕРИАЛОВ, РУБ БЕЗ НДС. ВСЕГО" },
+                { StaticColumns.CostWorksPerUnit, "ЦЕНА РАБОТ, РУБ БЕЗ НДС. ЗА ЕДИНИЦУ" },
+                { StaticColumns.CostWorksTotal, "ЦЕНА РАБОТ, РУБ БЕЗ НДС. ВСЕГО" },
+                { StaticColumns.CostTotalPerUnit, "ЦЕНА ЗА ЕДИНИЦУ. РУБ БЕЗ НДС" },
+                { StaticColumns.CostTotal, "ЦЕНА ЗА ЕДИНИЦУ. РУБ БЕЗ НДС" },
+                { StaticColumns.Comment, "ПРИМЕЧАНИЕ" },
             };
+                //{ StaticColumns.CountProject, "Кол-во по проекту" },
+                //{ StaticColumns.NoEstimatesAndCalculations, "№ смет и расчетов" },
+                //{ StaticColumns.NameVOR, "Наименование ВОР" },
+                //{ StaticColumns.ProductCode, "КОД ПРОДУКЦИИ" },
 
         public Project() { }
 
@@ -114,8 +132,6 @@ namespace ACO.ProjectManager
             XElement xeColumns = new XElement("Columns");
             /// Диапазон значения
             XElement xeRangeValues = new XElement("RangeValues");
-            xeRangeValues.Add(new XAttribute("StartColumn", RangeValuesStart.ToString()));
-            xeRangeValues.Add(new XAttribute("EndColumn", RangeValuesEnd.ToString()));
             xeAnalysisSheet.Add(xeRangeValues);
 
             foreach (ColumnMapping cell in Columns)
@@ -126,8 +142,6 @@ namespace ACO.ProjectManager
             xeAnalysisSheet.Add(xeColumns);
             /// Диапазон предложения 
             XElement xeRangeOffer = new XElement("RangeOffer");
-            xeRangeOffer.Add(new XAttribute("FirstColumnOffer", FirstColumnOffer.ToString()));
-            xeRangeOffer.Add(new XAttribute("LastColumnOffer", LastColumnOffer.ToString()));
             xeAnalysisSheet.Add(xeRangeOffer);
 
             xeSheets.Add(xeAnalysisSheet);
@@ -156,17 +170,8 @@ namespace ACO.ProjectManager
             XElement xeRows = xeAnalysisSheet.Element("Rows");
             XElement xeRowStart = xeRows.Element("RowStart");
             project.RowStart = int.TryParse(xeRowStart.Attribute("Row").Value, out int r) ? r : 0;
-            /// Диапазон значений
-            XElement xeRangeValues = xeAnalysisSheet.Element("RangeValues");
-            project.RangeValuesStart = int.TryParse(xeRangeValues.Attribute("StartColumn").Value, out int sc) ? sc : 0;
-            project.RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("EndColumn").Value, out int ec) ? ec : 0;
             /// Столбцы
             project.Columns = LoadColumnsFromXElement(xeAnalysisSheet.Element("Columns"));
-            /// Диапазон предложения
-            XElement xeRangeOffer = xeAnalysisSheet.Element("RangeOffer");
-            project.FirstColumnOffer = int.TryParse(xeRangeOffer.Attribute("FirstColumnOffer").Value, out int fco) ? fco : 0;
-            project.LastColumnOffer = int.TryParse(xeRangeOffer.Attribute("LastColumnOffer").Value, out int lco) ? lco : 0;
-
             return project;
         }
 

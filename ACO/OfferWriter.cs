@@ -111,16 +111,18 @@ namespace ACO.Offers
                 Excel.Range copyRng = offerSheet.Range[
                     offerSheet.Cells[row, offerSettings.RangeValuesStart],
                     offerSheet.Cells[row, offerSettings.RangeValuesEnd]];
-                Excel.Range pasteRng = _sheet.Range[
-                    _sheet.Cells[rowPaste, _CurrentProject.RangeValuesStart],
-                    _sheet.Cells[rowPaste, _CurrentProject.RangeValuesEnd]];
-                if (pasteRng.Cells.Count == copyRng.Cells.Count)
-                {
-                    pasteRng.Value = copyRng.Value;
-                }
-                else { 
-                    throw new AddInException("Укажите одинаковое количество столбцов " +
-                                            "в диапазонах значений КП и проекта"); }
+
+
+                //Excel.Range pasteRng = _sheet.Range[
+                //    _sheet.Cells[rowPaste, _CurrentProject. RangeValuesStart],
+                //    _sheet.Cells[rowPaste, _CurrentProject.RangeValuesEnd]];
+                //if (pasteRng.Cells.Count == copyRng.Cells.Count)
+                //{
+                //    pasteRng.Value = copyRng.Value;
+                //}
+                //else { 
+                //    throw new AddInException("Укажите одинаковое количество столбцов " +
+                //                            "в диапазонах значений КП и проекта"); }
 
                 //_offerManager.
             }
@@ -163,24 +165,24 @@ namespace ACO.Offers
         //    }
         //}
 
-        private Excel.Range CopyRange()
-        {
-            int firstCol = _project.FirstColumnOffer;
-            int lastCol = _project.LastColumnOffer;
-            int lastRow = _project.RowStart;
+        //private Excel.Range CopyRange()
+        //{
+        //    int firstCol = _project.FirstColumnOffer;
+        //    int lastCol = _project.LastColumnOffer;
+        //    int lastRow = _project.RowStart;
 
-            Excel.Range rng = _sheet.Range[_sheet.Cells[1, firstCol], _sheet.Cells[lastRow, lastCol]];
-            int col = _project.FirstColumnOffer;
-            int colCount = _project.LastColumnOffer - _project.FirstColumnOffer + 1;
+        //    Excel.Range rng = _sheet.Range[_sheet.Cells[1, firstCol], _sheet.Cells[lastRow, lastCol]];
+        //    int col = _project.FirstColumnOffer;
+        //    int colCount = _project.LastColumnOffer - _project.FirstColumnOffer + 1;
 
-            while (_sheet.Cells[1, col].Value != "")
-            {
-                col = col + colCount;
-            }
-            rng.Copy(_sheet.Cells[1, col]);
-            rng = _sheet.Range[_sheet.Cells[1, col], _sheet.Cells[lastRow, col + colCount - 1]];
-            return rng;
-        }
+        //    while (_sheet.Cells[1, col].Value != "")
+        //    {
+        //        col = col + colCount;
+        //    }
+        //    rng.Copy(_sheet.Cells[1, col]);
+        //    rng = _sheet.Range[_sheet.Cells[1, col], _sheet.Cells[lastRow, col + colCount - 1]];
+        //    return rng;
+        //}
 
 
 

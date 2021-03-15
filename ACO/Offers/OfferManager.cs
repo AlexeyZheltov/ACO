@@ -171,12 +171,12 @@ namespace ACO
         //    return checkedMapping;
         //}
 
-        private int GetRowStart(Excel.Worksheet sheet)
-        {
-            Excel.Range findcell = sheet.UsedRange.Find("НАИМЕНОВАНИЕ РАБОТ", LookIn: Excel.XlFindLookIn.xlValues);
-            if (findcell is null) throw new AddInException("Лист не соответствует формату");
-            int row = findcell.Row + 2;
-            return row;
-        }
+        //private int GetRowStart(Excel.Worksheet sheet)
+        //{
+        //    Excel.Range findcell = sheet.UsedRange.Find("НАИМЕНОВАНИЕ РАБОТ", LookIn: Excel.XlFindLookIn.xlValues);
+        //    if (findcell is null) throw new AddInException("Лист не соответствует формату");
+        //    int row = findcell.Row + 2;
+        //    return row;
+        //}
     }
 }

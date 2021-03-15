@@ -48,6 +48,8 @@ namespace ACO
             string[] files = GetFiles();
             if (files.Length < 1) { return; }
 
+            string offerSettingsName = GetOfferSettings();
+
             ExcelHelpers.ExcelFile.Init();
             ExcelHelpers.ExcelFile.Acselerate(true);
             if (_pb is null)
@@ -100,6 +102,13 @@ namespace ACO
 
             });
 
+        }
+
+        private string GetOfferSettings()
+        {
+            string file = "";
+              
+            return file;
         }
 
 
@@ -181,7 +190,7 @@ namespace ACO
 
         //private void WriteOffers(List<Offer> offers, IProgressBarWithLogUI pb)
         //{
-         
+
         //    pb.SetSubBarVolume(offers.Count);
         //    //  ProjectManager.ProjectManager project = new ProjectManager.ProjectManager();
         //    //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();

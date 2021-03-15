@@ -193,6 +193,12 @@
     <Compile Include="Offers\FormManagerKP.Designer.cs">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Offers\FormSelectOfferSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Offers\FormSelectOfferSettings.Designer.cs">
+      <DependentUpon>FormSelectOfferSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Offers\Offer.cs" />
     <Compile Include="Offers\OfferColumnMapping.cs" />
     <Compile Include="Offers\OfferManager.cs" />
@@ -224,6 +230,9 @@
     <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Offers\FormSelectOfferSettings.resx">
+      <DependentUpon>FormSelectOfferSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgressBarWithLog.resx">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </EmbeddedResource>
@@ -241,6 +250,9 @@
     </Compile>
     <EmbeddedResource Include="Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
     <None Include="app.config" />
@@ -261,6 +273,12 @@
     <Compile Include="Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -273,7 +291,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Settings\" />
     <Folder Include="XMLSetting\" />
   </ItemGroup>
   <PropertyGroup>

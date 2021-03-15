@@ -28,142 +28,141 @@ namespace ACO.ProjectManager
             {
 
                 List<ColumnMapping> columns = new List<ColumnMapping>();
-
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Level],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "A"
+                });
                 columns.Add(new ColumnMapping()
                 {
                     Name =Project.ColumnsNames[StaticColumns.Number] ,
-                    //Value = "№ п/п",
                     Check = false,
                     Obligatory = true,
-                    ColumnSymbol = "J"
-                    //Address = "$J$3",
-                    //Row = 3,
-                    //Column = 10
+                    ColumnSymbol = "B"                   
                 });
                 columns.Add(new ColumnMapping()
                 {
-                    Name = Project.ColumnsNames[StaticColumns.NoEstimatesAndCalculations],
+                    Name = Project.ColumnsNames[StaticColumns.Cipher],
+                    Check = false,
+                    Obligatory = true,
+                    ColumnSymbol = "D"
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Classifier],
+                    Check = false,
+                    Obligatory = true,
+                    ColumnSymbol = "E"
+                });
+
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Name],                  
+                    Check = true,
+                    Obligatory = false,
+                    ColumnSymbol = "F"                  
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Material],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "H"
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Size],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "I"
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Type],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "J"
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.VendorCode],
                     Check = false,
                     Obligatory = false,
                     ColumnSymbol = "K"
-                }) ;
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.NameVOR],
-                    Check = false,
-                    Obligatory = false,
-                    ColumnSymbol = "L"
-                });
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.Code],
-                    Check = false,
-                    Obligatory = false,
-                    ColumnSymbol = "M"
-                });
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.ProductCode],
-                    Check = false,
-                    Obligatory = false,
-                    ColumnSymbol = "N"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.Producer],
                     Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "O"
-                });
-                
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.Name],
-                    //Value = "Наименование работ и затрат",
-                    Check = true,
-                    Obligatory = false,
-                    ColumnSymbol = "P"
-                    //Address = "$P$3",
-                    //Row = 3,
-                    //Column = 16
+                    ColumnSymbol = "L"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.Unit],
-                    //Value = "Ед. изм.",
-                    Check = true,
+                    Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "Q"
-                    //Address = "$Q$3",
-                    //Row = 3,
-                    //Column = 17
+                    ColumnSymbol = "M"
                 });
                 columns.Add(new ColumnMapping()
                 {
-                    Name = Project.ColumnsNames[StaticColumns.CountProject], //"Кол-во по проекту",
-                    //Name = "Кол-во по проекту",
-                    Check = true,
+                    Name = Project.ColumnsNames[StaticColumns.Count],
+                    Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "R"
-                    //Address = "$R$3",
-                    //Row = 3,
-                    //Column = 18
+                    ColumnSymbol = "N"
                 });
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.CountSH],//"Кол-во СХ",
-                    //Value = "Кол-во СХ",
-                    Check = true,
-                    Obligatory = false,
-                    ColumnSymbol = "S"
-                    //Address = "$S$3",
-                    //Row = 3,
-                    //Column = 19
-                });
-
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit],
                     Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "T"
-                });
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.CostMaterialsTotal],
-                    Check = false,
-                    Obligatory = false,
-                    ColumnSymbol = "U"
-                });
-                columns.Add(new ColumnMapping()
-                {
-                    Name = Project.ColumnsNames[StaticColumns.CostWorksPerUnit],
-                    Check = false,
-                    Obligatory = false,
-                    ColumnSymbol = "V"
+                    ColumnSymbol = "O"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostWorksTotal],
                     Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "W"
+                    ColumnSymbol = "P"
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostWorksPerUnit],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "Q"
+                });
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostWorksTotal ],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "R"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostTotalPerUnit],
                     Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "X"
+                    ColumnSymbol = "S"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostTotal],
                     Check = false,
                     Obligatory = false,
-                    ColumnSymbol = "Y"
+                    ColumnSymbol = "T"
                 });
-
+                columns.Add(new ColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Comment],
+                    Check = false,
+                    Obligatory = false,
+                    ColumnSymbol = "U"
+                });
+   
                 defProject = new Project()
                 {
                     FileName = Path.Combine(ProjectManager.GetFolderProjects(), name + ".xml"),
