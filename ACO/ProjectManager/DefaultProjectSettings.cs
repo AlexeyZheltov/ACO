@@ -122,7 +122,7 @@ namespace ACO.ProjectManager
                 });
                 columns.Add(new ColumnMapping()
                 {
-                    Name = Project.ColumnsNames[StaticColumns.CostWorksTotal],
+                    Name = Project.ColumnsNames[StaticColumns.CostMaterialsTotal],
                     Check = false,
                     Obligatory = false,
                     ColumnSymbol = "P"

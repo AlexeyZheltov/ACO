@@ -269,7 +269,6 @@
             this.groupBox3.Size = new System.Drawing.Size(296, 146);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
             // BtnSetSelectedRangeValues
             // 

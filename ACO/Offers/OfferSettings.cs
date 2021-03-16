@@ -19,15 +19,7 @@ namespace ACO.Offers
         public string FileName { get; set; }
 
         public string SheetName { get; set; }
-        /// <summary>
-        ///  Номер столбца начала значний
-        /// </summary>
-      //  public int RangeValuesStart { get; set; }
-        /// <summary>
-        /// последний номер столбцов значений
-        /// </summary>
-     //   public int RangeValuesEnd { get; set; }
-
+      
         /// <summary>
         /// Строка начала данных
         /// </summary>
@@ -99,11 +91,8 @@ namespace ACO.Offers
             XElement xeRows = xeDataSheet.Element("Rows");
             XElement xeRowStart = xeRows.Element("RowStart");
             RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;
-
-            XElement xeRangeValues = xeDataSheet.Element("RangeVaues");
-            //RangeValuesStart = int.TryParse(xeRangeValues.Attribute("Start").Value?.ToString() ?? "", out int rvs) ? rvs : 0;
-            //RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("End").Value?.ToString() ?? "", out int rve) ? rve : 0;
-
+                
+           
             Columns = LoadColumnsFromXElement(xeDataSheet.Element("Columns"));
         }
 

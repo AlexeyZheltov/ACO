@@ -55,12 +55,66 @@ namespace ACO
                     {
                         if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
                         _pb.MainBarTick(fileName);
-
                         excelBook.Open(fileName);
                         OfferWriter offerWriter = new OfferWriter(excelBook);
-                        
                         offerWriter.Print(_pb, offerSettingsName);
-                         
+                    }
+                    catch (AddInException ex)
+                    {
+                        TextBox tb = _pb.GetLogTextBox();
+                        tb.Text += "Ошибка:" + ex.Message + " (" + ex.InnerException.Message + ")" + Environment.NewLine;
+                    }
+                    finally
+                    {
+                        excelBook.Close();
+                        ExcelHelpers.ExcelFile.Acselerate(false);
+                        ExcelHelpers.ExcelFile.Finish();
+                    }
+                }
+
+                if (_pb.IsAborted)
+                {
+                    _pb.ClearMainBar();
+                    _pb.ClearSubBar();
+                    _pb.IsAborted = false;
+                    MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+            });
+
+        }
+
+        private async void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
+        {
+            string[] files = GetFiles();
+            if (files.Length < 1) { return; }
+
+            ExcelHelpers.ExcelFile.Init();
+            ExcelHelpers.ExcelFile.Acselerate(true);
+            if (_pb is null)
+            {
+                _pb = new ProgressBarWithLog();
+                _pb.CloseForm += () => { _pb = null; };
+                _pb.Show(new AddinWindow(Globals.ThisAddIn));
+            }
+            _pb.ClearMainBar();
+            _pb.ClearSubBar();
+            _pb.SetMainBarVolum(files.Length);
+
+            await Task.Run(() =>
+            {
+                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+                foreach (string fileName in files)
+                {
+                    try
+                    {
+                        if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
+                        _pb.MainBarTick(fileName);
+                        excelBook.Open(fileName);
+                        OfferWriter offerWriter = new OfferWriter(excelBook);
+                        offerWriter.PrintSpectrum(_pb);
                     }
                     catch (AddInException ex)
                     {
@@ -98,7 +152,7 @@ namespace ACO
             }
             return settingsFile;
         }
-
+      
         //private async void BtnLoadKP_Click1(object sender, RibbonControlEventArgs e)
         //{
         //    try
@@ -266,5 +320,7 @@ namespace ACO
             FormSettings form = new FormSettings();
             form.ShowDialog(new AddinWindow(Globals.ThisAddIn));
         }
+
+       
     }
 }
