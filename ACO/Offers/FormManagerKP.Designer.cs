@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManagerKP));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ListKP = new System.Windows.Forms.ListView();
             this.ColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -43,28 +43,24 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
             this.TBoxSheetName = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.BtnSetSelectedRangeValues = new System.Windows.Forms.Button();
-            this.TBoxFirstColumnRangeValues = new System.Windows.Forms.TextBox();
-            this.TBoxLastColumnRangeValues = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.TBoxFirstRowRangeValues = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.BtnSave = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // ListKP
@@ -182,8 +178,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -200,109 +196,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Настройки КП";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.label6);
-            this.tabPage2.Controls.Add(this.TBoxSheetName);
-            this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(553, 435);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Диапазон";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(42, 24);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Лист Анализ";
-            // 
-            // TBoxSheetName
-            // 
-            this.TBoxSheetName.Location = new System.Drawing.Point(142, 24);
-            this.TBoxSheetName.Name = "TBoxSheetName";
-            this.TBoxSheetName.Size = new System.Drawing.Size(147, 20);
-            this.TBoxSheetName.TabIndex = 11;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.BtnSetSelectedRangeValues);
-            this.groupBox3.Controls.Add(this.TBoxFirstColumnRangeValues);
-            this.groupBox3.Controls.Add(this.TBoxLastColumnRangeValues);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.TBoxFirstRowRangeValues);
-            this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Location = new System.Drawing.Point(16, 60);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(294, 164);
-            this.groupBox3.TabIndex = 9;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Диапазон сумм";
-            // 
-            // BtnSetSelectedRangeValues
-            // 
-            this.BtnSetSelectedRangeValues.Location = new System.Drawing.Point(129, 118);
-            this.BtnSetSelectedRangeValues.Name = "BtnSetSelectedRangeValues";
-            this.BtnSetSelectedRangeValues.Size = new System.Drawing.Size(144, 29);
-            this.BtnSetSelectedRangeValues.TabIndex = 6;
-            this.BtnSetSelectedRangeValues.Text = "Выделенный диапазон";
-            this.BtnSetSelectedRangeValues.UseVisualStyleBackColor = true;
-            this.BtnSetSelectedRangeValues.Click += new System.EventHandler(this.BtnSetSelectedRangeValues_Click);
-            // 
-            // TBoxFirstColumnRangeValues
-            // 
-            this.TBoxFirstColumnRangeValues.Location = new System.Drawing.Point(181, 28);
-            this.TBoxFirstColumnRangeValues.Name = "TBoxFirstColumnRangeValues";
-            this.TBoxFirstColumnRangeValues.Size = new System.Drawing.Size(92, 20);
-            this.TBoxFirstColumnRangeValues.TabIndex = 1;
-            // 
-            // TBoxLastColumnRangeValues
-            // 
-            this.TBoxLastColumnRangeValues.Location = new System.Drawing.Point(181, 54);
-            this.TBoxLastColumnRangeValues.Name = "TBoxLastColumnRangeValues";
-            this.TBoxLastColumnRangeValues.Size = new System.Drawing.Size(92, 20);
-            this.TBoxLastColumnRangeValues.TabIndex = 1;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(26, 87);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(124, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Строка начала данных ";
-            // 
-            // TBoxFirstRowRangeValues
-            // 
-            this.TBoxFirstRowRangeValues.Location = new System.Drawing.Point(181, 80);
-            this.TBoxFirstRowRangeValues.Name = "TBoxFirstRowRangeValues";
-            this.TBoxFirstRowRangeValues.Size = new System.Drawing.Size(92, 20);
-            this.TBoxFirstRowRangeValues.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(110, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Последний столбец ";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 34);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(91, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Первый столбец";
             // 
             // tabPage3
             // 
@@ -330,12 +223,79 @@
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(544, 423);
             this.TableColumns.TabIndex = 7;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(553, 435);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Диапазон";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(23, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Лист Анализ";
+            // 
+            // TBoxSheetName
+            // 
+            this.TBoxSheetName.Location = new System.Drawing.Point(123, 23);
+            this.TBoxSheetName.Name = "TBoxSheetName";
+            this.TBoxSheetName.Size = new System.Drawing.Size(147, 20);
+            this.TBoxSheetName.TabIndex = 11;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.BtnSetSelectedRangeValues);
+            this.groupBox3.Controls.Add(this.TBoxSheetName);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.TBoxFirstRowRangeValues);
+            this.groupBox3.Location = new System.Drawing.Point(21, 17);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(296, 146);
+            this.groupBox3.TabIndex = 9;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
+            // 
+            // BtnSetSelectedRangeValues
+            // 
+            this.BtnSetSelectedRangeValues.Location = new System.Drawing.Point(126, 101);
+            this.BtnSetSelectedRangeValues.Name = "BtnSetSelectedRangeValues";
+            this.BtnSetSelectedRangeValues.Size = new System.Drawing.Size(144, 29);
+            this.BtnSetSelectedRangeValues.TabIndex = 6;
+            this.BtnSetSelectedRangeValues.Text = "Выделенный диапазон";
+            this.BtnSetSelectedRangeValues.UseVisualStyleBackColor = true;
+            this.BtnSetSelectedRangeValues.Click += new System.EventHandler(this.BtnSetSelectedRangeValues_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(36, 67);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(124, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Строка начала данных ";
+            // 
+            // TBoxFirstRowRangeValues
+            // 
+            this.TBoxFirstRowRangeValues.Location = new System.Drawing.Point(178, 64);
+            this.TBoxFirstRowRangeValues.Name = "TBoxFirstRowRangeValues";
+            this.TBoxFirstRowRangeValues.Size = new System.Drawing.Size(92, 20);
+            this.TBoxFirstRowRangeValues.TabIndex = 1;
             // 
             // BtnSave
             // 
@@ -372,17 +332,15 @@
             this.Name = "FormManagerKP";
             this.ShowIcon = false;
             this.Text = "Диспетчер КП";
-            this.Load += new System.EventHandler(this.FormManagerKP_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -404,12 +362,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button BtnSetSelectedRangeValues;
-        private System.Windows.Forms.TextBox TBoxFirstColumnRangeValues;
-        private System.Windows.Forms.TextBox TBoxLastColumnRangeValues;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox TBoxFirstRowRangeValues;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tabPage3;
         private ProjectManager.CustomDataGrid TableColumns;
         private System.Windows.Forms.Button BtnSave;

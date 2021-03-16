@@ -44,7 +44,6 @@ namespace ACO.ProjectManager
 
                 TableProjects.Columns[0].Width = 70;
                 TableProjects.Columns[1].Width = 120;
-
                 TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             else
@@ -127,7 +126,7 @@ namespace ACO.ProjectManager
             TableColumns.DataSource = Source;
         }
 
-        private void BtnDel_Click(object sender, EventArgs e)
+        private void BtnDelete_Click(object sender, EventArgs e)
         {
             if (_selectedCell != null)
             {
@@ -135,6 +134,7 @@ namespace ACO.ProjectManager
             }
             UpdateTableColumns();
         }
+        
         /// <summary>
         ///  Удалить строку
         /// </summary>
@@ -222,10 +222,7 @@ namespace ACO.ProjectManager
             System.Diagnostics.Process.Start(folder);
         }
 
-        private void BtnDelete_Click(object sender, EventArgs e)
-        {
-            
-        }
+     
 
         /// <summary>
         ///  Кнопка Выделенный диапазон \ вкладка 

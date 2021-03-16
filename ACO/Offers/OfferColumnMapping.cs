@@ -30,7 +30,7 @@ namespace ACO.Offers
         {
             XElement xeColumn = new XElement("column");
             xeColumn.Add(new XAttribute("Name", Name));
-            xeColumn.Add(new XAttribute("ColumnSymbol", ColumnSymbol));           
+            xeColumn.Add(new XAttribute("ColumnSymbol", ColumnSymbol??""));           
             return xeColumn;
         }
             

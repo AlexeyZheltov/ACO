@@ -22,11 +22,11 @@ namespace ACO.Offers
         /// <summary>
         ///  Номер столбца начала значний
         /// </summary>
-        public int RangeValuesStart { get; set; }
+      //  public int RangeValuesStart { get; set; }
         /// <summary>
         /// последний номер столбцов значений
         /// </summary>
-        public int RangeValuesEnd { get; set; }
+     //   public int RangeValuesEnd { get; set; }
 
         /// <summary>
         /// Строка начала данных
@@ -101,8 +101,8 @@ namespace ACO.Offers
             RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;
 
             XElement xeRangeValues = xeDataSheet.Element("RangeVaues");
-            RangeValuesStart = int.TryParse(xeRangeValues.Attribute("Start").Value?.ToString() ?? "", out int rvs) ? rvs : 0;
-            RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("End").Value?.ToString() ?? "", out int rve) ? rve : 0;
+            //RangeValuesStart = int.TryParse(xeRangeValues.Attribute("Start").Value?.ToString() ?? "", out int rvs) ? rvs : 0;
+            //RangeValuesEnd = int.TryParse(xeRangeValues.Attribute("End").Value?.ToString() ?? "", out int rve) ? rve : 0;
 
             Columns = LoadColumnsFromXElement(xeDataSheet.Element("Columns"));
         }
@@ -135,10 +135,10 @@ namespace ACO.Offers
             XElement xeDataSheet = new XElement("DataSheet");
             xeDataSheet.Add(new XAttribute("SheetName", SheetName ?? ""));
             XElement xeRangeValues = new XElement("RangeVaues");
-            XAttribute xaStart = new XAttribute("Start", RangeValuesStart.ToString());
-            XAttribute xaEnd = new XAttribute("End", RangeValuesEnd.ToString());
-            xeRangeValues.Add(xaStart);
-            xeRangeValues.Add(xaEnd);
+            //XAttribute xaStart = new XAttribute("Start", RangeValuesStart.ToString());
+            //XAttribute xaEnd = new XAttribute("End", RangeValuesEnd.ToString());
+            //xeRangeValues.Add(xaStart);
+            //xeRangeValues.Add(xaEnd);
             xeDataSheet.Add(xeRangeValues);
 
             XElement xeRows = new XElement("Rows");

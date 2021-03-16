@@ -32,6 +32,7 @@ namespace ACO
 
             string offerSettingsName = GetOfferSettings();
 
+
             ExcelHelpers.ExcelFile.Init();
             ExcelHelpers.ExcelFile.Acselerate(true);
             if (_pb is null)
@@ -57,7 +58,8 @@ namespace ACO
 
                         excelBook.Open(fileName);
                         OfferWriter offerWriter = new OfferWriter(excelBook);
-                        offerWriter.Print(_pb);
+                        
+                        offerWriter.Print(_pb, offerSettingsName);
                          
                     }
                     catch (AddInException ex)

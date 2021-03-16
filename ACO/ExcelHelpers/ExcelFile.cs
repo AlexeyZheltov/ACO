@@ -82,6 +82,7 @@ namespace ACO.ExcelHelpers
 
             return null;
         }
+
         public Excel.Worksheet GetSheet(int index)
         {
             if (index <= WorkBook.Worksheets.Count && index > 0)
@@ -91,6 +92,7 @@ namespace ACO.ExcelHelpers
             }
             throw new AddInException($"Лист {index}. Отсутствует");
         }
+
         /// <summary>
         /// Обновляет кэш страниц
         /// </summary>

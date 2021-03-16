@@ -57,46 +57,62 @@ namespace ACO.Offers
         /// Печать КП
         /// </summary>
         /// <param name="offer"></param>
-        internal void Print(IProgressBarWithLogUI pb)
-        {
-            /// TODO определить файл настроек 
-            OfferSettings offerSettings = _offerManager.Mappings.First();
-            Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName); 
-            
-            _sheet = _offerBook.GetSheet(1);
+        internal void Print(IProgressBarWithLogUI pb, string offerSettingsName)
+        {            
+            OfferSettings offerSettings = _offerManager.Mappings.Find(s=>s.Name == offerSettingsName);
 
+            Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName);
+            _sheet = _offerBook.GetSheet(1);
+            
             int lastRow = GetLastRow(offerSheet);
             int countRows = lastRow - offerSettings.RowStart - 1;
+
             pb.SetSubBarVolume(countRows);
 
-            for (int row = offerSettings.RowStart; row <= lastRow; row++)
+            // for (int row = offerSettings.RowStart; row <= lastRow; row++)
+            //string columnName = _CurrentProject.Columns.Find(a => a.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
+
+            for (int i = 1; i<=countRows; i++)
             {
+                int row = offerSettings.RowStart + i - 1;
                 pb.SubBarTick();
                 Record record = new Record();
-                //string nameColumnNumber
-                //record.Number 
-               string columnName = _CurrentProject.Columns.Find(a => a.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
-                OfferColumnMapping colNm = offerSettings.Columns.Find(x => x.Name == record.Number);
+                                              
+                OfferColumnMapping colNumber = offerSettings.Columns.Find(x => x.Name == record.Number );
                 foreach (OfferColumnMapping col in offerSettings.Columns)
                 {
-                    if (!string.IsNullOrEmpty(col.Name))
+                    if (string.IsNullOrEmpty(col.ColumnSymbol)) continue;                    
+                    ColumnMapping projectColumn = _CurrentProject.Columns.Find(a => a.Name == col.Name);
+                    if (projectColumn != null)
                     {
-                        ColumnMapping projectCol = _CurrentProject.Columns.Find(a => a.Name == col.Name);
-                        if (projectCol is null) continue;
-                        //string val = offerSheet.Cells[row, col.Column].value?.ToString() ?? "";
-                        //if (string.IsNullOrWhiteSpace(val))
                         object val = offerSheet.Range[$"${col.ColumnSymbol}${row}"].Value;
-                        if(val != null)
-                        {
-                            if (projectCol.Check)
-                            {
-                                string v = val.ToString();
-                                record.KeyFilds.Add(v);
-                            record.Values.Add(col.Name, val);
-                            }
-                        }
 
+                        if (projectColumn.Check)
+                        {
+                           
+                        }
+                        if (projectColumn.Obligatory)
+                        {
+
+                        }
                     }
+
+                    //if (!string.IsNullOrEmpty(col.Name))
+                    //{
+                        //if (projectCol is null) continue;
+                        ////string val = offerSheet.Cells[row, col.Column].value?.ToString() ?? "";
+                        ////if (string.IsNullOrWhiteSpace(val))
+                        //object val = offerSheet.Range[$"${col.ColumnSymbol}${row}"].Value;
+                        //if(val != null)
+                        //{
+                        //    if (projectCol.Check)
+                        //    {
+                        //        string v = val.ToString();
+                        //        record.KeyFilds.Add(v);
+                        //    record.Values.Add(col.Name, val);
+                        //    }
+                        //}
+                    //}
                 }
                int rowPaste = GetRow(record);
                 
@@ -108,9 +124,9 @@ namespace ACO.Offers
                 }
 
                 /// Вставка диазазона сумм
-                Excel.Range copyRng = offerSheet.Range[
-                    offerSheet.Cells[row, offerSettings.RangeValuesStart],
-                    offerSheet.Cells[row, offerSettings.RangeValuesEnd]];
+                //Excel.Range copyRng = offerSheet.Range[
+                //    offerSheet.Cells[row, offerSettings.RangeValuesStart],
+                //    offerSheet.Cells[row, offerSettings.RangeValuesEnd]];
 
 
                 //Excel.Range pasteRng = _sheet.Range[
