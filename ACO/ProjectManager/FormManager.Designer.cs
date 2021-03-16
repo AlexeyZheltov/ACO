@@ -65,7 +65,7 @@
             // BtnAccept
             // 
             this.BtnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAccept.Location = new System.Drawing.Point(375, 509);
+            this.BtnAccept.Location = new System.Drawing.Point(272, 487);
             this.BtnAccept.Name = "BtnAccept";
             this.BtnAccept.Size = new System.Drawing.Size(106, 23);
             this.BtnAccept.TabIndex = 1;
@@ -77,13 +77,12 @@
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnCancel.Location = new System.Drawing.Point(487, 509);
+            this.BtnCancel.Location = new System.Drawing.Point(384, 487);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(106, 23);
             this.BtnCancel.TabIndex = 1;
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
-            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // tabPage1
             // 
@@ -91,7 +90,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(597, 468);
+            this.tabPage1.Size = new System.Drawing.Size(494, 446);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Конфигурация";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -104,7 +103,7 @@
             this.TbInfo.Location = new System.Drawing.Point(4, 41);
             this.TbInfo.Multiline = true;
             this.TbInfo.Name = "TbInfo";
-            this.TbInfo.Size = new System.Drawing.Size(589, 413);
+            this.TbInfo.Size = new System.Drawing.Size(486, 391);
             this.TbInfo.TabIndex = 7;
             // 
             // tabPage2
@@ -116,11 +115,10 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(597, 468);
+            this.tabPage2.Size = new System.Drawing.Size(494, 446);
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Диапазоны";
             this.tabPage2.UseVisualStyleBackColor = true;
-            this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
             // 
             // label6
             // 
@@ -130,7 +128,6 @@
             this.label6.Size = new System.Drawing.Size(72, 13);
             this.label6.TabIndex = 12;
             this.label6.Text = "Лист Анализ";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // TBoxSheetName
             // 
@@ -161,11 +158,10 @@
             this.PageColumns.Location = new System.Drawing.Point(4, 22);
             this.PageColumns.Name = "PageColumns";
             this.PageColumns.Padding = new System.Windows.Forms.Padding(3);
-            this.PageColumns.Size = new System.Drawing.Size(597, 468);
+            this.PageColumns.Size = new System.Drawing.Size(494, 446);
             this.PageColumns.TabIndex = 0;
             this.PageColumns.Text = "Столбцы";
             this.PageColumns.UseVisualStyleBackColor = true;
-            this.PageColumns.Click += new System.EventHandler(this.PageColumns_Click);
             // 
             // TableColumns
             // 
@@ -186,11 +182,10 @@
             this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableColumns.Size = new System.Drawing.Size(585, 455);
+            this.TableColumns.Size = new System.Drawing.Size(482, 433);
             this.TableColumns.TabIndex = 0;
-            this.TableColumns.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellContentClick);
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
-            this.TableColumns.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.TableColumns_RowsRemoved);            
+            this.TableColumns.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.TableColumns_RowsRemoved);
             // 
             // PageProject
             // 
@@ -203,7 +198,7 @@
             this.PageProject.Location = new System.Drawing.Point(4, 22);
             this.PageProject.Name = "PageProject";
             this.PageProject.Padding = new System.Windows.Forms.Padding(3);
-            this.PageProject.Size = new System.Drawing.Size(597, 468);
+            this.PageProject.Size = new System.Drawing.Size(494, 446);
             this.PageProject.TabIndex = 1;
             this.PageProject.Text = "Проект";
             this.PageProject.UseVisualStyleBackColor = true;
@@ -221,7 +216,7 @@
             // BtnDelete
             // 
             this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnDelete.Location = new System.Drawing.Point(490, 109);
+            this.BtnDelete.Location = new System.Drawing.Point(410, 109);
             this.BtnDelete.Name = "BtnDelete";
             this.BtnDelete.Size = new System.Drawing.Size(71, 24);
             this.BtnDelete.TabIndex = 4;
@@ -232,7 +227,7 @@
             // BtnSelect
             // 
             this.BtnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSelect.Location = new System.Drawing.Point(409, 109);
+            this.BtnSelect.Location = new System.Drawing.Point(329, 109);
             this.BtnSelect.Name = "BtnSelect";
             this.BtnSelect.Size = new System.Drawing.Size(71, 24);
             this.BtnSelect.TabIndex = 4;
@@ -249,7 +244,7 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Location = new System.Drawing.Point(15, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(546, 60);
+            this.groupBox2.Size = new System.Drawing.Size(473, 60);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
@@ -259,13 +254,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TboxProjectName.Location = new System.Drawing.Point(129, 22);
             this.TboxProjectName.Name = "TboxProjectName";
-            this.TboxProjectName.Size = new System.Drawing.Size(317, 20);
+            this.TboxProjectName.Size = new System.Drawing.Size(244, 20);
             this.TboxProjectName.TabIndex = 3;
             // 
             // BtnAddProject
             // 
             this.BtnAddProject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAddProject.Location = new System.Drawing.Point(461, 17);
+            this.BtnAddProject.Location = new System.Drawing.Point(388, 17);
             this.BtnAddProject.Name = "BtnAddProject";
             this.BtnAddProject.Size = new System.Drawing.Size(71, 30);
             this.BtnAddProject.TabIndex = 2;
@@ -309,7 +304,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableProjects.Size = new System.Drawing.Size(566, 326);
+            this.TableProjects.Size = new System.Drawing.Size(482, 304);
             this.TableProjects.TabIndex = 0;
             this.TableProjects.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellContentClick);
             this.TableProjects.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellValueChanged);
@@ -326,7 +321,7 @@
             this.tabControl1.Location = new System.Drawing.Point(3, 15);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(605, 494);
+            this.tabControl1.Size = new System.Drawing.Size(502, 472);
             this.tabControl1.TabIndex = 0;
             // 
             // FormManager
@@ -335,13 +330,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnCancel;
-            this.ClientSize = new System.Drawing.Size(611, 534);
+            this.ClientSize = new System.Drawing.Size(508, 512);
             this.Controls.Add(this.BtnCancel);
             this.Controls.Add(this.BtnAccept);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormManager";
             this.ShowIcon = false;
             this.Text = "Диспетчер";
+            this.Load += new System.EventHandler(this.FormManager_Load);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);

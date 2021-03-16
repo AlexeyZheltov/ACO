@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace ACO.Offers
 {
-    class OfferColumnMapping
+    public class OfferColumnMapping
     {
         /// <summary>
         ///  Наименование столбца на листе анализ
@@ -16,25 +16,13 @@ namespace ACO.Offers
 
 
         public OfferColumnMapping() { }
-        //public OfferColumnMapping(Excel.Range cell)
-        //{
-        //    Link = "";
-        //    Value = cell.Value?.ToString() ?? "";           
-        //    Address = cell.Address;
-        //    Row = cell.Row;
-        //    Column = cell.Column;
-        //}
+       
         public static OfferColumnMapping GetCellFromXElement(XElement xElement)
         {
             return new OfferColumnMapping()
             {
                 Name = xElement.Attribute("Name").Value,
-                ColumnSymbol = xElement.Attribute("ColumnSymbol").Value
-                //Link = xElement.Attribute("Link").Value,
-                //Value = xElement.Attribute("Value").Value,
-                //Row = int.Parse(xElement.Attribute("Row").Value),
-                //Column = int.Parse(xElement.Attribute("Column").Value),
-                //Address = xElement.Attribute("Address").Value
+                ColumnSymbol = xElement.Attribute("ColumnSymbol").Value               
             };
         }
 
@@ -42,12 +30,7 @@ namespace ACO.Offers
         {
             XElement xeColumn = new XElement("column");
             xeColumn.Add(new XAttribute("Name", Name));
-            xeColumn.Add(new XAttribute("ColumnSymbol", ColumnSymbol));
-            //xeColumn.Add(new XAttribute("Link", Link));
-            //xeColumn.Add(new XAttribute("Value", Value));
-            //xeColumn.Add(new XAttribute("Row", Row));
-            //xeColumn.Add(new XAttribute("Column", Column));
-            //xeColumn.Add(new XAttribute("Address", Address));
+            xeColumn.Add(new XAttribute("ColumnSymbol", ColumnSymbol));           
             return xeColumn;
         }
             

@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using System.IO;
 using ACO.Offers;
+using ACO.Settings;
 
 namespace ACO
 {
@@ -18,26 +19,7 @@ namespace ACO
         {
             _app = Globals.ThisAddIn.Application;
         }
-
-        /// <summary>
-        /// Диалог выбора файлов КП
-        /// </summary>
-        /// <returns></returns>
-        private string[] GetFiles()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
-            openFileDialog.Title = "Выберите файлы КП";
-            openFileDialog.Multiselect = true;
-            string[] files = default;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                files = openFileDialog.FileNames;
-            }
-            return files;
-        }
-
-
+         
         /// <summary>
         /// Загрузка КП
         /// </summary>
@@ -106,9 +88,13 @@ namespace ACO
 
         private string GetOfferSettings()
         {
-            string file = "";
-              
-            return file;
+            string settingsFile = "";
+            FormSelectOfferSettings form = new FormSelectOfferSettings();
+            if (form.ShowDialog(new AddinWindow(Globals.ThisAddIn)) == DialogResult.OK)
+            {
+               settingsFile = form.OfferSettingsName ??"" ;
+            }
+            return settingsFile;
         }
 
         //private async void BtnLoadKP_Click1(object sender, RibbonControlEventArgs e)
@@ -204,6 +190,45 @@ namespace ACO
         //    }
         //}
 
+        /*
+         
+         
+         
+         */
+
+
+        /// <summary>
+        /// Диалог выбора файлов КП
+        /// </summary>
+        /// <returns></returns>
+        private string[] GetFiles()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
+            openFileDialog.Title = "Выберите файлы";
+            openFileDialog.Multiselect = true;
+            string[] files = default;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                files = openFileDialog.FileNames;
+            }
+            return files;
+        }
+        private string GetFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
+            openFileDialog.Title = "Выберите файл";
+            openFileDialog.Multiselect = false;
+            string file = default;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                file = openFileDialog.FileName;
+                //if (!File.Exists(file)) return;
+            }                        
+            return file;
+        }
+
         /// <summary>
         ///  Создание проекта сравнения КП
         /// </summary>
@@ -215,15 +240,7 @@ namespace ACO
             string path = default;
             if (!File.Exists(pathTamplate))
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
-                openFileDialog.Title = "Выберите файл шаблона проекта";
-                openFileDialog.Multiselect = false;
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    path = openFileDialog.FileName;
-                    if (!File.Exists(path)) return;
-                }
+                path = GetFile();                
             }
             else { path = pathTamplate; }
             Excel.Workbook newProjectBook = _app.Workbooks.Open(path);
@@ -242,6 +259,10 @@ namespace ACO
             new Offers.FormManagerKP().Show(new AddinWindow(Globals.ThisAddIn));
         }
 
-
+        private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormSettings form = new FormSettings();
+            form.ShowDialog(new AddinWindow(Globals.ThisAddIn));
+        }
     }
 }

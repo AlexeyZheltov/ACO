@@ -49,6 +49,7 @@ namespace ACO.Offers
             // BtnOK
             // 
             this.BtnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.BtnOK.Location = new System.Drawing.Point(84, 190);
             this.BtnOK.Name = "BtnOK";
             this.BtnOK.Size = new System.Drawing.Size(84, 23);

@@ -32,12 +32,7 @@ namespace ACO.ProjectManager
         CostTotal,
         Comment
     }
-
-    //NoEstimatesAndCalculations,
-    //NameVOR,
-    //ProductCode,
-    //CountProject,
-    //CountSH,
+       
 
     class Project
     {
@@ -57,18 +52,7 @@ namespace ACO.ProjectManager
         ///  Название листа 
         /// </summary>
         public string AnalysisSheetName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        //public int RangeValuesStart { get; set; }
-        //public int RangeValuesEnd { get; set; }
-
-        /// <summary>
-        /// Начало вставки КП
-        /// </summary>
-        //public int FirstColumnOffer { get; set; }
-        //public int LastColumnOffer { get; set; }
-
+        
         /// <summary>
         /// Строка начала данных
         /// </summary>
@@ -104,11 +88,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.CostTotal, "ЦЕНА ЗА ЕДИНИЦУ. РУБ БЕЗ НДС" },
                 { StaticColumns.Comment, "ПРИМЕЧАНИЕ" }
             };
-                //{ StaticColumns.CountProject, "Кол-во по проекту" },
-                //{ StaticColumns.NoEstimatesAndCalculations, "№ смет и расчетов" },
-                //{ StaticColumns.NameVOR, "Наименование ВОР" },
-                //{ StaticColumns.ProductCode, "КОД ПРОДУКЦИИ" },
-
+              
         public Project() { }
 
         /// <summary>

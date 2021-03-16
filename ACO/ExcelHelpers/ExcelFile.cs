@@ -82,7 +82,15 @@ namespace ACO.ExcelHelpers
 
             return null;
         }
-
+        public Excel.Worksheet GetSheet(int index)
+        {
+            if (index <= WorkBook.Worksheets.Count && index > 0)
+            {
+                Excel.Worksheet worksheet = WorkBook.Worksheets[index];
+                return worksheet;
+            }
+            throw new AddInException($"Лист {index}. Отсутствует");
+        }
         /// <summary>
         /// Обновляет кэш страниц
         /// </summary>

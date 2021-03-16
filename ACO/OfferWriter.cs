@@ -61,9 +61,9 @@ namespace ACO.Offers
         {
             /// TODO определить файл настроек 
             OfferSettings offerSettings = _offerManager.Mappings.First();
-
-            Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName);
-            _sheet = GetSheet(_CurrentProject.AnalysisSheetName);
+            Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName); 
+            
+            _sheet = _offerBook.GetSheet(1);
 
             int lastRow = GetLastRow(offerSheet);
             int countRows = lastRow - offerSettings.RowStart - 1;

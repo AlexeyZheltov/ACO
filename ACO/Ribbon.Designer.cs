@@ -112,7 +112,7 @@
             this.BtnLoadLvl12.Label = "Урв 12";
             this.BtnLoadLvl12.Name = "BtnLoadLvl12";
             this.BtnLoadLvl12.ShowImage = true;
-             // 
+            // 
             // BtnLoadLvl11
             // 
             this.BtnLoadLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl11.Image")));
@@ -174,6 +174,7 @@
             this.BtnSettings.Label = "Настройки";
             this.BtnSettings.Name = "BtnSettings";
             this.BtnSettings.ShowImage = true;
+            this.BtnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
             // 
             // group6
             // 
@@ -202,7 +203,7 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
-              // 
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";

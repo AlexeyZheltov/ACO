@@ -13,41 +13,43 @@ namespace ACO.Offers
     public partial class FormSelectOfferSettings : Form
     {
         public string OfferSettingsName { get; set; }
-        List<OfferSettings> _offerSettings;
-          OfferSettings Settings { get; set; }
+        List<OfferSettings> _Mappings;
+        // public  OfferSettings Mapping { get; set; }
+        // string nameOfferSetting = "";
 
         public FormSelectOfferSettings()
         {
             InitializeComponent();
-            ///_offerSettings = new List<OfferSettings>();
-            _offerSettings = new OfferManager().Mappings;
+            _Mappings = new OfferManager().Mappings;
         }
 
 
         private void FormSelectOfferSettings_Load(object sender, EventArgs e)
         {
-            BindingSource source = new BindingSource();
-            for (int i = 0; i < _offerSettings.Count; i++)
+            // BindingSource source = new BindingSource();
+            for (int i = 0; i < _Mappings.Count; i++)
             {
-                source.Add(_offerSettings[i].Name);
+                listBoxOffers.Items.Add(_Mappings[i].Name);
             }
-            listBoxOffers.DataSource = source;            
+            //   source.Add(_offerSettings[i].Name);
+            // listBoxOffers.DataSource = source;            
         }
 
         private void BtnOK_Click(object sender, EventArgs e)
         {
-                if (Settings != null)
-            {
-                DialogResult = DialogResult.OK;
-            }
+            //    if (Mapping != null)
+            //{
+            //    DialogResult = DialogResult.OK;
+            //}
         }
 
         private void listBoxOffers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBoxOffers.SelectedItem != null)
             {
-                string name = listBoxOffers.SelectedItem.ToString();
-                Settings = _offerSettings.Find(x => x.Name == name);              
+                OfferSettingsName = listBoxOffers.SelectedItem.ToString();
+               
+                // Mapping = _offerSettings.Find(x => x.Name == name);              
             }
         }
     }

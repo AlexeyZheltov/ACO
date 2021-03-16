@@ -13,7 +13,7 @@ namespace ACO.Offers
     /// <summary>
     ///  Настройки КП. Чтение\ Создание XML
     /// </summary>
-    class OfferSettings
+  public  class OfferSettings
     {
         public string Name { get; set; }
         public string FileName { get; set; }
@@ -42,9 +42,7 @@ namespace ACO.Offers
         /// <summary>
         /// Ячейки заголовков
         /// </summary>
-        public List<OfferColumnMapping> Columns { get; set; }
-
-        //public List<> Mapping { get; set; }
+        public List<OfferColumnMapping> Columns { get; set; }       
 
 
         internal static void Create(string name)
@@ -74,7 +72,6 @@ namespace ACO.Offers
             "Offers"
             );
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            //  string filename = Path.Combine(path, $"{name}.xml");
             return path;
         }
 
@@ -89,13 +86,6 @@ namespace ACO.Offers
             offerMapping.Name = projectname;
             offerMapping.FileName = path;
             offerMapping.Save();
-
-            //XElement root = new XElement("OfferSettings");
-            //root.Add(new XAttribute("OfferName", projectname));         
-            //XElement xeColumns = new XElement("Columns");
-            //root.Add(xeColumns);
-            //XDocument xdoc = new XDocument(root);
-            //xdoc.Save(path);
         }
         public void GetFromXML(string filename)
         {

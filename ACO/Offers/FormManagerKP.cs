@@ -159,8 +159,8 @@ namespace ACO.Offers
             if (_CurrentMapping == null) return;
             _CurrentMapping.SheetName = TBoxSheetName.Text;
             _CurrentMapping.RowStart = int.TryParse(TBoxFirstRowRangeValues.Text, out int rs) ? rs : 0;
-            _CurrentMapping.RangeValuesStart = int.TryParse(TBoxFirstColumnRangeValues.Text, out int fr) ? fr : 0;
-            _CurrentMapping.RangeValuesEnd = int.TryParse(TBoxLastColumnRangeValues.Text, out int lr) ? lr : 0;
+         //   _CurrentMapping.RangeValuesStart = int.TryParse(TBoxFirstColumnRangeValues.Text, out int fr) ? fr : 0;
+          //  _CurrentMapping.RangeValuesEnd = int.TryParse(TBoxLastColumnRangeValues.Text, out int lr) ? lr : 0;
 
             if (_mappingColumnsOffer != null)
             {
