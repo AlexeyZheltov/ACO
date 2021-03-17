@@ -34,7 +34,7 @@ namespace ACO
 
 
             ExcelHelpers.ExcelFile.Init();
-            ExcelHelpers.ExcelFile.Acselerate(true);
+          //  ExcelHelpers.ExcelFile.Acselerate(true);
             if (_pb is null)
             {
                 _pb = new ProgressBarWithLog();
@@ -69,20 +69,20 @@ namespace ACO
                     }
                     finally
                     {
+                        if (_pb.IsAborted)
+                        {
+                            _pb.ClearMainBar();
+                            _pb.ClearSubBar();
+                            _pb.IsAborted = false;
+                            MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);                            
+                        }
+                        _pb.Close();
                         excelBook.Close();
                         ExcelHelpers.ExcelFile.Acselerate(false);
                         ExcelHelpers.ExcelFile.Finish();
                     }
                 }
 
-                if (_pb.IsAborted)
-                {
-                    _pb.ClearMainBar();
-                    _pb.ClearSubBar();
-                    _pb.IsAborted = false;
-                    MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
 
             });
 
@@ -129,14 +129,14 @@ namespace ACO
                 }
                 finally
                 {
-                   // excelBook.Close();
+                    // excelBook.Close();
                     //ExcelHelpers.ExcelFile.Acselerate(false);
                     //ExcelHelpers.ExcelFile.Finish();
                 }
 
                 if (_pb.IsAborted)
                 {
-                   // _pb.ClearMainBar();
+                    // _pb.ClearMainBar();
                     _pb.ClearSubBar();
                     _pb.IsAborted = false;
                     MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);

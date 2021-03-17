@@ -35,12 +35,11 @@ namespace ACO.ProjectManager
 
         public ColumnMapping() { }
        public ColumnMapping(Excel.Range cell) 
-        {          
+        {
             //Value = cell.Value?.ToString()??"";
             Check = false;
             Obligatory = false;
             ColumnSymbol = Regex.Match(cell.Address, @"[A-Z]*")?.Value??"";
-            
            // Address = cell.Address;
             //Row = cell.Row;
             //Column = cell.Column;

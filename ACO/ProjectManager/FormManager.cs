@@ -71,6 +71,7 @@ namespace ACO.ProjectManager
                     TableColumns.Columns[1].HeaderText = "Обязательный";
                     TableColumns.Columns[2].HeaderText = "Название";
                     TableColumns.Columns[3].HeaderText = "Столбец";
+                    TableColumns.Columns[4].Visible = false;
                 }
                 else
                 {
