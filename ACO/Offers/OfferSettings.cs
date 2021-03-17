@@ -90,9 +90,7 @@ namespace ACO.Offers
             SheetName = xeDataSheet.Attribute("SheetName").Value?.ToString()??"";
             XElement xeRows = xeDataSheet.Element("Rows");
             XElement xeRowStart = xeRows.Element("RowStart");
-            RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;
-                
-           
+            RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;           
             Columns = LoadColumnsFromXElement(xeDataSheet.Element("Columns"));
         }
 

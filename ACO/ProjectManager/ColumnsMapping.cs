@@ -23,6 +23,7 @@ namespace ACO.ProjectManager
         /// Обязательный
         /// </summary>
         public bool Obligatory { get; set; }
+
         /// <summary>
         ///  Наименование столбца на листе анализ
         /// </summary>
@@ -30,6 +31,7 @@ namespace ACO.ProjectManager
 
         public string ColumnSymbol { get; set; }
 
+        public int Column { get; set; }
 
         public ColumnMapping() { }
        public ColumnMapping(Excel.Range cell) 

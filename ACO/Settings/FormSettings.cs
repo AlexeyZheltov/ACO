@@ -33,8 +33,8 @@ namespace ACO.Settings
         private string GetFiles()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
-            openFileDialog.Title = "Выберите файлы КП";
+            openFileDialog.Filter = "Excel|*.xl*|All files|*.*";
+            openFileDialog.Title = "Выберите файл";
             openFileDialog.Multiselect = false;
             string file = default;
             if (openFileDialog.ShowDialog() == DialogResult.OK)

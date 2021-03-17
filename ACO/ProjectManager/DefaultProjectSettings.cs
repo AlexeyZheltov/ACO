@@ -61,7 +61,7 @@ namespace ACO.ProjectManager
                 {
                     Name = Project.ColumnsNames[StaticColumns.Name],                  
                     Check = true,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "F"                  
                 });
                 columns.Add(new ColumnMapping()
@@ -103,7 +103,7 @@ namespace ACO.ProjectManager
                 {
                     Name = Project.ColumnsNames[StaticColumns.Unit],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "M"
                 });
                 columns.Add(new ColumnMapping()
@@ -117,49 +117,49 @@ namespace ACO.ProjectManager
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "O"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostMaterialsTotal],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "P"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostWorksPerUnit],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "Q"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostWorksTotal ],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "R"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostTotalPerUnit],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "S"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.CostTotal],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "T"
                 });
                 columns.Add(new ColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.Comment],
                     Check = false,
-                    Obligatory = false,
+                    Obligatory = true,
                     ColumnSymbol = "U"
                 });
    
@@ -168,7 +168,7 @@ namespace ACO.ProjectManager
                     FileName = Path.Combine(ProjectManager.GetFolderProjects(), name + ".xml"),
                     AnalysisSheetName = "Рсч-П",
                     Name = name,
-                    RowStart = 7,
+                    RowStart = 10,
                     
                     //RangeValuesStart = 20,
                     //RangeValuesEnd = 25,

@@ -158,7 +158,7 @@ namespace ACO
             {
                 Name = "Спектрум",
                 FileName = filename,
-                RowStart = 24,
+                RowStart = 23,
                 SheetName = "Рсч-П",
                 Columns = columns
             };

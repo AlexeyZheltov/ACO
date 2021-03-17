@@ -12,12 +12,10 @@ namespace ACO
     ///  Коммерческое предложение
     /// </summary>
     class Offer
-    {
-       // public static readonly string SheetName = "Лист1";//"Расчет по проекту";
+    {      
 
        public Offer()
-        {
-           // Items =new List<Item>();
+        {         
         }
 
         /// <summary>
