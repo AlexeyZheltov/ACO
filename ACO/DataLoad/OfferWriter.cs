@@ -215,7 +215,7 @@ namespace ACO
         private void ShowSheetRows(Excel.Worksheet sh)
         {
             //offerSheet.Rows.Show();
-            sh.Outline.ShowLevels();
+            //sh.Outline.ShowLevels();
             sh.Rows.Show();
             sh.UsedRange.EntireRow.Hidden = false;
         }

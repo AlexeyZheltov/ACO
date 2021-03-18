@@ -169,6 +169,7 @@ namespace ACO
             //}
         }
 
+        /*
         private List<Record> GetListRecordsAnalysis()
         {
             List<Record> records = new List<Record>();
@@ -203,6 +204,6 @@ namespace ACO
             }
             return records;
         }
-
+        */
     }
 }
