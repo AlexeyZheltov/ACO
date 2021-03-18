@@ -28,7 +28,7 @@ namespace ACO
         private async void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
         {
             string[] files = GetFiles();
-            if (files.Length < 1) { return; }
+            if ((files?.Length?? 0) < 1) { return; }
 
             string offerSettingsName = GetOfferSettings();
 

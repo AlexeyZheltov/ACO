@@ -1,4 +1,5 @@
 ﻿using ACO.ExcelHelpers;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,7 +89,9 @@ namespace ACO.ProjectManager
                 { StaticColumns.CostTotal, "ИТОГО. РУБ БЕЗ НДС" },
                 { StaticColumns.Comment, "ПРИМЕЧАНИЕ" }
             };
-              
+
+     
+
         public Project() { }
 
         /// <summary>
@@ -171,6 +174,21 @@ namespace ACO.ProjectManager
                 }
             }
             return columns;
+        }
+
+        /// <summary>
+        /// Установить цифровые момера столбцов
+        /// </summary>
+        /// <param name="sheetProject"></param>
+        internal void SetColumnNumbers(Worksheet sheetProject)
+        {
+            foreach (ColumnMapping mapping in Columns)
+            {
+                if (!string.IsNullOrWhiteSpace(mapping.ColumnSymbol))
+                {
+                    mapping.Column = sheetProject.Cells[$"{mapping.ColumnSymbol}2"].Column;
+                }
+            }
         }
     }
 }

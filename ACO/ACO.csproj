@@ -204,7 +204,7 @@
     <Compile Include="Offers\OfferManager.cs" />
     <Compile Include="Offers\OfferSettings.cs" />
     <Compile Include="Offers\Record.cs" />
-    <Compile Include="Offers\Field.cs" />
+    <Compile Include="Offers\FieldAddress.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
