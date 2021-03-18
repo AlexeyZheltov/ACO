@@ -13,7 +13,7 @@ namespace ACO.Offers
         Excel.Application _app = default;
         Excel.Workbook _wb = null;
         ExcelFile _offerBook = null;
-        Excel.Worksheet _sheetProjerct = null;
+        Excel.Worksheet _sheetProject = null;
 
         Project _project = default;
         OfferManager _offerManager = null;
@@ -60,52 +60,63 @@ namespace ACO.Offers
         internal void Print(IProgressBarWithLogUI pb, string offerSettingsName)
         {
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
-
             Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName);
             offerSheet.Rows.Show();// UsedRange.Show();
             offerSheet.UsedRange.EntireRow.Hidden = false;// Show() //
             //offerSheet.UsedRange.Rows.s  //Outline. ShowLevels();// Rows. EntireRow.
-            _sheetProjerct = GetSheet(1);
-
+            _sheetProject = GetSheet(1);
+            ListAnalysis SheetAnalysis = new ListAnalysis(_sheetProject, _CurrentProject);
             int lastRowOffer = GetLastRow(offerSheet);
             int countRows = lastRowOffer - offerSettings.RowStart - 1;
 
             // PasteHeaderRange(_sheetProjerct);
             //List<(int, int)> listColumnPair = GetHeaders(offerSettings);
-            List<(ColumnMapping, int)> listColumnPair = GetColumnHeaders(offerSettings);
+
+
+            /// Столбец проект \ столбец КП.
+            //List<(ColumnMapping, int)> listColumnPair = GetColumnHeaders(offerSettings);
+            List<Field> fields = GetFields(offerSettings);
             object[,] arrData = GetArrData(offerSheet, offerSettings.RowStart, lastRowOffer);
 
-            foreach ((ColumnMapping projectColumn, int offerColumn) pair in listColumnPair)
-            {
-                _sheetProjerct.Cells[1, pair.projectColumn.Column].Value = pair.projectColumn.Name;
-            }
+            // SheetAnalysis.PrintMarks(listColumnPair);
 
             pb.SetSubBarVolume(countRows);
+            //int rowPaste = _CurrentProject.RowStart - 1;
             for (int i = 1; i <= countRows; i++)
             {
                 pb.SubBarTick();
                 if (pb.IsAborted) return; //throw new AddInException("К");
                 int row = offerSettings.RowStart + i - 1;
-                int rowPaste = i + _CurrentProject.RowStart - 1;
+                Record record = new Record();
+                record.Fields = fields;
+                record.Index = i;
+                for(int k = 1; k <= fields.Count; k++)
+                {
+                    record.Values.Add(i, arrData[i, k]);
+                     //object val = arrData[i, 1];
+                }
+                SheetAnalysis.Print(record);
+                //rowPaste += i;
+                //SheetAnalysis.Print(listColumnPair, rowPaste);
 
                 // Пропустить строки                
-                int lastRow = _sheetProjerct.UsedRange.Row + _sheetProjerct.UsedRange.Rows.Count + 1;                
-                foreach ((ColumnMapping projectColumn, int offerColumn) pair in listColumnPair)
-                {
-                    object val = arrData[i, pair.offerColumn];
-                    Excel.Range rngFirst = _sheetProjerct.Cells[rowPaste, pair.projectColumn.Column];                    
-                    if (pair.projectColumn.Check && rngFirst.Value != val)
-                    { 
-                        _sheetProjerct.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                        rowPaste++;
-                        break;
-                    }
-                }
-                foreach ((ColumnMapping projectCollumn, int offerColumn) pair in listColumnPair)
-                {
-                    object val = arrData[i, pair.offerColumn];
-                    if (val != null) _sheetProjerct.Cells[rowPaste, pair.projectCollumn.Column].Value = val;
-                }
+                //int lastRow = _sheetProjerct.UsedRange.Row + _sheetProjerct.UsedRange.Rows.Count + 1;                
+                //foreach ((ColumnMapping projectColumn, int offerColumn) pair in listColumnPair)
+                //{
+                //    object val = arrData[i, pair.offerColumn];
+                //    Excel.Range rngFirst = _sheetProjerct.Cells[rowPaste, pair.projectColumn.Column];
+                //    if (pair.projectColumn.Check && rngFirst.Value != val && val !=null)
+                //    { 
+                //        rowPaste++;
+                //        _sheetProjerct.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);                        
+                //        break;
+                //    }
+                //}
+                //foreach ((ColumnMapping projectCollumn, int offerColumn) pair in listColumnPair)
+                //{
+                //    object val = arrData[i, pair.offerColumn];
+                //    if (val != null) _sheetProjerct.Cells[rowPaste, pair.projectCollumn.Column].Value = val;
+                //}
             }
 
             //{
@@ -125,7 +136,34 @@ namespace ACO.Offers
             pb.ClearSubBar();
         }
 
+        private List<Field> GetFields(OfferSettings offerSettings)
+        {
+            //List<(ColumnMapping, int)> listColumns = new List<(ColumnMapping, int)>();
+            List<Field> fields = new List<Field>();
 
+            int k = 1;
+            int lastCol = _sheetProject.UsedRange.Column + _sheetProject.UsedRange.Columns.Count;
+            foreach (OfferColumnMapping columnOffer in offerSettings.Columns)
+            {
+                if (string.IsNullOrEmpty(columnOffer.ColumnSymbol)) continue;
+                ColumnMapping сolumnProject = _CurrentProject.Columns.Find(a => a.Name == columnOffer.Name);
+                if (сolumnProject.Obligatory)
+                {
+                    // int colp = GetColumn(сolumnProject.ColumnSymbol, _sheetProjerct);
+                    //listColumns.Add((сolumnProject, colOffer));
+                    int colPaste = lastCol + k;
+                    сolumnProject.Column = colPaste;
+                    int colOffer = GetColumn(columnOffer.ColumnSymbol, _sheetProject);
+                    fields.Add(new Field()
+                    {
+                        ColumnAnalysis = сolumnProject,
+                        ColumnOffer = colOffer
+                    });
+                    k++;
+                }
+            }
+            return fields;
+        }
 
         private object[,] GetArrData(Excel.Worksheet offerSheet, int rowStart, int lastRow)
         {
@@ -138,7 +176,7 @@ namespace ACO.Offers
         {
             List<(ColumnMapping, int)> listColumns = new List<(ColumnMapping, int)>();
             int k = 1;
-            int lastCol = _sheetProjerct.UsedRange.Column + _sheetProjerct.UsedRange.Columns.Count;
+            int lastCol = _sheetProject.UsedRange.Column + _sheetProject.UsedRange.Columns.Count;
             foreach (OfferColumnMapping columnOffer in offerSettings.Columns)
             {
                 if (string.IsNullOrEmpty(columnOffer.ColumnSymbol)) continue;
@@ -148,7 +186,7 @@ namespace ACO.Offers
                 {
                     int colPaste = lastCol + k;
                     // int colp = GetColumn(сolumnProject.ColumnSymbol, _sheetProjerct);
-                    int colOffer = GetColumn(columnOffer.ColumnSymbol, _sheetProjerct);
+                    int colOffer = GetColumn(columnOffer.ColumnSymbol, _sheetProject);
                     сolumnProject.Column = colPaste;
                     listColumns.Add((сolumnProject, colOffer));
                     k++;
@@ -159,7 +197,7 @@ namespace ACO.Offers
         private List<(int, int)> GetHeaders(OfferSettings offerSettings)
         {
             List<(int, int)> columnsPair = new List<(int projectCollumn, int offerColumn)>();
-            int lastCol = _sheetProjerct.UsedRange.Column + _sheetProjerct.UsedRange.Columns.Count;
+            int lastCol = _sheetProject.UsedRange.Column + _sheetProject.UsedRange.Columns.Count;
 
             int k = 1;
             foreach (OfferColumnMapping columnOffer in offerSettings.Columns)
@@ -171,7 +209,7 @@ namespace ACO.Offers
                 {
                     int colPaste = lastCol + k;
                     // int colp = GetColumn(сolumnProject.ColumnSymbol, _sheetProjerct);
-                    int colOffer = GetColumn(columnOffer.ColumnSymbol, _sheetProjerct);
+                    int colOffer = GetColumn(columnOffer.ColumnSymbol, _sheetProject);
                     columnsPair.Add((colPaste, colOffer));
                     k++;
                 }
@@ -181,7 +219,7 @@ namespace ACO.Offers
 
         private int FindNextOfferRange()
         {
-            int col = _sheetProjerct.UsedRange.Column + _sheetProjerct.UsedRange.Columns.Count;
+            int col = _sheetProject.UsedRange.Column + _sheetProject.UsedRange.Columns.Count;
             return col;
         }
 
@@ -209,9 +247,9 @@ namespace ACO.Offers
 
             offerSheet.Rows.Show();// UsedRange.Show();
             offerSheet.Outline.ShowLevels();// Rows. EntireRow.
-            _sheetProjerct = GetSheet(1);
+            _sheetProject = GetSheet(1);
 
-            _sheetProjerct = GetSheet(1);//_CurrentProject.AnalysisSheetName);
+            _sheetProject = GetSheet(1);//_CurrentProject.AnalysisSheetName);
 
 
             /// Столбец "номер п.п."
@@ -230,8 +268,8 @@ namespace ACO.Offers
                 ColumnMapping projectColumn = _CurrentProject.Columns.Find(a => a.Name == col.Name);
                 if (!string.IsNullOrWhiteSpace(projectColumn?.ColumnSymbol ?? ""))
                 {
-                    int cnP = GetColumn(projectColumn.ColumnSymbol, _sheetProjerct);  // _sheetProjerct.Range[$"{projectColumn.ColumnSymbol}1"].Column;
-                    int cnO = GetColumn(col.ColumnSymbol, _sheetProjerct);//_sheetProjerct.Range[$"{col.ColumnSymbol}1"].Column;
+                    int cnP = GetColumn(projectColumn.ColumnSymbol, _sheetProject);  // _sheetProjerct.Range[$"{projectColumn.ColumnSymbol}1"].Column;
+                    int cnO = GetColumn(col.ColumnSymbol, _sheetProject);//_sheetProjerct.Range[$"{col.ColumnSymbol}1"].Column;
                     colPair.Add((cnP, cnO));
                     if (rightColumn < cnO) rightColumn = cnO;
                 }
@@ -255,7 +293,7 @@ namespace ACO.Offers
                 foreach ((int projectCollumn, int offerColumn) pair in colPair)
                 {
                     object val = arrData[i, pair.offerColumn];
-                    if (val != null) _sheetProjerct.Cells[rowPaste, pair.projectCollumn].Value = val;
+                    if (val != null) _sheetProject.Cells[rowPaste, pair.projectCollumn].Value = val;
                 }
             }
 
@@ -368,7 +406,7 @@ namespace ACO.Offers
             //Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             row = GetRowByLevel();
             //Excel.Worksheet sh= 
-            Excel.Range rowToInsert = _sheetProjerct.Rows[row];
+            Excel.Range rowToInsert = _sheetProject.Rows[row];
             rowToInsert.Insert(Excel.XlInsertShiftDirection.xlShiftDown);
 
             return row;
@@ -381,7 +419,7 @@ namespace ACO.Offers
             //Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             row = GetRowByLevel();
             //Excel.Worksheet sh= 
-            Excel.Range rowToInsert = _sheetProjerct.Rows[row];
+            Excel.Range rowToInsert = _sheetProject.Rows[row];
             rowToInsert.Insert(Excel.XlInsertShiftDirection.xlShiftDown);
 
         }
@@ -399,8 +437,8 @@ namespace ACO.Offers
             _rowKeys = new Dictionary<string, int>();
             int columnNumbr = 10;
             int colEnd = 13;
-            int lastRow = _sheetProjerct.Cells[_sheetProjerct.Rows.Count, columnNumbr].End[Excel.XlDirection.xlUp].row;
-            Excel.Range rng = _sheetProjerct.Range[_sheetProjerct.Cells[_project.RowStart, 1], _sheetProjerct.Cells[lastRow, colEnd]];
+            int lastRow = _sheetProject.Cells[_sheetProject.Rows.Count, columnNumbr].End[Excel.XlDirection.xlUp].row;
+            Excel.Range rng = _sheetProject.Range[_sheetProject.Cells[_project.RowStart, 1], _sheetProject.Cells[lastRow, colEnd]];
             object[,] data = rng.Value;
 
             for (int i = 1; i < data.GetUpperBound(0); i++)

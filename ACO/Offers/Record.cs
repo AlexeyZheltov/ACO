@@ -48,16 +48,16 @@ namespace ACO.Offers
         }
         string _Number;
 
-        public bool KeyEqual(List<string> keyFilds)
-        {
-            bool keyEqual = true;
-            foreach (string key in keyFilds)
-            {
-                if (!KeyFilds.Contains(key)) return false;
+        //public bool KeyEqual(List<string> keyFilds)
+        //{
+        //    bool keyEqual = true;
+        //    foreach (string key in keyFilds)
+        //    {
+        //        if (!KeyFilds.Contains(key)) return false;
 
-            }
-            return keyEqual;
-        }
+        //    }
+        //    return keyEqual;
+        //}
 
         public List<string> KeyFilds 
         {
@@ -80,22 +80,57 @@ namespace ACO.Offers
         /// <summary>
         ///  Библииотека заголовок/ значение
         /// </summary>
-        public Dictionary<string,object> Values 
+        public List<Field> Fields
+        {
+            get
+            {
+                if (_Fields == null)
+                {
+                    _Fields = new List<Field>();
+                }
+                return _Fields;
+            }
+            set 
+            {
+                _Fields = value;
+            }
+        }
+        public List<Field> _Fields;
+
+        public Dictionary<int, object> Values
         {
             get
             {
                 if (_Values == null)
                 {
-                    _Values = new Dictionary<string, object>();
+                    _Values = new Dictionary<int , object>();
                 }
                 return _Values;
             }
-            set 
+            set
             {
                 _Values = value;
             }
         }
-        public Dictionary<string, object> _Values;
-        
+        public Dictionary<int, object> _Values;
+
+        public int Index { get; internal set; }
+
+        //public Dictionary<string, object> Values
+        //{
+        //    get
+        //    {
+        //        if (_Values == null)
+        //        {
+        //            _Values = new Dictionary<string, object>();
+        //        }
+        //        return _Values;
+        //    }
+        //    set
+        //    {
+        //        _Values = value;
+        //    }
+        //}
+        //public Dictionary<string, object> _Values;
     }
 }

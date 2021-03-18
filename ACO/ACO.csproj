@@ -204,6 +204,7 @@
     <Compile Include="Offers\OfferManager.cs" />
     <Compile Include="Offers\OfferSettings.cs" />
     <Compile Include="Offers\Record.cs" />
+    <Compile Include="Offers\Field.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -221,6 +222,7 @@
     <Compile Include="ProjectManager\FormManager.Designer.cs">
       <DependentUpon>FormManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectManager\ListAnalysis.cs" />
     <Compile Include="ProjectManager\ProjectManager.cs" />
     <Compile Include="ProjectManager\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
