@@ -135,5 +135,13 @@ namespace ACO
         /// </summary>
         /// <returns></returns>
         public TextBox GetLogTextBox() => LogTextBox;
+
+        void IProgressBarWithLogUI.ShowDialog()
+        {
+            Action action = () =>
+            {
+                ShowDialog();
+            };
+        }
     }
 }

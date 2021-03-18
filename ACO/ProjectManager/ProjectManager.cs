@@ -1,4 +1,5 @@
-﻿using ACO.ExcelHelpers;
+﻿
+using ACO.Offers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,43 +13,24 @@ namespace ACO.ProjectManager
 {
     class ProjectManager
     {
+        /// <summary>
+        ///  Проект отмеченный как текущий
+        /// </summary>
         public Project ActiveProject
-        {
+        {           
             get
             {
-                if (_ActiveProject is null)
+                if (_ActiveProject == null)
                 {
-                    foreach (Project project in Projects)
-                    {
-                        if (project.Active)
-                        {
-                            if (_ActiveProject == null)
-                            {
-                                _ActiveProject = project;
-                            }
-                            else
-                            {
-                                project.Active = false;
-                                project.Save();
-                            }
-                        }
-                    }
-                    if (_ActiveProject is null && Projects.Count > 0)
-                        _ActiveProject = Projects[0];
+                     SetActiveProject();
                 }
                 return _ActiveProject;
             }
             set
             {
                 _ActiveProject = value;
-               
-
-                    foreach (Project p in Projects)
-                    {
-                        p.Active = p.Name == _ActiveProject.Name;
-                        p.Save();
-                    }               
-
+                Properties.Settings.Default.ActiveProjectName = _ActiveProject?.Name ?? "";
+                Projects.ForEach(x => x.Active = x.Name == _ActiveProject.Name);
             }
         }
         private Project _ActiveProject;
@@ -70,9 +52,12 @@ namespace ACO.ProjectManager
                         if (new FileInfo(file).Extension == ".xml")
                         {
                             Project project = Project.GetFromXML(file);
+                           string activeProjectName  = Properties.Settings.Default.ActiveProjectName ;
+                            if (project.Name == activeProjectName) project.Active = true;
                             _Projects.Add(project);
                         }
                     }
+                    if (_Projects.Count == 0) _Projects.Add( DefaultProject.Get());
                 }
                 return _Projects;
             }
@@ -90,16 +75,28 @@ namespace ACO.ProjectManager
             string filename = Path.Combine(path, name + ".xml");
             if (!File.Exists(filename))
             {
-                CreateNewProjectXML(name, filename);
+                CreateNewProject(name, filename);
             }
             else
             {
                 if (MessageBox.Show("Удалить старый файл?", "Файл уже существует!", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     File.Delete(filename);
-                    CreateNewProjectXML(name, filename);
+                    CreateNewProject(name, filename);
                 }
             }
+        }
+
+        public void SetActiveProject()
+        {            
+            Project activeProject = null;
+            string activeProjectName= Properties.Settings.Default.ActiveProjectName;            
+            activeProject = Projects.Find(x => x.Name == activeProjectName);
+            if (activeProject is null && Projects.Count > 0)
+            {
+               activeProject= Projects[0];           
+            }
+            ActiveProject = activeProject;            
         }
 
         /// <summary>
@@ -107,42 +104,33 @@ namespace ACO.ProjectManager
         /// </summary>
         /// <param name="projectname"></param>
         /// <param name="path"></param>
-        public void CreateNewProjectXML(string projectname, string path)
+        public void CreateNewProject(string projectname, string path)
         {
-            foreach (Project project in Projects)
-            {
-                project.Active = false;
-                project.Save();
-            }
-            XElement root = new XElement("project");
-            root.Add(new XAttribute("ProjectName", projectname));
-            root.Add(new XAttribute("Active", true));
-            XElement xeColumns = new XElement("Columns");
+            Project newProject = DefaultProject.Get();
+            newProject.FileName = path;
+            newProject.Name = projectname;
 
-            /// Скопировать настройки столбцов из активного проекта
-            if ((ActiveProject?.Columns?.Count ?? 0) > 0)
-            {
-                foreach (ColumnMapping column in ActiveProject.Columns)
-                {
-                    xeColumns.Add(column.GetXElement());
-                }
-            }
-            root.Add(xeColumns);
-            XDocument xdoc = new XDocument(root);
-            xdoc.Save(path);
+            //XElement root = new XElement("project");
+            //root.Add(new XAttribute("ProjectName", projectname));
+            //root.Add(new XAttribute("Active", true));
+            //XElement xeColumns = new XElement("Columns");
+
+            ///// Скопировать настройки столбцов из активного проекта
+            //if ((ActiveProject?.Columns?.Count ?? 0) > 0)
+            //{
+            //    foreach (ColumnMapping column in ActiveProject.Columns)
+            //    {
+            //        xeColumns.Add(column.GetXElement());
+            //    }
+            //}
+            //root.Add(xeColumns);
+            //XDocument xdoc = new XDocument(root);
+            newProject.Save();
+            ActiveProject = newProject;
         }
 
-        /// <summary>
-        /// Генерирует путь к файлу
-        /// </summary>
-        /// <param name="file">Имя файла</param>
-        /// <returns>Путь к файлу в AppData</returns>
-        private static string GetPathTo(string file)
-        {
-            string path = GetFolderProjects();
-            return Path.Combine(path, file);
-        }
-        private static string GetFolderProjects()
+       
+        public static string GetFolderProjects()
         {
             string path = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -152,6 +140,8 @@ namespace ACO.ProjectManager
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             return path;
         }
+
+
         private static string GetApplicationSettingsFilename()
         {
             string path = Path.Combine(
@@ -161,28 +151,6 @@ namespace ACO.ProjectManager
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             string filename = Path.Combine(path, "settings.xml");
             return filename;
-        }
-
-        /// <summary>
-        ///  
-        /// </summary>
-        /// <param name="offer"></param>
-        internal void AddOffer(Offer offer)
-        {
-            foreach (Item itm in offer.Items)
-            {
-                int row = itm.Row;
-                int col = ActiveProject.Columns.Find(c => c.Value == itm.Header)?.Column ?? 0;
-
-                foreach (ColumnMapping column in ActiveProject.Columns)
-                {
-                    //column.Column
-                    //cell
-                }
-            }
-        }
-
-
-
+        }      
     }
 }

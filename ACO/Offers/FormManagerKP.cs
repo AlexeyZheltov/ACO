@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ACO.ProjectManager;
 
@@ -13,65 +10,138 @@ namespace ACO.Offers
 {
     public partial class FormManagerKP : Form
     {
-        private List<ColumnMapping> _mappingColumnsKP;
-        List<OfferMapping> _offersMapping;
-        OfferMapping _CurrentMapping;
+        private Excel.Application _app = Globals.ThisAddIn.Application;
+        private List<OfferColumnMapping> _mappingColumnsOffer;
+        List<OfferSettings> _offersMapping;
+        OfferSettings _CurrentMapping;
         OfferManager _manager;
+        ProjectManager.ProjectManager _projectManager;
         public FormManagerKP()
         {
             InitializeComponent();
 
-            TableColumns.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-                _manager = new OfferManager();
-            _offersMapping = _manager.OffersMapping;
+            _projectManager = new ProjectManager.ProjectManager();
+            _manager = new OfferManager();
+            _mappingColumnsOffer = new List<OfferColumnMapping>();
+
             ListKP.FullRowSelect = true;
             ListKP.MultiSelect = false;
+            ListKP.View = View.List;
+            LoadData();
         }
 
-        private void BtnAddColumns_Click(object sender, EventArgs e)
+        private void LoadTableOffers()
         {
-            Excel.Application app = Globals.ThisAddIn.Application;
-            Excel.Range rng = app.Selection;
-
-            if ((rng?.Cells?.Count ?? 0) == 0 || rng == null) return;
-            if (_mappingColumnsKP == null) _mappingColumnsKP = new List<ColumnMapping>();
-            foreach (Excel.Range cell in rng.Cells)
+            ListKP.Items.Clear();
+            if (_offersMapping != null)
             {
-                if (!string.IsNullOrEmpty(cell.Text))
+                foreach (OfferSettings offer in _offersMapping)
                 {
-                    ColumnMapping mapping = new ColumnMapping(cell);
-                    ColumnMapping findMapping = _mappingColumnsKP.Find(m => m.Address == mapping.Address);
-                    if (findMapping != null)
-                    {
-                        _mappingColumnsKP.Remove(findMapping);
-                    }
-                    _mappingColumnsKP.Add(mapping);
+                    ListKP.Items.Add(offer.Name);
                 }
             }
-            UpdateTable();
         }
 
-        private void UpdateTable()
+        private void GetOfferMappings()
         {
-            if ((_mappingColumnsKP?.Count ?? 0) == 0) return;
-            BindingSource Source = new BindingSource();
-            for (int i = 0; i < _mappingColumnsKP.Count; i++)
+            _offersMapping = _manager.GetMappings();
+            if ((_offersMapping?.Count ?? 0) > 0)
             {
-                Source.Add(_mappingColumnsKP[i]);
-            };
-            TableColumns.DataSource = Source;           
-                SetTableColumns();
-           
-        }
-
-
-       private void Save()
-        {
-            if (_mappingColumnsKP != null)
-            {
-                _CurrentMapping.Columns = _mappingColumnsKP;
-                _CurrentMapping.Save();
+                _CurrentMapping = _offersMapping.First();
             }
+        }
+
+        private void LoadData()
+        {
+            GetOfferMappings();
+            LoadTableOffers();
+            SetTableMapping();
+        }
+
+        private void ListKP_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ListKP.SelectedItems.Count > 0)
+            {
+               string nameSettings = ListKP.SelectedItems[0].Text;
+                _CurrentMapping =  _manager.Mappings.Find(x => x.Name == nameSettings);
+                SetTableMapping();
+            }            
+        }
+        private void BtnCreate_Click(object sender, EventArgs e)
+        {
+            string name = textBox1.Text;
+            OfferSettings.Create(name);
+            _offersMapping = _manager.GetMappings();
+            _CurrentMapping = _offersMapping.Find(m => m.Name == name);
+            LoadTableOffers();
+            SetTableMapping();
+        }
+
+
+        private void SetTableMapping()
+        {
+            if ((_projectManager.ActiveProject?.Columns.Count ?? 0) == 0) { return; }
+            _mappingColumnsOffer.Clear();
+
+            foreach (ColumnMapping col in _projectManager.ActiveProject.Columns)
+            {
+                OfferColumnMapping columnMapping = _CurrentMapping.Columns.Find(x => x.Name == col.Name);
+
+                OfferColumnMapping cm = new OfferColumnMapping();
+                if (columnMapping != null)
+                {
+                    cm.ColumnSymbol = columnMapping.ColumnSymbol;
+                }
+                cm.Name = col.Name;
+                _mappingColumnsOffer.Add(cm);
+            }
+            UpdateTableSource();
+
+            if (_CurrentMapping != null)
+            {
+                TBoxSheetName.Text = _CurrentMapping.SheetName;
+                TBoxFirstRowRangeValues.Text = _CurrentMapping.RowStart.ToString();
+            }
+            SetTableColumns();
+        }
+
+        private void UpdateTableSource()
+        {
+            if ((_mappingColumnsOffer?.Count ?? 0) == 0) return;
+            BindingSource Source = new BindingSource();
+            TableColumns.Rows.Clear();
+            for (int i = 0; i < _mappingColumnsOffer.Count; i++)
+            {
+                Source.Add(_mappingColumnsOffer[i]);
+            };
+            TableColumns.DataSource = Source;
+        }
+        /// <summary>
+        ///  Таблица с ячейками 
+        /// </summary>
+        private void SetTableColumns()
+        {
+            if (TableColumns.Columns.Count < 2) return;
+
+            TableColumns.Columns[1].Width = 70;
+            TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            TableColumns.Columns[0].HeaderText = "Cтолбец";
+            TableColumns.Columns[1].HeaderText = "Адрес";
+            TableColumns.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        }
+
+        private void Save()
+        {
+            if (_CurrentMapping == null) return;
+            _CurrentMapping.SheetName = TBoxSheetName.Text;
+            _CurrentMapping.RowStart = int.TryParse(TBoxFirstRowRangeValues.Text, out int rs) ? rs : 0;
+
+            if (_mappingColumnsOffer != null)
+            {
+                _CurrentMapping.Columns = _mappingColumnsOffer;
+            }
+
+            _CurrentMapping.Save();
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
@@ -80,78 +150,6 @@ namespace ACO.Offers
             Close();
         }
 
-        private void FormManagerKP_Load(object sender, EventArgs e)
-        {
-            LoadOffersMapping();
-            UpdateTable();          
-        }
-
-        private void SetTableColumns()
-        {
-            if (TableColumns.Columns.Count >=7)
-            TableColumns.Columns[1].Width = 50;
-            TableColumns.Columns[2].Width = 50;
-            TableColumns.Columns[3].Width = 80;
-            TableColumns.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            //TableColumns.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //TableColumns.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //TableColumns.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            TableColumns.Columns[4].Visible = false;
-            TableColumns.Columns[5].Visible = false;
-            TableColumns.Columns[6].Visible = false;
-            //TableColumns.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        }
-
-        private void LoadOffersMapping()
-        {
-            ListKP.Items.Clear();
-            if (_offersMapping != null)
-            {
-             if (_CurrentMapping ==null && (_offersMapping?.Count??0)>0)  _CurrentMapping = _offersMapping?.First();
-                _mappingColumnsKP = _CurrentMapping?.Columns;
-                foreach (OfferMapping offer in _offersMapping)
-                {
-                    //ListViewItem itm = new ListViewItem(offer.Name);
-                    // itm.SubItems.Add(offer.FileName);
-                    ListKP.Items.Add(offer.Name);//itm);
-                }
-                //  ListKP.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                ListKP.View = View.List;
-            }
-
-        }
-
-
-        private void BtnCreate_Click(object sender, EventArgs e)
-        {
-            string name = textBox1.Text;
-            OfferMapping.Create(name);
-            _offersMapping = _manager.OffersMapping;
-            _CurrentMapping = _offersMapping.Find(m => m.Name == name); 
-            LoadOffersMapping();
-            UpdateTable();
-        }
-
-        private void ListKP_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            BindingSource source = new BindingSource();
-            if (_offersMapping == null) return;
-            _CurrentMapping = _offersMapping.First();
-            if (ListKP.SelectedItems.Count > 0)
-            {
-                string name = ListKP.SelectedItems[0].SubItems[0].Text;
-                if (!string.IsNullOrEmpty(name))
-                {
-                    OfferMapping mapping = _offersMapping.Find(X => X.Name == name);
-                    if (mapping != null)
-                    {
-                        _CurrentMapping = mapping;
-                        source.DataSource = mapping.Columns;
-                    }
-                }
-            }
-            TableColumns.DataSource = source;
-        }
 
         /// <summary>
         ///  Удалить выделенную строку
@@ -160,43 +158,49 @@ namespace ACO.Offers
         /// <param name="e"></param>
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            if (TableColumns.SelectedRows.Count > 0 && _mappingColumnsKP !=null)
+            if (TableColumns.SelectedRows.Count > 0 && _mappingColumnsOffer != null)
             {
                 DataGridViewRow row = TableColumns.SelectedRows[0];
-                string address = row.Cells[3].Value?.ToString();                
-                ColumnMapping mapping = _mappingColumnsKP.Find(x => x.Address == address);
+                string name = row.Cells[0].Value?.ToString();
+                OfferColumnMapping mapping = _mappingColumnsOffer.Find(x => x.Name == name);
                 TableColumns.Rows.Remove(row);
-                if (mapping != null) _mappingColumnsKP.Remove(mapping);
+                if (mapping != null) _mappingColumnsOffer.Remove(mapping);
             }
         }
 
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            int row = e.RowIndex;
-            int col = e.ColumnIndex;
-            string address = TableColumns.Rows[row].Cells[3].Value?.ToString() ?? "";
-            ColumnMapping mapping = _CurrentMapping.Columns.Find(f => f.Address == address);
-            if (mapping is null) return;
-            object value = null;
-            switch (col)
+        {            
+            if (!(e.RowIndex >= 0 && e.RowIndex >= 0)) return;
+            string name = TableColumns.Rows[e.RowIndex].Cells[0].Value?.ToString() ?? "";
+            OfferColumnMapping mapping = _mappingColumnsOffer.Find(f => f.Name == name);        
+
+            if (e.ColumnIndex == 1)
             {
-                case 1:
-                    value = TableColumns.Rows[row].Cells[1].Value;
-                    mapping.Check = (bool)value;
-                    break;
-                case 2:
-                    value = TableColumns.Rows[row].Cells[2].Value;
-                    mapping.Obligatory = (bool)value;
-                    break;
-                case 3:
-                    mapping.Address = address;
-                    break;
-                    //default:
-                    //    break;
+                object value = TableColumns.Rows[e.RowIndex].Cells[1].Value;
+                mapping.ColumnSymbol = value?.ToString() ?? "";
             }
-            Save();
         }
 
-      
+
+        private void BtnOpenFolder_Click(object sender, EventArgs e)
+        {
+            string folder = OfferManager.GetFolderSettingsKP();
+            System.Diagnostics.Process.Start(folder);
+        }
+
+        private void BtnSetSelectedRangeValues_Click(object sender, EventArgs e)
+        {
+            Excel.Range rng = _app.Selection;
+            if (rng is null) return;
+            TBoxSheetName.Text = rng.Parent.name;
+            int rowStart = rng.Row + rng.Rows.Count;
+            TBoxFirstRowRangeValues.Text = rowStart.ToString();
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+               
     }
 }

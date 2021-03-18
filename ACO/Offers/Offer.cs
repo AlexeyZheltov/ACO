@@ -1,4 +1,5 @@
-﻿using ACO.ProjectManager;
+﻿using ACO.Offers;
+using ACO.ProjectManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,10 @@ namespace ACO
     ///  Коммерческое предложение
     /// </summary>
     class Offer
-    {
-        public static readonly string SheetName = "Расчет по проекту";
+    {      
 
        public Offer()
-        {
-            Items =new List<Item>();
+        {         
         }
 
         /// <summary>
@@ -39,7 +38,21 @@ namespace ACO
         /// <summary>
         /// Список строк 
         /// </summary>
-        public List<Item> Items { get; set; }
-      
+        public List<Record> Records 
+        {
+            get
+            {
+                if (_Records == null)
+                {
+                    _Records = new List<Record>();
+                }
+                return _Records;
+            }
+            set
+            {
+                _Records = value;
+            } 
+        }
+        List<Record> _Records;
     }
 }

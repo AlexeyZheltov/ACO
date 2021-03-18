@@ -26,16 +26,39 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>ACO</RootNamespace>
     <AssemblyName>ACO</AssemblyName>
-    <LoadBehavior>3</LoadBehavior>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <BootstrapperComponentsLocation>HomeSite</BootstrapperComponentsLocation>
+    <PublishUrl>опубликовать\</PublishUrl>
+    <InstallUrl />
+    <TargetCulture>ru</TargetCulture>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>days</UpdateIntervalUnits>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <ProductName>ACO</ProductName>
+    <PublisherName />
+    <SupportUrl />
+    <FriendlyName>ACO</FriendlyName>
+    <OfficeApplicationDescription />
+    <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 и x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Среда выполнения Microsoft Visual Studio 2010 Tools for Office %28x86 и x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -159,23 +182,28 @@
   -->
   <ItemGroup>
     <Compile Include="AddInException.cs" />
-    <Compile Include="ExcelHelpers\AddinWindow.cs" />
-    <Compile Include="ExcelHelpers\Cell.cs" />
+    <Compile Include="AddinWindow.cs" />
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
-    <Compile Include="ExcelHelpers\ExcelReader.cs" />
     <Compile Include="IProgressBarWithLogUI.cs" />
-    <Compile Include="Item.cs" />
     <Compile Include="Offers\FormManagerKP.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Offers\FormManagerKP.Designer.cs">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </Compile>
+    <Compile Include="Offers\FormSelectOfferSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Offers\FormSelectOfferSettings.Designer.cs">
+      <DependentUpon>FormSelectOfferSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Offers\Offer.cs" />
+    <Compile Include="Offers\OfferColumnMapping.cs" />
     <Compile Include="Offers\OfferManager.cs" />
-    <Compile Include="Offers\OfferMapping.cs" />
-    <Compile Include="Offers\Record.cs" />
+    <Compile Include="Offers\OfferSettings.cs" />
+    <Compile Include="DataLoad\Record.cs" />
+    <Compile Include="DataLoad\FieldAddress.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,24 +211,28 @@
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectManager\ColumnsMapping.cs" />
-    <Compile Include="ProjectManager\CustomDataGrid.cs">
+    <Compile Include="CustomDataGrid.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ProjectManager\DefaultProjectSettings.cs" />
     <Compile Include="ProjectManager\FormManager.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ProjectManager\FormManager.Designer.cs">
       <DependentUpon>FormManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataLoad\ListAnalysis.cs" />
     <Compile Include="ProjectManager\ProjectManager.cs" />
     <Compile Include="ProjectManager\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="XMLSetting\Mapping.cs" />
-    <Compile Include="XMLSetting\SettingManager.cs" />
+    <Compile Include="DataLoad\OfferWriter.cs" />
     <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Offers\FormSelectOfferSettings.resx">
+      <DependentUpon>FormSelectOfferSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressBarWithLog.resx">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
@@ -220,8 +252,11 @@
     <EmbeddedResource Include="Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Settings\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ACO_TemporaryKey.pfx" />
-    <None Include="ExcelHelpers\ExcelHelpersDiagramm.cd" />
+    <None Include="app.config" />
     <None Include="MainClassDiagram.cd" />
     <None Include="Properties\DataSources\Offer.datasource" />
     <None Include="Properties\Settings.settings">
@@ -231,12 +266,19 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Ribbon.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ribbon.Designer.cs">
       <DependentUpon>Ribbon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -248,10 +290,9 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
-    <None Include="XMLSetting\XMLSettingDiagramm.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Settings\" />
+    <Folder Include="XMLSetting\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -261,10 +302,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ACO_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5298EDF1155350F6D5D036C7C84EFC86FDB3490B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1D34DD048DEEAEEC13D3CAF06AF6C4C7EC738375</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
