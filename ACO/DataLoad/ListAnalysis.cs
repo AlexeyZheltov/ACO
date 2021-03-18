@@ -22,7 +22,7 @@ namespace ACO
             {
                 if (_ColumnStartPrint == 0)
                 {
-                    _ColumnStartPrint = SheetAnalysis.UsedRange.Column + SheetAnalysis.UsedRange.Columns.Count;
+                    _ColumnStartPrint = SheetAnalysis.UsedRange.Column + SheetAnalysis.UsedRange.Columns.Count +1 ;
                 }
                 return _ColumnStartPrint;
             }
