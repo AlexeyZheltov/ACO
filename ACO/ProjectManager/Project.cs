@@ -186,9 +186,16 @@ namespace ACO.ProjectManager
             {
                 if (!string.IsNullOrWhiteSpace(mapping.ColumnSymbol))
                 {
-                    mapping.Column = sheetProject.Cells[$"{mapping.ColumnSymbol}2"].Column;
+                    mapping.Column = sheetProject.Range[$"{mapping.ColumnSymbol}1"].Column;
                 }
             }
+        }
+
+        public ColumnMapping GetColumn(StaticColumns name)
+        {
+            ColumnMapping mapping = Columns.Find(x => x.Name == ColumnsNames[name]);
+            if (mapping is null) throw new AddInException($"Маппинг столбца \"{ColumnsNames[name]}\" не найден!");
+            return mapping;
         }
     }
 }

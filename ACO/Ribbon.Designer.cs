@@ -87,7 +87,7 @@
             // 
             this.BtnCreateProgect.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnCreateProgect.Image = ((System.Drawing.Image)(resources.GetObject("BtnCreateProgect.Image")));
-            this.BtnCreateProgect.Label = "Создать";
+            this.BtnCreateProgect.Label = "Открыть шаблон";
             this.BtnCreateProgect.Name = "BtnCreateProgect";
             this.BtnCreateProgect.ShowImage = true;
             this.BtnCreateProgect.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCreateProgect_Click);
@@ -96,7 +96,7 @@
             // 
             this.BtnSpectrum.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnSpectrum.Image = ((System.Drawing.Image)(resources.GetObject("BtnSpectrum.Image")));
-            this.BtnSpectrum.Label = "Загрузить спектрум";
+            this.BtnSpectrum.Label = "Загрузить \"Спектрум\"";
             this.BtnSpectrum.Name = "BtnSpectrum";
             this.BtnSpectrum.ShowImage = true;
             this.BtnSpectrum.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSpectrum_Click);
@@ -116,6 +116,7 @@
             this.group2.Items.Add(this.BtnLoadLvl11);
             this.group2.Label = "Загрузить";
             this.group2.Name = "group2";
+            this.group2.Visible = false;
             // 
             // BtnLoadLvl12
             // 
@@ -137,6 +138,7 @@
             this.group3.Items.Add(this.BtnUpdateLvl11);
             this.group3.Label = "Обновить";
             this.group3.Name = "group3";
+            this.group3.Visible = false;
             // 
             // BtnUpdateLvl12
             // 
@@ -206,6 +208,7 @@
             this.group4.Items.Add(this.BtnAbout);
             this.group4.Label = "Информация";
             this.group4.Name = "group4";
+            this.group4.Visible = false;
             // 
             // BtnAbout
             // 

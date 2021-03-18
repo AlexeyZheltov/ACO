@@ -29,6 +29,9 @@ namespace ACO.ProjectManager
             LoadRangeValues();
         }
 
+        /// <summary>
+        ///  Данные таблицы проектов
+        /// </summary>
         private void LoadProjects()
         {
             _projectManager = new ProjectManager();
@@ -45,6 +48,13 @@ namespace ACO.ProjectManager
                 TableProjects.Columns[0].Width = 70;
                 TableProjects.Columns[1].Width = 120;
                 TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                for(int i = 0;i< TableProjects.Rows.Count; i++)
+                {
+                   if (_projectManager.Projects[i].Name ==Properties.Settings.Default.ActiveProjectName)
+                    {
+                    TableProjects.Rows[i].Selected = true;
+                    }
+                }
             }
             else
             {
@@ -53,6 +63,9 @@ namespace ACO.ProjectManager
             }
         }
 
+        /// <summary>
+        /// Данные таблицы столбцов
+        /// </summary>
         private void LoadColumns()
         {
             if (_projectManager.ActiveProject != null)
@@ -80,6 +93,10 @@ namespace ACO.ProjectManager
                 }
             }
         }
+
+        /// <summary>
+        ///  Лист \ первая строка
+        /// </summary>
         private void LoadRangeValues()
         {
             if (_projectManager.ActiveProject != null)
@@ -216,14 +233,7 @@ namespace ACO.ProjectManager
                 }
             }
         }
-
-        private void BtnOpenFolserSettings_Click(object sender, EventArgs e)
-        {
-            string folder = ProjectManager.GetFolderProjects();
-            System.Diagnostics.Process.Start(folder);
-        }
-
-     
+        
 
         /// <summary>
         ///  Кнопка Выделенный диапазон \ вкладка 
@@ -260,10 +270,12 @@ namespace ACO.ProjectManager
             Save();
             Close();
         }
-
-        private void FormManager_Load(object sender, EventArgs e)
+              
+        private void BtnOpenFolder_Click(object sender, EventArgs e)
         {
-
+            string folder = ProjectManager.GetFolderProjects();
+            System.Diagnostics.Process.Start(folder);
         }
+              
     }
 }

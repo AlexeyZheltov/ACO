@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACO.Offers
+namespace ACO
 {
 
     /// <summary>
@@ -13,10 +13,14 @@ namespace ACO.Offers
     /// </summary>
     class FieldAddress
     {
-        string Header { get; set; }
 
+        /// <summary>
         // Номер столбца в КП
-        public int ColumnOffer { get; set; }        
+        /// </summary>
+        public int ColumnOffer { get; set; }
+        /// <summary>
+        /// Номер вставки столбца в Анализе
+        /// </summary>
         public int ColumnPaste{ get; set; }
 
         // Mаппинг столбца в Анализе

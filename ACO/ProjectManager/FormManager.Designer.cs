@@ -28,12 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManager));
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.TbInfo = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
             this.TBoxSheetName = new System.Windows.Forms.TextBox();
@@ -42,7 +41,6 @@
             this.PageColumns = new System.Windows.Forms.TabPage();
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.PageProject = new System.Windows.Forms.TabPage();
-            this.BtnOpenFolserSettings = new System.Windows.Forms.Button();
             this.BtnDelete = new System.Windows.Forms.Button();
             this.BtnSelect = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -52,7 +50,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TableProjects = new ACO.ProjectManager.CustomDataGrid();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1.SuspendLayout();
+            this.BtnOpenFolder = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.PageColumns.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
@@ -84,28 +82,6 @@
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.TbInfo);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(494, 446);
-            this.tabPage1.TabIndex = 4;
-            this.tabPage1.Text = "Конфигурация";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // TbInfo
-            // 
-            this.TbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TbInfo.Location = new System.Drawing.Point(4, 41);
-            this.TbInfo.Multiline = true;
-            this.TbInfo.Name = "TbInfo";
-            this.TbInfo.Size = new System.Drawing.Size(486, 391);
-            this.TbInfo.TabIndex = 7;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.label6);
@@ -117,7 +93,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(494, 446);
             this.tabPage2.TabIndex = 3;
-            this.tabPage2.Text = "Диапазоны";
+            this.tabPage2.Text = "Диапазон";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // label6
@@ -178,8 +154,8 @@
             this.TableColumns.ReadOnly = true;
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(482, 433);
@@ -189,7 +165,7 @@
             // 
             // PageProject
             // 
-            this.PageProject.Controls.Add(this.BtnOpenFolserSettings);
+            this.PageProject.Controls.Add(this.BtnOpenFolder);
             this.PageProject.Controls.Add(this.BtnDelete);
             this.PageProject.Controls.Add(this.BtnSelect);
             this.PageProject.Controls.Add(this.groupBox2);
@@ -203,20 +179,10 @@
             this.PageProject.Text = "Проект";
             this.PageProject.UseVisualStyleBackColor = true;
             // 
-            // BtnOpenFolserSettings
-            // 
-            this.BtnOpenFolserSettings.Location = new System.Drawing.Point(15, 77);
-            this.BtnOpenFolserSettings.Name = "BtnOpenFolserSettings";
-            this.BtnOpenFolserSettings.Size = new System.Drawing.Size(137, 24);
-            this.BtnOpenFolserSettings.TabIndex = 5;
-            this.BtnOpenFolserSettings.Text = "Открыть папку";
-            this.BtnOpenFolserSettings.UseVisualStyleBackColor = true;
-            this.BtnOpenFolserSettings.Click += new System.EventHandler(this.BtnOpenFolserSettings_Click);
-            // 
             // BtnDelete
             // 
             this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnDelete.Location = new System.Drawing.Point(410, 109);
+            this.BtnDelete.Location = new System.Drawing.Point(377, 78);
             this.BtnDelete.Name = "BtnDelete";
             this.BtnDelete.Size = new System.Drawing.Size(71, 24);
             this.BtnDelete.TabIndex = 4;
@@ -227,7 +193,7 @@
             // BtnSelect
             // 
             this.BtnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSelect.Location = new System.Drawing.Point(329, 109);
+            this.BtnSelect.Location = new System.Drawing.Point(296, 78);
             this.BtnSelect.Name = "BtnSelect";
             this.BtnSelect.Size = new System.Drawing.Size(71, 24);
             this.BtnSelect.TabIndex = 4;
@@ -280,7 +246,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 120);
+            this.label3.Location = new System.Drawing.Point(23, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(124, 13);
             this.label3.TabIndex = 1;
@@ -295,16 +261,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TableProjects.BackgroundColor = System.Drawing.Color.White;
             this.TableProjects.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TableProjects.Location = new System.Drawing.Point(6, 139);
+            this.TableProjects.Location = new System.Drawing.Point(6, 110);
             this.TableProjects.MultiSelect = false;
             this.TableProjects.Name = "TableProjects";
             this.TableProjects.ReadOnly = true;
             this.TableProjects.RowHeadersVisible = false;
             this.TableProjects.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableProjects.Size = new System.Drawing.Size(482, 304);
+            this.TableProjects.Size = new System.Drawing.Size(482, 333);
             this.TableProjects.TabIndex = 0;
             this.TableProjects.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellContentClick);
             this.TableProjects.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellValueChanged);
@@ -317,12 +283,23 @@
             this.tabControl1.Controls.Add(this.PageProject);
             this.tabControl1.Controls.Add(this.PageColumns);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(3, 15);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(502, 472);
             this.tabControl1.TabIndex = 0;
+            // 
+            // BtnOpenFolder
+            // 
+            this.BtnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnOpenFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnOpenFolder.BackgroundImage")));
+            this.BtnOpenFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BtnOpenFolder.Location = new System.Drawing.Point(454, 77);
+            this.BtnOpenFolder.Name = "BtnOpenFolder";
+            this.BtnOpenFolder.Size = new System.Drawing.Size(27, 27);
+            this.BtnOpenFolder.TabIndex = 10;
+            this.BtnOpenFolder.UseVisualStyleBackColor = true;
+            this.BtnOpenFolder.Click += new System.EventHandler(this.BtnOpenFolder_Click);
             // 
             // FormManager
             // 
@@ -336,10 +313,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "FormManager";
             this.ShowIcon = false;
-            this.Text = "Диспетчер";
-            this.Load += new System.EventHandler(this.FormManager_Load);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.Text = "Диспетчер проектов";
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.PageColumns.ResumeLayout(false);
@@ -357,15 +331,12 @@
         #endregion
         private System.Windows.Forms.Button BtnAccept;
         private System.Windows.Forms.Button BtnCancel;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TextBox TbInfo;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox TBoxFirstRowRangeValues;
         private System.Windows.Forms.TabPage PageColumns;
         private CustomDataGrid TableColumns;
         private System.Windows.Forms.TabPage PageProject;
-        private System.Windows.Forms.Button BtnOpenFolserSettings;
         private System.Windows.Forms.Button BtnDelete;
         private System.Windows.Forms.Button BtnSelect;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -377,5 +348,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox TBoxSheetName;
+        private System.Windows.Forms.Button BtnOpenFolder;
     }
 }

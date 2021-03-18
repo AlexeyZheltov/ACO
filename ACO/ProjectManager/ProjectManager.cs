@@ -13,8 +13,11 @@ namespace ACO.ProjectManager
 {
     class ProjectManager
     {
+        /// <summary>
+        ///  Проект отмеченный как текущий
+        /// </summary>
         public Project ActiveProject
-        {
+        {           
             get
             {
                 if (_ActiveProject == null)
@@ -27,9 +30,7 @@ namespace ACO.ProjectManager
             {
                 _ActiveProject = value;
                 Properties.Settings.Default.ActiveProjectName = _ActiveProject?.Name ?? "";
-
                 Projects.ForEach(x => x.Active = x.Name == _ActiveProject.Name);
-                //Projects
             }
         }
         private Project _ActiveProject;

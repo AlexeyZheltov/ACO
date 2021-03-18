@@ -22,11 +22,11 @@ namespace ACO
     {
         //  private Excel.Worksheet _sheet;
 
-        public OfferManager() { }
+        public OfferManager() { }      
 
-        public Offer Offer { get; set; }
-
-        private List<OfferSettings> _Mappings;
+        /// <summary>
+        ///  Адреса столбцов
+        /// </summary>
         public List<OfferSettings> Mappings
         {
             get
@@ -39,6 +39,7 @@ namespace ACO
             }
             set { _Mappings = value; }
         }
+        private List<OfferSettings> _Mappings;
 
 
         public List<OfferSettings> GetMappings()

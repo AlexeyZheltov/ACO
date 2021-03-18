@@ -182,8 +182,7 @@
   -->
   <ItemGroup>
     <Compile Include="AddInException.cs" />
-    <Compile Include="ExcelHelpers\AddinWindow.cs" />
-    <Compile Include="ExcelHelpers\Cell.cs" />
+    <Compile Include="AddinWindow.cs" />
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
     <Compile Include="IProgressBarWithLogUI.cs" />
@@ -203,8 +202,8 @@
     <Compile Include="Offers\OfferColumnMapping.cs" />
     <Compile Include="Offers\OfferManager.cs" />
     <Compile Include="Offers\OfferSettings.cs" />
-    <Compile Include="Offers\Record.cs" />
-    <Compile Include="Offers\FieldAddress.cs" />
+    <Compile Include="DataLoad\Record.cs" />
+    <Compile Include="DataLoad\FieldAddress.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,7 +211,7 @@
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProjectManager\ColumnsMapping.cs" />
-    <Compile Include="ProjectManager\CustomDataGrid.cs">
+    <Compile Include="CustomDataGrid.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectManager\DefaultProjectSettings.cs" />
@@ -222,13 +221,13 @@
     <Compile Include="ProjectManager\FormManager.Designer.cs">
       <DependentUpon>FormManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectManager\ListAnalysis.cs" />
+    <Compile Include="DataLoad\ListAnalysis.cs" />
     <Compile Include="ProjectManager\ProjectManager.cs" />
     <Compile Include="ProjectManager\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="OfferWriter.cs" />
+    <Compile Include="DataLoad\OfferWriter.cs" />
     <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>

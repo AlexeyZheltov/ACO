@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACO.Offers
+namespace ACO
 {
     /// <summary>
     ///  Запсись КП
@@ -12,15 +12,15 @@ namespace ACO.Offers
     class Record
     {
         /// <summary>
-        /// Уровень
+        /// Уровень номера
         /// </summary>
         public int Level
         {
             get
             {
                 if (_Level == 0)
-                {
-                    _Level = string.IsNullOrEmpty(Number)? 0: Numbers.Length + 1;
+                {                  
+                    _Level = Numbers.Length ;
                 }
                 return _Level;
             }
@@ -31,8 +31,10 @@ namespace ACO.Offers
         }
         int _Level;
 
-        private int myVar;
 
+        /// <summary>
+        ///  Массив номеров пункта.
+        /// </summary>
         public string[] Numbers
         {
             get
@@ -67,18 +69,9 @@ namespace ACO.Offers
         }
         string _Number;
 
-
-        //public bool KeyEqual(List<string> keyFilds)
-        //{
-        //    bool keyEqual = true;
-        //    foreach (string key in keyFilds)
-        //    {
-        //        if (!KeyFilds.Contains(key)) return false;
-
-        //    }
-        //    return keyEqual;
-        //}
-
+        /// <summary>
+        ///  Поля отмеченные как "Проверять"
+        /// </summary>
         public List<string> KeyFilds
         {
             get
@@ -96,7 +89,7 @@ namespace ACO.Offers
         }
         List<string> _KeyFilds;
 
-        public bool Equal(Record recordPrint)
+        public bool KeyEqual(Record recordPrint)
         {
             foreach (string keyFild in KeyFilds)
             {
@@ -109,21 +102,19 @@ namespace ACO.Offers
         }
 
         /// <summary>
-        ///  Сравнение
+        ///  Сравнение уровней номеров 2записей
         /// </summary>
-        /// <param name="recordPrint"></param>
+        /// <param name="recordAdd"> </param>
         /// <returns></returns>
-        public bool LevelEqual(Record recordPrint)
+        public bool LevelEqual(Record recordAdd)
         {
-            if (Number == recordPrint.Number) return true;
-            if (Level != recordPrint.Level) return false;
+            if (Number == recordAdd.Number) return true;
+            if (Level != recordAdd.Level) return false;
 
-            for (int i = 0; i < Numbers.Length - 1;)
-            {
-                if (Level > 1 && Level == recordPrint.Level)
-                {
-                    if (Numbers[i] != recordPrint.Numbers[i]) return false;
-                }
+            if (Level == 1 || Level != recordAdd.Level) return false;
+            for (int i = 0; i < Numbers.Length - 1; i++)
+            {                
+               if (Numbers[i] != recordAdd.Numbers[i]) return false;             
             }
             return true;
         }
@@ -147,6 +138,9 @@ namespace ACO.Offers
         }
         public List<FieldAddress> _Addresslist;
 
+        /// <summary>
+        ///  Значения для вывода на лист (столбец вывода \ Значение ячейки)
+        /// </summary>
         public Dictionary<int, object> Values
         {
             get
@@ -164,23 +158,5 @@ namespace ACO.Offers
         }
         public Dictionary<int, object> _Values;
 
-        //   public int Index { get; internal set; }
-
-        //public Dictionary<string, object> Values
-        //{
-        //    get
-        //    {
-        //        if (_Values == null)
-        //        {
-        //            _Values = new Dictionary<string, object>();
-        //        }
-        //        return _Values;
-        //    }
-        //    set
-        //    {
-        //        _Values = value;
-        //    }
-        //}
-        //public Dictionary<string, object> _Values;
     }
 }
