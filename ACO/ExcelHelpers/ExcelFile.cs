@@ -64,7 +64,7 @@ namespace ACO.ExcelHelpers
         /// </summary>
         public void Close()
         {
-            WorkBook?.Close();
+            WorkBook?.Close(false);
             WorkBook = null;
             _wsCache = null;
         }

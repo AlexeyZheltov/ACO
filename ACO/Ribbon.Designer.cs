@@ -194,6 +194,7 @@
             this.group6.Items.Add(this.BtnUpdateFormuls);
             this.group6.Label = "Этап 1";
             this.group6.Name = "group6";
+            this.group6.Visible = false;
             // 
             // BtnUpdateFormuls
             // 

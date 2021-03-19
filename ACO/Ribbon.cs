@@ -34,58 +34,59 @@ namespace ACO
 
 
             ExcelHelpers.ExcelFile.Init();
-            //  ExcelHelpers.ExcelFile.Acselerate(true);
+            //ExcelHelpers.ExcelFile.Acselerate(true);
             if (_pb is null)
             {
                 _pb = new ProgressBarWithLog();
                 _pb.CloseForm += () => { _pb = null; };
                 _pb.Show();
-               // _pb.Show(new AddinWindow(Globals.ThisAddIn));
+                // _pb.Show(new AddinWindow(Globals.ThisAddIn));
             }
             _pb.ClearMainBar();
             _pb.ClearSubBar();
             _pb.SetMainBarVolum(files.Length);
 
-            await Task.Run(() =>
+            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            foreach (string fileName in files)
             {
-                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-                foreach (string fileName in files)
+                try
                 {
-                    try
+                    if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
+                    _pb.MainBarTick(fileName);
+                    excelBook.Open(fileName);
+                    OfferWriter offerWriter = new OfferWriter(excelBook);
+                    await Task.Run(() =>
                     {
-                        if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
-                        _pb.MainBarTick(fileName);
-                        excelBook.Open(fileName);
-                        OfferWriter offerWriter = new OfferWriter(excelBook);
                         offerWriter.Print(_pb, offerSettingsName);
-                    }
-                    catch (AddInException ex)
+                    });
+                }
+                catch (AddInException ex)
+                {
+                    TextBox tb = _pb.GetLogTextBox();
+                    string message = $"Ошибка:{ex.Message }";
+                    if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                    message += Environment.NewLine;
+                    tb.Text += message;
+                }
+                finally
+                {
+                    if (_pb.IsAborted)
                     {
-                        TextBox tb = _pb.GetLogTextBox();
-                        string message = $"Ошибка:{ex.Message }";
-                        if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                        message += Environment.NewLine;
-                        tb.Text += message;
+                        _pb.ClearMainBar();
+                        _pb.ClearSubBar();
+                        _pb.IsAborted = false;
+                        MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    finally
-                    {
-                        if (_pb.IsAborted)
-                        {
-                            _pb.ClearMainBar();
-                            _pb.ClearSubBar();
-                            _pb.IsAborted = false;
-                            MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        _pb.Close();
-                        excelBook.Close();
-                        ExcelHelpers.ExcelFile.Acselerate(false);
-                        ExcelHelpers.ExcelFile.Finish();
-                    }
+                    _pb.CloseFrm();
+                    excelBook.Close();
+                    ExcelHelpers.ExcelFile.Acselerate(false);
+                    ExcelHelpers.ExcelFile.Finish();
+
                 }
 
 
-            });
+            }
 
         }
 
@@ -107,45 +108,42 @@ namespace ACO
             _pb.SetMainBarVolum(1);
             //_pb.SetMainBarVolum(file);
 
-            await Task.Run(() =>
-            {
-                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
 
-                try
+            try
+            {
+                if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
+                _pb.MainBarTick(file);
+                excelBook.Open(file);
+                await Task.Run(() =>
                 {
-                    if (_pb.IsAborted) throw new AddInException("Процесс остановлен");
-                    _pb.MainBarTick(file);
-                    excelBook.Open(file);
                     OfferWriter offerWriter = new OfferWriter(excelBook);
                     offerWriter.PrintSpectrum(_pb);
-                }
-                catch (AddInException ex)
-                {
-                    TextBox tb = _pb.GetLogTextBox();
-                    string message = $"Ошибка:{ex.Message }";
-                    if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                    message += Environment.NewLine;
-                    tb.Text += message; //"Ошибка:" + ex.Message + " (" + ex?.InnerException.Message + ")" + Environment.NewLine;
-                }
-                finally
-                {
-                    // excelBook.Close();
-                    //ExcelHelpers.ExcelFile.Acselerate(false);
-                    //ExcelHelpers.ExcelFile.Finish();
-                }
-
+                });
+            }
+            catch (AddInException ex)
+            {
+                TextBox tb = _pb.GetLogTextBox();
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                message += Environment.NewLine;
+                tb.Text += message; //"Ошибка:" + ex.Message + " (" + ex?.InnerException.Message + ")" + Environment.NewLine;
+            }
+            finally
+            {
                 if (_pb.IsAborted)
                 {
-                    // _pb.ClearMainBar();
                     _pb.ClearSubBar();
+                    _pb.ClearMainBar();
                     _pb.IsAborted = false;
                     MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
                 }
-
-            });
-
+                _pb.CloseFrm();
+                excelBook.Close();
+                ExcelHelpers.ExcelFile.Acselerate(false);
+                ExcelHelpers.ExcelFile.Finish();
+            }
         }
 
         private string GetOfferSettings()
@@ -191,7 +189,7 @@ namespace ACO
             string file = default;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                file = openFileDialog.FileName;               
+                file = openFileDialog.FileName;
             }
             return file;
         }

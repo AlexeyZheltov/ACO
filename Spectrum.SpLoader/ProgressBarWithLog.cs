@@ -135,5 +135,7 @@ namespace Spectrum.SpLoader
         /// </summary>
         /// <returns></returns>
         public TextBox GetLogTextBox() => LogTextBox;
+
+      
     }
 }

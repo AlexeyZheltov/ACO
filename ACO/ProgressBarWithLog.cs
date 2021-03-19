@@ -142,6 +142,23 @@ namespace ACO
             {
                 ShowDialog();
             };
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                action();
+        }
+
+        public void CloseFrm()
+        {
+            Action action = () =>
+            {
+                Close();
+            };
+
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                action();
         }
     }
 }

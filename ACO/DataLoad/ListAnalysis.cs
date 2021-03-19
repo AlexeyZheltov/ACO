@@ -57,9 +57,8 @@ namespace ACO
             bool curentLevel = false;
             for (int row = _rowStart; row <= lastRow; row++)
             {
-
                 Record recordAnalysis = GetRecocdAnalysis(row);
-                if (string.IsNullOrEmpty(recordAnalysis.Number)) continue;
+                if (string.IsNullOrEmpty(recordAnalysis.Number ) || string.IsNullOrEmpty(recordPrint.Number)) continue;
 
                 /// Проверка уровня: совпадение номера предпоследнего номера
                 if (recordAnalysis.LevelEqual(recordPrint))
@@ -67,13 +66,12 @@ namespace ACO
                     curentLevel = true;
                     _rowStart = row;
                     // Проверка ключевых значений 
-                    if (recordAnalysis.KeyEqual(recordPrint))
+                    if ( recordAnalysis.KeyEqual(recordPrint))
                     {
                         rowPaste = row;
                         break;
                     }
                 }
-
                 else if (curentLevel || row==lastRow)
                 {
                     SheetAnalysis.Rows[row].Insert(Excel.XlInsertShiftDirection.xlShiftDown);

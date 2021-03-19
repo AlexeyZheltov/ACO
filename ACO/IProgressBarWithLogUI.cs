@@ -59,7 +59,7 @@ namespace ACO
         /// <returns></returns>
         TextBox GetLogTextBox();
 
-        void Close();
+        void CloseFrm();
         void ShowDialog();
         void Show();
         void Show(IWin32Window window);
