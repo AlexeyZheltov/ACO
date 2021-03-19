@@ -194,7 +194,6 @@
             this.group6.Items.Add(this.BtnUpdateFormuls);
             this.group6.Label = "Этап 1";
             this.group6.Name = "group6";
-            this.group6.Visible = false;
             // 
             // BtnUpdateFormuls
             // 
@@ -203,6 +202,7 @@
             this.BtnUpdateFormuls.Label = "Обновление формул";
             this.BtnUpdateFormuls.Name = "BtnUpdateFormuls";
             this.BtnUpdateFormuls.ShowImage = true;
+            this.BtnUpdateFormuls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
             // 
             // group4
             // 

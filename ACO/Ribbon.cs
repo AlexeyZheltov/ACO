@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.IO;
 using ACO.Offers;
 using ACO.Settings;
+using ACO.ExcelHelpers;
+using ACO.ProjectManager;
 
 namespace ACO
 {
@@ -244,6 +246,54 @@ namespace ACO
             form.ShowDialog();
         }
 
+        private void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet ws = wb.ActiveSheet;
+            Excel.Worksheet pws = wb.Sheets["Палитра"];
 
+            ExcelHelper.UnGroup(ws);
+
+            HItem root = new HItem();
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ProjectManager.Project project = projectManager.ActiveProject;
+            string letter = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+            foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letter, project.RowStart))
+                root.Add(new HItem()
+                {
+                    Level = Level,
+                    Row = Row
+                });
+
+            root.Numeric(new Numberer(), null); //pb.SubBarCount(root.AllCount)
+
+            letter = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+            ExcelHelper.Write(ws, root, null, letter); //pb.SubBarCount(root.AllCount)
+
+            //раз
+            FMapping mappin = new FMapping()
+            {
+                Amount = "",
+                MaterialPerUnit = "",
+                MaterialTotal = "",
+                WorkPerUnit = "",
+                WorkTotal = "",
+                PricePerUnit = "",
+                Total = ""
+            };
+
+            //два
+            ExcelHelper.SetFormulas(ws, mappin, root, null); //Прогресс бар только для отмены
+            ExcelHelper.SetFormulas(ws, mappin.Shift(ws, 10), root, null);
+
+            //три
+            var pallet = ExcelReader.ReadPallet(pws);
+            letter = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+
+            //четыре
+            ExcelHelper.Repaint(ws, pallet, project.RowStart, letter, null, ("A", "B"), ("AA", "AB"));//pb.SubBarCount(root.AllCount)
+
+            ExcelHelper.Group(ws, null, letter); //Этот метод сам установит Max для прогрессбара
+        }
     }
 }
