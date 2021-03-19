@@ -4,6 +4,7 @@ using ACO.ProjectManager;
 using System.Collections.Generic;
 using System.Linq;
 using ACO.Offers;
+using System;
 
 namespace ACO
 
@@ -29,10 +30,8 @@ namespace ACO
         Project _project = default;
         OfferManager _offerManager = null;
         Project _CurrentProject = null;
-
         int _offsetPasteRange = 0;
 
-        
         public OfferWriter(ExcelFile offerBook)
         {
             _app = Globals.ThisAddIn.Application;
@@ -45,7 +44,7 @@ namespace ACO
             _CurrentProject.SetColumnNumbers(_sheetProject);
         }
 
-       
+
         /// <summary>
         /// Печать КП
         /// </summary>
@@ -77,7 +76,7 @@ namespace ACO
             for (int i = 1; i <= countRows; i++)
             {
                 pb.SubBarTick();
-                if (pb.IsAborted) throw new AddInException("Процесс остановлен.");                                      
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
 
                 Record offerRecord = new Record();
                 offerRecord.Addresslist = addresslist;
@@ -86,9 +85,9 @@ namespace ACO
                 {
                     object val = arrData[i, field.ColumnOffer];
                     string text = val?.ToString() ?? "";
-                    
+
                     offerRecord.Values.Add(field.ColumnPaste, val);
-                    
+
                     if (field.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Number])
                     {
                         offerRecord.Number = text;
@@ -102,11 +101,11 @@ namespace ACO
             }
         }
 
- 
+
         private List<FieldAddress> GetFields(OfferSettings offerSettings, int lastCol)
         {
             List<FieldAddress> fields = new List<FieldAddress>();
-            int k = 0;           
+            int k = 0;
             foreach (OfferColumnMapping columnOffer in offerSettings.Columns)
             {
                 if (string.IsNullOrEmpty(columnOffer.ColumnSymbol)) continue;
@@ -143,7 +142,6 @@ namespace ACO
             return RngData.Value;
         }
 
-
         /// <summary>
         /// Печать КП
         /// </summary>
@@ -155,10 +153,10 @@ namespace ACO
 
             /*_offerManager.Mappings.Find(s => s.Name == "Спектрум");*/
             //if (offerSettings is null ) 
-                       
+
             ShowSheetRows(offerSheet);
             _sheetProject = GetSheet(_CurrentProject.AnalysisSheetName);
-            
+
 
             /// Столбец "номер п.п."
             OfferColumnMapping colNumber = offerSettings.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]);
@@ -192,19 +190,16 @@ namespace ACO
                 int rowPaste = _CurrentProject.RowStart + i - 1;
                 pb.SubBarTick();
                 if (pb.IsAborted) return;
-
                 // throw new AddInException("Процесс остановлен");
                 //foreach (OfferColumnMapping col in offerSettings.Columns)
                 //{
                 // if (string.IsNullOrEmpty(col.ColumnSymbol)) continue;
-
                 foreach ((int projectCollumn, int offerColumn) pair in colPair)
                 {
                     object val = arrData[i, pair.offerColumn];
                     if (val != null) _sheetProject.Cells[rowPaste, pair.projectCollumn].Value = val;
                 }
             }
-
             // pb.ClearSubBar();
         }
 
@@ -216,8 +211,13 @@ namespace ACO
         {
             //offerSheet.Rows.Show();
             //sh.Outline.ShowLevels();
-            sh.Rows.Show();
-            sh.UsedRange.EntireRow.Hidden = false;
+            try
+            {
+                sh.Rows.Show();
+                sh.UsedRange.EntireRow.Hidden = false;
+            }
+            catch (Exception)
+            { }
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace ACO
         /// <param name="sh"></param>
         /// <returns></returns>
         private int GetColumn(string columnSymbol, Excel.Worksheet sh)
-        {           
+        {
             int col = sh.Range[$"{columnSymbol}1"].Column;
             return col;
         }
@@ -243,7 +243,6 @@ namespace ACO
             Excel.Range rng = sh.Range[$"{columnSymbol}{sh.Rows.Count}"];
             int lastRow = rng.End[Excel.XlDirection.xlUp].Row;
             return lastRow;
-
             //int col = GetColumn(columnSymbol, sh);
             //Excel.Range rng = sh.Cells[sh.Rows.Count, col];
         }
