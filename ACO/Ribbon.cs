@@ -9,6 +9,7 @@ using ACO.Offers;
 using ACO.Settings;
 using ACO.ExcelHelpers;
 using ACO.ProjectManager;
+using System.Text.RegularExpressions;
 
 namespace ACO
 {
@@ -145,6 +146,10 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Форма вы бора настроек КП
+        /// </summary>
+        /// <returns></returns>
         private string GetOfferSettings()
         {
             string settingsFile = "";
@@ -243,22 +248,54 @@ namespace ACO
             form.ShowDialog();
         }
 
+        /// <summary>
+        ///  Обновление формул, Окраска уровней списка
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
         {
             ExcelHelpers.ExcelFile.Init();
             ExcelHelpers.ExcelFile.Acselerate(true);
-            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            try
+            {
+                UpdateFormate();
+            }
+            catch (AddInException addInEx)
+            {
+                MessageBox.Show(addInEx.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelFile.Acselerate(false);
+                ExcelFile.Finish();
+            }
+        }
+
+        /// <summary>
+        /// Обновление формул, Окраска уровней списка
+        /// </summary>
+        private async void UpdateFormate()
+        {
+            #region Подготовка прогресс бара
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
             pb.CloseForm += () => { pb = null; };
             pb.Show(new AddinWindow(Globals.ThisAddIn));
             pb.ClearMainBar();
             pb.ClearSubBar();
-            pb.SetMainBarVolum(4);
+            pb.SetMainBarVolum(5);
+            #endregion 
 
             pb.MainBarTick("Подготвка");
             Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
             Excel.Worksheet ws = wb.ActiveSheet;
             Excel.Worksheet pws = wb.Sheets["Палитра"];
+
             ExcelHelper.UnGroup(ws);
             HItem root = new HItem();
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
@@ -271,17 +308,8 @@ namespace ACO
                     Level = Level,
                     Row = Row
                 });
-            if (pb.IsAborted)
-            {
-                pb.ClearMainBar();
-                pb.ClearSubBar();
-                pb.IsAborted = false;
-                ExcelFile.Acselerate(false);
-                ExcelFile.Finish();
-                MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
+            PbAbortedFinish(pb);
             pb.MainBarTick("Подготовка списка");
             pb.SetSubBarVolume(root.AllCount());
             await Task.Run(() =>
@@ -295,28 +323,19 @@ namespace ACO
             {
                 ExcelHelper.Write(ws, root, pb, letter); //pb.SubBarCount(root.AllCount)
             });
-            if (pb.IsAborted)
-            {
-                pb.ClearMainBar();
-                pb.ClearSubBar();
-                pb.IsAborted = false;
-                ExcelFile.Acselerate(false);
-                ExcelFile.Finish();
-                MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
 
+            PbAbortedFinish(pb);
             pb.MainBarTick("Запись формул");
+            string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Count]).ColumnSymbol;
+            string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
+            string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
+            string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
+            string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
+            string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
+            string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
             await Task.Run(() =>
             {
                 //раз
-                string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Count]).ColumnSymbol;
-                string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
-                string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
-                string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
-                string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
-                string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
-                string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
                 FMapping mappin = new FMapping()
                 {
                     Amount = letterAmount,
@@ -332,53 +351,87 @@ namespace ACO
             });
             // ExcelHelper.SetFormulas(ws, mappin.Shift(ws, 10), root, null);
 
-            if (pb.IsAborted)
-            {
-                pb.ClearMainBar();
-                pb.ClearSubBar();
-                pb.IsAborted = false;
-                ExcelFile.Acselerate(false);
-                ExcelFile.Finish();
-                MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            PbAbortedFinish(pb);
             pb.MainBarTick("Форматирование списка");
-
 
             //три
             pb.ClearSubBar();
-            pb.SetSubBarVolume(root.AllCount());
-
+            int count = root.AllCount();
+            pb.SetSubBarVolume(count);
             var pallet = ExcelReader.ReadPallet(pws);
             letter = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
             //четыре
-            await Task.Run(() =>
-            {
-                ExcelHelper.Repaint(ws, pallet, project.RowStart, letter, pb, ("A", "B"), ("AA", "AB"));//pb.SubBarCount(root.AllCount)
-            });
+            List<(string, string)> colored_columns = GetColoredColumns(ws);
+            colored_columns.Add(("A", letterTotal));
+            (string, string)[] columns = colored_columns.ToArray();
+            //columns.add
+            ExcelHelper.Repaint(ws, pallet, project.RowStart, letter, pb, columns);//pb.SubBarCount(root.AllCount)
 
-            if (pb.IsAborted)
-            {
-                pb.ClearMainBar();
-                pb.ClearSubBar();
-                pb.IsAborted = false;
-                ExcelFile.Acselerate(false);
-                ExcelFile.Finish();
-                MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            //await Task.Run(() =>
+            //{
+            //});
 
-
+            PbAbortedFinish(pb);
             pb.MainBarTick("Группировка списка");
-            pb.ClearSubBar();       
+            pb.ClearSubBar();
             await Task.Run(() =>
             {
                 ExcelHelper.Group(ws, pb, letter); //Этот метод сам установит Max для прогрессбара
             });
 
+            pb.ClearSubBar();
             pb.ClearMainBar();
-            ExcelFile.Acselerate(false);
-            ExcelFile.Finish();
+            pb.CloseFrm();
+        }
+
+        private List<(string, string)> GetColoredColumns(Excel.Worksheet ws)
+        {
+            List<(string, string)> colored_columns = new List<(string, string)>();
+            //int lastCol = ws.UsedRange.Column + ws.UsedRange.Columns.Count;
+            int lastCol = ws.Cells[1, ws.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+
+             Excel.Range cellEnd = null;
+            Excel.Range cellStart = null;
+            for (int col = 1; col <= lastCol; col++)
+            {
+                Excel.Range cell = ws.Cells[1, col];
+                string val = cell.Value?.ToString() ?? "";
+                if (val == "offer_start")
+                {
+                    cellStart = cell;
+                }
+                else if (val == "offer_end")
+                {
+                    cellEnd = cell;
+                }
+                if (cellStart != null && cellEnd != null)
+                {
+                    if (cellStart.Column < cellEnd.Column)
+                    {
+                        string address = cellStart.Address;
+                        string startOfferLetter = Regex.Match(address, @"[A-Z]+").Value ?? "";
+                        address = cellEnd.Address;
+                        string endOfferLetter = Regex.Match(address, @"[A-Z]+").Value ?? "";
+
+                       if (!string.IsNullOrEmpty(startOfferLetter) && !string.IsNullOrEmpty(endOfferLetter)) colored_columns.Add((startOfferLetter, endOfferLetter));
+                    }
+                    cellStart = null;
+                    cellEnd = null;
+                }
+            }
+            return colored_columns;
+        }
+
+        private void PbAbortedFinish(IProgressBarWithLogUI pb)
+        {
+            if (pb.IsAborted)
+            {
+                pb.ClearMainBar();
+                pb.ClearSubBar();
+                pb.IsAborted = false;
+                pb.CloseFrm();
+                throw new AddInException("Выполнение было прервано.");
+            }
         }
     }
 }

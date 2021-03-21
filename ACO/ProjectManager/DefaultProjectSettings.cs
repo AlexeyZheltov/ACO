@@ -40,7 +40,7 @@ namespace ACO.ProjectManager
                     Name =Project.ColumnsNames[StaticColumns.Number] ,
                     Check = false,
                     Obligatory = true,
-                    ColumnSymbol = "B"                   
+                    ColumnSymbol = "C"                   
                 });
                 columns.Add(new ColumnMapping()
                 {

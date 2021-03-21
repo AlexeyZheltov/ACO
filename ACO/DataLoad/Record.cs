@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ACO
@@ -19,8 +20,8 @@ namespace ACO
             get
             {
                 if (_Level == 0)
-                {                  
-                    _Level = Numbers.Length ;
+                {
+                    _Level = Numbers.Length;
                 }
                 return _Level;
             }
@@ -89,14 +90,30 @@ namespace ACO
         }
         List<string> _KeyFilds;
 
+        /// <summary>
+        ///  Сравнение проверяемых полей 
+        /// </summary>
+        /// <param name="recordPrint"></param>
+        /// <returns></returns>
         public bool KeyEqual(Record recordPrint)
         {
             foreach (string keyFild in KeyFilds)
             {
-                if (!recordPrint.KeyFilds.Contains(keyFild))
+                bool exist = false;
+                foreach (string recordField in recordPrint.KeyFilds)
                 {
-                    return false;
+                    string text1 = keyFild.Trim().Replace("  ", "");
+                    string text2 = recordField.Trim().Replace("  ", "");
+                    if (text1.IndexOf(text2, StringComparison.InvariantCultureIgnoreCase) > 0)
+                    {
+                        exist = true;
+                    }
                 }
+                if (!exist) return false;
+                //if (!recordPrint.KeyFilds.Contains(keyFild,StringComparer.InvariantCultureIgnoreCase))
+                //{
+                //    return false;
+                //}
             }
             return true;
         }
@@ -113,8 +130,8 @@ namespace ACO
 
             if (Level == 1 || Level != recordAdd.Level) return false;
             for (int i = 0; i < Numbers.Length - 1; i++)
-            {                
-               if (Numbers[i] != recordAdd.Numbers[i]) return false;             
+            {
+                if (Numbers[i] != recordAdd.Numbers[i]) return false;
             }
             return true;
         }

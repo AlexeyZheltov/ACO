@@ -55,12 +55,12 @@ namespace ACO.ExcelHelpers
             foreach (Excel.Range r_row in ws.UsedRange.Rows)
             {
                 if (pb?.IsAborted ?? false) break;
-                pb?.SubBarTick();
 
                 int row = r_row.Row;
                 if (row < startRow)
                     continue;
 
+                pb?.SubBarTick();
                 if (pallets.TryGetValue(ws.Range[$"{levelColumn}{row}"].Text, out Excel.Range pallet))
                 {
                     pallet.Copy();
@@ -72,7 +72,6 @@ namespace ACO.ExcelHelpers
                     }
                 }
             }
-
             application.CutCopyMode = (Excel.XlCutCopyMode)0;
         }
 

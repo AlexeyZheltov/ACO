@@ -54,7 +54,7 @@ namespace ACO
             // 
             // SubProgressBar
             // 
-            this.SubProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.SubProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SubProgressBar.Location = new System.Drawing.Point(12, 72);
             this.SubProgressBar.Name = "SubProgressBar";
@@ -64,7 +64,7 @@ namespace ACO
             // SubLabel
             // 
             this.SubLabel.AutoSize = true;
-            this.SubLabel.Location = new System.Drawing.Point(12, 56);
+            this.SubLabel.Location = new System.Drawing.Point(12, 52);
             this.SubLabel.Name = "SubLabel";
             this.SubLabel.Size = new System.Drawing.Size(42, 13);
             this.SubLabel.TabIndex = 2;
@@ -73,7 +73,7 @@ namespace ACO
             // MainLabel
             // 
             this.MainLabel.AutoSize = true;
-            this.MainLabel.Location = new System.Drawing.Point(12, 16);
+            this.MainLabel.Location = new System.Drawing.Point(12, 12);
             this.MainLabel.Name = "MainLabel";
             this.MainLabel.Size = new System.Drawing.Size(46, 13);
             this.MainLabel.TabIndex = 4;
@@ -81,7 +81,7 @@ namespace ACO
             // 
             // MainProgressBar
             // 
-            this.MainProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.MainProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.MainProgressBar.Location = new System.Drawing.Point(12, 32);
             this.MainProgressBar.Name = "MainProgressBar";
@@ -90,7 +90,7 @@ namespace ACO
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.Location = new System.Drawing.Point(12, 45);
@@ -100,7 +100,7 @@ namespace ACO
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label4.Location = new System.Drawing.Point(12, 85);
@@ -110,8 +110,8 @@ namespace ACO
             // 
             // LogGroupBox
             // 
-            this.LogGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.LogGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogGroupBox.Controls.Add(this.LogTextBox);
             this.LogGroupBox.Location = new System.Drawing.Point(12, 89);

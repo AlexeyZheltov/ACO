@@ -129,34 +129,22 @@ namespace ACO
         /// <param name="addresslist"></param>
         internal void PrintTitle(Excel.Worksheet tamplateSheet, List<FieldAddress> addresslist)
         {
-            //FieldAddress firstColMapping = addresslist.Min(x => x.MappingAnalysis.Column).MappingAnalysis.Column;
-            //int firstCol = addresslist.First().MappingAnalysis.Column;
             int lastCol = addresslist.Last().MappingAnalysis.Column;
-
             foreach (FieldAddress address in addresslist)
             {
                 int col = address.MappingAnalysis.Column;
                 if (col > lastCol) lastCol = col;
-                //if (col < firstCol) firstCol = col;
             }
             Excel.Range titleTamplate = SheetAnalysis.Range[SheetAnalysis.Cells[7, 1], SheetAnalysis.Cells[8, lastCol]];
-            //Excel.Range title = null;
             int columnPaste = ColumnStartPrint;
             foreach (FieldAddress address in addresslist)
             {
                 Excel.Range rngCoulumn = titleTamplate.Columns[address.MappingAnalysis.Column];
                 rngCoulumn.Copy(SheetAnalysis.Cells[7, columnPaste]);
-                columnPaste++;
-                //if (title is null)
-                //{
-                //    title = rngCoulumn;
-                //}
-                //else
-                //{
-                //    title = Globals.ThisAddIn.Application.Union(title, rngCoulumn);
-                //}
+                columnPaste++;               
             }
-            //Excel.Range commentsTitleRng = tamplateSheet.Range["A10:I14"];
+            SheetAnalysis.Cells[1, ColumnStartPrint].Value = "offer_start" ;
+            SheetAnalysis.Cells[1, columnPaste-1].Value = "offer_end" ;          
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
@@ -165,11 +153,7 @@ namespace ACO
             catch (Exception e)
             {
                 throw new AddInException($"При копировании диапазона \"ШаблонКомментарии\" возникла ошибка: {e.Message}");
-            }
-            //if (title != null)
-            //{
-            //    title.Copy(SheetProjerct.Cells[7, _ColumnStartPrint]);
-            //}
+            }         
         }
 
         /*

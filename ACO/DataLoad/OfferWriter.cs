@@ -59,12 +59,13 @@ namespace ACO
 
             ListAnalysis SheetAnalysis = new ListAnalysis(_sheetProject, _CurrentProject);
 
+
             /// Адресация полей КП
             List<FieldAddress> addresslist = GetFields(offerSettings, SheetAnalysis.ColumnStartPrint);
 
             Excel.Worksheet tamplateSheet = GetSheet("Шаблоны");
             SheetAnalysis.PrintTitle(tamplateSheet, addresslist);
-
+            
 
             int lastRowOffer = GetLastRow(offerSheet);
             // Массив загружаемых данных
@@ -150,13 +151,9 @@ namespace ACO
         {
             OfferSettings offerSettings = OfferManager.GetSpectrumSettigsDefault();
             Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName);
-
-            /*_offerManager.Mappings.Find(s => s.Name == "Спектрум");*/
-            //if (offerSettings is null ) 
-
+            
             ShowSheetRows(offerSheet);
             _sheetProject = GetSheet(_CurrentProject.AnalysisSheetName);
-
 
             /// Столбец "номер п.п."
             OfferColumnMapping colNumber = offerSettings.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]);
@@ -164,8 +161,7 @@ namespace ACO
 
             int countRows = lastRow - offerSettings.RowStart + 1;
             pb.SetSubBarVolume(countRows);
-
-            //List<(string, string)> colPair = new List<(string projectCollumn, string offerColumn)>();
+          
             List<(int, int)> colPair = new List<(int projectCollumn, int offerColumn)>();
             int rightColumn = 10;
             foreach (OfferColumnMapping col in offerSettings.Columns)
@@ -243,8 +239,6 @@ namespace ACO
             Excel.Range rng = sh.Range[$"{columnSymbol}{sh.Rows.Count}"];
             int lastRow = rng.End[Excel.XlDirection.xlUp].Row;
             return lastRow;
-            //int col = GetColumn(columnSymbol, sh);
-            //Excel.Range rng = sh.Cells[sh.Rows.Count, col];
         }
 
         /// <summary>
