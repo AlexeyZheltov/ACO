@@ -11,7 +11,7 @@ namespace ACO
     ///  Загружает данные на лист Анализ
     /// </summary>
     class ListAnalysis
-    {         
+    {
 
         public Excel.Worksheet SheetAnalysis { get; }
         public Project CurrentProject { get; }
@@ -22,7 +22,7 @@ namespace ACO
             {
                 if (_ColumnStartPrint == 0)
                 {
-                    _ColumnStartPrint = SheetAnalysis.UsedRange.Column + SheetAnalysis.UsedRange.Columns.Count +1 ;
+                    _ColumnStartPrint = SheetAnalysis.UsedRange.Column + SheetAnalysis.UsedRange.Columns.Count + 1;
                 }
                 return _ColumnStartPrint;
             }
@@ -48,7 +48,7 @@ namespace ACO
         int _rowStart = 1;
 
         internal void Print(Record recordPrint)
-        {           
+        {
             int rowPaste = _rowStart;
 
             /// Последняя строка списка 
@@ -58,21 +58,26 @@ namespace ACO
             for (int row = _rowStart; row <= lastRow; row++)
             {
                 Record recordAnalysis = GetRecocdAnalysis(row);
-                if (string.IsNullOrEmpty(recordAnalysis.Number ) || string.IsNullOrEmpty(recordPrint.Number)) continue;
-
+                if (string.IsNullOrEmpty(recordAnalysis.Number) || string.IsNullOrEmpty(recordPrint.Number)) continue;
+                if (recordAnalysis.Number == recordPrint.Number)
+                {
+                    _rowStart = row;
+                    rowPaste = row;
+                    break;
+                }
                 /// Проверка уровня: совпадение номера предпоследнего номера
                 if (recordAnalysis.LevelEqual(recordPrint))
                 {
                     curentLevel = true;
                     _rowStart = row;
                     // Проверка ключевых значений 
-                    if ( recordAnalysis.KeyEqual(recordPrint))
+                    if (recordAnalysis.KeyEqual(recordPrint))
                     {
                         rowPaste = row;
                         break;
                     }
                 }
-                else if (curentLevel || row==lastRow)
+                else if (curentLevel || row == lastRow)
                 {
                     SheetAnalysis.Rows[row].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
                     rowPaste = row;
@@ -116,7 +121,7 @@ namespace ACO
                 SheetAnalysis.Cells[1, pair.projectColumn.Column].Value = pair.projectColumn.Name;
             }
         }
-            
+
 
         /// <summary>
         ///  Копирование заголовков

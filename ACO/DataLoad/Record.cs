@@ -108,7 +108,7 @@ namespace ACO
         /// <returns></returns>
         public bool LevelEqual(Record recordAdd)
         {
-            if (Number == recordAdd.Number) return true;
+            //if (Number == recordAdd.Number) return true;
             if (Level != recordAdd.Level) return false;
 
             if (Level == 1 || Level != recordAdd.Level) return false;
