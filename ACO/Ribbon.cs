@@ -59,6 +59,7 @@ namespace ACO
                     pb.MainBarTick(fileName);
                     excelBook.Open(fileName);
                     OfferWriter offerWriter = new OfferWriter(excelBook);
+                    
                     await Task.Run(() =>
                     {
                         offerWriter.Print(pb, offerSettingsName);
@@ -89,38 +90,19 @@ namespace ACO
             }
         }
 
-        private async void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
+        private void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
         {
-            string file = GetFile();
-            if (!File.Exists(file)) { return; }
-
             ExcelHelpers.ExcelFile.Init();
             ExcelHelpers.ExcelFile.Acselerate(true);
-
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            // if (pb is null)
-            //{
-            pb.CloseForm += () => { pb = null; };
-            pb.Show(new AddinWindow(Globals.ThisAddIn));
-            //}
-            pb.ClearMainBar();
-            pb.ClearSubBar();
-            pb.SetMainBarVolum(1);
-
-
-            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-
             try
             {
-                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-                pb.MainBarTick(file);
-                excelBook.Open(file);
-                await Task.Run(() =>
-                {
-                    OfferWriter offerWriter = new OfferWriter(excelBook);
-                    offerWriter.PrintSpectrum(pb);
-                });
+                string file = GetFile();
+                if (!File.Exists(file)) { return; }
+                pb.CloseForm += () => { pb = null; };
+                pb.Show(new AddinWindow(Globals.ThisAddIn));
+
+                PrintSpectrum(pb, file);
             }
             catch (AddInException ex)
             {
@@ -132,18 +114,27 @@ namespace ACO
             }
             finally
             {
-                if (pb.IsAborted)
-                {
-                    pb.ClearSubBar();
-                    pb.ClearMainBar();
-                    pb.IsAborted = false;
-                    MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                pb.CloseFrm();
-                excelBook.Close();
                 ExcelHelpers.ExcelFile.Acselerate(false);
                 ExcelHelpers.ExcelFile.Finish();
             }
+        }
+        private async void PrintSpectrum(IProgressBarWithLogUI pb, string file)
+        {
+            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+            
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+
+            if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+            pb.SetMainBarVolum(1);
+            pb.MainBarTick(file);
+            excelBook.Open(file);
+            OfferWriter offerWriter = new OfferWriter(excelBook);
+            await Task.Run(() =>
+            {
+                offerWriter.PrintSpectrum(pb);
+            });
+            excelBook.Close();
+            pb.CloseFrm();
         }
 
         private string GetOfferSettings()
@@ -252,18 +243,18 @@ namespace ACO
             {
                 UpdateFormuls();
             }
-            catch(AddInException addInEx)
+            catch (AddInException addInEx)
             {
                 MessageBox.Show(addInEx.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
-            ExcelFile.Finish();
-            ExcelFile.Acselerate(false);
+                ExcelFile.Finish();
+                ExcelFile.Acselerate(false);
             }
         }
         private async void UpdateFormuls()
@@ -300,7 +291,7 @@ namespace ACO
             {
                 root.Numeric(new Numberer(), pb); //pb.SubBarCount(root.AllCount)
             });
-              //  letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+            //  letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
             pb.ClearSubBar();
             pb.SetSubBarVolume(root.AllCount());
             await Task.Run(() =>
@@ -354,7 +345,7 @@ namespace ACO
             {
                 ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns);//pb.SubBarCount(root.AllCount)
             });
-           
+
             PbAbortedStopProcess(pb);
             pb.MainBarTick("Группировка списка");
             pb.ClearSubBar();
@@ -378,7 +369,7 @@ namespace ACO
                 pb.ClearSubBar();
                 pb.IsAborted = false;
                 pb.CloseFrm();
-                throw new AddInException("Выполнение было прервано");                
+                throw new AddInException("Выполнение было прервано");
             }
         }
 
@@ -394,16 +385,16 @@ namespace ACO
             Excel.Range cellStart = null;
             Excel.Range cellEnd = null;
 
-            for (int col = 0; col <=lastCol; col++)
+            for (int col = 0; col <= lastCol; col++)
             {
                 Excel.Range cell = ws.Cells[1, col];
-                string val = cell.Value?.ToString() ?? "" ;
+                string val = cell.Value?.ToString() ?? "";
 
-                if (val== "offer_start")
+                if (val == "offer_start")
                 {
                     cellStart = cell;
                 }
-                if (val== "offer_end")
+                if (val == "offer_end")
                 {
                     cellEnd = cell;
                 }

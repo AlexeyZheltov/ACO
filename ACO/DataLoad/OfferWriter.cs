@@ -196,7 +196,7 @@ namespace ACO
                     if (val != null) _sheetProject.Cells[rowPaste, pair.projectCollumn].Value = val;
                 }
             }
-            // pb.ClearSubBar();
+           pb.ClearSubBar();
         }
 
         /// <summary>
