@@ -110,6 +110,7 @@ namespace ACO
                     }
                 }
                 if (!exist) return false;
+
                 //if (!recordPrint.KeyFilds.Contains(keyFild,StringComparer.InvariantCultureIgnoreCase))
                 //{
                 //    return false;
