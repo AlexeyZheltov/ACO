@@ -26,11 +26,9 @@ namespace ACO
         /// Лист  Анализ
         /// </summary>
         Excel.Worksheet _sheetProject = null;
-
-        Project _project = default;
         OfferManager _offerManager = null;
         Project _CurrentProject = null;
-        int _offsetPasteRange = 0;
+      
 
         public OfferWriter(ExcelFile offerBook)
         {
@@ -79,8 +77,10 @@ namespace ACO
                 pb.SubBarTick();
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
 
-                Record offerRecord = new Record();
-                offerRecord.Addresslist = addresslist;
+                Record offerRecord = new Record
+                {
+                    Addresslist = addresslist
+                };
                 // Сбор данных
                 foreach (FieldAddress field in addresslist)
                 {
@@ -190,10 +190,10 @@ namespace ACO
                 //foreach (OfferColumnMapping col in offerSettings.Columns)
                 //{
                 // if (string.IsNullOrEmpty(col.ColumnSymbol)) continue;
-                foreach ((int projectCollumn, int offerColumn) pair in colPair)
+                foreach ((int projectCollumn, int offerColumn) in colPair)
                 {
-                    object val = arrData[i, pair.offerColumn];
-                    if (val != null) _sheetProject.Cells[rowPaste, pair.projectCollumn].Value = val;
+                    object val = arrData[i, offerColumn];
+                    if (val != null) _sheetProject.Cells[rowPaste, projectCollumn].Value = val;
                 }
             }
            pb.ClearSubBar();

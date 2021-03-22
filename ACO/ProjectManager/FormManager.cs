@@ -14,7 +14,6 @@ namespace ACO.ProjectManager
         private Excel.Application _app = Globals.ThisAddIn.Application;
         private ProjectManager _projectManager;
         private List<ColumnMapping> _mappingColumns;
-        private ColumnMapping _selectedCell;
         public FormManager()
         {
             InitializeComponent();
@@ -144,14 +143,7 @@ namespace ACO.ProjectManager
             TableColumns.DataSource = Source;
         }
 
-        private void BtnDelete_Click(object sender, EventArgs e)
-        {
-            if (_selectedCell != null)
-            {
-                _mappingColumns.Remove(_selectedCell);
-            }
-            UpdateTableColumns();
-        }
+     
         
         /// <summary>
         ///  Удалить строку

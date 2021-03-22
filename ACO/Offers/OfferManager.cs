@@ -71,8 +71,8 @@ namespace ACO
 
         public static OfferSettings GetSpectrumSettigsDefault()
         {
-            OfferSettings spectrumSettings = null;
             string filename = GetSpectrumFilename();
+            OfferSettings spectrumSettings;
             if (File.Exists(filename))
             {
                 spectrumSettings = new OfferSettings(filename);
@@ -87,75 +87,77 @@ namespace ACO
         private static OfferSettings CreateSpectrum(string filename)
         {
             //string filename = GetSpectrumFilename();
-            OfferSettings spectrumSettings = new OfferSettings();
-            List<OfferColumnMapping> columns = new List<OfferColumnMapping>();
-            columns.Add(new OfferColumnMapping()
+          //  _ = new OfferSettings();
+            List<OfferColumnMapping> columns = new List<OfferColumnMapping>
             {
-                Name = Project.ColumnsNames[StaticColumns.Name],
-                ColumnSymbol = "M"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.Level],
-                ColumnSymbol = "I"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.Cipher],
-                ColumnSymbol = "L"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.Number],
-                ColumnSymbol = "K"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.Unit],
-                ColumnSymbol = "T"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.Count],
-                ColumnSymbol = "U"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit],
-                ColumnSymbol = "V"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.CostMaterialsTotal],
-                ColumnSymbol = "W"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.CostWorksPerUnit],
-                ColumnSymbol = "X"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.CostWorksTotal],
-                ColumnSymbol = "Y"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.CostTotalPerUnit],
-                ColumnSymbol = "Z"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.CostTotal],
-                ColumnSymbol = "AA"
-            });
-            columns.Add(new OfferColumnMapping()
-            {
-                Name = Project.ColumnsNames[StaticColumns.Comment],
-                ColumnSymbol = "AB"
-            });
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Name],
+                    ColumnSymbol = "M"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Level],
+                    ColumnSymbol = "I"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Cipher],
+                    ColumnSymbol = "L"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Number],
+                    ColumnSymbol = "K"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Unit],
+                    ColumnSymbol = "T"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Count],
+                    ColumnSymbol = "U"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit],
+                    ColumnSymbol = "V"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostMaterialsTotal],
+                    ColumnSymbol = "W"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostWorksPerUnit],
+                    ColumnSymbol = "X"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostWorksTotal],
+                    ColumnSymbol = "Y"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostTotalPerUnit],
+                    ColumnSymbol = "Z"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.CostTotal],
+                    ColumnSymbol = "AA"
+                },
+                new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Comment],
+                    ColumnSymbol = "AB"
+                }
+            };
 
-            spectrumSettings = new OfferSettings()
+            OfferSettings spectrumSettings = new OfferSettings()
             {
                 Name = "Спектрум",
                 FileName = filename,

@@ -16,7 +16,13 @@ namespace ACO
     public partial class Ribbon
     {
         Excel.Application _app = null;
-
+        private void ExcelAcselerate(bool mode)
+        {
+            // Excel.Application application = Globals.ThisAddIn.Application;
+            _app.ScreenUpdating = !mode;
+            _app.DisplayAlerts = !mode;
+            _app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
+        }
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
@@ -31,22 +37,18 @@ namespace ACO
         private async void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
         {
             string[] files = GetFiles();
-            if ((files?.Length ?? 0) < 1) { return; }
+            if ((files?.Length ?? 0) < 1) return;
 
             string offerSettingsName = GetOfferSettings();
-
+            if (string.IsNullOrEmpty(offerSettingsName)) return;
 
             ExcelHelpers.ExcelFile.Init();
-            //ExcelHelpers.ExcelFile.Acselerate(true);
-            IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            if (pb is null)
-            {
+            ExcelAcselerate(true);
+
+             IProgressBarWithLogUI pb = new ProgressBarWithLog();          
                 pb.CloseForm += () => { pb = null; };
                 pb.Show();
-                // _pb.Show(new AddinWindow(Globals.ThisAddIn));
-            }
-            pb.ClearMainBar();
-            pb.ClearSubBar();
+                // _pb.Show(new AddinWindow(Globals.ThisAddIn));          
             pb.SetMainBarVolum(files.Length);
 
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
@@ -59,7 +61,7 @@ namespace ACO
                     pb.MainBarTick(fileName);
                     excelBook.Open(fileName);
                     OfferWriter offerWriter = new OfferWriter(excelBook);
-                    
+
                     await Task.Run(() =>
                     {
                         offerWriter.Print(pb, offerSettingsName);
@@ -83,9 +85,9 @@ namespace ACO
                         MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     pb.CloseFrm();
-                    excelBook.Close();
-                    ExcelHelpers.ExcelFile.Acselerate(false);
+                    excelBook.Close();                   
                     ExcelHelpers.ExcelFile.Finish();
+                    ExcelAcselerate(false);
                 }
             }
         }
@@ -93,7 +95,7 @@ namespace ACO
         private void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
         {
             ExcelHelpers.ExcelFile.Init();
-            ExcelHelpers.ExcelFile.Acselerate(true);
+           ExcelAcselerate(true);
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             try
             {
@@ -114,27 +116,25 @@ namespace ACO
             }
             finally
             {
-                ExcelHelpers.ExcelFile.Acselerate(false);
                 ExcelHelpers.ExcelFile.Finish();
+                ExcelAcselerate(false);
             }
         }
         private async void PrintSpectrum(IProgressBarWithLogUI pb, string file)
         {
-            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-            
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-
-            if (pb.IsAborted) throw new AddInException("Процесс остановлен");
             pb.SetMainBarVolum(1);
             pb.MainBarTick(file);
+            if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
             excelBook.Open(file);
+             await Task.Run(() =>
+             {
             OfferWriter offerWriter = new OfferWriter(excelBook);
-            await Task.Run(() =>
-            {
-                offerWriter.PrintSpectrum(pb);
-            });
+            offerWriter.PrintSpectrum(pb);
             excelBook.Close();
             pb.CloseFrm();
+             });
         }
 
         private string GetOfferSettings()
@@ -155,10 +155,12 @@ namespace ACO
         /// <returns></returns>
         private string[] GetFiles()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Документ Excel|*.xls*|All files|*.*";
-            openFileDialog.Title = "Выберите файлы";
-            openFileDialog.Multiselect = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Документ Excel|*.xls*|All files|*.*",
+                Title = "Выберите файлы",
+                Multiselect = true
+            };
             string[] files = default;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -173,10 +175,12 @@ namespace ACO
         /// <returns></returns>
         private string GetFile()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Excel|*.xl*|All files|*.*";
-            openFileDialog.Title = "Выберите файл";
-            openFileDialog.Multiselect = false;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Excel|*.xl*|All files|*.*",
+                Title = "Выберите файл",
+                Multiselect = false
+            };
             string file = default;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -193,7 +197,7 @@ namespace ACO
         private void BtnCreateProgect_Click(object sender, RibbonControlEventArgs e)
         {
             string pathTamplate = Properties.Settings.Default.TamplateProgectPath;
-            string path = default;
+            string path;
             if (!File.Exists(pathTamplate))
             {
                 path = GetFile();
@@ -235,10 +239,11 @@ namespace ACO
             form.ShowDialog();
         }
 
+  
+
         private void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
         {
-            ExcelHelpers.ExcelFile.Init();
-            ExcelHelpers.ExcelFile.Acselerate(true);
+            ExcelAcselerate(true);
             try
             {
                 UpdateFormuls();
@@ -253,8 +258,7 @@ namespace ACO
             }
             finally
             {
-                ExcelFile.Finish();
-                ExcelFile.Acselerate(false);
+                ExcelAcselerate(false);
             }
         }
         private async void UpdateFormuls()
@@ -331,10 +335,10 @@ namespace ACO
             pb.MainBarTick("Форматирование списка");
             //три
             pb.ClearSubBar();
-            pb.SetSubBarVolume(root.AllCount());
 
             var pallet = ExcelReader.ReadPallet(pws);
-
+            int count = root.AllCount();
+            pb.SetSubBarVolume(count);
             //letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
             List<(string, string)> colored_columns = GetColredcolumns(ws);
             colored_columns.Add(("A", letterTotal));
@@ -385,7 +389,7 @@ namespace ACO
             Excel.Range cellStart = null;
             Excel.Range cellEnd = null;
 
-            for (int col = 0; col <= lastCol; col++)
+            for (int col = 1; col <= lastCol; col++)
             {
                 Excel.Range cell = ws.Cells[1, col];
                 string val = cell.Value?.ToString() ?? "";

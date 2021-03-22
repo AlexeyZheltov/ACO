@@ -188,7 +188,7 @@
             this.BtnDelete.TabIndex = 4;
             this.BtnDelete.Text = "Удалить";
             this.BtnDelete.UseVisualStyleBackColor = true;
-            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
+           
             // 
             // BtnSelect
             // 

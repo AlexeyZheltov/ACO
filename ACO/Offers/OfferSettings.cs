@@ -74,9 +74,11 @@ namespace ACO.Offers
         /// <param name="path"></param>
         public static void CreateNewProjectXML(string projectname, string path)
         {
-            OfferSettings offerMapping = new OfferSettings();
-            offerMapping.Name = projectname;
-            offerMapping.FileName = path;
+            OfferSettings offerMapping = new OfferSettings
+            {
+                Name = projectname,
+                FileName = path
+            };
             offerMapping.Save();
         }
         public void GetFromXML(string filename)

@@ -188,10 +188,10 @@
     <Compile Include="ExcelHelpers\ExcelReader.cs" />
     <Compile Include="IProgressBarWithLogUI.cs" />
     <Compile Include="Numberer.cs" />
-    <Compile Include="Offers\FormManagerKP.cs">
+    <Compile Include="ExcelHelpers\FormManagerKP.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Offers\FormManagerKP.Designer.cs">
+    <Compile Include="ExcelHelpers\FormManagerKP.Designer.cs">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </Compile>
     <Compile Include="Offers\FormSelectOfferSettings.cs">
@@ -230,7 +230,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataLoad\OfferWriter.cs" />
-    <EmbeddedResource Include="Offers\FormManagerKP.resx">
+    <EmbeddedResource Include="ExcelHelpers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Offers\FormSelectOfferSettings.resx">
