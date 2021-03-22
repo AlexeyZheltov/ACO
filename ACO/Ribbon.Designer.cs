@@ -66,10 +66,10 @@
             // RbnTab
             // 
             this.RbnTab.Groups.Add(this.group1);
+            this.RbnTab.Groups.Add(this.group6);
             this.RbnTab.Groups.Add(this.group2);
             this.RbnTab.Groups.Add(this.group3);
             this.RbnTab.Groups.Add(this.group5);
-            this.RbnTab.Groups.Add(this.group6);
             this.RbnTab.Groups.Add(this.group4);
             this.RbnTab.Label = "Спектрум";
             this.RbnTab.Name = "RbnTab";

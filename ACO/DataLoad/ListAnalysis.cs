@@ -185,7 +185,6 @@ namespace ACO
                         record.KeyFilds.Add(val);
                         ixCol++;
                     }
-
                 }
                 records.Add(record);
             }
