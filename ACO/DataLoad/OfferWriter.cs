@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ACO.Offers;
 using System;
+using Microsoft.Office.Interop.Excel;
 
 namespace ACO
 
@@ -20,13 +21,15 @@ namespace ACO
         /// <summary>
         ///  Книга КП
         /// </summary>
-        ExcelFile _offerBook = null;
+       // ExcelFile
+         Excel.Workbook   _offerBook = null;
 
         /// <summary>
         /// Лист  Анализ
         /// </summary>
         Excel.Worksheet _sheetProject = null;
         OfferManager _offerManager = null;
+       
         Project _CurrentProject = null;
       
 
@@ -34,12 +37,27 @@ namespace ACO
         {
             _app = Globals.ThisAddIn.Application;
             _wb = _app.ActiveWorkbook;
-            _offerBook = offerBook;
+            _offerBook = offerBook.WorkBook;
             _offerManager = new OfferManager();
             _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
             // Лист анализ в текущем проекте
-            _sheetProject = GetSheet(_CurrentProject.AnalysisSheetName);
+            _sheetProject = GetSheet(_wb, _CurrentProject.AnalysisSheetName);
             _CurrentProject.SetColumnNumbers(_sheetProject);
+        }
+
+        public OfferWriter(string file)
+        {
+            _app = Globals.ThisAddIn.Application;
+            //_offerBook = offerBook;
+           _wb = _app.ActiveWorkbook;
+           // _offerBook = offerBook;
+            _offerManager = new OfferManager();
+            _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
+            // Лист анализ в текущем проекте
+            _sheetProject = GetSheet(_wb, _CurrentProject.AnalysisSheetName);
+            _CurrentProject.SetColumnNumbers(_sheetProject);
+             _offerBook = _app.Workbooks.Open(file);
+            //Excel.Workbook wb = 
         }
 
 
@@ -52,7 +70,7 @@ namespace ACO
             // Ищем настройки столбцов
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
             // Лист данных КП
-            Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName);
+            Excel.Worksheet offerSheet = GetSheet( _offerBook, offerSettings.SheetName);//_offerBook.GetSheet(offerSettings.SheetName);
             ShowSheetRows(offerSheet);
 
             ListAnalysis SheetAnalysis = new ListAnalysis(_sheetProject, _CurrentProject);
@@ -61,7 +79,7 @@ namespace ACO
             /// Адресация полей КП
             List<FieldAddress> addresslist = GetFields(offerSettings, SheetAnalysis.ColumnStartPrint);
 
-            Excel.Worksheet tamplateSheet = GetSheet("Шаблоны");
+            Excel.Worksheet tamplateSheet = GetSheet(_wb,"Шаблоны");
             SheetAnalysis.PrintTitle(tamplateSheet, addresslist);
             
 
@@ -150,10 +168,10 @@ namespace ACO
         internal void PrintSpectrum(IProgressBarWithLogUI pb)
         {
             OfferSettings offerSettings = OfferManager.GetSpectrumSettigsDefault();
-            Excel.Worksheet offerSheet = _offerBook.GetSheet(offerSettings.SheetName);
+            Excel.Worksheet offerSheet = GetSheet(_offerBook, offerSettings.SheetName);
             
             ShowSheetRows(offerSheet);
-            _sheetProject = GetSheet(_CurrentProject.AnalysisSheetName);
+            _sheetProject = GetSheet(_wb, _CurrentProject.AnalysisSheetName);
 
             /// Столбец "номер п.п."
             OfferColumnMapping colNumber = offerSettings.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]);
@@ -197,6 +215,7 @@ namespace ACO
                 }
             }
            pb.ClearSubBar();
+            _offerBook.Close(false);
         }
 
         /// <summary>
@@ -255,9 +274,9 @@ namespace ACO
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private Excel.Worksheet GetSheet(string name)
+        private Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
         {
-            foreach (Excel.Worksheet sh in _wb.Worksheets)
+            foreach (Excel.Worksheet sh in wb.Worksheets)
             {
                 if (sh.Name == name)
                 {

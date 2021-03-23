@@ -40,6 +40,8 @@
             this.BtnCreateProgect = this.Factory.CreateRibbonButton();
             this.BtnSpectrum = this.Factory.CreateRibbonButton();
             this.BtnLoadKP = this.Factory.CreateRibbonButton();
+            this.group6 = this.Factory.CreateRibbonGroup();
+            this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
@@ -50,16 +52,14 @@
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
-            this.group6 = this.Factory.CreateRibbonGroup();
-            this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group6.SuspendLayout();
             this.group2.SuspendLayout();
             this.group3.SuspendLayout();
             this.group5.SuspendLayout();
-            this.group6.SuspendLayout();
             this.group4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,6 +109,21 @@
             this.BtnLoadKP.Name = "BtnLoadKP";
             this.BtnLoadKP.ShowImage = true;
             this.BtnLoadKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadKP_Click);
+            // 
+            // group6
+            // 
+            this.group6.Items.Add(this.BtnUpdateFormuls);
+            this.group6.Label = "Формат";
+            this.group6.Name = "group6";
+            // 
+            // BtnUpdateFormuls
+            // 
+            this.BtnUpdateFormuls.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnUpdateFormuls.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateFormuls.Image")));
+            this.BtnUpdateFormuls.Label = "Обновление формул";
+            this.BtnUpdateFormuls.Name = "BtnUpdateFormuls";
+            this.BtnUpdateFormuls.ShowImage = true;
+            this.BtnUpdateFormuls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
             // 
             // group2
             // 
@@ -189,21 +204,6 @@
             this.BtnSettings.ShowImage = true;
             this.BtnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
             // 
-            // group6
-            // 
-            this.group6.Items.Add(this.BtnUpdateFormuls);
-            this.group6.Label = "Формат";
-            this.group6.Name = "group6";
-            // 
-            // BtnUpdateFormuls
-            // 
-            this.BtnUpdateFormuls.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnUpdateFormuls.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateFormuls.Image")));
-            this.BtnUpdateFormuls.Label = "Обновление формул";
-            this.BtnUpdateFormuls.Name = "BtnUpdateFormuls";
-            this.BtnUpdateFormuls.ShowImage = true;
-            this.BtnUpdateFormuls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
-            // 
             // group4
             // 
             this.group4.Items.Add(this.BtnAbout);
@@ -229,14 +229,14 @@
             this.RbnTab.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group6.ResumeLayout(false);
+            this.group6.PerformLayout();
             this.group2.ResumeLayout(false);
             this.group2.PerformLayout();
             this.group3.ResumeLayout(false);
             this.group3.PerformLayout();
             this.group5.ResumeLayout(false);
             this.group5.PerformLayout();
-            this.group6.ResumeLayout(false);
-            this.group6.PerformLayout();
             this.group4.ResumeLayout(false);
             this.group4.PerformLayout();
             this.ResumeLayout(false);

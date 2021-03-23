@@ -109,9 +109,9 @@ namespace ACO.ProjectManager
                     },
                     new ColumnMapping()
                     {
-                        Name = Project.ColumnsNames[StaticColumns.Count],
-                        Check = false,
-                        Obligatory = false,
+                        Name = Project.ColumnsNames[StaticColumns.Amount],
+                        Check = true,
+                        Obligatory = true,
                         ColumnSymbol = "N"
                     },
                     new ColumnMapping()

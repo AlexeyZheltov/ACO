@@ -53,11 +53,13 @@ namespace ACO
         /// <param name="Shift">Величина сдвига</param>
         /// <param name="ws">Лист к которому относится маппинг</param>
         /// <returns>Новый маппинг столбцоы</returns>
-        public FMapping Shift(Excel.Worksheet ws, int Shift)
+        public FMapping Shift(Excel.Worksheet ws, int columnOfAmount)
         {
+            int firstColAmount = ws.Range[$"{Amount}1"].Column;
+            int shift = columnOfAmount - firstColAmount ;
             string GetShifted(string CName)
             {
-                int col = ws.Range[$"{CName}1"].Column + Shift;
+                int col = ws.Range[$"{CName}1"].Column + shift;
                 string address = ws.Cells[1, col].Address;
                 return address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
             }

@@ -48,10 +48,11 @@ namespace ACO
              IProgressBarWithLogUI pb = new ProgressBarWithLog();          
                 pb.CloseForm += () => { pb = null; };
                 pb.Show();
-                // _pb.Show(new AddinWindow(Globals.ThisAddIn));          
+            // _pb.Show(new AddinWindow(Globals.ThisAddIn));          
             pb.SetMainBarVolum(files.Length);
-
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+
+
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             foreach (string fileName in files)
             {
@@ -84,7 +85,7 @@ namespace ACO
                         pb.IsAborted = false;
                         MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    pb.CloseFrm();
+                   // pb.CloseFrm();
                     excelBook.Close();                   
                     ExcelHelpers.ExcelFile.Finish();
                     ExcelAcselerate(false);
@@ -126,13 +127,14 @@ namespace ACO
             pb.SetMainBarVolum(1);
             pb.MainBarTick(file);
             if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-            excelBook.Open(file);
+            // ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+            // excelBook.Open(file);
+            
              await Task.Run(() =>
              {
-            OfferWriter offerWriter = new OfferWriter(excelBook);
+            OfferWriter offerWriter = new OfferWriter(file);
             offerWriter.PrintSpectrum(pb);
-            excelBook.Close();
+           
             pb.CloseFrm();
              });
         }
@@ -295,26 +297,25 @@ namespace ACO
             {
                 root.Numeric(new Numberer(), pb); //pb.SubBarCount(root.AllCount)
             });
-            //  letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+            string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
             pb.ClearSubBar();
             pb.SetSubBarVolume(root.AllCount());
             await Task.Run(() =>
             {
-                ExcelHelper.Write(ws, root, pb, letterLevel); //pb.SubBarCount(root.AllCount)
+                ExcelHelper.Write(ws, root, pb, letterNumber); //pb.SubBarCount(root.AllCount)
             });
 
             PbAbortedStopProcess(pb);
 
             pb.MainBarTick("Запись формул");
-            string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Count]).ColumnSymbol;
+            string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
             string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
             string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
             string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
             string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
             string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
             string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
-            await Task.Run(() =>
-            {
+            string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
                 //раз
                 FMapping mappin = new FMapping()
                 {
@@ -326,10 +327,17 @@ namespace ACO
                     PricePerUnit = letterPricePerUnit,
                     Total = letterTotal
                 };
+            await Task.Run(() =>
+            {
                 //два
                 ExcelHelper.SetFormulas(ws, mappin, root, pb); //Прогресс бар только для отмены
             });
-            // ExcelHelper.SetFormulas(ws, mappin.Shift(ws, 10), root, null);
+            // Обновление формул КП
+            HashSet<int>columnsAmount =  GetNumbersCoumnsOfCount(ws);
+            foreach (int col in columnsAmount)
+            {
+             ExcelHelper.SetFormulas(ws, mappin.Shift(ws,col), root, pb);
+            }
 
             PbAbortedStopProcess(pb);
             pb.MainBarTick("Форматирование списка");
@@ -337,11 +345,11 @@ namespace ACO
             pb.ClearSubBar();
 
             var pallet = ExcelReader.ReadPallet(pws);
-            int count = root.AllCount();
+            int count = ws.UsedRange.Rows.Count;//root.AllCount();
             pb.SetSubBarVolume(count);
             //letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
             List<(string, string)> colored_columns = GetColredcolumns(ws);
-            colored_columns.Add(("A", letterTotal));
+            colored_columns.Add(("A", letterComment));
             (string, string)[] columns = colored_columns.ToArray();
 
             //четыре
@@ -359,6 +367,28 @@ namespace ACO
             });
             pb.ClearMainBar();
             pb.CloseFrm();
+        }
+
+        /// <summary>
+        ///  Определить номера столбцов с ко-ом для загруженных П
+        /// </summary>
+        /// <param name="ws"></param>
+        /// <returns></returns>
+        private HashSet<int> GetNumbersCoumnsOfCount(Excel.Worksheet ws)
+        {
+            HashSet<int> columnsAmount = new HashSet<int>();
+            int lastCol = ws.Cells[1, ws.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+            for (int col = 1; col <= lastCol; col++)
+            {
+                Excel.Range cell = ws.Cells[1, col];
+                string val = cell.Value?.ToString() ?? "";
+
+                if (val == "column_amount")
+                {                    
+                    columnsAmount.Add(cell.Column);
+                }
+            }
+                return columnsAmount;
         }
 
         /// <summary>
@@ -405,9 +435,11 @@ namespace ACO
                 if (cellStart != null && cellEnd != null && cellStart.Column < cellEnd.Column)
                 {
                     string addressStart = cellStart.Address;
-                    string letterStart = Regex.Match(addressStart, @"[A-Z]+").Value ?? "";
-                    string addressEnd = cellStart.Address;
-                    string letterEnd = Regex.Match(addressEnd, @"[A-Z]+").Value ?? "";
+                    string letterStart = addressStart.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    // Regex.Match(addressStart, @"[A-Z]+").Value ?? "";
+                    string addressEnd = cellEnd.Address;
+                    string letterEnd = addressEnd.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    //Regex.Match(addressEnd, @"[A-Z]+").Value ?? "";
                     if (!string.IsNullOrEmpty(letterStart) && !string.IsNullOrEmpty(letterEnd))
                     {
                         columns.Add((letterStart, letterEnd));

@@ -141,7 +141,11 @@ namespace ACO
             {
                 Excel.Range rngCoulumn = titleTamplate.Columns[address.MappingAnalysis.Column];
                 rngCoulumn.Copy(SheetAnalysis.Cells[7, columnPaste]);
-                columnPaste++;               
+                if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Amount])
+                {
+                    SheetAnalysis.Cells[1, columnPaste].Value = "column_amount";
+                }
+                columnPaste++;    
             }
             SheetAnalysis.Cells[1, ColumnStartPrint].Value = "offer_start" ;
             SheetAnalysis.Cells[1, columnPaste-1].Value = "offer_end" ;          
@@ -153,7 +157,7 @@ namespace ACO
             catch (Exception e)
             {
                 throw new AddInException($"При копировании диапазона \"ШаблонКомментарии\" возникла ошибка: {e.Message}");
-            }         
+            }
         }
 
         /*

@@ -52,7 +52,7 @@ namespace ACO.ExcelHelpers
                 WorkBook = _application.Workbooks.Open(path);
 
                 // TODO Убрать
-               // _application.Visible = true;
+                //_application.Visible = true;
                 result = true;
             }
             catch { }

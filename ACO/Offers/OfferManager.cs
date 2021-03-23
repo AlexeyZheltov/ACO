@@ -117,7 +117,7 @@ namespace ACO
                 },
                 new OfferColumnMapping()
                 {
-                    Name = Project.ColumnsNames[StaticColumns.Count],
+                    Name = Project.ColumnsNames[StaticColumns.Amount],
                     ColumnSymbol = "U"
                 },
                 new OfferColumnMapping()
