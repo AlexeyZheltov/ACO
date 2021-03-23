@@ -175,14 +175,14 @@ namespace ACO
             string letterWorkslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostWorksTotal]); //offerSettings.GetColumn(StaticColumns.CostWorksTotal).ColumnSymbol;
             string letterWorksSpectrum = _CurrentProject.GetColumn(StaticColumns.CostWorksTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 6].Formula =
-                        $"=IF(${letterWorkslOffer}{rowStart}<>0;" +
-                        $"${letterWorkslOffer}{rowStart}/${letterWorksSpectrum}{rowStart});\"Отс-ет ст-ть мат.\"";
+                        $"=IF(${letterWorkslOffer}{rowStart}<>0," +
+                        $"${letterWorkslOffer}{rowStart}/${letterWorksSpectrum}{rowStart}-1,\"Отс-ет ст-ть мат.\")";
             //Отклонение по стоимости РАБ
             string letterMaterialslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostMaterialsTotal]);  //offerSettings.GetColumn(StaticColumns.CostMaterialsTotal).ColumnSymbol;
             string letterMaterialsSpectrum = _CurrentProject.GetColumn(StaticColumns.CostMaterialsTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 7].Formula =
-                        $"=IF(${letterMaterialslOffer}{rowStart}<>0;" +
-                        $"${letterMaterialslOffer}{rowStart}/${letterMaterialsSpectrum}{rowStart});\"Отс-ет ст-ть мат.\"";
+                        $"=IF(${letterMaterialslOffer}{rowStart}<>0," +
+                        $"${letterMaterialslOffer}{rowStart}/${letterMaterialsSpectrum}{rowStart}-1,\"Отс-ет ст-ть работ\")";
 
             //Комментарии к строкам "0"
             _sheetProject.Cells[rowStart, colStart + 8].Formula =
@@ -239,7 +239,7 @@ namespace ACO
                 string text = cell.Value?.ToString() ?? "";
                 if (text == "offer_end")
                 {
-                    return col + 1;
+                    return col;
                 }
             }
             throw new AddInException("Столбец начала формул не найден.");

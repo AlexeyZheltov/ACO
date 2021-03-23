@@ -59,7 +59,7 @@ namespace ACO
             int rowPaste = _rowStart;
 
             /// Последняя строка списка 
-            int lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 3;
+            int lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count;
             //recordPrint.Number
            // bool curentLevel = false;
             for (int row = _rowStart; row <= lastRow; row++)
@@ -140,8 +140,8 @@ namespace ACO
                 //}
                 columnPaste++;
             }
-            SheetAnalysis.Cells[1, ColumnStartPrint-1].Value = "offer_start";
-            SheetAnalysis.Cells[1, columnPaste - 1].Value = "offer_end";
+            SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
+            SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];

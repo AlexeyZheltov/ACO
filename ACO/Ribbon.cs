@@ -430,7 +430,7 @@ namespace ACO
                 }
                 if (val == "offer_end")
                 {
-                    cellEnd = cell;
+                    cellEnd = cell.Offset[0,-1];
                 }
                 if (cellStart != null && cellEnd != null && cellStart.Column < cellEnd.Column)
                 {
