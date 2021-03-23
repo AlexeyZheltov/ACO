@@ -268,6 +268,27 @@ namespace ACO.ProjectManager
             string folder = ProjectManager.GetFolderProjects();
             System.Diagnostics.Process.Start(folder);
         }
-              
+
+        /// <summary>
+        ///  Уддалить выделенный файл проекта 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (TableProjects.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = TableProjects.SelectedRows[0];
+               string nameProject = row.Cells[0].Value?.ToString() ?? "";
+                if (!string.IsNullOrEmpty(nameProject))
+                {
+                   Project project = _projectManager.Projects.Find(x => x.Name == nameProject);
+                    if (project != null) project.Delete();
+                    TableProjects.Rows.Remove(row);
+                    _projectManager.Projects.Remove(project);
+                    LoadData();
+                }
+            }
+        }
     }
 }

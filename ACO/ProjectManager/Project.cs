@@ -2,6 +2,7 @@
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -196,6 +197,11 @@ namespace ACO.ProjectManager
             ColumnMapping mapping = Columns.Find(x => x.Name == ColumnsNames[name]);
             if (mapping is null) throw new AddInException($"Маппинг столбца \"{ColumnsNames[name]}\" не найден!");
             return mapping;
+        }
+
+        internal void Delete()
+        {
+            if (File.Exists(FileName)) File.Delete(FileName);
         }
     }
 }

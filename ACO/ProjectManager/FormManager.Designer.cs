@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManager));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -41,6 +41,7 @@
             this.PageColumns = new System.Windows.Forms.TabPage();
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.PageProject = new System.Windows.Forms.TabPage();
+            this.BtnOpenFolder = new System.Windows.Forms.Button();
             this.BtnDelete = new System.Windows.Forms.Button();
             this.BtnSelect = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -50,7 +51,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.TableProjects = new ACO.ProjectManager.CustomDataGrid();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.BtnOpenFolder = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.PageColumns.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
@@ -154,8 +154,8 @@
             this.TableColumns.ReadOnly = true;
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableColumns.Size = new System.Drawing.Size(482, 433);
@@ -179,6 +179,18 @@
             this.PageProject.Text = "Проект";
             this.PageProject.UseVisualStyleBackColor = true;
             // 
+            // BtnOpenFolder
+            // 
+            this.BtnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnOpenFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnOpenFolder.BackgroundImage")));
+            this.BtnOpenFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BtnOpenFolder.Location = new System.Drawing.Point(454, 77);
+            this.BtnOpenFolder.Name = "BtnOpenFolder";
+            this.BtnOpenFolder.Size = new System.Drawing.Size(27, 27);
+            this.BtnOpenFolder.TabIndex = 10;
+            this.BtnOpenFolder.UseVisualStyleBackColor = true;
+            this.BtnOpenFolder.Click += new System.EventHandler(this.BtnOpenFolder_Click);
+            // 
             // BtnDelete
             // 
             this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -188,7 +200,7 @@
             this.BtnDelete.TabIndex = 4;
             this.BtnDelete.Text = "Удалить";
             this.BtnDelete.UseVisualStyleBackColor = true;
-           
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
             // BtnSelect
             // 
@@ -267,8 +279,8 @@
             this.TableProjects.ReadOnly = true;
             this.TableProjects.RowHeadersVisible = false;
             this.TableProjects.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableProjects.Size = new System.Drawing.Size(482, 333);
             this.TableProjects.TabIndex = 0;
@@ -288,18 +300,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(502, 472);
             this.tabControl1.TabIndex = 0;
-            // 
-            // BtnOpenFolder
-            // 
-            this.BtnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnOpenFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnOpenFolder.BackgroundImage")));
-            this.BtnOpenFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnOpenFolder.Location = new System.Drawing.Point(454, 77);
-            this.BtnOpenFolder.Name = "BtnOpenFolder";
-            this.BtnOpenFolder.Size = new System.Drawing.Size(27, 27);
-            this.BtnOpenFolder.TabIndex = 10;
-            this.BtnOpenFolder.UseVisualStyleBackColor = true;
-            this.BtnOpenFolder.Click += new System.EventHandler(this.BtnOpenFolder_Click);
             // 
             // FormManager
             // 
