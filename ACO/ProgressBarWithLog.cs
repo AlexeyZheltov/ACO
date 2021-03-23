@@ -160,5 +160,19 @@ namespace ACO
             else
                 action();
         }
+
+        public void Writeline(string message)
+        {
+            Action action = () =>
+            {
+                LogTextBox.Text+=Environment.NewLine;
+                LogTextBox.Text+=message;
+            };
+
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                action();
+        }
     }
 }

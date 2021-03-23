@@ -6,6 +6,7 @@ using System.Linq;
 using ACO.Offers;
 using System;
 using Microsoft.Office.Interop.Excel;
+using System.Drawing;
 
 namespace ACO
 
@@ -69,27 +70,31 @@ namespace ACO
         {
             // Ищем настройки столбцов
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
+            pb.Writeline($"Выбор листа {offerSettings.SheetName}");
             // Лист данных КП
             Excel.Worksheet offerSheet = GetSheet(_offerBook, offerSettings.SheetName);//_offerBook.GetSheet(offerSettings.SheetName);
+            pb.Writeline("Разгруппировка строк");
             ShowSheetRows(offerSheet);
 
             ListAnalysis SheetAnalysis = new ListAnalysis(_sheetProject, _CurrentProject);
 
-
+            pb.Writeline("Адресация полей");
             /// Адресация полей КП
             List<FieldAddress> addresslist = GetFields(offerSettings, SheetAnalysis.ColumnStartPrint);
 
             Excel.Worksheet tamplateSheet = GetSheet(_wb, "Шаблоны");
+            pb.Writeline("Печать заголовков");
             SheetAnalysis.PrintTitle(tamplateSheet, addresslist);
 
 
             int lastRowOffer = GetLastRow(offerSheet);
+            pb.Writeline("Чтение массива данных");
             // Массив загружаемых данных
             object[,] arrData = GetArrData(offerSheet, offerSettings.RowStart, lastRowOffer);
 
             int countRows = lastRowOffer - offerSettings.RowStart - 1;
             pb.SetSubBarVolume(countRows);
-
+            pb.Writeline("Вывод строк");
             for (int i = 1; i <= countRows; i++)
             {
                 pb.SubBarTick();
@@ -119,6 +124,7 @@ namespace ACO
                 SheetAnalysis.Print(offerRecord);
             }
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
+            pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
             SetFormuls();
         }
 
@@ -148,9 +154,10 @@ namespace ACO
             //Наименование вида работ
             cell.Formula = $"=${letterNameSpectrum}{rowStart}=${letterNameOffer}{rowStart}";
             //Комментарии Спектрум к описанию работ
-            _sheetProject.Cells[rowStart, colStart + 1].Formula = $"=IF(${letterNameSpectrum}{rowStart}=TRUE,\".\",Комментарии!$A$2)";
+            string letterCheckName = cell.Address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+            _sheetProject.Cells[rowStart, colStart + 1].Formula = $"=IF(${letterCheckName}{rowStart}=TRUE,\".\",Комментарии!$A$2)";
             //Отклонение по объемам
-            _sheetProject.Cells[rowStart, colStart + 2].Formula = $"={letterAmountSpectrum}{rowStart}/{letterAmountOffer}{rowStart}-1";
+            _sheetProject.Cells[rowStart, colStart + 2].Formula = $"=IFERROR({letterAmountSpectrum}{rowStart}/{letterAmountOffer}{rowStart}-1,\"#НД\")";
             //Комментарии Спектрум к объемам работ
             cell = _sheetProject.Cells[rowStart, colStart + 2];
             string address = cell.Address;
@@ -162,8 +169,8 @@ namespace ACO
             string letterTotalOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostTotal]); //offerSettings.GetColumn(StaticColumns.CostTotal).ColumnSymbol;
             string letterTotalSpectrum = _CurrentProject.GetColumn(StaticColumns.CostTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 4].Formula =
-                        $"=IF(${letterTotalSpectrum}{rowStart}<>0," +
-                        $"${letterTotalOffer}{rowStart}/${letterTotalSpectrum}{rowStart}-1,0)";
+                        $"=IFERROR(IF(${letterTotalSpectrum}{rowStart}<>0," +
+                        $"${letterTotalOffer}{rowStart}/${letterTotalSpectrum}{rowStart}-1,0),\"#НД\")";
 
             //Комментарии Спектрум к стоимости работ
             cell = _sheetProject.Cells[rowStart, colStart + 4];
@@ -175,14 +182,14 @@ namespace ACO
             string letterWorkslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostWorksTotal]); //offerSettings.GetColumn(StaticColumns.CostWorksTotal).ColumnSymbol;
             string letterWorksSpectrum = _CurrentProject.GetColumn(StaticColumns.CostWorksTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 6].Formula =
-                        $"=IF(${letterWorkslOffer}{rowStart}<>0," +
-                        $"${letterWorkslOffer}{rowStart}/${letterWorksSpectrum}{rowStart}-1,\"Отс-ет ст-ть мат.\")";
+                        $"=IFERROR(IF(${letterWorkslOffer}{rowStart}<>0," +
+                        $"${letterWorkslOffer}{rowStart}/${letterWorksSpectrum}{rowStart}-1,\"Отс-ет ст-ть мат.\"),\"#НД\")";
             //Отклонение по стоимости РАБ
             string letterMaterialslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostMaterialsTotal]);  //offerSettings.GetColumn(StaticColumns.CostMaterialsTotal).ColumnSymbol;
             string letterMaterialsSpectrum = _CurrentProject.GetColumn(StaticColumns.CostMaterialsTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 7].Formula =
-                        $"=IF(${letterMaterialslOffer}{rowStart}<>0," +
-                        $"${letterMaterialslOffer}{rowStart}/${letterMaterialsSpectrum}{rowStart}-1,\"Отс-ет ст-ть работ\")";
+                        $"=IFERROR(IF(${letterMaterialslOffer}{rowStart}<>0," +
+                        $"${letterMaterialslOffer}{rowStart}/${letterMaterialsSpectrum}{rowStart}-1,\"Отс-ет ст-ть работ\"),\"#НД\")";
 
             //Комментарии к строкам "0"
             _sheetProject.Cells[rowStart, colStart + 8].Formula =
@@ -198,6 +205,11 @@ namespace ACO
             {
                 Excel.Range destination = _sheetProject.Range[_sheetProject.Cells[rowStart, colStart], _sheetProject.Cells[lastRow, colStart + 8]];
                 rng.AutoFill(destination);
+                destination.Interior.Color = Color.FromArgb(232, 242, 238);
+                destination.Columns[3].NumberFormat = "0%";
+                destination.Columns[5].NumberFormat = "0%";
+                destination.Columns[7].NumberFormat = "0%";
+                destination.Columns[8].NumberFormat = "0%";
             }
         }
 

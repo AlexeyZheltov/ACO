@@ -63,5 +63,6 @@ namespace ACO
         void ShowDialog();
         void Show();
         void Show(IWin32Window window);
+        void Writeline(string message);
     }
 }

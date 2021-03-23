@@ -52,7 +52,7 @@ namespace ACO
             pb.SetMainBarVolum(files.Length);
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
 
-
+            pb.Writeline("Инициализацция диспетчера проектов.");
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             foreach (string fileName in files)
             {
@@ -60,25 +60,26 @@ namespace ACO
                 {
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                     pb.MainBarTick(fileName);
+                    pb.Writeline("Открытие файла");
                     excelBook.Open(fileName);
+                    pb.Writeline("Инициализация загрузчика");
                     OfferWriter offerWriter = new OfferWriter(excelBook);
-
+                    pb.Writeline("Заполнение листа Анализ\n");
                     await Task.Run(() =>
                     {
                         offerWriter.Print(pb, offerSettingsName);
                     });
+                    pb.CloseFrm();
                 }
                 catch (AddInException ex)
                 {
-                    TextBox tb = pb.GetLogTextBox();
                     string message = $"Ошибка:{ex.Message }";
                     if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                    message += Environment.NewLine;
-                    tb.Text += message;
+                    pb.Writeline(message);                    
                 }
                 finally
                 {
-                    if (pb.IsAborted)
+                    if (pb?.IsAborted??false)
                     {
                         pb.ClearMainBar();
                         pb.ClearSubBar();

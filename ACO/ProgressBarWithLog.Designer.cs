@@ -29,6 +29,7 @@ namespace ACO
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressBarWithLog));
             this.LogTextBox = new System.Windows.Forms.TextBox();
             this.SubProgressBar = new System.Windows.Forms.ProgressBar();
             this.SubLabel = new System.Windows.Forms.Label();
@@ -49,7 +50,7 @@ namespace ACO
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextBox.Size = new System.Drawing.Size(770, 330);
+            this.LogTextBox.Size = new System.Drawing.Size(770, 91);
             this.LogTextBox.TabIndex = 0;
             // 
             // SubProgressBar
@@ -114,9 +115,9 @@ namespace ACO
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LogGroupBox.Controls.Add(this.LogTextBox);
-            this.LogGroupBox.Location = new System.Drawing.Point(12, 89);
+            this.LogGroupBox.Location = new System.Drawing.Point(12, 91);
             this.LogGroupBox.Name = "LogGroupBox";
-            this.LogGroupBox.Size = new System.Drawing.Size(776, 349);
+            this.LogGroupBox.Size = new System.Drawing.Size(776, 110);
             this.LogGroupBox.TabIndex = 7;
             this.LogGroupBox.TabStop = false;
             this.LogGroupBox.Text = "Лог ошибок";
@@ -124,18 +125,19 @@ namespace ACO
             // OpenLogFolderButton
             // 
             this.OpenLogFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OpenLogFolderButton.Location = new System.Drawing.Point(652, 446);
+            this.OpenLogFolderButton.Location = new System.Drawing.Point(537, 209);
             this.OpenLogFolderButton.Name = "OpenLogFolderButton";
             this.OpenLogFolderButton.Size = new System.Drawing.Size(136, 23);
             this.OpenLogFolderButton.TabIndex = 8;
             this.OpenLogFolderButton.Text = "Открыть папку логов";
             this.OpenLogFolderButton.UseVisualStyleBackColor = true;
+            this.OpenLogFolderButton.Visible = false;
             this.OpenLogFolderButton.Click += new System.EventHandler(this.OpenLogFolderButton_Click);
             // 
             // AbortButton
             // 
             this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.AbortButton.Location = new System.Drawing.Point(12, 446);
+            this.AbortButton.Location = new System.Drawing.Point(710, 209);
             this.AbortButton.Name = "AbortButton";
             this.AbortButton.Size = new System.Drawing.Size(75, 23);
             this.AbortButton.TabIndex = 9;
@@ -147,7 +149,7 @@ namespace ACO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 479);
+            this.ClientSize = new System.Drawing.Size(800, 240);
             this.Controls.Add(this.AbortButton);
             this.Controls.Add(this.OpenLogFolderButton);
             this.Controls.Add(this.LogGroupBox);
@@ -157,6 +159,7 @@ namespace ACO
             this.Controls.Add(this.MainProgressBar);
             this.Controls.Add(this.SubLabel);
             this.Controls.Add(this.SubProgressBar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProgressBarWithLog";
             this.Text = "СПЕКТРУМ прогресс выполнения";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ProgressBarWithLog_FormClosed);

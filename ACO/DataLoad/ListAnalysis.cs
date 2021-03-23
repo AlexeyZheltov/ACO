@@ -61,25 +61,17 @@ namespace ACO
             /// Последняя строка списка 
             int lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count;
             //recordPrint.Number
-           // bool curentLevel = false;
-            for (int row = _rowStart; row <= lastRow; row++)
-            {
-                Record recordAnalysis = GetRecocdAnalysis(row);
+            // bool curentLevel = false;
+            //for (int row = _rowStart; row <= lastRow; row++)
+            //{
+               
+                Record recordAnalysis = GetRecocdAnalysis(_rowStart);
                 // Проверка ключевых значений 
-                if (recordAnalysis.KeyEqual(recordPrint))
+                if (!recordAnalysis.KeyEqual(recordPrint))                
                 {
-                    rowPaste = row;
-                    _rowStart = row+1;
-                    break;
+                    SheetAnalysis.Rows[_rowStart].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
                 }
-                else 
-                {
-                    SheetAnalysis.Rows[row].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                    rowPaste = row;
-                    _rowStart = row + 1;
-                    break;
-                }
-            }
+            //}
 
             /// Печать значений
             foreach (FieldAddress field in recordPrint.Addresslist)
@@ -87,6 +79,7 @@ namespace ACO
                 object val = recordPrint.Values[field.ColumnPaste];
                 if (val != null) SheetAnalysis.Cells[rowPaste, field.ColumnPaste].Value = val;
             }
+                    _rowStart++ ;
         }
 
         /// <summary>

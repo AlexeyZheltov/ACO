@@ -106,18 +106,12 @@ namespace ACO
                     string text1 = keyFild.Trim().Replace("  ", "").ToLower();
                     string text2 = recordField.Trim().Replace("  ", "").ToLower();
 
-                    //if (text1.IndexOf(text2, StringComparison.InvariantCultureIgnoreCase) > 0)
                     if (text1 == text2)
                     {
                         exist = true;
                     }
                 }
                 if (!exist) return false;
-
-                //if (!recordPrint.KeyFilds.Contains(keyFild,StringComparer.InvariantCultureIgnoreCase))
-                //{
-                //    return false;
-                //}
             }
             return true;
         }
