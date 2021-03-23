@@ -37,6 +37,13 @@ namespace ACO.Offers
         public List<OfferColumnMapping> Columns { get; set; }       
 
 
+        public OfferColumnMapping GetColumn(StaticColumns column)
+        {
+            OfferColumnMapping columnMapping = Columns.Find(x => x.Name == Project.ColumnsNames[column]);
+            if (columnMapping is null) throw new AddInException($"Не удалось найти столбец {Project.ColumnsNames[column]}") ;
+            return columnMapping;
+        } 
+
         internal static void Create(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) { return; }
@@ -81,6 +88,7 @@ namespace ACO.Offers
             };
             offerMapping.Save();
         }
+
         public void GetFromXML(string filename)
         {
             XDocument xdoc = XDocument.Load(filename);
@@ -124,10 +132,6 @@ namespace ACO.Offers
             XElement xeDataSheet = new XElement("DataSheet");
             xeDataSheet.Add(new XAttribute("SheetName", SheetName ?? ""));
             XElement xeRangeValues = new XElement("RangeVaues");
-            //XAttribute xaStart = new XAttribute("Start", RangeValuesStart.ToString());
-            //XAttribute xaEnd = new XAttribute("End", RangeValuesEnd.ToString());
-            //xeRangeValues.Add(xaStart);
-            //xeRangeValues.Add(xaEnd);
             xeDataSheet.Add(xeRangeValues);
 
             XElement xeRows = new XElement("Rows");

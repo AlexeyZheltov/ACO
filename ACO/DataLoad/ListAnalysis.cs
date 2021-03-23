@@ -16,6 +16,9 @@ namespace ACO
         public Excel.Worksheet SheetAnalysis { get; }
         public Project CurrentProject { get; }
 
+        /// <summary>
+        ///  Столбец для вставки загруд
+        /// </summary>
         public int ColumnStartPrint
         {
             get
@@ -47,6 +50,10 @@ namespace ACO
 
         int _rowStart = 1;
 
+        /// <summary>
+        ///  Запись строки КП на лист Анализ. Вставка строк.
+        /// </summary>
+        /// <param name="recordPrint"></param>
         internal void Print(Record recordPrint)
         {
             int rowPaste = _rowStart;
@@ -58,20 +65,7 @@ namespace ACO
             for (int row = _rowStart; row <= lastRow; row++)
             {
                 Record recordAnalysis = GetRecocdAnalysis(row);
-                //  if (string.IsNullOrEmpty(recordAnalysis.Number) || string.IsNullOrEmpty(recordPrint.Number)) continue;
-                //if (recordAnalysis.Number == recordPrint.Number)
-                //{
-                //    _rowStart = row;
-                //    rowPaste = row;
-                //    break;
-                //}
-                /// Проверка уровня: совпадение номера предпоследнего номера
-                //if (recordAnalysis.LevelEqual(recordPrint))
-                //{
-               //curentLevel = true;
                 // Проверка ключевых значений 
-                //}
-
                 if (recordAnalysis.KeyEqual(recordPrint))
                 {
                     rowPaste = row;
@@ -95,6 +89,11 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Считывает поля для проверки с листа Анализ.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
         private Record GetRecocdAnalysis(int row)
         {
             Record recordAnalysis = new Record();
@@ -115,16 +114,6 @@ namespace ACO
             return recordAnalysis;
         }
 
-
-        internal void PrintMarks(List<(ColumnMapping, int)> listColumnPair)
-        {
-            foreach ((ColumnMapping projectColumn, int offerColumn) pair in listColumnPair)
-            {
-                SheetAnalysis.Cells[1, pair.projectColumn.Column].Value = pair.projectColumn.Name;
-            }
-        }
-
-
         /// <summary>
         ///  Копирование заголовков
         /// </summary>
@@ -143,13 +132,15 @@ namespace ACO
             {
                 Excel.Range rngCoulumn = titleTamplate.Columns[address.MappingAnalysis.Column];
                 rngCoulumn.Copy(SheetAnalysis.Cells[7, columnPaste]);
-                if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Amount])
-                {
-                    SheetAnalysis.Cells[1, columnPaste].Value = "column_amount";
-                }
+
+                SheetAnalysis.Cells[1, columnPaste].Value = address.MappingAnalysis.Name;
+                //if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Amount])
+                //{
+                //    SheetAnalysis.Cells[1, columnPaste].Value = "column_amount";
+                //}
                 columnPaste++;
             }
-            SheetAnalysis.Cells[1, ColumnStartPrint].Value = "offer_start";
+            SheetAnalysis.Cells[1, ColumnStartPrint-1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste - 1].Value = "offer_end";
             try
             {
@@ -160,42 +151,6 @@ namespace ACO
             {
                 throw new AddInException($"При копировании диапазона \"ШаблонКомментарии\" возникла ошибка: {e.Message}");
             }
-        }
-
-        /*
-        private List<Record> GetListRecordsAnalysis()
-        {
-            List<Record> records = new List<Record>();
-            int lastRow = SheetAnalysis.UsedRange.Rows.Count + SheetAnalysis.UsedRange.Row - 1;
-            int lastCol = CurrentProject.Columns.Max(s => s.Column);
-            object[,] data = SheetAnalysis.Range[SheetAnalysis.Cells[CurrentProject.RowStart, 1],
-                                                   SheetAnalysis.Cells[lastRow, lastCol]];
-            int ixCol = 1;
-            int rowsCount = data.GetUpperBound(0);
-
-            for (int row = 1; row < rowsCount; row++)
-            {
-                Record record = new Record();
-                //record.Number = ;
-                //string val = data[row, ]?.ToString() ?? "";
-
-                foreach (ColumnMapping mapping in CurrentProject.Columns)
-                {
-                    if (mapping.Name == Project.ColumnsNames[StaticColumns.Number])
-                    {
-                        record.Number = data[row, mapping.Column]?.ToString() ?? "";
-                    }
-                    if (mapping.Check)
-                    {
-                        string val = data[row, ixCol]?.ToString() ?? "";
-                        record.KeyFilds.Add(val);
-                        ixCol++;
-                    }
-                }
-                records.Add(record);
-            }
-            return records;
-        }
-        */
+        }      
     }
 }

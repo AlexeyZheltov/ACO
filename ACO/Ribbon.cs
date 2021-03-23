@@ -383,7 +383,7 @@ namespace ACO
                 Excel.Range cell = ws.Cells[1, col];
                 string val = cell.Value?.ToString() ?? "";
 
-                if (val == "column_amount")
+                if (val == Project.ColumnsNames[StaticColumns.Amount])
                 {                    
                     columnsAmount.Add(cell.Column);
                 }
@@ -426,7 +426,7 @@ namespace ACO
 
                 if (val == "offer_start")
                 {
-                    cellStart = cell;
+                    cellStart = cell.Offset[0,1];
                 }
                 if (val == "offer_end")
                 {
