@@ -102,9 +102,12 @@ namespace ACO
                 bool exist = false;
                 foreach (string recordField in recordPrint.KeyFilds)
                 {
-                    string text1 = keyFild.Trim().Replace("  ", "");
-                    string text2 = recordField.Trim().Replace("  ", "");
-                    if (text1.IndexOf(text2, StringComparison.InvariantCultureIgnoreCase) > 0)
+                    if (string.IsNullOrEmpty(keyFild) || string.IsNullOrEmpty(recordField)) continue;
+                    string text1 = keyFild.Trim().Replace("  ", "").ToLower();
+                    string text2 = recordField.Trim().Replace("  ", "").ToLower();
+
+                    //if (text1.IndexOf(text2, StringComparison.InvariantCultureIgnoreCase) > 0)
+                    if (text1 == text2)
                     {
                         exist = true;
                     }

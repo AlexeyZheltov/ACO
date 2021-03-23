@@ -54,33 +54,35 @@ namespace ACO
             /// Последняя строка списка 
             int lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 3;
             //recordPrint.Number
-            bool curentLevel = false;
+           // bool curentLevel = false;
             for (int row = _rowStart; row <= lastRow; row++)
             {
                 Record recordAnalysis = GetRecocdAnalysis(row);
-                if (string.IsNullOrEmpty(recordAnalysis.Number) || string.IsNullOrEmpty(recordPrint.Number)) continue;
-                if (recordAnalysis.Number == recordPrint.Number)
+                //  if (string.IsNullOrEmpty(recordAnalysis.Number) || string.IsNullOrEmpty(recordPrint.Number)) continue;
+                //if (recordAnalysis.Number == recordPrint.Number)
+                //{
+                //    _rowStart = row;
+                //    rowPaste = row;
+                //    break;
+                //}
+                /// Проверка уровня: совпадение номера предпоследнего номера
+                //if (recordAnalysis.LevelEqual(recordPrint))
+                //{
+               //curentLevel = true;
+                // Проверка ключевых значений 
+                //}
+
+                if (recordAnalysis.KeyEqual(recordPrint))
                 {
-                    _rowStart = row;
                     rowPaste = row;
+                    _rowStart = row+1;
                     break;
                 }
-                /// Проверка уровня: совпадение номера предпоследнего номера
-                if (recordAnalysis.LevelEqual(recordPrint))
-                {
-                    curentLevel = true;
-                    _rowStart = row;
-                    // Проверка ключевых значений 
-                    if (recordAnalysis.KeyEqual(recordPrint))
-                    {
-                        rowPaste = row;
-                        break;
-                    }
-                }
-                else if (curentLevel || row == lastRow)
+                else 
                 {
                     SheetAnalysis.Rows[row].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
                     rowPaste = row;
+                    _rowStart = row + 1;
                     break;
                 }
             }
@@ -145,10 +147,10 @@ namespace ACO
                 {
                     SheetAnalysis.Cells[1, columnPaste].Value = "column_amount";
                 }
-                columnPaste++;    
+                columnPaste++;
             }
-            SheetAnalysis.Cells[1, ColumnStartPrint].Value = "offer_start" ;
-            SheetAnalysis.Cells[1, columnPaste-1].Value = "offer_end" ;          
+            SheetAnalysis.Cells[1, ColumnStartPrint].Value = "offer_start";
+            SheetAnalysis.Cells[1, columnPaste - 1].Value = "offer_end";
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
