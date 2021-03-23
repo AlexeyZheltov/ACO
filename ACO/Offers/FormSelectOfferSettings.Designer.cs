@@ -44,7 +44,8 @@ namespace ACO.Offers
             this.listBoxOffers.Name = "listBoxOffers";
             this.listBoxOffers.Size = new System.Drawing.Size(245, 171);
             this.listBoxOffers.TabIndex = 0;
-            this.listBoxOffers.SelectedIndexChanged += new System.EventHandler(this.listBoxOffers_SelectedIndexChanged);
+            this.listBoxOffers.SelectedIndexChanged += new System.EventHandler(this.ListBoxOffers_SelectedIndexChanged);
+            this.listBoxOffers.DoubleClick += new System.EventHandler(this.ListBoxOffers_DoubleClick);
             // 
             // BtnOK
             // 

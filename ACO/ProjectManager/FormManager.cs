@@ -164,19 +164,7 @@ namespace ACO.ProjectManager
             }
         }
 
-        private void BtnSelect_Click(object sender, EventArgs e)
-        {
-            if (TableProjects.SelectedRows.Count > 0)
-            {
-                string name = TableProjects.SelectedRows[0].Cells[0].Value.ToString() ?? "";
-                Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
-                if (newActiveProject != null)
-                {
-                    _projectManager.ActiveProject = newActiveProject;
-                    LoadData();
-                }
-            }
-        }
+      
 
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -279,7 +267,7 @@ namespace ACO.ProjectManager
             if (TableProjects.SelectedRows.Count > 0)
             {
                 DataGridViewRow row = TableProjects.SelectedRows[0];
-               string nameProject = row.Cells[0].Value?.ToString() ?? "";
+               string nameProject = row.Cells[1].Value?.ToString() ?? "";
                 if (!string.IsNullOrEmpty(nameProject))
                 {
                    Project project = _projectManager.Projects.Find(x => x.Name == nameProject);
@@ -289,6 +277,27 @@ namespace ACO.ProjectManager
                     LoadData();
                 }
             }
+        }
+        private void BtnSelect_Click(object sender, EventArgs e)
+        {
+            if (TableProjects.SelectedRows.Count > 0)
+            {
+                DataGridViewRow row = TableProjects.SelectedRows[0];
+                string name = row.Cells[1].Value.ToString() ?? "";
+                Project newActiveProject = _projectManager.Projects.Find(p => p.Name == name);
+                if (newActiveProject != null)
+                {
+                    row.Cells[0].Value = true;
+                    _projectManager.ActiveProject = newActiveProject;
+                    //LoadData();
+                }
+            }
+        }
+
+        private void BtnSetCurrentSheet_Click(object sender, EventArgs e)
+        {
+            Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
+            if (ws != null) TBoxSheetName.Text = ws.Name;
         }
     }
 }
