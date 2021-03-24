@@ -40,15 +40,16 @@ namespace ACO
         {
 
         }
+        int _rowStart = 1;
+        int _lastRow = 1;
 
         public ListAnalysis(Excel.Worksheet sheetProjerct, Project currentProject)
         {
             SheetAnalysis = sheetProjerct;
             CurrentProject = currentProject;
             _rowStart = CurrentProject.RowStart;
+            _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count;
         }
-
-        int _rowStart = 1;
 
         /// <summary>
         ///  Запись строки КП на лист Анализ. Вставка строк.
@@ -59,19 +60,29 @@ namespace ACO
             int rowPaste = _rowStart;
 
             /// Последняя строка списка 
-            int lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count;
+           
             //recordPrint.Number
-            // bool curentLevel = false;
-            //for (int row = _rowStart; row <= lastRow; row++)
-            //{
-               
-                Record recordAnalysis = GetRecocdAnalysis(_rowStart);
+             bool existRecord = false;
+            Record recordAnalysis = null;//GetRecocdAnalysis(_rowStart);
+            for (int row = _rowStart; row <= _lastRow; row++)
+            {
+                recordAnalysis = GetRecocdAnalysis(_rowStart);
+                if (!string.IsNullOrEmpty(recordAnalysis.Number))
+                {
+                    _rowStart = row;
+                    existRecord = true;
+                    break;
+                }
+            }
+            if (recordAnalysis != null && existRecord)
+            {
                 // Проверка ключевых значений 
                 if (!recordAnalysis.KeyEqual(recordPrint))                
                 {
                     SheetAnalysis.Rows[_rowStart].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+                    _lastRow++;
                 }
-            //}
+            }
 
             /// Печать значений
             foreach (FieldAddress field in recordPrint.Addresslist)

@@ -21,7 +21,7 @@ namespace ACO
             // Excel.Application application = Globals.ThisAddIn.Application;
             _app.ScreenUpdating = !mode;
             _app.DisplayAlerts = !mode;
-            _app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
+            //_app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
         }
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
@@ -105,7 +105,6 @@ namespace ACO
                 if (!File.Exists(file)) { return; }
                 pb.CloseForm += () => { pb = null; };
                 pb.Show(new AddinWindow(Globals.ThisAddIn));
-
                 PrintSpectrum(pb, file);
             }
             catch (AddInException ex)
