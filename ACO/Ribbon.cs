@@ -21,7 +21,7 @@ namespace ACO
             // Excel.Application application = Globals.ThisAddIn.Application;
             _app.ScreenUpdating = !mode;
             _app.DisplayAlerts = !mode;
-            _app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
+            //_app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
         }
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
