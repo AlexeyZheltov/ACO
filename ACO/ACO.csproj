@@ -206,6 +206,7 @@
     <Compile Include="Offers\OfferSettings.cs" />
     <Compile Include="DataLoad\Record.cs" />
     <Compile Include="DataLoad\FieldAddress.cs" />
+    <Compile Include="PivotSheets\Pivot.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -295,9 +296,7 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="XMLSetting\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Main.ico" />
   </ItemGroup>

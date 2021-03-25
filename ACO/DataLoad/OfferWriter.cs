@@ -410,7 +410,7 @@ namespace ACO
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
+        public static Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
         {
             foreach (Excel.Worksheet sh in wb.Worksheets)
             {

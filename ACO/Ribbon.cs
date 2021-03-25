@@ -19,9 +19,9 @@ namespace ACO
         private void ExcelAcselerate(bool mode)
         {
             // Excel.Application application = Globals.ThisAddIn.Application;
+            _app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
             _app.ScreenUpdating = !mode;
             _app.DisplayAlerts = !mode;
-            //_app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
         }
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
@@ -45,9 +45,9 @@ namespace ACO
             ExcelHelpers.ExcelFile.Init();
             ExcelAcselerate(true);
 
-             IProgressBarWithLogUI pb = new ProgressBarWithLog();          
-                pb.CloseForm += () => { pb = null; };
-                pb.Show();
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            pb.CloseForm += () => { pb = null; };
+            pb.Show();
             // _pb.Show(new AddinWindow(Globals.ThisAddIn));          
             pb.SetMainBarVolum(files.Length);
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
@@ -75,19 +75,19 @@ namespace ACO
                 {
                     string message = $"Ошибка:{ex.Message }";
                     if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                    pb.Writeline(message);                    
+                    pb.Writeline(message);
                 }
                 finally
                 {
-                    if (pb?.IsAborted??false)
+                    if (pb?.IsAborted ?? false)
                     {
                         pb.ClearMainBar();
                         pb.ClearSubBar();
                         pb.IsAborted = false;
                         MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                   // pb.CloseFrm();
-                    excelBook.Close();                   
+                    // pb.CloseFrm();
+                    excelBook.Close();
                     ExcelHelpers.ExcelFile.Finish();
                     ExcelAcselerate(false);
                 }
@@ -97,7 +97,7 @@ namespace ACO
         private void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
         {
             ExcelHelpers.ExcelFile.Init();
-           ExcelAcselerate(true);
+            ExcelAcselerate(true);
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             try
             {
@@ -129,14 +129,14 @@ namespace ACO
             if (pb.IsAborted) throw new AddInException("Процесс остановлен");
             // ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
             // excelBook.Open(file);
-            
-             await Task.Run(() =>
-             {
-            OfferWriter offerWriter = new OfferWriter(file);
-            offerWriter.PrintSpectrum(pb);
-           
-            pb.CloseFrm();
-             });
+
+            await Task.Run(() =>
+            {
+                OfferWriter offerWriter = new OfferWriter(file);
+                offerWriter.PrintSpectrum(pb);
+
+                pb.CloseFrm();
+            });
         }
 
         private string GetOfferSettings()
@@ -241,7 +241,7 @@ namespace ACO
             form.ShowDialog();
         }
 
-  
+
 
         private void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
         {
@@ -316,27 +316,27 @@ namespace ACO
             string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
             string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
             string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
-                //раз
-                FMapping mappin = new FMapping()
-                {
-                    Amount = letterAmount,
-                    MaterialPerUnit = letterMaterialPerUnit,
-                    MaterialTotal = letterMaterialTotal,
-                    WorkPerUnit = letterWorkPerUnit,
-                    WorkTotal = letterWorkTotal,
-                    PricePerUnit = letterPricePerUnit,
-                    Total = letterTotal
-                };
+            //раз
+            FMapping mappin = new FMapping()
+            {
+                Amount = letterAmount,
+                MaterialPerUnit = letterMaterialPerUnit,
+                MaterialTotal = letterMaterialTotal,
+                WorkPerUnit = letterWorkPerUnit,
+                WorkTotal = letterWorkTotal,
+                PricePerUnit = letterPricePerUnit,
+                Total = letterTotal
+            };
             await Task.Run(() =>
             {
                 //два
                 ExcelHelper.SetFormulas(ws, mappin, root, pb); //Прогресс бар только для отмены
             });
             // Обновление формул КП
-            HashSet<int>columnsAmount =  GetNumbersCoumnsOfCount(ws);
+            HashSet<int> columnsAmount = GetNumbersCoumnsOfCount(ws);
             foreach (int col in columnsAmount)
             {
-             ExcelHelper.SetFormulas(ws, mappin.Shift(ws,col), root, pb);
+                ExcelHelper.SetFormulas(ws, mappin.Shift(ws, col), root, pb);
             }
 
             PbAbortedStopProcess(pb);
@@ -355,7 +355,7 @@ namespace ACO
             //четыре
             await Task.Run(() =>
             {
-                ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns);//pb.SubBarCount(root.AllCount)
+                ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns); //pb.SubBarCount(root.AllCount)
             });
 
             PbAbortedStopProcess(pb);
@@ -384,11 +384,11 @@ namespace ACO
                 string val = cell.Value?.ToString() ?? "";
 
                 if (val == Project.ColumnsNames[StaticColumns.Amount])
-                {                    
+                {
                     columnsAmount.Add(cell.Column);
                 }
             }
-                return columnsAmount;
+            return columnsAmount;
         }
 
         /// <summary>
@@ -426,11 +426,11 @@ namespace ACO
 
                 if (val == "offer_start")
                 {
-                    cellStart = cell.Offset[0,1];
+                    cellStart = cell.Offset[0, 1];
                 }
                 if (val == "offer_end")
                 {
-                    cellEnd = cell.Offset[0,-1];
+                    cellEnd = cell.Offset[0, -1];
                 }
                 if (cellStart != null && cellEnd != null && cellStart.Column < cellEnd.Column)
                 {
@@ -449,6 +449,46 @@ namespace ACO
                 }
             }
             return columns;
+        }
+
+        private void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        ///  Запись формул на уровень
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnLoadLvl11_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                IProgressBarWithLogUI pb = new ProgressBarWithLog();
+                new PivotSheets.Pivot().LoadUrv12(pb);
+                pb.CloseFrm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK  MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnLoadLvl12_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+
+        private void BtnUpdateLvl11_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)
+        {
+
         }
     }
 }

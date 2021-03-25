@@ -165,8 +165,8 @@ namespace ACO
         {
             Action action = () =>
             {
-                LogTextBox.Text+=Environment.NewLine;
                 LogTextBox.Text+=message;
+                LogTextBox.Text+=Environment.NewLine;
             };
 
             if (InvokeRequired)
