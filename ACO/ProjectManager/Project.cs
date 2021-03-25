@@ -90,8 +90,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.CostTotal, "ИТОГО. РУБ БЕЗ НДС" },
                 { StaticColumns.Comment, "ПРИМЕЧАНИЕ" }
             };
-
-     
+            
 
         public Project() { }
 

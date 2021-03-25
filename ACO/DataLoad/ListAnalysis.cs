@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ACO.Offers;
 using ACO.ProjectManager;
+using System.Windows.Forms;
 
 namespace ACO
 {
@@ -136,20 +137,35 @@ namespace ACO
             {
                 Excel.Range rngCoulumn = titleTamplate.Columns[address.MappingAnalysis.Column];
                 rngCoulumn.Copy(SheetAnalysis.Cells[7, columnPaste]);
+                //rngCoulumn.Copy();
+                //Excel.Range rngPaste = SheetAnalysis.Cells[7, columnPaste];
+                //rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);
+              //  Clipboard.Clear();
+                 //SheetAnalysis.Cells[7, columnPaste].Paste
 
-                SheetAnalysis.Cells[1, columnPaste].Value = address.MappingAnalysis.Name;
-                //if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Amount])
-                //{
-                //    SheetAnalysis.Cells[1, columnPaste].Value = "column_amount";
-                //}
+                SheetAnalysis.Cells[1, columnPaste].Value = address.MappingAnalysis.Name;                
+
+                if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal] ||
+                    address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal])
+                {
+                    SheetAnalysis.Range[SheetAnalysis.Cells[7, columnPaste - 1], SheetAnalysis.Cells[7, columnPaste]].Merge();
+                }
                 columnPaste++;
             }
+
+            Excel.Range rngName = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste-1]];
+            rngName.Merge();
+
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
-                commentsTitleRng.Copy(SheetAnalysis.Cells[5, columnPaste]);
+                commentsTitleRng.Copy();
+                Excel.Range rngPaste = SheetAnalysis.Cells[5, columnPaste];
+                rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);
+                Clipboard.Clear();
+                //rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             }
             catch (Exception e)
             {

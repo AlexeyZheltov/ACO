@@ -30,7 +30,7 @@ namespace ACO.ExcelHelpers
                 if (pb.IsAborted) break;
                 pb.SubBarTick();
 
-                if(pallets.TryGetValue(row.Cells[1,1].Text, out Excel.Range pallet))
+                if (pallets.TryGetValue(row.Cells[1, 1].Text, out Excel.Range pallet))
                 {
                     pallet.Copy();
                     row.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
@@ -88,7 +88,7 @@ namespace ACO.ExcelHelpers
             int firstRow = 0, lastRow, currentRow = 0;
 
             pb.SetSubBarVolume(max * ws.UsedRange.Rows.Count);
-            for(int level = 1; level < max; level++)
+            for (int level = 1; level < max; level++)
             {
                 if (pb.IsAborted) break;
                 foreach (Excel.Range row in ws.UsedRange.Rows)
@@ -99,7 +99,7 @@ namespace ACO.ExcelHelpers
 
                     if (row.Row < 10) continue; //ws.Cells[currentRow, 1].Text == ""
 
-                    if(int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
+                    if (int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
                     {
                         if (!flag && value == level)
                         {
@@ -226,5 +226,33 @@ namespace ACO.ExcelHelpers
                 ws.Range[addr].Interior.Color = Color.FromArgb(0, 172, 117, 213);
             }
         }
+
+        public static Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
+        {
+            foreach (Excel.Worksheet sh in wb.Worksheets)
+            {
+                if (sh.Name == name)
+                {
+                    return sh;
+                }
+            }
+            throw new AddInException($"Лист {name} отсутствует");
+        }
+
+        public static string GetText(Excel.Range cell)
+        {
+            bool IsXLCVErr(object obj)
+            {
+                return (obj) is Int32;
+            }
+            string text = "";
+            Excel.Application app = Globals.ThisAddIn.Application;          
+            if (!IsXLCVErr(cell.Value))
+            {
+                text = cell?.Value?.ToString() ?? "";
+            }
+            return text;
+        }
+
     }
 }

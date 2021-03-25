@@ -237,11 +237,8 @@ namespace ACO
         private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
         {
             FormSettings form = new FormSettings();
-            //new AddinWindow(Globals.ThisAddIn)
-            form.ShowDialog();
+            form.ShowDialog(new AddinWindow(Globals.ThisAddIn));
         }
-
-
 
         private void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
         {
@@ -263,6 +260,10 @@ namespace ACO
                 ExcelAcselerate(false);
             }
         }
+
+        /// <summary>
+        /// Формулы, окраска уровней
+        /// </summary>
         private async void UpdateFormuls()
         {
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
@@ -436,10 +437,8 @@ namespace ACO
                 {
                     string addressStart = cellStart.Address;
                     string letterStart = addressStart.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    // Regex.Match(addressStart, @"[A-Z]+").Value ?? "";
                     string addressEnd = cellEnd.Address;
                     string letterEnd = addressEnd.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    //Regex.Match(addressEnd, @"[A-Z]+").Value ?? "";
                     if (!string.IsNullOrEmpty(letterStart) && !string.IsNullOrEmpty(letterEnd))
                     {
                         columns.Add((letterStart, letterEnd));
@@ -453,7 +452,11 @@ namespace ACO
 
         private void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
         {
-
+            //Excel.Worksheet sh = 
+            //int lastRow = 
+            //for (int row = 1; row <= lastRow; row++)
+            //{
+            //}
         }
 
         /// <summary>
@@ -463,27 +466,60 @@ namespace ACO
         /// <param name="e"></param>
         private void BtnLoadLvl11_Click(object sender, RibbonControlEventArgs e)
         {
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            ExcelAcselerate(true);
             try
             {
-                IProgressBarWithLogUI pb = new ProgressBarWithLog();
-                new PivotSheets.Pivot().LoadUrv12(pb);
+                new PivotSheets.Pivot().LoadUrv11(pb);
                 pb.CloseFrm();
+            }
+            catch (AddInException addinEx)
+            {
+                pb.Writeline(addinEx.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK  MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
             }
         }
-
+        /// <summary>
+        ///  Запись формул на уровень 12
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnLoadLvl12_Click(object sender, RibbonControlEventArgs e)
         {
-
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            ExcelAcselerate(true);
+            try
+            {
+                new PivotSheets.Pivot().LoadUrv12(pb);
+                pb.CloseFrm();
+            }
+            catch (AddInException addinEx)
+            {
+                pb.Writeline(addinEx.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
         }
 
 
         private void BtnUpdateLvl11_Click(object sender, RibbonControlEventArgs e)
         {
-
+            Excel.Range cell = Globals.ThisAddIn.Application.ActiveCell;
+            string text = ExcelHelper.GetText(cell);
+            MessageBox.Show(text);
         }
 
         private void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)

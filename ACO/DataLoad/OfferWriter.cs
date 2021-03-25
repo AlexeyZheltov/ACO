@@ -42,23 +42,22 @@ namespace ACO
             _offerManager = new OfferManager();
             _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
             // Лист анализ в текущем проекте
-            _sheetProject = GetSheet(_wb, _CurrentProject.AnalysisSheetName);
+            _sheetProject = ExcelHelper.GetSheet(_wb, _CurrentProject.AnalysisSheetName);
             _CurrentProject.SetColumnNumbers(_sheetProject);
         }
 
         public OfferWriter(string file)
         {
             _app = Globals.ThisAddIn.Application;
-            //_offerBook = offerBook;
             _wb = _app.ActiveWorkbook;
+           
             // _offerBook = offerBook;
             _offerManager = new OfferManager();
             _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
             // Лист анализ в текущем проекте
-            _sheetProject = GetSheet(_wb, _CurrentProject.AnalysisSheetName);
+            _sheetProject = ExcelHelper.GetSheet(_wb, _CurrentProject.AnalysisSheetName);
             _CurrentProject.SetColumnNumbers(_sheetProject);
             _offerBook = _app.Workbooks.Open(file);
-            //Excel.Workbook wb = 
         }
 
 
@@ -72,7 +71,7 @@ namespace ACO
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
             pb.Writeline($"Выбор листа {offerSettings.SheetName}");
             // Лист данных КП
-            Excel.Worksheet offerSheet = GetSheet(_offerBook, offerSettings.SheetName);//_offerBook.GetSheet(offerSettings.SheetName);
+            Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);//_offerBook.GetSheet(offerSettings.SheetName);
             pb.Writeline("Разгруппировка строк");
             ShowSheetRows(offerSheet);
 
@@ -82,7 +81,7 @@ namespace ACO
             /// Адресация полей КП
             List<FieldAddress> addresslist = GetFields(offerSettings, SheetAnalysis.ColumnStartPrint);
 
-            Excel.Worksheet tamplateSheet = GetSheet(_wb, "Шаблоны");
+            Excel.Worksheet tamplateSheet = ExcelHelper.GetSheet(_wb, "Шаблоны");
             pb.Writeline("Печать заголовков");
             SheetAnalysis.PrintTitle(tamplateSheet, addresslist);
 
@@ -304,10 +303,10 @@ namespace ACO
         internal void PrintSpectrum(IProgressBarWithLogUI pb)
         {
             OfferSettings offerSettings = OfferManager.GetSpectrumSettigsDefault();
-            Excel.Worksheet offerSheet = GetSheet(_offerBook, offerSettings.SheetName);
+            Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);
 
             ShowSheetRows(offerSheet);
-            _sheetProject = GetSheet(_wb, _CurrentProject.AnalysisSheetName);
+            _sheetProject = ExcelHelper.GetSheet(_wb, _CurrentProject.AnalysisSheetName);
 
             /// Столбец "номер п.п."
             OfferColumnMapping colNumber = offerSettings.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]);
@@ -405,22 +404,15 @@ namespace ACO
         {
             return _wb.Worksheets[index];
         }
+
         /// <summary>
         ///  Получить лист по имени
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
-        {
-            foreach (Excel.Worksheet sh in wb.Worksheets)
-            {
-                if (sh.Name == name)
-                {
-                    return sh;
-                }
-            }
-            throw new AddInException($"Лист {name} отсутствует");
-        }
+        //public static Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
+        //{
+        //}
 
         private int GetLastRow(Excel.Worksheet sh)
         {
