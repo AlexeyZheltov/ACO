@@ -12,7 +12,7 @@ namespace ACO
         readonly Microsoft.Office.Interop.Excel.Window window;
         public AddinWindow(ThisAddIn thisAddIn)
         {
-            window = thisAddIn.Application.ActiveWindow;// Windows[1];
+            window = thisAddIn.Application.ActiveWindow;
         }
         public IntPtr Handle => (IntPtr)window.Hwnd;
     }

@@ -89,7 +89,15 @@ namespace ACO
             foreach (FieldAddress field in recordPrint.Addresslist)
             {
                 object val = recordPrint.Values[field.ColumnPaste];
-                if (val != null) SheetAnalysis.Cells[rowPaste, field.ColumnPaste].Value = val;
+                Excel.Range cell = SheetAnalysis.Cells[rowPaste, field.ColumnPaste];
+                if ((val) is Int32)
+                { // Ошибка формулы в загружаемом файле
+                   cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                }
+                else
+                {
+                    if (val != null) cell.Value = val;
+                }
             }
             _rowStart++;
         }

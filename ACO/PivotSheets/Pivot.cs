@@ -1,4 +1,5 @@
 ﻿using ACO.ExcelHelpers;
+using ACO.ProjectBook;
 using ACO.ProjectManager;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace ACO.PivotSheets
             string letterCost = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
 
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
-            List<OfferAddress> addresses = GetAdderss();
+            List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress;// GetAdderss();
             int rowPaste = 14;
             int colPaste = 6;
             for (int row = _project.RowStart; row <= lastRow; row++)
@@ -76,67 +77,47 @@ namespace ACO.PivotSheets
             _AnalisysSheet.Rows[13].Delete();
         }
 
-        private List<OfferAddress> GetAdderss()
-        {
-            List<OfferAddress> addresses = new List<OfferAddress>();
-            int lastCol = _AnalisysSheet.Cells[1, _AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
-            int columnStart = 0;
-            int columnTotal = 0;
-           // string name = "";
+        //private List<OfferAddress> GetAdderss()
+        //{
+        //    List<OfferAddress> addresses = new List<OfferAddress>();
+        //    int lastCol = _AnalisysSheet.Cells[1, _AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+        //    int columnStart = 0;
+        //    int columnTotal = 0;
+        //   // string name = "";
 
-            for (int col = 1; col <= lastCol; col++)
-            {
-                string val = _AnalisysSheet.Cells[1, col].Value?.ToString() ?? "";
-                if (val == "offer_start")
-                {
-                    columnStart = col;
-                //    name = _AnalisysSheet.Cells[6, col].Value?.ToString() ?? "";
-                }
-                if (val == Project.ColumnsNames[StaticColumns.CostTotal])
-                {
-                    columnTotal = col;
-                }
-                if (val == "offer_end")
-                {
-                    OfferAddress address = new OfferAddress
-                    {
-                        ColStartOffer = columnStart,
-                        ColStartOfferComments = col,
-                        ColTotalCost = columnTotal,
-                        ColPercentTotal = col + 4,
-                        ColPercentMaterial = col + 6,
-                        ColPercentWorks = col + 7,
-                        ColComments = col + 8
-                    };
-                    addresses.Add(address);
-                }
-            }
-            return addresses;
-        }
+        //    for (int col = 1; col <= lastCol; col++)
+        //    {
+        //        string val = _AnalisysSheet.Cells[1, col].Value?.ToString() ?? "";
+        //        if (val == "offer_start")
+        //        {
+        //            columnStart = col;
+        //        //    name = _AnalisysSheet.Cells[6, col].Value?.ToString() ?? "";
+        //        }
+        //        if (val == Project.ColumnsNames[StaticColumns.CostTotal])
+        //        {
+        //            columnTotal = col;
+        //        }
+        //        if (val == "offer_end")
+        //        {
+        //            OfferAddress address = new OfferAddress
+        //            {
+        //                ColStartOffer = columnStart,
+        //                ColStartOfferComments = col,
+        //                ColTotalCost = columnTotal,
+        //                ColPercentTotal = col + 4,
+        //                ColPercentMaterial = col + 6,
+        //                ColPercentWorks = col + 7,
+        //                ColComments = col + 8
+        //            };
+        //            addresses.Add(address);
+        //        }
+        //    }
+        //    return addresses;
+        //}
 
 
-        /// <summary>
-        ///  Столбцы КП на листе анализ
-        /// </summary>
-        class OfferAddress
-        {
-            public int ColPercentMaterial { get; set; }
-            public int ColPercentWorks { get; set; }
-            public int ColPercentTotal { get; set; }
-            public int ColTotalCost { get; set; }
-            public int ColComments { get; set; }
-            public int ColStartOffer { get; set; }
-            public int ColStartOfferComments { get; set; }
-        }
-        class OfferComments
-        {
-            public string ParticipantName { get; set; }
-            public string PercentMaterial { get; set; }
-            public string PercentWorks { get; set; }
-            public string PercentTotal { get; set; }
-            public double TotalCost { get; set; }
-        }
-
+      
+   
         public void LoadUrv11(IProgressBarWithLogUI pb)
         {
             List<OfferAddress> addresses = GetAdderssLvl12();
@@ -174,7 +155,7 @@ namespace ACO.PivotSheets
         private List<OfferAddress> GetAdderssLvl12()
         {
             List<OfferAddress> addresses = new List<OfferAddress>();
-            int lastCol = _SheetUrv12.Cells[13, _SheetUrv12.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+            int lastCol = _SheetUrv12.Cells[12, _SheetUrv12.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
 
             for (int col = 9; col <= lastCol; col += 3)
             {
@@ -205,7 +186,7 @@ namespace ACO.PivotSheets
             string letterCost = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
 
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
-            List<OfferAddress> addresses = GetAdderss();
+            List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress; //GetAdderss();
             int rowPaste = 14;
             int colPaste = 6;
             for (int row = _project.RowStart; row <= lastRow; row++)

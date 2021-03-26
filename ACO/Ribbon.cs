@@ -10,6 +10,8 @@ using ACO.Settings;
 using ACO.ExcelHelpers;
 using ACO.ProjectManager;
 using System.Text.RegularExpressions;
+using ACO.ProjectBook;
+using System.Drawing;
 
 namespace ACO
 {
@@ -18,7 +20,6 @@ namespace ACO
         Excel.Application _app = null;
         private void ExcelAcselerate(bool mode)
         {
-            // Excel.Application application = Globals.ThisAddIn.Application;
             _app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
             _app.ScreenUpdating = !mode;
             _app.DisplayAlerts = !mode;
@@ -34,7 +35,7 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private  void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
+        private void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
         {
             string[] files = GetFiles();
             if ((files?.Length ?? 0) < 1) return;
@@ -48,7 +49,7 @@ namespace ACO
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             pb.CloseForm += () => { pb = null; };
             pb.Show(new AddinWindow(Globals.ThisAddIn));
-                  
+
             pb.SetMainBarVolum(files.Length);
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
 
@@ -86,7 +87,7 @@ namespace ACO
                         pb.ClearSubBar();
                         pb.IsAborted = false;
                         MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }                  
+                    }
                     excelBook.Close();
                     ExcelHelpers.ExcelFile.Finish();
                     ExcelAcselerate(false);
@@ -113,7 +114,7 @@ namespace ACO
                 string message = $"Ошибка:{ex.Message }";
                 if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
                 message += Environment.NewLine;
-                tb.Text += message; 
+                tb.Text += message;
             }
             finally
             {
@@ -126,7 +127,7 @@ namespace ACO
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             pb.SetMainBarVolum(1);
             pb.MainBarTick(file);
-            if (pb.IsAborted) throw new AddInException("Процесс остановлен");          
+            if (pb.IsAborted) throw new AddInException("Процесс остановлен");
             await Task.Run(() =>
             {
                 OfferWriter offerWriter = new OfferWriter(file);
@@ -273,12 +274,14 @@ namespace ACO
 
             pb.MainBarTick("Подготвка");
             Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
-            Excel.Worksheet ws = wb.ActiveSheet;
-            Excel.Worksheet pws = wb.Sheets["Палитра"];
-            ExcelHelper.UnGroup(ws);
-            HItem root = new HItem();
+
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             ProjectManager.Project project = projectManager.ActiveProject;
+            
+            Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName); 
+            Excel.Worksheet pws = ExcelHelper.GetSheet(wb, "Палитра"); 
+            ExcelHelper.UnGroup(ws);
+            HItem root = new HItem();
             string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
 
             foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letterLevel, project.RowStart))
@@ -293,14 +296,14 @@ namespace ACO
             pb.SetSubBarVolume(root.AllCount());
             await Task.Run(() =>
             {
-                root.Numeric(new Numberer(), pb); //pb.SubBarCount(root.AllCount)
+                root.Numeric(new Numberer(), pb); 
             });
             string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
             pb.ClearSubBar();
             pb.SetSubBarVolume(root.AllCount());
             await Task.Run(() =>
             {
-                ExcelHelper.Write(ws, root, pb, letterNumber); //pb.SubBarCount(root.AllCount)
+                ExcelHelper.Write(ws, root, pb, letterNumber);
             });
 
             PbAbortedStopProcess(pb);
@@ -353,7 +356,7 @@ namespace ACO
             //четыре
             await Task.Run(() =>
             {
-                ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns); //pb.SubBarCount(root.AllCount)
+                ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns); 
             });
 
             PbAbortedStopProcess(pb);
@@ -447,14 +450,64 @@ namespace ACO
             return columns;
         }
 
+        /// <summary>
+        ///  Окраска ячеек 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
         {
-            //Excel.Worksheet sh = 
-            //int lastRow = 
-            //for (int row = 1; row <= lastRow; row++)
-            //{
-            //}
+            ProjectWorkbook projectWorkbook = new ProjectWorkbook();
+            int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count;
+            int startRow = projectWorkbook.GetFirstRow();
+            for (int row = startRow; row <= lastRow; row++)
+            {
+                foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+                {
+                    ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
+                    ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterial]);
+                    ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
+                }
+            }
         }
+
+        private void ColorCell(Excel.Range cell)
+        {
+            string text = cell.Value?.ToString() ?? "";
+            if (text != "#НД" || text != "")
+            {
+                double percent = double.TryParse(text, out double pct) ? pct : 0;
+                if (percent > 0.15)
+                {//Красный  >0.15
+                    cell.Interior.Color = Color.FromArgb(255, 0, 0);
+                    cell.Font.Color = Color.FromArgb(255, 255, 255);
+                }
+                else if (percent < -0.15)
+                {// Желтый 
+                    cell.Interior.Color = Color.FromArgb(242, 255, 0);
+                    cell.Font.Color = Color.FromArgb(242, 0, 0);
+                }
+                else if (percent < -0.05 && percent > -0.15 || percent > 0.05 && percent < 0.15)
+                {// Светло желтый
+                    cell.Interior.Color = Color.FromArgb(252, 250, 104);
+                    cell.Font.Color = Color.FromArgb(0, 0, 0);
+                }
+                else if (percent < -0.05 && percent > -0.15 || percent > 0.05 && percent < 0.15)
+                {//  0.05 < percent < -0.05,  0.15 < percent > -0.15 
+                    /// Светло фиолетовый
+                    cell.Interior.Color = Color.FromArgb(255, 176, 197);
+                    cell.Font.Color = Color.FromArgb(125, 0, 33);
+                }
+                else
+                {
+                    cell.Interior.Color = Color.FromArgb(255, 255, 255);
+                    cell.Font.Color = Color.FromArgb(0, 0, 0);
+                }
+
+            }
+        }
+
+
 
         /// <summary>
         ///  Запись формул на уровень
@@ -541,6 +594,14 @@ namespace ACO
             {
                 ExcelAcselerate(false);
             }
+        }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+        }
+
+        private void button2_Click(object sender, RibbonControlEventArgs e)
+        {
         }
     }
 }
