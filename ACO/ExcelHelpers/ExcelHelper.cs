@@ -227,6 +227,11 @@ namespace ACO.ExcelHelpers
             }
         }
 
+        /// <summary>
+        ///  Получить лист по имени
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
         {
             foreach (Excel.Worksheet sh in wb.Worksheets)

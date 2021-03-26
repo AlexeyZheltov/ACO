@@ -34,7 +34,7 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
+        private  void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
         {
             string[] files = GetFiles();
             if ((files?.Length ?? 0) < 1) return;
@@ -47,8 +47,8 @@ namespace ACO
 
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             pb.CloseForm += () => { pb = null; };
-            pb.Show();
-            // _pb.Show(new AddinWindow(Globals.ThisAddIn));          
+            pb.Show(new AddinWindow(Globals.ThisAddIn));
+                  
             pb.SetMainBarVolum(files.Length);
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
 
@@ -65,10 +65,11 @@ namespace ACO
                     pb.Writeline("Инициализация загрузчика");
                     OfferWriter offerWriter = new OfferWriter(excelBook);
                     pb.Writeline("Заполнение листа Анализ\n");
-                    await Task.Run(() =>
-                    {
-                        offerWriter.Print(pb, offerSettingsName);
-                    });
+
+                    //await Task.Run(() =>
+                    //{
+                    //});
+                    offerWriter.Print(pb, offerSettingsName);
                     pb.CloseFrm();
                 }
                 catch (AddInException ex)
@@ -85,8 +86,7 @@ namespace ACO
                         pb.ClearSubBar();
                         pb.IsAborted = false;
                         MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    // pb.CloseFrm();
+                    }                  
                     excelBook.Close();
                     ExcelHelpers.ExcelFile.Finish();
                     ExcelAcselerate(false);
@@ -113,7 +113,7 @@ namespace ACO
                 string message = $"Ошибка:{ex.Message }";
                 if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
                 message += Environment.NewLine;
-                tb.Text += message; //"Ошибка:" + ex.Message + " (" + ex?.InnerException.Message + ")" + Environment.NewLine;
+                tb.Text += message; 
             }
             finally
             {
@@ -126,10 +126,7 @@ namespace ACO
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             pb.SetMainBarVolum(1);
             pb.MainBarTick(file);
-            if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-            // ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-            // excelBook.Open(file);
-
+            if (pb.IsAborted) throw new AddInException("Процесс остановлен");          
             await Task.Run(() =>
             {
                 OfferWriter offerWriter = new OfferWriter(file);
@@ -524,7 +521,26 @@ namespace ACO
 
         private void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)
         {
-
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            ExcelAcselerate(true);
+            try
+            {
+                pb.Show();
+                new PivotSheets.Pivot().UpdateUrv12(pb);
+                pb.CloseFrm();
+            }
+            catch (AddInException addinEx)
+            {
+                pb.Writeline(addinEx.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
         }
     }
 }
