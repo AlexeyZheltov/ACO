@@ -9,7 +9,6 @@ using ACO.Offers;
 using ACO.Settings;
 using ACO.ExcelHelpers;
 using ACO.ProjectManager;
-using System.Text.RegularExpressions;
 using ACO.ProjectBook;
 using System.Drawing;
 
@@ -549,9 +548,26 @@ namespace ACO
 
         private void BtnUpdateLvl11_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Range cell = Globals.ThisAddIn.Application.ActiveCell;
-            string text = ExcelHelper.GetText(cell);
-            MessageBox.Show(text);
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            ExcelAcselerate(true);
+            try
+            {
+                pb.Show();
+                new PivotSheets.Pivot().UpdateUrv11(pb);
+                pb.CloseFrm();
+            }
+            catch (AddInException addinEx)
+            {
+                pb.Writeline(addinEx.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
         }
 
         private void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)

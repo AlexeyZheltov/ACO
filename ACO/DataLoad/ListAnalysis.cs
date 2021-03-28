@@ -62,9 +62,8 @@ namespace ACO
 
             /// Последняя строка списка 
 
-            //recordPrint.Number
             bool existRecord = false;
-            Record recordAnalysis = null;//GetRecocdAnalysis(_rowStart);
+            Record recordAnalysis = null;
             for (int row = _rowStart; row <= _lastRow; row++)
             {
                 recordAnalysis = GetRecocdAnalysis(_rowStart);
@@ -90,13 +89,13 @@ namespace ACO
             {
                 object val = recordPrint.Values[field.ColumnPaste];
                 Excel.Range cell = SheetAnalysis.Cells[rowPaste, field.ColumnPaste];
-                if ((val) is Int32)
+                if (val != null)
                 { // Ошибка формулы в загружаемом файле
-                   cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
-                }
-                else
-                {
-                    if (val != null) cell.Value = val;
+                    if (double.TryParse(val.ToString(), out double dv))
+                    {
+                        if (dv<0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                    }
+                    cell.Value = val;
                 }
             }
             _rowStart++;

@@ -47,12 +47,7 @@ namespace ACO
             }
         }
         List<OfferAddress> _OfferAddress;
-
-        //private List<OfferAddress> GetAddersses()
-        //    List<OfferAddress> offerAddress = new List<OfferAddress>();
-        //    return offerAddress;
-
-
+              
         public ProjectWorkbook()
         {
             _project = new ProjectManager.ProjectManager().ActiveProject;

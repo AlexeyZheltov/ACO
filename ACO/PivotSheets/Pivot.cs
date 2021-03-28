@@ -16,6 +16,8 @@ namespace ACO.PivotSheets
         Excel.Application _app = Globals.ThisAddIn.Application;
         Excel.Worksheet _SheetUrv12;
         Excel.Worksheet _SheetUrv11;
+        Excel.Worksheet _SheetPalette;
+
         Excel.Worksheet _AnalisysSheet;
         ProjectManager.ProjectManager _projectManager;
         Project _project;
@@ -25,6 +27,7 @@ namespace ACO.PivotSheets
             Excel.Workbook wb = _app.ActiveWorkbook;
             _SheetUrv12 = ExcelHelper.GetSheet(wb, "Урв12");
             _SheetUrv11 = ExcelHelper.GetSheet(wb, "Урв11");
+            _SheetPalette = ExcelHelper.GetSheet(wb, "Палитра");
             _projectManager = new ProjectManager.ProjectManager();
             _project = _projectManager.ActiveProject;
             string analisysSheetName = _project.AnalysisSheetName;
@@ -155,6 +158,9 @@ namespace ACO.PivotSheets
                         _SheetUrv11.Cells[rowPaste, colPaste + 3].Value = _SheetUrv12.Cells[row, address.ColPercentTotal].Value?.ToString() ?? "";
                         colPaste += 5;
                     }
+                    var pallet = ExcelReader.ReadPallet(_SheetPalette);
+                    //_SheetUrv11.Range[_SheetUrv11.Cells[rowPaste,2], _SheetUrv11.Cells[rowPaste,colPaste]].Interior.Color = 
+                   // _SheetUrv11.Range[$"{f_column}{row}:{l_column}{row}"].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     colPaste = 6;
                     rowPaste++;
                 }
@@ -227,5 +233,40 @@ namespace ACO.PivotSheets
             }
         }
 
+        internal void UpdateUrv11(IProgressBarWithLogUI pb)
+        {
+        //    string letterNumber = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+        //    string letterLevel = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+
+        //    int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
+        //    List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress;
+        //    int rowPaste = 14;
+        //    int colPaste = 6;
+        //    for (int row = _project.RowStart; row <= lastRow; row++)
+        //    {
+        //        string number = _AnalisysSheet.Range[$"${letterNumber}{row}"].Value?.ToString() ?? "";
+        //        if (string.IsNullOrEmpty(number)) continue;
+        //        if (_SheetUrv12.Cells[rowPaste, 2].Value == number)
+        //        {
+        //            string level = _AnalisysSheet.Range[$"${letterLevel}{row}"].Value?.ToString() ?? "";
+        //            int levelNum = int.TryParse(level, out int ln) ? ln : 0;
+
+        //            if (levelNum > 0 && levelNum < 6)
+        //            {
+        //                foreach (OfferAddress address in addresses)
+        //                {
+        //                    _SheetUrv12.Cells[rowPaste, colPaste].Value = _AnalisysSheet.Cells[row, address.ColTotalCost].Value?.ToString() ?? "";
+        //                    _SheetUrv12.Cells[rowPaste, colPaste + 1].Value = _AnalisysSheet.Cells[row, address.ColPercentMaterial].Value?.ToString() ?? "";
+        //                    _SheetUrv12.Cells[rowPaste, colPaste + 2].Value = _AnalisysSheet.Cells[row, address.ColPercentWorks].Value?.ToString() ?? "";
+        //                    _SheetUrv12.Cells[rowPaste, colPaste + 3].Value = _AnalisysSheet.Cells[row, address.ColPercentTotal].Value?.ToString() ?? "";
+        //                    _SheetUrv12.Cells[rowPaste, colPaste + 4].Value = _AnalisysSheet.Cells[row, address.ColComments].Value?.ToString() ?? "";
+        //                    colPaste += 5;
+        //                }
+        //                colPaste = 6;
+        //                rowPaste++;
+        //            }
+        //        }
+        //    }
+        }
     }
 }
