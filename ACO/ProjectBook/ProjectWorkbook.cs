@@ -53,33 +53,28 @@ namespace ACO
         //    return offerAddress;
 
 
-        public  ProjectWorkbook()
+        public ProjectWorkbook()
         {
             _project = new ProjectManager.ProjectManager().ActiveProject;
         }
 
-
+        /// <summary>
+        ///  Номера столбцов 
+        /// </summary>
+        /// <returns></returns>
         public List<OfferAddress> GetAddersses()
         {
             List<OfferAddress> addresses = new List<OfferAddress>();
             int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
             int columnStart = 0;
             int columnTotal = 0;
-            // string name = "";
 
             for (int col = 1; col <= lastCol; col++)
             {
                 string val = _AnalisysSheet.Cells[1, col].Value?.ToString() ?? "";
-                if (val == "offer_start")
-                {
-                    columnStart = col;
-                    //    name = _AnalisysSheet.Cells[6, col].Value?.ToString() ?? "";
-                }
-                if (val == Project.ColumnsNames[StaticColumns.CostTotal])
-                {
-                    columnTotal = col;
-                }
-                if (val == "offer_end")
+                if (val == "offer_start") { columnStart = col; }
+                else if (val == Project.ColumnsNames[StaticColumns.CostTotal]) { columnTotal = col; }
+                else if (val == "offer_end")
                 {
                     OfferAddress address = new OfferAddress
                     {

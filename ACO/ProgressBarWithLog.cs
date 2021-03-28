@@ -68,8 +68,15 @@ namespace ACO
         /// </summary>
         public void ClearMainBar()
         {
-            MainProgressBar.Value = 0;
-            MainLabel.Text = "";
+            Action action = () =>
+            {
+                MainProgressBar.Value = 0;
+                MainLabel.Text = "";
+            };
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                action();
         }
 
         /// <summary>
