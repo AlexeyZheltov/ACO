@@ -164,9 +164,7 @@ namespace ACO
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
                 commentsTitleRng.Copy();
                 Excel.Range rngPaste = SheetAnalysis.Cells[5, columnPaste];
-                rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);
-                Clipboard.Clear();
-                //rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);                
             }
             catch (Exception e)
             {

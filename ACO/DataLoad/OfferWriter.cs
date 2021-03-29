@@ -160,7 +160,7 @@ namespace ACO
             string address = cell.Address;
             cell = _sheetProject.Cells[rowStart, colStart + 3];
             string letter = address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
-            cell.Formula = $"=IF(${letter}{rowStart}>15%,Комментарии!$A$5,IF(${letter}{rowStart}<-15%,Комментарии!$A$6))";
+            cell.Formula = $"=IF(${letter}{rowStart}>15%,Комментарии!$A$5,IF(${letter}{rowStart}<-15%,Комментарии!$A$6,\".\"))";
 
             //Отклонение по стоимости
             string letterTotalOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostTotal]);

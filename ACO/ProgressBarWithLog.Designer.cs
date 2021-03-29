@@ -120,7 +120,7 @@ namespace ACO
             this.LogGroupBox.Size = new System.Drawing.Size(776, 110);
             this.LogGroupBox.TabIndex = 7;
             this.LogGroupBox.TabStop = false;
-            this.LogGroupBox.Text = "Лог ошибок";
+            this.LogGroupBox.Text = "Процесс";
             // 
             // OpenLogFolderButton
             // 
@@ -136,7 +136,7 @@ namespace ACO
             // 
             // AbortButton
             // 
-            this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AbortButton.Location = new System.Drawing.Point(710, 209);
             this.AbortButton.Name = "AbortButton";
             this.AbortButton.Size = new System.Drawing.Size(75, 23);
@@ -162,7 +162,6 @@ namespace ACO
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProgressBarWithLog";
             this.Text = "СПЕКТРУМ прогресс выполнения";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ProgressBarWithLog_FormClosed);
             this.LogGroupBox.ResumeLayout(false);
             this.LogGroupBox.PerformLayout();
             this.ResumeLayout(false);

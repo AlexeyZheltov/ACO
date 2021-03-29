@@ -75,15 +75,15 @@ namespace ACO
         /// <param name="e"></param>
         private async void BtnLoadKP_Click(object sender, RibbonControlEventArgs e)
         {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
             string[] files = GetFiles();
             if ((files?.Length ?? 0) < 1) return;
 
             string offerSettingsName = GetOfferSettings();
             if (string.IsNullOrEmpty(offerSettingsName)) return;
-          
+
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             pb.Show(new AddinWindow(Globals.ThisAddIn));
-            pb.CloseForm += () => { pb = null; };
             pb.SetMainBarVolum(files.Length);
 
             ExcelHelpers.ExcelFile.Init();
@@ -104,13 +104,12 @@ namespace ACO
                     pb.Writeline("Заполнение листа Анализ\n");
 
                     await Task.Run(() =>
-                    {
-                        ExcelAcselerate(true);
-                        offerWriter.Print(pb, offerSettingsName);
-                        pb.CloseFrm();
-                        ExcelAcselerate(false);
-                    });
-                    pb.CloseFrm();
+                     {
+                         ExcelAcselerate(true);
+                         offerWriter.Print(pb, offerSettingsName);
+                         ExcelAcselerate(false);
+                         pb.CloseFrm();
+                     });
                 }
                 catch (AddInException ex)
                 {
@@ -120,15 +119,8 @@ namespace ACO
                 }
                 finally
                 {
-                    //if (pb?.IsAborted ?? false)
-                    //{
-                    //    pb.ClearMainBar();
-                    //    pb.ClearSubBar();
-                    //    pb.IsAborted = false;
-                    //    MessageBox.Show("Выполнение было прервано", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //}
                     excelBook.Close();
-                    ExcelHelpers.ExcelFile.Finish();                    
+                    ExcelHelpers.ExcelFile.Finish();
                 }
             }
         }
@@ -140,10 +132,8 @@ namespace ACO
             {
                 string file = GetFile();
                 if (!File.Exists(file)) { return; }
-                pb.CloseForm += () => { pb = null; };
                 pb.Show(new AddinWindow(Globals.ThisAddIn));
                 PrintSpectrum(pb, file);
-                pb.CloseFrm();
             }
             catch (AddInException ex)
             {
@@ -163,6 +153,7 @@ namespace ACO
                 OfferWriter offerWriter = new OfferWriter(file);
                 offerWriter.PrintSpectrum(pb);
                 ExcelAcselerate(false);
+                pb.CloseFrm();
             });
         }
 
@@ -176,7 +167,7 @@ namespace ACO
             }
             return settingsFile;
         }
-        
+
         /// <summary>
         ///  Создание проекта сравнения КП. Открыть Шаблон. Сохранить как 
         /// </summary>
@@ -226,117 +217,148 @@ namespace ACO
             form.ShowDialog(new AddinWindow(Globals.ThisAddIn));
         }
 
-        private void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
         {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            try
+            pb.Show();
+            await Task.Run(() =>
             {
-                pb.CloseForm += () => { pb = null; };
-                pb.Show(new AddinWindow(Globals.ThisAddIn));
-                UpdateFormuls(pb);
-                pb.CloseFrm();
-            }
-            catch (AddInException addInEx)
-            {
-                string message = $"Ошибка:{addInEx.Message }";
-                if (addInEx.InnerException != null) message += $"{addInEx.InnerException.Message}";
-                pb.Writeline(message);                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                try
+                {
+                    ExcelAcselerate(true);
+                    UpdateFormuls(pb);
+                    pb.CloseFrm();
+                }
+                catch (AddInException addInEx)
+                {
+                    string message = $"Ошибка:{addInEx.Message }";
+                    if (addInEx.InnerException != null) message += $"{addInEx.InnerException.Message}";
+                    pb.Writeline(message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
         }
 
         /// <summary>
         /// Формулы, окраска уровней
         /// </summary>
-        private async void UpdateFormuls(IProgressBarWithLogUI pb)
+        private void UpdateFormuls(IProgressBarWithLogUI pb)
         {
-            await Task.Run(() =>
+            pb.SetMainBarVolum(6);
+            pb.MainBarTick("Подготвка");
+            // ExcelAcselerate(true);
+            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ProjectManager.Project project = projectManager.ActiveProject;
+
+            Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+            Excel.Worksheet pws = ExcelHelper.GetSheet(wb, "Палитра");
+
+            //======1=======
+            pb.MainBarTick("Разгруппировать список");
+            //  await Task.Run(() =>
+            // {
+            ExcelHelper.UnGroup(ws);
+            //  });
+            PbAbortedStopProcess(pb);
+
+            HItem root = new HItem();
+            string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+
+            foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letterLevel, project.RowStart))
+                root.Add(new HItem()
+                {
+                    Level = Level,
+                    Row = Row
+                });
+            PbAbortedStopProcess(pb);
+
+            //======2=======
+            pb.MainBarTick("Подготовка списка");
+            pb.SetSubBarVolume(root.AllCount());
+            root.Numeric(new Numberer(), pb);
+            string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+            pb.ClearSubBar();
+            pb.SetSubBarVolume(root.AllCount());
+
+            // await Task.Run(() =>
+            // {
+            // ExcelAcselerate(true);
+            ExcelHelper.Write(ws, root, pb, letterNumber);
+            //ExcelAcselerate(false);
+            //   });
+            PbAbortedStopProcess(pb);
+
+            //======3=======
+            pb.MainBarTick("Запись формул");
+            string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
+            string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
+            string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
+            string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
+            string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
+            string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
+            string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
+            string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
+            //  await Task.Run(() =>
+            // {
+            //раз
+            FMapping mappin = new FMapping()
             {
-                pb.SetMainBarVolum(5);
-                pb.MainBarTick("Подготвка");
-                ExcelAcselerate(true);
-                Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
-                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-                ProjectManager.Project project = projectManager.ActiveProject;
+                Amount = letterAmount,
+                MaterialPerUnit = letterMaterialPerUnit,
+                MaterialTotal = letterMaterialTotal,
+                WorkPerUnit = letterWorkPerUnit,
+                WorkTotal = letterWorkTotal,
+                PricePerUnit = letterPricePerUnit,
+                Total = letterTotal
+            };
+            //два
+            //  ExcelAcselerate(true);
+            ExcelHelper.SetFormulas(ws, mappin, root, pb); //Прогресс бар только для отмены
+                                                           // Обновление формул КП
+            HashSet<int> columnsAmount = GetNumbersCoumnsOfCount(ws);
+            foreach (int col in columnsAmount)
+            {
+                ExcelHelper.SetFormulas(ws, mappin.Shift(ws, col), root, pb);
+            }
+            //  ExcelAcselerate(false);
+            //});
+            pb.ClearSubBar();
+            PbAbortedStopProcess(pb);
 
-                Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
-                Excel.Worksheet pws = ExcelHelper.GetSheet(wb, "Палитра");
-                ExcelHelper.UnGroup(ws);
-                HItem root = new HItem();
-                string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+            //======4=======
+            pb.MainBarTick("Форматирование списка");
+            //три
 
-                foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letterLevel, project.RowStart))
-                    root.Add(new HItem()
-                    {
-                        Level = Level,
-                        Row = Row
-                    });
-                PbAbortedStopProcess(pb);
+            //  await Task.Run(() =>
+            // {
+            //   ExcelAcselerate(true);
+            var pallet = ExcelReader.ReadPallet(pws);
+            int count = ws.UsedRange.Rows.Count;
+            pb.SetSubBarVolume(count);
+            List<(string, string)> colored_columns = GetColredColumns(ws);
+            colored_columns.Add(("A", letterComment));
+            (string, string)[] columns = colored_columns.ToArray();
 
-                pb.MainBarTick("Подготовка списка");
-                pb.SetSubBarVolume(root.AllCount());
-                root.Numeric(new Numberer(), pb);
-                string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
-                pb.ClearSubBar();
-                pb.SetSubBarVolume(root.AllCount());
-                ExcelHelper.Write(ws, root, pb, letterNumber);
+            //четыре
+            ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns);
 
-                PbAbortedStopProcess(pb);
+            PbAbortedStopProcess(pb);
+            pb.MainBarTick("Группировка списка");
+            pb.ClearSubBar();
 
-                pb.MainBarTick("Запись формул");
-                string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
-                string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
-                string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
-                string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
-                string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
-                string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
-                string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
-                string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
-                //раз
-                FMapping mappin = new FMapping()
-                {
-                    Amount = letterAmount,
-                    MaterialPerUnit = letterMaterialPerUnit,
-                    MaterialTotal = letterMaterialTotal,
-                    WorkPerUnit = letterWorkPerUnit,
-                    WorkTotal = letterWorkTotal,
-                    PricePerUnit = letterPricePerUnit,
-                    Total = letterTotal
-                };
-                //два
-                ExcelHelper.SetFormulas(ws, mappin, root, pb); //Прогресс бар только для отмены
-                                                               // Обновление формул КП
-                HashSet<int> columnsAmount = GetNumbersCoumnsOfCount(ws);
-                foreach (int col in columnsAmount)
-                {
-                    ExcelHelper.SetFormulas(ws, mappin.Shift(ws, col), root, pb);
-                }
+            ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
+                                                    // ExcelAcselerate(false);
+            ///  });
 
-                PbAbortedStopProcess(pb);
-                pb.MainBarTick("Форматирование списка");
-                //три
-                pb.ClearSubBar();
-
-                var pallet = ExcelReader.ReadPallet(pws);
-                int count = ws.UsedRange.Rows.Count;
-                pb.SetSubBarVolume(count);
-                List<(string, string)> colored_columns = GetColredColumns(ws);
-                colored_columns.Add(("A", letterComment));
-                (string, string)[] columns = colored_columns.ToArray();
-
-                //четыре
-                ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns);
-
-                PbAbortedStopProcess(pb);
-                pb.MainBarTick("Группировка списка");
-                pb.ClearSubBar();
-
-                ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
-                ExcelAcselerate(false);
-            });
             pb.ClearMainBar();
         }
 
@@ -425,7 +447,7 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
         {
             ProjectWorkbook projectWorkbook = new ProjectWorkbook();
             int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count - 1;
@@ -436,55 +458,38 @@ namespace ACO
                 IProgressBarWithLogUI pb = new ProgressBarWithLog();
                 pb.Show();
                 pb.SetMainBarVolum(1);
+                pb.MainBarTick("Уловное форматирование ячеек комментариев");
                 pb.SetSubBarVolume(count);
-                ExcelAcselerate(true);
-                for (int row = startRow; row <= lastRow; row++)
+                try
                 {
-                    pb.SubBarTick();
-                    PbAbortedStopProcess(pb);
-                    foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+                    await Task.Run(() =>
                     {
-                        ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
-                        ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterial]);
-                        ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
-                    }
-                }
-                pb.CloseFrm();
-                ExcelAcselerate(false);
-            }
-        }
+                        ExcelAcselerate(true);
+                      
+                        for (int row = startRow; row <= lastRow; row++)
+                        {
+                           //string level = projectWorkbook.AnalisysSheet.Range[$"${projectWorkbook.GetLetter(StaticColumns.Level)}{row}"].Text;
+                            pb.SubBarTick();
+                            PbAbortedStopProcess(pb);
+                            foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+                            {
+                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
+                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterial]);
+                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
+                            }
+                        }
+                        ExcelAcselerate(false);
+                        pb.CloseFrm();
+                    });
 
-        private void ColorCell(Excel.Range cell)
-        {
-            string text = cell.Value?.ToString() ?? "";
-            if (text != "#НД" || text != "")
-            {
-                double percent = double.TryParse(text, out double pct) ? pct : 0;
-                if (percent > 0.15 || text.Contains("Отс-ет"))
-                {//Красный  >0.15
-                    cell.Interior.Color = Color.FromArgb(255, 0, 0);
-                    cell.Font.Color = Color.FromArgb(255, 255, 255);
                 }
-                else if (percent < -0.15)
-                {// Желтый 
-                    cell.Interior.Color = Color.FromArgb(242, 255, 0);
-                    cell.Font.Color = Color.FromArgb(242, 0, 0);
-                }
-                else if (percent > 0.05 && percent < 0.15)
+                catch (AddInException addinEx)
                 {
-                    /// Светло фиолетовый
-                    cell.Interior.Color = Color.FromArgb(255, 176, 197);
-                    cell.Font.Color = Color.FromArgb(125, 0, 33);
+                    pb.Writeline(addinEx.Message);
                 }
-                else if (percent < -0.05 && percent > -0.15)
-                {// Светло желтый
-                    cell.Interior.Color = Color.FromArgb(252, 250, 104);
-                    cell.Font.Color = Color.FromArgb(0, 0, 0);
-                }
-                else
+                catch (Exception ex)
                 {
-                    cell.Interior.Color = Color.FromArgb(255, 255, 255);
-                    cell.Font.Color = Color.FromArgb(0, 0, 0);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -494,132 +499,151 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnLoadLvl11_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnLoadLvl11_Click(object sender, RibbonControlEventArgs e)
         {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            ExcelAcselerate(true);
-            try
+            pb.Show();
+            await Task.Run(() =>
             {
-                new PivotSheets.Pivot().LoadUrv11(pb);
-                pb.CloseFrm();
-            }
-            catch (AddInException addinEx)
-            {
-                pb.Writeline(addinEx.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
+                ExcelAcselerate(true);
+                try
+                {
+                    new PivotSheets.Pivot().LoadUrv11(pb);
+                    pb.CloseFrm();
+                }
+                catch (AddInException addinEx)
+                {
+                    pb.Writeline(addinEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
         }
-       
+
         /// <summary>
         ///  Запись формул на уровень 12
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnLoadLvl12_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnLoadLvl12_Click(object sender, RibbonControlEventArgs e)
         {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            ExcelAcselerate(true);
-            try
+            pb.Show();
+
+            await Task.Run(() =>
             {
-                new PivotSheets.Pivot().LoadUrv12(pb);
-                pb.CloseFrm();
-            }
-            catch (AddInException addinEx)
-            {
-                pb.Writeline(addinEx.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
+                try
+                {
+                    ExcelAcselerate(true);
+                    new PivotSheets.Pivot().LoadUrv12(pb);
+                    pb.CloseFrm();
+                }
+                catch (AddInException addinEx)
+                {
+                    pb.Writeline(addinEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
         }
 
 
-        private void BtnUpdateLvl11_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnUpdateLvl11_Click(object sender, RibbonControlEventArgs e)
         {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            ExcelAcselerate(true);
-            try
+            await Task.Run(() =>
             {
-                pb.Show();
-                new PivotSheets.Pivot().UpdateUrv11(pb);
-                pb.CloseFrm();
-            }
-            catch (AddInException addinEx)
-            {
-                pb.Writeline(addinEx.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
+                try
+                {
+                    ExcelAcselerate(true);
+                    pb.Show();
+                    new PivotSheets.Pivot().UpdateUrv11(pb);
+                    pb.CloseFrm();
+                }
+                catch (AddInException addinEx)
+                {
+                    pb.Writeline(addinEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
         }
 
-        private void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)
         {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            ExcelAcselerate(true);
-            try
+            pb.Show();
+            await Task.Run(() =>
             {
-                pb.Show();
-                new PivotSheets.Pivot().UpdateUrv12(pb);
-                pb.CloseFrm();
-            }
-            catch (AddInException addinEx)
-            {
-                pb.Writeline(addinEx.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
+                try
+                {
+                    ExcelAcselerate(true);
+                    new PivotSheets.Pivot().UpdateUrv12(pb);
+                    pb.CloseFrm();
+                }
+                catch (AddInException addinEx)
+                {
+                    pb.Writeline(addinEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
         }
 
-    //    private void button1_Click(object sender, RibbonControlEventArgs e)
-    //    {
-    //        try
-    //        {
-    //            UpdateFormuls1();
-    //        }
-    //        catch (AddInException addInEx)
-    //        {
-    //            MessageBox.Show(addInEx.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-    //        }
-    //        finally
-    //        {
-    //            ExcelAcselerate(false);
-    //        }
-    //    }
-    //    private void button2_Click(object sender, RibbonControlEventArgs e)
-    //    {
-    //        Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
-    //        Excel.Range rng = ws.Rows[2];
-    //        rng.EntireRow.Delete();
-    //        //rng.EntireRow.Delete(Excel.XlDeleteShiftDirection.xlShiftUp);
-    //    }
+        //    private void button1_Click(object sender, RibbonControlEventArgs e)
+        //    {
+        //        try
+        //        {
+        //            UpdateFormuls1();
+        //        }
+        //        catch (AddInException addInEx)
+        //        {
+        //            MessageBox.Show(addInEx.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //        finally
+        //        {
+        //            ExcelAcselerate(false);
+        //        }
+        //    }
+        //    private void button2_Click(object sender, RibbonControlEventArgs e)
+        //    {
+        //        Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
+        //        Excel.Range rng = ws.Rows[2];
+        //        rng.EntireRow.Delete();
+        //        //rng.EntireRow.Delete(Excel.XlDeleteShiftDirection.xlShiftUp);
+        //    }
 
     }
 }

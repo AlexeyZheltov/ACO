@@ -7,6 +7,7 @@ using ACO.ProjectManager;
 using ACO.ExcelHelpers;
 using ACO.ProjectBook;
 using System;
+using System.Drawing;
 
 namespace ACO
 {
@@ -30,6 +31,7 @@ namespace ACO
             }
         }
         Excel.Worksheet _AnalisysSheet;
+        Excel.Worksheet _SheetPallet;
 
         public List<OfferAddress> OfferAddress
         {
@@ -51,6 +53,7 @@ namespace ACO
         public ProjectWorkbook()
         {
             _project = new ProjectManager.ProjectManager().ActiveProject;
+            _SheetPallet = ExcelHelper.GetSheet(_ProjectBook, "Палитра");
         }
 
         /// <summary>
@@ -91,5 +94,59 @@ namespace ACO
         {
             return _project.RowStart;
         }
+        public string GetLetter(StaticColumns column)
+        {
+           ColumnMapping mapping = _project.Columns.Find(x => x.Name == Project.ColumnsNames[column]);
+            if (mapping is null) throw new AddInException($"Не в проекте не указан столбец: {Project.ColumnsNames[column]}");
+            return mapping.ColumnSymbol;
+        }
+
+
+        public void ColorCell(Excel.Range cell, string lvl = "defalut")
+        {
+            string text = cell.Value?.ToString() ?? "";
+            if (text != "#НД" || text != "")
+            {
+                double percent = double.TryParse(text, out double pct) ? pct : 0;
+                if (percent > 0.15 || text.Contains("Отс-ет"))
+                {//Красный  >0.15
+                    cell.Interior.Color = Color.FromArgb(255, 0, 0);
+                    cell.Font.Color = Color.FromArgb(255, 255, 255);
+                }
+                else if (percent < -0.15)
+                {// Желтый 
+                    cell.Interior.Color = Color.FromArgb(242, 255, 0);
+                    cell.Font.Color = Color.FromArgb(242, 0, 0);
+                }
+                else if (percent > 0.05 && percent < 0.15)
+                {
+                    /// Светло фиолетовый
+                    cell.Interior.Color = Color.FromArgb(255, 176, 197);
+                    cell.Font.Color = Color.FromArgb(125, 0, 33);
+                }
+                else if (percent < -0.05 && percent > -0.15)
+                {// Светло желтый
+                    cell.Interior.Color = Color.FromArgb(252, 250, 104);
+                    cell.Font.Color = Color.FromArgb(0, 0, 0);
+                }
+                else if (lvl != "defalut")
+                {
+                    // Формат строки по уровню
+                    Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPallet);
+                    if (pallets.TryGetValue(lvl, out Excel.Range pallet))
+                    {
+                        pallet.Copy();
+                        cell.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                    }
+                }
+                else
+                {
+                    cell.Interior.Color = Color.FromArgb(232, 242, 238);
+                    cell.Font.Color = Color.FromArgb(0, 0, 0);
+                }
+            }
+        }
+
+
     }
 }

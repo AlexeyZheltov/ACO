@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -142,6 +144,19 @@ namespace ACO.ExcelHelpers
         }
 
         /// <summary>
+        /// поиск ячейки по тексту 
+        /// </summary>
+        /// <param name="sh"></param>
+        /// <param name="findText"></param>
+        /// <returns></returns>
+        internal static Excel.Range FindCell(Excel.Worksheet sh, string findText)
+        {
+            Excel.Range cell = sh.UsedRange.Find(findText);
+            if (cell is null) throw new AddInException($"Не удалось найти ячейку с текстом: \"{findText}\" на листе: {sh.Name}");
+            return cell;
+        }
+
+        /// <summary>
         /// Расставляет формулы в зависимости от маркера
         /// </summary>
         /// <param name="ws">Лист в котором проставляются формулы</param>
@@ -244,11 +259,16 @@ namespace ACO.ExcelHelpers
             throw new AddInException($"Лист {name} отсутствует");
         }
 
+        /// <summary>
+        ///  Получить текст из ячейки
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
         public static string GetText(Excel.Range cell)
         {
             bool IsXLCVErr(object obj)
             {
-                return (obj) is Int32;
+                return (obj) is Int32; // Ошибка Формулы Excel
             }
             string text = "";
             Excel.Application app = Globals.ThisAddIn.Application;          
@@ -259,5 +279,28 @@ namespace ACO.ExcelHelpers
             return text;
         }
 
+        /// <summary>
+        /// Ячейка в ржиме редактирования
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsEditing()
+        {
+            Microsoft.Office.Interop.Excel.Application excelApp = Globals.ThisAddIn.Application;
+            if (excelApp.Interactive)
+            {
+                try
+                {
+                    excelApp.Interactive = false;
+                    excelApp.Interactive = true;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Завершите редактирование ячейки", "Ячйка в режиме редактирования",
+                       MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -37,14 +37,36 @@ namespace ACO
 
         private void AbortButton_Click(object sender, EventArgs e) => IsAborted = true;
 
-        private void ProgressBarWithLog_FormClosed(object sender, FormClosedEventArgs e) => CloseForm();
+        //  private void ProgressBarWithLog_FormClosed(object sender, FormClosedEventArgs e) => CloseForm();
+        //private void ProgressBarWithLog_FormClosed(object sender, FormClosedEventArgs e)
+        //{
+        //    Action action = () =>
+        //    {                
+        //    CloseForm();
+        //    };
+
+        //    if (InvokeRequired)
+        //        Invoke(action);
+        //    else
+        //        action();
+        //}
 
         /// <summary>
         /// Устанавливает максимальное значение для главного PB
         /// </summary>
         /// <param name="volume">Максимальное значение PB</param>
-        public void SetMainBarVolum(int volume) => MainProgressBar.Maximum = volume;
+        public void SetMainBarVolum(int volume)
+        {
+            Action action = () =>
+            {
+                MainProgressBar.Maximum = volume;
+            };
 
+            if (InvokeRequired)
+                Invoke(action);
+            else
+                SubProgressBar.Maximum = volume;
+        }
         /// <summary>
         /// Устанавливает максимальное значение для вспомогательного PB
         /// </summary>
@@ -60,7 +82,6 @@ namespace ACO
                 Invoke(action);
             else
                 SubProgressBar.Maximum = volume;
-
         }
 
         /// <summary>
@@ -106,6 +127,9 @@ namespace ACO
             {
                 MainProgressBar.Value += amount;
                 MainLabel.Text = $"Этап {MainProgressBar.Value} из {MainProgressBar.Maximum}: {text}";
+
+                LogTextBox.Text += text;
+                LogTextBox.Text += Environment.NewLine;
             };
 
             if (InvokeRequired)
@@ -172,8 +196,8 @@ namespace ACO
         {
             Action action = () =>
             {
-                LogTextBox.Text+=message;
-                LogTextBox.Text+=Environment.NewLine;
+                LogTextBox.Text += message;
+                LogTextBox.Text += Environment.NewLine;
             };
 
             if (InvokeRequired)
