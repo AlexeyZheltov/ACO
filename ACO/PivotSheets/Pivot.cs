@@ -165,7 +165,7 @@ namespace ACO.PivotSheets
         internal void UpdateUrv12(IProgressBarWithLogUI pb)
         {
             pb.SetMainBarVolum(1);
-            pb.MainBarTick("Обновление формул");
+            pb.MainBarTick("Обновление формул \"Урв 12\"");
             int rowStart = 13;
             int colPaste = 1;
             int ix = 0;
@@ -185,6 +185,9 @@ namespace ACO.PivotSheets
             //// Вывод и форматирование значений
             foreach (OfferAddress address in addresses)
             {
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                pb.SubBarTick();
+
                 ix++;
                 if (ix > 4)
                 {
@@ -435,7 +438,7 @@ namespace ACO.PivotSheets
                         pallet.Copy();
                         _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
-
+                    ix = 0;
                     foreach (OfferAddress address in addresses)
                     {
                         ix++;
@@ -477,48 +480,46 @@ namespace ACO.PivotSheets
 
         internal void UpdateDiagramm()
         {
-            try
-            {
-                Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
-                Excel.Chart chartPage = shp.Chart;
-                Excel.SeriesCollection seriesCol = (Excel.SeriesCollection)chartPage.SeriesCollection();
-                Excel.FullSeriesCollection fullColl = chartPage.FullSeriesCollection();
-                Debug.WriteLine(fullColl.Count);
 
-                int rowStart = 13;
-                int lastCol = GetLastColumnUrv(_SheetUrv11, 13);
-                int lastRow = GetLastRowUrv11();
-                int ix = 1;
-                string letterCost = "G";
+            Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
+            Excel.Chart chartPage = shp.Chart;
+            Excel.SeriesCollection seriesCol = (Excel.SeriesCollection)chartPage.SeriesCollection();
+            Excel.FullSeriesCollection fullColl = chartPage.FullSeriesCollection();
+            Debug.WriteLine(fullColl.Count);
+
+            int rowStart = 13;
+            int lastCol = GetLastColumnUrv(_SheetUrv11, 13);
+            int lastRow = GetLastRowUrv11();
+            int ix = 1;
+            string letterCost = "G";
+            fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
+            fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
+            fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
+
+            int count = 10;
+            for (int col = 9; col <= lastCol; col += 3)
+            {
+                Excel.Range cellFirstCost = _SheetUrv11.Cells[13, col];
+                string text = cellFirstCost.Value?.ToString() ?? "";
+                if (string.IsNullOrEmpty(text)) continue;
+                letterCost = ExcelHelper.GetColumnLetter(cellFirstCost);
+                ix++;
+                if (ix > fullColl.Count)
+                {
+                    seriesCol.NewSeries();
+                }
                 fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
                 fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
                 fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
-
-                int count = 10;
-                for (int col = 9; col <= lastCol; col += 3)
+            }
+            if (ix < fullColl.Count)
+            {
+                for (int i = ix + 1; i <= fullColl.Count; i++)
                 {
-                    Excel.Range cellFirstCost = _SheetUrv11.Cells[13, col];
-                    string text = cellFirstCost.Value?.ToString() ?? "";
-                    if (string.IsNullOrEmpty(text)) continue;
-                    letterCost = ExcelHelper.GetColumnLetter(cellFirstCost);
-                    ix++;
-                    if (ix > fullColl.Count)
-                    {
-                        seriesCol.NewSeries();
-                    }
-                    fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
-                    fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
-                    fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
-                }
-                if (ix < fullColl.Count)
-                {
-                    for (int i = ix + 1; i <= fullColl.Count; i++)
-                    {
-                        fullColl.Item(i).Delete();
-                    }
+                    fullColl.Item(i).Delete();
                 }
             }
-            catch (Exception) { }
+
         }
 
 
@@ -584,6 +585,8 @@ namespace ACO.PivotSheets
 
         internal void UpdateUrv11(IProgressBarWithLogUI pb)
         {
+            pb.SetMainBarVolum(2);
+            pb.MainBarTick("Обновление \"Урв 11\"");
             int lastRowSh12 = GetLastRowUrv12();
             int lastRowSh11 = GetLastRowUrv11();
             int ix = 0;
@@ -593,8 +596,12 @@ namespace ACO.PivotSheets
             Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPalette);
 
             List<OfferAddress> addresses = GetAdderssLvl12();
+            pb.SetSubBarVolume(addresses.Count);
+
             foreach (OfferAddress address in addresses)
             {
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                pb.SubBarTick();
                 ix++;
                 if (ix > 4)
                 {
@@ -640,6 +647,8 @@ namespace ACO.PivotSheets
                 }
                 colPaste += 3;
             }
+            pb.MainBarTick("Обновление диаграммы");
+            UpdateDiagramm();
         }
     }
 
