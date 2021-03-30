@@ -618,32 +618,9 @@ namespace ACO
             });
         }
 
-        //    private void button1_Click(object sender, RibbonControlEventArgs e)
-        //    {
-        //        try
-        //        {
-        //            UpdateFormuls1();
-        //        }
-        //        catch (AddInException addInEx)
-        //        {
-        //            MessageBox.Show(addInEx.Message, "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //        finally
-        //        {
-        //            ExcelAcselerate(false);
-        //        }
-        //    }
-        //    private void button2_Click(object sender, RibbonControlEventArgs e)
-        //    {
-        //        Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
-        //        Excel.Range rng = ws.Rows[2];
-        //        rng.EntireRow.Delete();
-        //        //rng.EntireRow.Delete(Excel.XlDeleteShiftDirection.xlShiftUp);
-        //    }
-
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            new PivotSheets.Pivot().UpdateDiagramm();
+        }
     }
 }

@@ -302,5 +302,24 @@ namespace ACO.ExcelHelpers
             }
             return false;
         }
+
+        public static string GetColumnLetter(Excel.Range cell)
+        {
+            string address = cell.Address;
+            string letter = address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+            return letter;
+        }
+
+        /// <summary>
+        ///  Номер стодбца по его буквенному обозначению
+        /// </summary>
+        /// <param name="columnSymbol"></param>
+        /// <param name="sh"></param>
+        /// <returns></returns>
+        public static int GetColumn(string columnSymbol, Excel.Worksheet sh)
+        {
+            int col = sh.Range[$"{columnSymbol}1"].Column;
+            return col;
+        }
     }
 }

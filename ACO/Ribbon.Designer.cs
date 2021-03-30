@@ -44,19 +44,18 @@
             this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.BtnColorComments = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
+            this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
-            this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
+            this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -140,19 +139,11 @@
             // 
             // group2
             // 
-            this.group2.Items.Add(this.BtnLoadLvl11);
             this.group2.Items.Add(this.BtnLoadLvl12);
+            this.group2.Items.Add(this.BtnLoadLvl11);
+            this.group2.Items.Add(this.button1);
             this.group2.Label = "Загрузить";
             this.group2.Name = "group2";
-            // 
-            // BtnLoadLvl11
-            // 
-            this.BtnLoadLvl11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnLoadLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl11.Image")));
-            this.BtnLoadLvl11.Label = "Урв 11";
-            this.BtnLoadLvl11.Name = "BtnLoadLvl11";
-            this.BtnLoadLvl11.ShowImage = true;
-            this.BtnLoadLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl11_Click);
             // 
             // BtnLoadLvl12
             // 
@@ -163,21 +154,29 @@
             this.BtnLoadLvl12.ShowImage = true;
             this.BtnLoadLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl12_Click);
             // 
+            // BtnLoadLvl11
+            // 
+            this.BtnLoadLvl11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnLoadLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl11.Image")));
+            this.BtnLoadLvl11.Label = "Урв 11";
+            this.BtnLoadLvl11.Name = "BtnLoadLvl11";
+            this.BtnLoadLvl11.ShowImage = true;
+            this.BtnLoadLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl11_Click);
+            // 
+            // button1
+            // 
+            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button1.Label = "Диаграмма";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
             // group3
             // 
-            this.group3.Items.Add(this.BtnUpdateLvl11);
             this.group3.Items.Add(this.BtnUpdateLvl12);
+            this.group3.Items.Add(this.BtnUpdateLvl11);
             this.group3.Label = "Обновить";
             this.group3.Name = "group3";
-            // 
-            // BtnUpdateLvl11
-            // 
-            this.BtnUpdateLvl11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnUpdateLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl11.Image")));
-            this.BtnUpdateLvl11.Label = "Урв 11";
-            this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
-            this.BtnUpdateLvl11.ShowImage = true;
-            this.BtnUpdateLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl11_Click);
             // 
             // BtnUpdateLvl12
             // 
@@ -187,6 +186,15 @@
             this.BtnUpdateLvl12.Name = "BtnUpdateLvl12";
             this.BtnUpdateLvl12.ShowImage = true;
             this.BtnUpdateLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl12_Click);
+            // 
+            // BtnUpdateLvl11
+            // 
+            this.BtnUpdateLvl11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnUpdateLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl11.Image")));
+            this.BtnUpdateLvl11.Label = "Урв 11";
+            this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
+            this.BtnUpdateLvl11.ShowImage = true;
+            this.BtnUpdateLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl11_Click);
             // 
             // group5
             // 
@@ -226,8 +234,6 @@
             // group4
             // 
             this.group4.Items.Add(this.BtnAbout);
-            this.group4.Items.Add(this.button1);
-            this.group4.Items.Add(this.button2);
             this.group4.Label = "Информация";
             this.group4.Name = "group4";
             // 
@@ -238,20 +244,6 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
-            // 
-            // button1
-            // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Label = "button1";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            // 
-            // button2
-            // 
-            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Label = "button1";
-            this.button2.Name = "button2";
-            this.button2.ShowImage = true;
             // 
             // Ribbon
             // 
@@ -299,7 +291,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSpectrum;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnColorComments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
     }
 
     partial class ThisRibbonCollection

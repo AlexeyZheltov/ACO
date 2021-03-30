@@ -101,6 +101,17 @@ namespace ACO
             return mapping.ColumnSymbol;
         }
 
+        public Excel.Range GetAnalysisRange()
+        {
+            int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column +8;
+            int lastRow = AnalisysSheet.UsedRange.Row + AnalisysSheet.UsedRange.Rows.Count - 1;
+            string letterNumber =  GetLetter(StaticColumns.Number);
+            //string letter = ExcelHelper.
+            Excel.Range cell = AnalisysSheet.Cells[lastRow,lastCol];
+            Excel.Range rng = AnalisysSheet.Range[$"{letterNumber}{_project.RowStart}:{cell.Address[ColumnAbsolute: false]}"];
+            //Excel.Range rng = AnalisysSheet.Range[AnalisysSheet.Cells[_project.RowStart,2], AnalisysSheet.Cells[lastRow, lastCol]];
+            return rng;
+        }
 
         public void ColorCell(Excel.Range cell, string lvl = "defalut")
         {

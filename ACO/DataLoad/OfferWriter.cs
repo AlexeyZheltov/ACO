@@ -190,7 +190,7 @@ namespace ACO
 
             //Комментарии к строкам "0"
             _sheetProject.Cells[rowStart, colStart + 8].Formula =
-                        $"=IF(${letterDiffCost}{rowStart}=100,\"Указать стоимость единичной расценки и посчитать итог\",\".\")";
+                        $"=IF(${letterDiffCost}{rowStart}=-100,\"Указать стоимость единичной расценки и посчитать итог\",\".\")";
 
 
             // Протянуть до конца листов
@@ -265,9 +265,9 @@ namespace ACO
 
                 if (сolumnProject.Obligatory)
                 {
-                    сolumnProject.Column = GetColumn(сolumnProject.ColumnSymbol, _sheetProject);
+                    сolumnProject.Column = ExcelHelper.GetColumn(сolumnProject.ColumnSymbol, _sheetProject);
                     int colPaste = lastCol + k;
-                    int colOffer = GetColumn(columnOffer.ColumnSymbol, _sheetProject);
+                    int colOffer = ExcelHelper.GetColumn(columnOffer.ColumnSymbol, _sheetProject);
                     fields.Add(new FieldAddress()
                     {
                         ColumnOffer = colOffer,
@@ -321,8 +321,8 @@ namespace ACO
                 ColumnMapping projectColumn = _CurrentProject.Columns.Find(a => a.Name == col.Name);
                 if (!string.IsNullOrWhiteSpace(projectColumn?.ColumnSymbol ?? ""))
                 {
-                    int cnP = GetColumn(projectColumn.ColumnSymbol, _sheetProject); 
-                    int cnO = GetColumn(col.ColumnSymbol, _sheetProject);
+                    int cnP = ExcelHelper.GetColumn(projectColumn.ColumnSymbol, _sheetProject); 
+                    int cnO = ExcelHelper.GetColumn(col.ColumnSymbol, _sheetProject);
                     colPair.Add((cnP, cnO));
                     if (rightColumn < cnO) rightColumn = cnO;
                 }
@@ -361,17 +361,7 @@ namespace ACO
             { }
         }
 
-        /// <summary>
-        ///  Номер стодбца по его буквенному обозначению
-        /// </summary>
-        /// <param name="columnSymbol"></param>
-        /// <param name="sh"></param>
-        /// <returns></returns>
-        private int GetColumn(string columnSymbol, Excel.Worksheet sh)
-        {
-            int col = sh.Range[$"{columnSymbol}1"].Column;
-            return col;
-        }
+ 
 
         /// <summary>
         ///  Найти последнюю заполненную строку в столбце
