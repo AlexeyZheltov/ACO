@@ -387,7 +387,7 @@ namespace ACO.PivotSheets
             ProjectWorkbook projectWorkbook = new ProjectWorkbook();
             List<OfferAddress> addresses = GetAdderssLvl12();
             int offersCount = addresses.Count;
-            int ix = 0;
+            
             int rowPaste = 14;
             int colPaste = 9;
             int lastCol = colPaste + 3 * offersCount - 1;
@@ -431,7 +431,7 @@ namespace ACO.PivotSheets
                         pallet.Copy();
                         _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
-                    ix = 0;
+                   int ix = 0;
                     foreach (OfferAddress address in addresses)
                     {
                         ix++;
@@ -487,8 +487,7 @@ namespace ACO.PivotSheets
             fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
             fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
             fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
-
-            int count = 10;
+                      
             for (int col = 9; col <= lastCol; col += 3)
             {
                 Excel.Range cellFirstCost = _SheetUrv11.Cells[13, col];
