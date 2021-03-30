@@ -37,8 +37,6 @@ namespace ACO.PivotSheets
         }
 
 
-
-
         /// Добавить список
         /// Добавить столбцы КП
         /// Проставить формулы
@@ -268,7 +266,6 @@ namespace ACO.PivotSheets
                 }
             }
         }
-        //====================================================
 
         private void TotalFormuls12()
         {
@@ -330,8 +327,6 @@ namespace ACO.PivotSheets
             }
         }
 
-
-
         private void TotalFormuls11()
         {
             int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "СУММА ПРЕДЛОЖЕННЫХ ОПТИМИЗАЦИЙ (с НДС)").Row;
@@ -369,8 +364,6 @@ namespace ACO.PivotSheets
                 colPaste += 3;
             }
         }
-
-
 
         private int GetLastRowUrv12()
         {
@@ -480,7 +473,6 @@ namespace ACO.PivotSheets
 
         internal void UpdateDiagramm()
         {
-
             Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
             Excel.Chart chartPage = shp.Chart;
             Excel.SeriesCollection seriesCol = (Excel.SeriesCollection)chartPage.SeriesCollection();
@@ -519,7 +511,6 @@ namespace ACO.PivotSheets
                     fullColl.Item(i).Delete();
                 }
             }
-
         }
 
 
@@ -580,8 +571,6 @@ namespace ACO.PivotSheets
             int lastCol = sh.Cells[row, sh.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
             return lastCol;
         }
-
-
 
         internal void UpdateUrv11(IProgressBarWithLogUI pb)
         {
@@ -651,43 +640,4 @@ namespace ACO.PivotSheets
             UpdateDiagramm();
         }
     }
-
-
-
-
-    //internal void UpdateUrv12_1(IProgressBarWithLogUI pb)
-    //{
-    //    string letterNumber = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
-    //    string letterLevel = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
-
-    //    int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
-    //    List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress;
-    //    int rowPaste = 14;
-    //    int colPaste = 6;
-    //    for (int row = _project.RowStart; row <= lastRow; row++)
-    //    {
-    //        string number = _AnalisysSheet.Range[$"${letterNumber}{row}"].Value?.ToString() ?? "";
-    //        if (string.IsNullOrEmpty(number)) continue;
-    //        if (_SheetUrv12.Cells[rowPaste, 2].Value == number)
-    //        {
-    //            string level = _AnalisysSheet.Range[$"${letterLevel}{row}"].Value?.ToString() ?? "";
-    //            int levelNum = int.TryParse(level, out int ln) ? ln : 0;
-
-    //            if (levelNum > 0 && levelNum < 6)
-    //            {
-    //                foreach (OfferAddress address in addresses)
-    //                {
-    //                    _SheetUrv12.Cells[rowPaste, colPaste].Value = _AnalisysSheet.Cells[row, address.ColTotalCost].Value?.ToString() ?? "";
-    //                    _SheetUrv12.Cells[rowPaste, colPaste + 1].Value = _AnalisysSheet.Cells[row, address.ColPercentMaterial].Value?.ToString() ?? "";
-    //                    _SheetUrv12.Cells[rowPaste, colPaste + 2].Value = _AnalisysSheet.Cells[row, address.ColPercentWorks].Value?.ToString() ?? "";
-    //                    _SheetUrv12.Cells[rowPaste, colPaste + 3].Value = _AnalisysSheet.Cells[row, address.ColPercentTotal].Value?.ToString() ?? "";
-    //                    _SheetUrv12.Cells[rowPaste, colPaste + 4].Value = _AnalisysSheet.Cells[row, address.ColComments].Value?.ToString() ?? "";
-    //                    colPaste += 5;
-    //                }
-    //                colPaste = 6;
-    //                rowPaste++;
-    //            }
-    //        }
-    //    }
-    //}
 }

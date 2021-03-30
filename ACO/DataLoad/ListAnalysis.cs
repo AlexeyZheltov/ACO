@@ -5,6 +5,7 @@ using System.Linq;
 using ACO.Offers;
 using ACO.ProjectManager;
 using System.Windows.Forms;
+using ACO.ExcelHelpers;
 
 namespace ACO
 {
@@ -93,7 +94,8 @@ namespace ACO
                 { // Ошибка формулы в загружаемом файле
                     if (double.TryParse(val.ToString(), out double dv))
                     {
-                        if (dv<0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                        cell.NumberFormat = "#,##0.00";
                     }
                     cell.Value = val;
                 }
@@ -119,7 +121,6 @@ namespace ACO
                 {
                     object val = SheetAnalysis.Range[$"{columnMapping.ColumnSymbol}{row}"].Value;
                     string key = val?.ToString();
-
                     recordAnalysis.KeyFilds.Add(key);
                 }
             }
@@ -133,6 +134,10 @@ namespace ACO
         internal void PrintTitle(Excel.Worksheet tamplateSheet, List<FieldAddress> addresslist)
         {
             int lastCol = addresslist.Last().MappingAnalysis.Column;
+
+            Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(ExcelHelper.GetSheet(SheetAnalysis.Parent, "Палитра"));
+            pallets.TryGetValue("1", out Excel.Range pallet);           
+
             foreach (FieldAddress address in addresslist)
             {
                 int col = address.MappingAnalysis.Column;
@@ -149,13 +154,24 @@ namespace ACO
                 if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal] ||
                     address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal])
                 {
-                    SheetAnalysis.Range[SheetAnalysis.Cells[7, columnPaste - 1], SheetAnalysis.Cells[7, columnPaste]].Merge();
+                    SheetAnalysis.Range[SheetAnalysis.Cells[7, columnPaste - 1], SheetAnalysis.Cells[7, columnPaste]].Merge();                   
                 }
                 columnPaste++;
             }
 
-            Excel.Range rngName = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
-            rngName.Merge();
+            //Top
+            Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
+            rng.Merge();
+            pallet.Copy();
+            rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+            //Bottom
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[9, ColumnStartPrint], SheetAnalysis.Cells[9, columnPaste - 1]];
+            pallet.Copy();
+            rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+            // Left
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint - 1], SheetAnalysis.Cells[9, ColumnStartPrint - 1]];
+            pallet.Copy();
+            rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
 
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
@@ -164,7 +180,7 @@ namespace ACO
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
                 commentsTitleRng.Copy();
                 Excel.Range rngPaste = SheetAnalysis.Cells[5, columnPaste];
-                rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);                
+                rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);
             }
             catch (Exception e)
             {

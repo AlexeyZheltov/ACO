@@ -69,7 +69,7 @@ namespace ACO
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
             pb.Writeline($"Выбор листа {offerSettings.SheetName}");
             // Лист данных КП
-            Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);//_offerBook.GetSheet(offerSettings.SheetName);
+            Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);
             pb.Writeline("Разгруппировка строк");
             ShowSheetRows(offerSheet);
 
@@ -338,8 +338,19 @@ namespace ACO
                 if (pb.IsAborted) return;
                 foreach ((int projectCollumn, int offerColumn) in colPair)
                 {
-                    object val = arrData[i, offerColumn];
-                    if (val != null) _sheetProject.Cells[rowPaste, projectCollumn].Value = val;
+                    object val = arrData[i, offerColumn] ;
+                    string text = val?.ToString()??"";
+                    Excel.Range cellPrint = _sheetProject.Cells[rowPaste, projectCollumn];
+                    if (double.TryParse(text , out double number))
+                    {
+                        //cellPrint.Value = Math.Round(number, 2);
+                        cellPrint.Value = number;
+                        cellPrint.NumberFormat = "#,##0.00";
+                    }
+                    else if (val != null)
+                    {
+                        cellPrint.Value = val;
+                    }
                 }
             }
             pb.ClearSubBar();
