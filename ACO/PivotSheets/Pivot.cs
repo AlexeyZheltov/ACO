@@ -200,7 +200,7 @@ namespace ACO.PivotSheets
                 }
 
                 colPaste += 5;
-                pb.SubBarTick();
+                
                 int col = address.ColTotalCost - columnCellNumber + 1;
                 string textCost = _SheetUrv12.Cells[rowStart, colPaste].Value?.ToString() ?? "";
                 if (!string.IsNullOrEmpty(textCost)) continue;  // Пропустить заполненные КП
