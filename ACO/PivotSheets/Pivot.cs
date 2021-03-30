@@ -190,7 +190,7 @@ namespace ACO.PivotSheets
                 {
                     Excel.Range rngTitle = _SheetUrv11.Range["K10:O12"];
                     rngTitle.Copy();
-                    _SheetUrv12.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);                  
+                    _SheetUrv12.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
                     rngTitle = _SheetUrv12.Range[$"K{rowBottomTotal}:O{rowBottomTotal}"];
                     rngTitle.Copy();
                     _SheetUrv12.Cells[rowBottomTotal, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
@@ -261,7 +261,7 @@ namespace ACO.PivotSheets
                     _SheetUrv12.Cells[rowBottomTotal + 2, colPaste].Formula =
                                         $"={_SheetUrv12.Cells[rowBottomTotal, colPaste].Address}+" +
                                         $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
-                   
+
                 }
             }
         }
@@ -409,7 +409,7 @@ namespace ACO.PivotSheets
                 if (string.IsNullOrEmpty(number)) continue;
 
                 string name = _SheetUrv12.Cells[row, 3].Value?.ToString() ?? "";
-               // string cost = _SheetUrv12.Cells[row, 4].Value?.ToString() ?? "";
+                // string cost = _SheetUrv12.Cells[row, 4].Value?.ToString() ?? "";
                 number = number.Trim(new char[] { ' ', '.' });
                 int levelNum = number.Split('.').Length;
 
@@ -479,14 +479,14 @@ namespace ACO.PivotSheets
         {
             try
             {
-                Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");             
+                Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
                 Excel.Chart chartPage = shp.Chart;
                 Excel.SeriesCollection seriesCol = (Excel.SeriesCollection)chartPage.SeriesCollection();
                 Excel.FullSeriesCollection fullColl = chartPage.FullSeriesCollection();
                 Debug.WriteLine(fullColl.Count);
 
                 int rowStart = 13;
-                int lastCol = GetLastColumnUrv(_SheetUrv11,13);
+                int lastCol = GetLastColumnUrv(_SheetUrv11, 13);
                 int lastRow = GetLastRowUrv11();
                 int ix = 1;
                 string letterCost = "G";
@@ -500,9 +500,9 @@ namespace ACO.PivotSheets
                     Excel.Range cellFirstCost = _SheetUrv11.Cells[13, col];
                     string text = cellFirstCost.Value?.ToString() ?? "";
                     if (string.IsNullOrEmpty(text)) continue;
-                   letterCost = ExcelHelper.GetColumnLetter(cellFirstCost);
+                    letterCost = ExcelHelper.GetColumnLetter(cellFirstCost);
                     ix++;
-                    if (ix >fullColl.Count)
+                    if (ix > fullColl.Count)
                     {
                         seriesCol.NewSeries();
                     }
@@ -512,8 +512,10 @@ namespace ACO.PivotSheets
                 }
                 if (ix < fullColl.Count)
                 {
-                    for (int i=ix+1; i<= fullColl.Count;i++)
-                    fullColl.Item(i).Delete();
+                    for (int i = ix + 1; i <= fullColl.Count; i++)
+                    {
+                        fullColl.Item(i).Delete();
+                    }
                 }
             }
             catch (Exception) { }
