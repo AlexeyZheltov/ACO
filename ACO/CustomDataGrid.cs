@@ -19,7 +19,7 @@ namespace ACO.ProjectManager
             RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
            // ReadOnly = false;
             EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
-            RowsDefaultCellStyle.WrapMode = DataGridViewTriState.False;// True;
+            RowsDefaultCellStyle.WrapMode = DataGridViewTriState.False;
             BackgroundColor = System.Drawing.Color.White;
         }
 

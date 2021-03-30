@@ -188,10 +188,10 @@
     <Compile Include="ExcelHelpers\ExcelReader.cs" />
     <Compile Include="IProgressBarWithLogUI.cs" />
     <Compile Include="Numberer.cs" />
-    <Compile Include="ExcelHelpers\FormManagerKP.cs">
+    <Compile Include="Offers\FormManagerKP.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExcelHelpers\FormManagerKP.Designer.cs">
+    <Compile Include="Offers\FormManagerKP.Designer.cs">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </Compile>
     <Compile Include="Offers\FormSelectOfferSettings.cs">
@@ -206,12 +206,14 @@
     <Compile Include="Offers\OfferSettings.cs" />
     <Compile Include="DataLoad\Record.cs" />
     <Compile Include="DataLoad\FieldAddress.cs" />
+    <Compile Include="PivotSheets\Pivot.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ProgressBarWithLog.Designer.cs">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProjectBook\OfferAddress.cs" />
     <Compile Include="ProjectManager\ColumnsMapping.cs" />
     <Compile Include="CustomDataGrid.cs">
       <SubType>Component</SubType>
@@ -226,11 +228,12 @@
     <Compile Include="DataLoad\ListAnalysis.cs" />
     <Compile Include="ProjectManager\ProjectManager.cs" />
     <Compile Include="ProjectManager\Project.cs" />
+    <Compile Include="ProjectBook\ProjectWorkbook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataLoad\OfferWriter.cs" />
-    <EmbeddedResource Include="ExcelHelpers\FormManagerKP.resx">
+    <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Offers\FormSelectOfferSettings.resx">
@@ -241,6 +244,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectManager\FormManager.resx">
       <DependentUpon>FormManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -295,9 +299,7 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="XMLSetting\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Main.ico" />
   </ItemGroup>

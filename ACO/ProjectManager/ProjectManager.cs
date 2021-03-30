@@ -109,22 +109,6 @@ namespace ACO.ProjectManager
             Project newProject = DefaultProject.Get();
             newProject.FileName = path;
             newProject.Name = projectname;
-
-            //XElement root = new XElement("project");
-            //root.Add(new XAttribute("ProjectName", projectname));
-            //root.Add(new XAttribute("Active", true));
-            //XElement xeColumns = new XElement("Columns");
-
-            ///// Скопировать настройки столбцов из активного проекта
-            //if ((ActiveProject?.Columns?.Count ?? 0) > 0)
-            //{
-            //    foreach (ColumnMapping column in ActiveProject.Columns)
-            //    {
-            //        xeColumns.Add(column.GetXElement());
-            //    }
-            //}
-            //root.Add(xeColumns);
-            //XDocument xdoc = new XDocument(root);
             newProject.Save();
             ActiveProject = newProject;
         }

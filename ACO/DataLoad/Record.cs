@@ -50,9 +50,6 @@ namespace ACO
         }
         string[] _numbers;
 
-
-
-
         /// <summary>
         /// Номер пункта
         /// </summary>

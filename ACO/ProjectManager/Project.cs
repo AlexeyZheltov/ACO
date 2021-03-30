@@ -26,6 +26,7 @@ namespace ACO.ProjectManager
         Producer,
         Unit,
         Amount,
+        ContractorAmount,
         CostMaterialsPerUnit,
         CostMaterialsTotal,
         CostWorksPerUnit,
@@ -82,6 +83,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.Producer, "ПРОИЗВОДИТЕЛЬ" },
                 { StaticColumns.Unit, "ЕД.ИЗМ." },
                 { StaticColumns.Amount, "КОЛ-ВО" },
+              // { StaticColumns.ContractorAmount, "КОЛ-ВО (подрядчик)" },
                 { StaticColumns.CostMaterialsPerUnit, "ЦЕНА МАТЕРИАЛОВ, РУБ БЕЗ НДС. ЗА ЕДИНИЦУ" },
                 { StaticColumns.CostMaterialsTotal, "ЦЕНА МАТЕРИАЛОВ, РУБ БЕЗ НДС. ВСЕГО" },
                 { StaticColumns.CostWorksPerUnit, "ЦЕНА РАБОТ, РУБ БЕЗ НДС. ЗА ЕДИНИЦУ" },
@@ -90,8 +92,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.CostTotal, "ИТОГО. РУБ БЕЗ НДС" },
                 { StaticColumns.Comment, "ПРИМЕЧАНИЕ" }
             };
-
-     
+            
 
         public Project() { }
 

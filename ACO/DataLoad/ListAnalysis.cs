@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ACO.Offers;
 using ACO.ProjectManager;
+using System.Windows.Forms;
 
 namespace ACO
 {
@@ -60,10 +61,9 @@ namespace ACO
             int rowPaste = _rowStart;
 
             /// Последняя строка списка 
-           
-            //recordPrint.Number
-             bool existRecord = false;
-            Record recordAnalysis = null;//GetRecocdAnalysis(_rowStart);
+
+            bool existRecord = false;
+            Record recordAnalysis = null;
             for (int row = _rowStart; row <= _lastRow; row++)
             {
                 recordAnalysis = GetRecocdAnalysis(_rowStart);
@@ -77,7 +77,7 @@ namespace ACO
             if (recordAnalysis != null && existRecord)
             {
                 // Проверка ключевых значений 
-                if (!recordAnalysis.KeyEqual(recordPrint))                
+                if (!recordAnalysis.KeyEqual(recordPrint))
                 {
                     SheetAnalysis.Rows[_rowStart].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
                     _lastRow++;
@@ -88,9 +88,17 @@ namespace ACO
             foreach (FieldAddress field in recordPrint.Addresslist)
             {
                 object val = recordPrint.Values[field.ColumnPaste];
-                if (val != null) SheetAnalysis.Cells[rowPaste, field.ColumnPaste].Value = val;
+                Excel.Range cell = SheetAnalysis.Cells[rowPaste, field.ColumnPaste];
+                if (val != null)
+                { // Ошибка формулы в загружаемом файле
+                    if (double.TryParse(val.ToString(), out double dv))
+                    {
+                        if (dv<0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                    }
+                    cell.Value = val;
+                }
             }
-                    _rowStart++ ;
+            _rowStart++;
         }
 
         /// <summary>
@@ -136,25 +144,32 @@ namespace ACO
             {
                 Excel.Range rngCoulumn = titleTamplate.Columns[address.MappingAnalysis.Column];
                 rngCoulumn.Copy(SheetAnalysis.Cells[7, columnPaste]);
-
                 SheetAnalysis.Cells[1, columnPaste].Value = address.MappingAnalysis.Name;
-                //if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Amount])
-                //{
-                //    SheetAnalysis.Cells[1, columnPaste].Value = "column_amount";
-                //}
+
+                if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal] ||
+                    address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal])
+                {
+                    SheetAnalysis.Range[SheetAnalysis.Cells[7, columnPaste - 1], SheetAnalysis.Cells[7, columnPaste]].Merge();
+                }
                 columnPaste++;
             }
+
+            Excel.Range rngName = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
+            rngName.Merge();
+
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
-                commentsTitleRng.Copy(SheetAnalysis.Cells[5, columnPaste]);
+                commentsTitleRng.Copy();
+                Excel.Range rngPaste = SheetAnalysis.Cells[5, columnPaste];
+                rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);                
             }
             catch (Exception e)
             {
                 throw new AddInException($"При копировании диапазона \"ШаблонКомментарии\" возникла ошибка: {e.Message}");
             }
-        }      
+        }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 
@@ -30,7 +32,7 @@ namespace ACO.ExcelHelpers
                 if (pb.IsAborted) break;
                 pb.SubBarTick();
 
-                if(pallets.TryGetValue(row.Cells[1,1].Text, out Excel.Range pallet))
+                if (pallets.TryGetValue(row.Cells[1, 1].Text, out Excel.Range pallet))
                 {
                     pallet.Copy();
                     row.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
@@ -88,7 +90,7 @@ namespace ACO.ExcelHelpers
             int firstRow = 0, lastRow, currentRow = 0;
 
             pb.SetSubBarVolume(max * ws.UsedRange.Rows.Count);
-            for(int level = 1; level < max; level++)
+            for (int level = 1; level < max; level++)
             {
                 if (pb.IsAborted) break;
                 foreach (Excel.Range row in ws.UsedRange.Rows)
@@ -99,7 +101,7 @@ namespace ACO.ExcelHelpers
 
                     if (row.Row < 10) continue; //ws.Cells[currentRow, 1].Text == ""
 
-                    if(int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
+                    if (int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
                     {
                         if (!flag && value == level)
                         {
@@ -139,6 +141,19 @@ namespace ACO.ExcelHelpers
                     ws.UsedRange.Rows.Ungroup();
             }
             catch { }
+        }
+
+        /// <summary>
+        /// поиск ячейки по тексту 
+        /// </summary>
+        /// <param name="sh"></param>
+        /// <param name="findText"></param>
+        /// <returns></returns>
+        internal static Excel.Range FindCell(Excel.Worksheet sh, string findText)
+        {
+            Excel.Range cell = sh.UsedRange.Find(findText);
+            if (cell is null) throw new AddInException($"Не удалось найти ячейку с текстом: \"{findText}\" на листе: {sh.Name}");
+            return cell;
         }
 
         /// <summary>
@@ -225,6 +240,86 @@ namespace ACO.ExcelHelpers
                 pb.SubBarTick();
                 ws.Range[addr].Interior.Color = Color.FromArgb(0, 172, 117, 213);
             }
+        }
+
+        /// <summary>
+        ///  Получить лист по имени
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Excel.Worksheet GetSheet(Excel.Workbook wb, string name)
+        {
+            foreach (Excel.Worksheet sh in wb.Worksheets)
+            {
+                if (sh.Name == name)
+                {
+                    return sh;
+                }
+            }
+            throw new AddInException($"Лист {name} отсутствует");
+        }
+
+        /// <summary>
+        ///  Получить текст из ячейки
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public static string GetText(Excel.Range cell)
+        {
+            bool IsXLCVErr(object obj)
+            {
+                return (obj) is Int32; // Ошибка Формулы Excel
+            }
+            string text = "";
+            Excel.Application app = Globals.ThisAddIn.Application;          
+            if (!IsXLCVErr(cell.Value))
+            {
+                text = cell?.Value?.ToString() ?? "";
+            }
+            return text;
+        }
+
+        /// <summary>
+        /// Ячейка в ржиме редактирования
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsEditing()
+        {
+            Microsoft.Office.Interop.Excel.Application excelApp = Globals.ThisAddIn.Application;
+            if (excelApp.Interactive)
+            {
+                try
+                {
+                    excelApp.Interactive = false;
+                    excelApp.Interactive = true;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Завершите редактирование ячейки", "Ячйка в режиме редактирования",
+                       MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static string GetColumnLetter(Excel.Range cell)
+        {
+            string address = cell.Address;
+            string letter = address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+            return letter;
+        }
+
+        /// <summary>
+        ///  Номер стодбца по его буквенному обозначению
+        /// </summary>
+        /// <param name="columnSymbol"></param>
+        /// <param name="sh"></param>
+        /// <returns></returns>
+        public static int GetColumn(string columnSymbol, Excel.Worksheet sh)
+        {
+            int col = sh.Range[$"{columnSymbol}1"].Column;
+            return col;
         }
     }
 }

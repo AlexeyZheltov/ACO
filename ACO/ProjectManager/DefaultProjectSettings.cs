@@ -114,6 +114,13 @@ namespace ACO.ProjectManager
                         Obligatory = true,
                         ColumnSymbol = "N"
                     },
+                    // new ColumnMapping()
+                    //{
+                    //    Name = Project.ColumnsNames[StaticColumns.ContractorAmountAmount],
+                    //    Check = true,
+                    //    Obligatory = true,
+                    //    ColumnSymbol = ""
+                    //},
                     new ColumnMapping()
                     {
                         Name = Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit],
