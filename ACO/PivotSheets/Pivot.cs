@@ -405,7 +405,7 @@ namespace ACO.PivotSheets
                 if (string.IsNullOrEmpty(number)) continue;
 
                 string name = _SheetUrv12.Cells[row, 3].Value?.ToString() ?? "";
-                // string cost = _SheetUrv12.Cells[row, 4].Value?.ToString() ?? "";
+                
                 number = number.Trim(new char[] { ' ', '.' });
                 int levelNum = number.Split('.').Length;
 
@@ -425,7 +425,6 @@ namespace ACO.PivotSheets
                     _SheetUrv11.Cells[rowPaste, 7].Formula = $"='{_SheetUrv12.Name}'!{_SheetUrv12.Cells[row, 4].Address}"; //cost;
 
                     // Формат строки по уровню
-
                     if (pallets.TryGetValue(levelNum.ToString(), out Excel.Range pallet))
                     {
                         pallet.Copy();
@@ -471,6 +470,9 @@ namespace ACO.PivotSheets
             UpdateDiagramm();
         }
 
+        /// <summary>
+        ///  Обновление Диаграммы
+        /// </summary>
         internal void UpdateDiagramm()
         {
             Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
