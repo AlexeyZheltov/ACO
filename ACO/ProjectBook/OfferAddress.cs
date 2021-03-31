@@ -18,5 +18,6 @@ namespace ACO.ProjectBook
         public int ColComments { get; set; }
         public int ColStartOffer { get; set; }
         public int ColStartOfferComments { get; set; }
+        public string Name { get; set; }
     }
 }

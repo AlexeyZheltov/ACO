@@ -94,10 +94,14 @@ namespace ACO
                 { // Ошибка формулы в загружаемом файле
                     if (double.TryParse(val.ToString(), out double dv))
                     {
-                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
-                        cell.NumberFormat = "#,##0.00";
+                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);                       
+                        cell.NumberFormat = "#,##0.##";                        
+                        cell.Value = Math.Round(dv, 2);
                     }
-                    cell.Value = val;
+                    else
+                    {
+                        cell.Value = val;
+                    }
                 }
             }
             _rowStart++;
@@ -134,9 +138,7 @@ namespace ACO
         internal void PrintTitle(Excel.Worksheet tamplateSheet, List<FieldAddress> addresslist)
         {
             int lastCol = addresslist.Last().MappingAnalysis.Column;
-
-            Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(ExcelHelper.GetSheet(SheetAnalysis.Parent, "Палитра"));
-            pallets.TryGetValue("1", out Excel.Range pallet);           
+                              
 
             foreach (FieldAddress address in addresslist)
             {
@@ -151,6 +153,9 @@ namespace ACO
                 rngCoulumn.Copy(SheetAnalysis.Cells[7, columnPaste]);
                 SheetAnalysis.Cells[1, columnPaste].Value = address.MappingAnalysis.Name;
 
+                SheetAnalysis.Cells[7, columnPaste].Copy();
+                SheetAnalysis.Cells[9, columnPaste].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+
                 if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal] ||
                     address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal])
                 {
@@ -158,20 +163,29 @@ namespace ACO
                 }
                 columnPaste++;
             }
-
+            /// Цвет шапки
+            Excel.Range pallet = SheetAnalysis.Cells[6, 1];
             //Top
+            
             Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
+            // Globals.ThisAddIn.Application.ScreenUpdating = true;            
+            rng.EntireColumn.AutoFit();
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            pallet.Copy();
+            rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             rng.Merge();
-            pallet.Copy();
-            rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+
             //Bottom
-            rng = SheetAnalysis.Range[SheetAnalysis.Cells[9, ColumnStartPrint], SheetAnalysis.Cells[9, columnPaste - 1]];
-            pallet.Copy();
-            rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+          //  rng = SheetAnalysis.Range[SheetAnalysis.Cells[9, ColumnStartPrint], SheetAnalysis.Cells[9, columnPaste - 1]];
+          //  pallet.Copy();
+           // rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             // Left
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint - 1], SheetAnalysis.Cells[9, ColumnStartPrint - 1]];
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+            /// Участник
+            
+
 
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
@@ -181,6 +195,8 @@ namespace ACO
                 commentsTitleRng.Copy();
                 Excel.Range rngPaste = SheetAnalysis.Cells[5, columnPaste];
                 rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);
+
+               
             }
             catch (Exception e)
             {

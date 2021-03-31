@@ -74,8 +74,17 @@ namespace ACO
                 else if (val == Project.ColumnsNames[StaticColumns.CostTotal]) { columnTotal = col; }
                 else if (val == "offer_end")
                 {
+                    Excel.Range cellName = _AnalisysSheet.Cells[6, columnStart + 1];
+                    string name = cellName.Value?.ToString() ?? "";
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        name = $"УЧАСТНИК {addresses.Count + 1}";
+                        cellName.Value = name;
+                    }
+
                     OfferAddress address = new OfferAddress
                     {
+                        Name = name,
                         ColStartOffer = columnStart,
                         ColStartOfferComments = col,
                         ColTotalCost = columnTotal,

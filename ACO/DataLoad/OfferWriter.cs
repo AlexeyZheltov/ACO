@@ -32,7 +32,7 @@ namespace ACO
         OfferManager _offerManager = null;
 
         Project _CurrentProject = null;
-
+     //   ExcelFile _excelFile = null;
 
         public OfferWriter(ExcelFile offerBook)
         {
@@ -46,17 +46,18 @@ namespace ACO
             _CurrentProject.SetColumnNumbers(_sheetProject);
         }
 
-        public OfferWriter(string file)
-        {
-            _app = Globals.ThisAddIn.Application;
-            _wb = _app.ActiveWorkbook;
-            _offerManager = new OfferManager();
-            _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
-            // Лист анализ в текущем проекте
-            _sheetProject = ExcelHelper.GetSheet(_wb, _CurrentProject.AnalysisSheetName);
-            _CurrentProject.SetColumnNumbers(_sheetProject);
-            _offerBook = _app.Workbooks.Open(file);
-        }
+        //public OfferWriter(string file)
+        //{
+        //    _app = Globals.ThisAddIn.Application;
+        //    _wb = _app.ActiveWorkbook;
+        //    _offerManager = new OfferManager();
+        //    _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
+        //    // Лист анализ в текущем проекте
+        //    _sheetProject = ExcelHelper.GetSheet(_wb, _CurrentProject.AnalysisSheetName);
+        //    _CurrentProject.SetColumnNumbers(_sheetProject);            
+        //    _offerBook = _app.Workbooks.Open(file);
+        //    _app.ActiveWindow.WindowState = XlWindowState.xlMinimized;
+        //}
 
 
         /// <summary>
@@ -69,6 +70,7 @@ namespace ACO
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
             pb.Writeline($"Выбор листа {offerSettings.SheetName}");
             // Лист данных КП
+                        
             Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);
             pb.Writeline("Разгруппировка строк");
             ShowSheetRows(offerSheet);
@@ -343,13 +345,13 @@ namespace ACO
                     Excel.Range cellPrint = _sheetProject.Cells[rowPaste, projectCollumn];
                     if (double.TryParse(text , out double number))
                     {
-                        //cellPrint.Value = Math.Round(number, 2);
-                        cellPrint.Value = number;
-                        cellPrint.NumberFormat = "#,##0.00";
+                        cellPrint.Value = Math.Round(number, 2);
+                        //cellPrint.Value = number;
+                      if(projectCollumn>1)  cellPrint.NumberFormat = "#,##0.##";
                     }
-                    else if (val != null)
+                    else if (!string.IsNullOrEmpty(text))
                     {
-                        cellPrint.Value = val;
+                        cellPrint.Value = text;
                     }
                 }
             }

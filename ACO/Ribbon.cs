@@ -96,8 +96,8 @@ namespace ACO
                 try
                 {
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-                    pb.MainBarTick(fileName);
                     pb.Writeline("Открытие файла");
+                    pb.MainBarTick(fileName);
                     excelBook.Open(fileName);
                     pb.Writeline("Инициализация загрузчика");
                     OfferWriter offerWriter = new OfferWriter(excelBook);
@@ -107,15 +107,22 @@ namespace ACO
                      {
                          ExcelAcselerate(true);
                          offerWriter.Print(pb, offerSettingsName);
+                         pb.Writeline("Завершение");
                          ExcelAcselerate(false);
                          pb.CloseFrm();
                      });
                 }
-                catch (AddInException ex)
+                catch (AddInException addInEx)
+                {
+                    string message = $"Ошибка:{addInEx.Message }";
+                    if (addInEx.InnerException != null) message += $"{addInEx.InnerException.Message}";
+                    pb.Writeline(message);
+                }
+                catch (Exception ex)
                 {
                     string message = $"Ошибка:{ex.Message }";
                     if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                    pb.Writeline(message);
+                    MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
@@ -125,7 +132,7 @@ namespace ACO
             }
         }
 
-        private void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
         {
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             try
@@ -133,7 +140,29 @@ namespace ACO
                 string file = GetFile();
                 if (!File.Exists(file)) { return; }
                 pb.Show(new AddinWindow(Globals.ThisAddIn));
-                PrintSpectrum(pb, file);
+                // PrintSpectrum(pb, file);
+                pb.SetMainBarVolum(1);
+                ExcelHelpers.ExcelFile.Init();
+                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+
+                pb.Writeline($"Открытие файла :");
+                pb.MainBarTick(file);
+                excelBook.Open(file);
+
+                pb.Writeline("Инициализация загрузчика.");
+                OfferWriter offerWriter = new OfferWriter(excelBook);
+                
+                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                pb.Writeline("Заполнение листа Анализ.");
+                await Task.Run(() =>
+                {
+                    ExcelAcselerate(true);
+                    offerWriter.PrintSpectrum(pb);
+                    pb.Writeline("Завершение.");
+                    ExcelAcselerate(false);
+                    pb.CloseFrm();
+                });
             }
             catch (AddInException ex)
             {
@@ -141,21 +170,18 @@ namespace ACO
                 if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
                 pb.Writeline(message);
             }
-        }
-        private async void PrintSpectrum(IProgressBarWithLogUI pb, string file)
-        {
-            pb.SetMainBarVolum(1);
-            pb.MainBarTick(file);
-            if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-            await Task.Run(() =>
+            catch (Exception ex)
             {
-                ExcelAcselerate(true);
-                OfferWriter offerWriter = new OfferWriter(file);
-                offerWriter.PrintSpectrum(pb);
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
                 ExcelAcselerate(false);
-                pb.CloseFrm();
-            });
+            }
         }
+
 
         private string GetOfferSettings()
         {
@@ -465,10 +491,10 @@ namespace ACO
                     await Task.Run(() =>
                     {
                         ExcelAcselerate(true);
-                      
+
                         for (int row = startRow; row <= lastRow; row++)
                         {
-                           //string level = projectWorkbook.AnalisysSheet.Range[$"${projectWorkbook.GetLetter(StaticColumns.Level)}{row}"].Text;
+                            //string level = projectWorkbook.AnalisysSheet.Range[$"${projectWorkbook.GetLetter(StaticColumns.Level)}{row}"].Text;
                             pb.SubBarTick();
                             PbAbortedStopProcess(pb);
                             foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
