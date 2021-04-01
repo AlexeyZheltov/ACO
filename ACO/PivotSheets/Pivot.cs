@@ -152,8 +152,10 @@ namespace ACO.PivotSheets
                     Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPalette);
                     if (pallets.TryGetValue(level, out Excel.Range pallet))
                     {
-                        pallet.Copy();
-                        _SheetUrv12.Range[_SheetUrv12.Cells[rowPaste, 2], _SheetUrv12.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        // pallet.Copy();
+                        ExcelHelper.SetCellFormat(_SheetUrv12.Range[_SheetUrv12.Cells[rowPaste, 2], _SheetUrv12.Cells[rowPaste, lastCol]], pallet);
+
+                       // _SheetUrv12.Range[_SheetUrv12.Cells[rowPaste, 2], _SheetUrv12.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                     // Вывод и форматирование значений
                     foreach (OfferAddress address in addresses)
@@ -263,8 +265,9 @@ namespace ACO.PivotSheets
                     string keyLvl = levelNum.ToString();
                     if (pallets.TryGetValue(keyLvl, out Excel.Range pallet))
                     {
-                        pallet.Copy();
-                        _SheetUrv12.Range[_SheetUrv12.Cells[row, colPaste], _SheetUrv12.Cells[row, colPaste + 4]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        ExcelHelper.SetCellFormat(_SheetUrv12.Range[_SheetUrv12.Cells[row, colPaste], _SheetUrv12.Cells[row, colPaste + 4]], pallet);
+                        //pallet.Copy();
+                        //_SheetUrv12.Range[_SheetUrv12.Cells[row, colPaste], _SheetUrv12.Cells[row, colPaste + 4]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 }
 
@@ -470,8 +473,9 @@ namespace ACO.PivotSheets
                     // Формат строки по уровню
                     if (pallets.TryGetValue(levelNum.ToString(), out Excel.Range pallet))
                     {
-                        pallet.Copy();
-                        _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        ExcelHelper.SetCellFormat(_SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]],pallet);
+                       //pallet.Copy();
+                      //  _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 
                     foreach (OfferAddress address in addresses)
@@ -666,8 +670,9 @@ namespace ACO.PivotSheets
                             // Формат строки по уровню
                             if (pallets.TryGetValue(levelNum.ToString(), out Excel.Range pallet))
                             {
-                                pallet.Copy();
-                                _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, colPaste], _SheetUrv11.Cells[rowPaste, colPaste + 2]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                                ExcelHelper.SetCellFormat(_SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, colPaste], _SheetUrv11.Cells[rowPaste, colPaste + 2]], pallet);
+                               //pallet.Copy();
+                               // _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, colPaste], _SheetUrv11.Cells[rowPaste, colPaste + 2]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                             }
 
                             // Вывод и форматирование значений

@@ -22,7 +22,7 @@ namespace ACO
     {
         //  private Excel.Worksheet _sheet;
 
-        public OfferManager() { }      
+        public OfferManager() { }
 
         /// <summary>
         ///  Адреса столбцов
@@ -33,7 +33,7 @@ namespace ACO
             {
                 if (_Mappings == null)
                 {
-                    _Mappings = GetMappings();
+                    UpdateMappings();
                 }
                 return _Mappings;
             }
@@ -42,7 +42,7 @@ namespace ACO
         private List<OfferSettings> _Mappings;
 
 
-        public List<OfferSettings> GetMappings()
+        public void UpdateMappings()
         {
             List<OfferSettings> mappings = new List<OfferSettings>();
             string folder = GetFolderSettingsKP();
@@ -59,7 +59,7 @@ namespace ACO
                 mappings.Add(CreateSpectrum(filename));
             }
 
-            return mappings;
+            _Mappings = mappings;
         }
 
         private static string GetSpectrumFilename()
@@ -86,8 +86,6 @@ namespace ACO
 
         private static OfferSettings CreateSpectrum(string filename)
         {
-            //string filename = GetSpectrumFilename();
-          //  _ = new OfferSettings();
             List<OfferColumnMapping> columns = new List<OfferColumnMapping>
             {
                 new OfferColumnMapping()

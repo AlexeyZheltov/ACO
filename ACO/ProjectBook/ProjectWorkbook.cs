@@ -115,7 +115,6 @@ namespace ACO
             int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column +8;
             int lastRow = AnalisysSheet.UsedRange.Row + AnalisysSheet.UsedRange.Rows.Count - 1;
             string letterNumber =  GetLetter(StaticColumns.Number);
-            //string letter = ExcelHelper.
             Excel.Range cell = AnalisysSheet.Cells[lastRow,lastCol];
             Excel.Range rng = AnalisysSheet.Range[$"{letterNumber}{_project.RowStart}:{cell.Address[ColumnAbsolute: false]}"];
             //Excel.Range rng = AnalisysSheet.Range[AnalisysSheet.Cells[_project.RowStart,2], AnalisysSheet.Cells[lastRow, lastCol]];
@@ -155,8 +154,9 @@ namespace ACO
                     Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPallet);
                     if (pallets.TryGetValue(lvl, out Excel.Range pallet))
                     {
-                        pallet.Copy();
-                        cell.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        ExcelHelper.SetCellFormat(cell, pallet);
+                        //pallet.Copy();
+                        //cell.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 }
                 else
@@ -167,6 +167,88 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Определить столбцы для окрашивания
+        /// </summary>
+        /// <param name="ws"></param>
+        /// <returns></returns>
+        public static List<(string, string)> GetColredColumns(Excel.Worksheet ws)
+        {
+            List<(string, string)> columns = new List<(string, string)>();
+            int lastCol = ws.Cells[1, ws.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+            Excel.Range cellStart = null;
+            Excel.Range cellEnd = null;
 
+            for (int col = 1; col <= lastCol; col++)
+            {
+                Excel.Range cell = ws.Cells[1, col];
+                string val = cell.Value?.ToString() ?? "";
+
+                if (val == "offer_start")
+                {
+                    cellStart = cell.Offset[0, 1];
+                }
+                if (val == "offer_end")
+                {
+                    cellEnd = cell.Offset[0, -1];
+                }
+                if (cellStart != null && cellEnd != null && cellStart.Column < cellEnd.Column)
+                {
+                    string addressStart = cellStart.Address;
+                    string letterStart = addressStart.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    string addressEnd = cellEnd.Address;
+                    string letterEnd = addressEnd.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    if (!string.IsNullOrEmpty(letterStart) && !string.IsNullOrEmpty(letterEnd))
+                    {
+                        columns.Add((letterStart, letterEnd));
+                    }
+                    cellStart = null;
+                    cellEnd = null;
+                }
+            }
+            return columns;
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="ws"></param>
+        /// <returns></returns>
+        public static List<(string, string)> GetFormatColumns(Excel.Worksheet ws)
+        {
+            List<(string, string)> columns = new List<(string, string)>();
+            int lastCol = ws.Cells[1, ws.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+            Excel.Range cellStart = null;
+            Excel.Range cellEnd = null;
+
+            for (int col = 1; col <= lastCol; col++)
+            {
+                Excel.Range cell = ws.Cells[1, col];
+                string val = cell.Value?.ToString() ?? "";
+
+                if (val == Project.ColumnsNames[StaticColumns.Amount])
+                {
+                    cellStart = cell;
+                }
+                if (val == Project.ColumnsNames[StaticColumns.CostTotal])
+                {
+                    cellEnd = cell;
+                }
+                if (cellStart != null && cellEnd != null && cellStart.Column < cellEnd.Column)
+                {
+                    string addressStart = cellStart.Address;
+                    string letterStart = addressStart.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    string addressEnd = cellEnd.Address;
+                    string letterEnd = addressEnd.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    if (!string.IsNullOrEmpty(letterStart) && !string.IsNullOrEmpty(letterEnd))
+                    {
+                        columns.Add((letterStart, letterEnd));
+                    }
+                    cellStart = null;
+                    cellEnd = null;
+                }
+            }
+            return columns;
+        }
     }
 }

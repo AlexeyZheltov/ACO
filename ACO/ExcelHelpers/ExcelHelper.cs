@@ -52,7 +52,7 @@ namespace ACO.ExcelHelpers
         /// <param name="columns">Набор юуквенных имен колонок (нач, кон), (начб кон)... в которых будет производится покраска</param>
         public static void Repaint(Excel.Worksheet ws, Dictionary<string, Excel.Range> pallets, int startRow, string levelColumn, IProgressBarWithLogUI pb, params (string, string)[] columns)
         {
-            Excel.Application application = ws.Application;
+           // Excel.Application application = ws.Application;
 
             foreach (Excel.Range r_row in ws.UsedRange.Rows)
             {
@@ -65,16 +65,25 @@ namespace ACO.ExcelHelpers
 
                 if (pallets.TryGetValue(ws.Range[$"{levelColumn}{row}"].Text, out Excel.Range pallet))
                 {
-                    pallet.Copy();
-
+                    //pallet.Copy();
                     foreach (var columns_pair in columns)
                     {
                         (string f_column, string l_column) = columns_pair;
-                        ws.Range[$"{f_column}{row}:{l_column}{row}"].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        SetCellFormat(ws.Range[$"{f_column}{row}:{l_column}{row}"], pallet);
+
+                        //ws.Range[$"{f_column}{row}:{l_column}{row}"].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 }
             }
-            application.CutCopyMode = (Excel.XlCutCopyMode)0;
+           // application.CutCopyMode = (Excel.XlCutCopyMode)0;
+        }
+
+        public static void SetCellFormat(Excel.Range cell,Excel.Range cellFormat)
+        {
+          cell.Interior.Color = cellFormat.Interior.Color;
+          cell.Font.Name = cellFormat.Font.Name;
+          cell.Font.Bold = cellFormat.Font.Bold;
+          cell.Font.Color = cellFormat.Font.Color;
         }
 
         /// <summary>
@@ -186,6 +195,12 @@ namespace ACO.ExcelHelpers
                     ws.Range[$"{mapping.WorkTotal}{s_row}"].Formula = $"=ROUND({mapping.WorkPerUnit}{s_row}*{mapping.Amount}{s_row},2)";
                     ws.Range[$"{mapping.PricePerUnit}{s_row}"].Formula = $"=ROUND({mapping.MaterialPerUnit}{s_row}+{mapping.WorkPerUnit}{s_row},2)";
                     ws.Range[$"{mapping.Total}{s_row}"].Formula = $"=ROUND({mapping.PricePerUnit}{s_row}*{mapping.Amount}{s_row},2)";
+
+
+                    //ws.Range[$"{mapping.MaterialTotal}{s_row}"].NumberFormat = "# ##0,00";
+                    //ws.Range[$"{mapping.WorkTotal}{s_row}"].NumberFormat = "# ##0,00";
+                    //ws.Range[$"{mapping.PricePerUnit}{s_row}"].NumberFormat = "# ##0,00";
+                    //ws.Range[$"{mapping.Total}{s_row}"].NumberFormat = "# ##0,00";
                     continue;
                 }
 
@@ -203,7 +218,10 @@ namespace ACO.ExcelHelpers
                 ws.Range[$"{mapping.Total}{t_row}"].Formula = builder.ToString();
 
                 if (item.Level > 1)
+                {
                     ws.Range[$"{mapping.PricePerUnit}{t_row}"].Formula = $"=ROUND({mapping.Total}{t_row}/{mapping.Amount}{t_row},2)";
+                   // ws.Range[$"{mapping.PricePerUnit}{t_row}"].NumberFormat = "# ##0,00";
+                }
 
                 SetFormulas(ws, mapping, item, pb);
             }
@@ -320,6 +338,25 @@ namespace ACO.ExcelHelpers
         {
             int col = sh.Range[$"{columnSymbol}1"].Column;
             return col;
+        }
+
+        internal static void SetNumberFormat(Worksheet ws, int rowStart, (string, string)[] columns)
+        {
+            int lastRow = ws.UsedRange.Row + ws.UsedRange.Rows.Count - 1;
+            if (lastRow <= rowStart) return;
+            foreach ((string, string) itm in columns)
+            {
+                Excel.Range rng = ws.Range[$"{itm.Item1}{rowStart}:{itm.Item2}{lastRow}"];
+                rng.NumberFormat = "#,##0.00";
+            }
+        }
+
+        internal static void SetNumberFormat(Worksheet ws, int rowStart, string letterAmount)
+        {
+            int lastRow = ws.UsedRange.Row + ws.UsedRange.Rows.Count - 1;
+            if (lastRow <= rowStart) return;            
+                Excel.Range rng = ws.Range[$"{letterAmount}{rowStart}:{letterAmount}{lastRow}"];
+                rng.NumberFormat = "#,##0.00";
         }
     }
 }

@@ -69,28 +69,28 @@ namespace ACO.ProjectManager
         public static Dictionary<StaticColumns, string> ColumnsNames =
             new Dictionary<StaticColumns, string>
             {
-                { StaticColumns.Level, "Маркер иерархии 1-2-3-4" },
+                { StaticColumns.Level, "Уровень" },
                 { StaticColumns.File, "Файл" },
                 { StaticColumns.Number, "№ п/п" },
-                { StaticColumns.Cipher, "ШИФР" },
+                { StaticColumns.Cipher, "Шифр" },
                 { StaticColumns.Classifier, "Классификатор" },
-                { StaticColumns.Name, " НАИМЕНОВАНИЕ РАБОТ" },
-                { StaticColumns.Code, "МАРКИРОВКА/ ОБОЗНАЧЕНИЕ" },
-                { StaticColumns.Material, "МАТЕРИАЛ" },
-                { StaticColumns.Size, "ФОРМАТ / ГАБАРИТНЫЕ РАЗМЕРЫ / ДИАМЕТР (Ф) ММ" },
-                { StaticColumns.Type, "ТИП, МАРКА, ОБОЗНАЧЕНИЕ ДОКУМЕНТА, ОПРОСНОГО ЛИСТА" },
-                { StaticColumns.VendorCode, "АРТИКУЛ" },
-                { StaticColumns.Producer, "ПРОИЗВОДИТЕЛЬ" },
-                { StaticColumns.Unit, "ЕД.ИЗМ." },
-                { StaticColumns.Amount, "КОЛ-ВО" },
+                { StaticColumns.Name, "Наименование работ" },
+                { StaticColumns.Code, "Маркировка / Обозначение" },
+                { StaticColumns.Material, "Материал" },
+                { StaticColumns.Size, "Формат / Габаритные размеры / Диаметр" },
+                { StaticColumns.Type, "Тип, марка, обозначение" },
+                { StaticColumns.VendorCode, "Артикул" },
+                { StaticColumns.Producer, "Производитель" },
+                { StaticColumns.Unit, "Ед. изм." },
+                { StaticColumns.Amount, "Кол-во" },
               // { StaticColumns.ContractorAmount, "КОЛ-ВО (подрядчик)" },
-                { StaticColumns.CostMaterialsPerUnit, "ЦЕНА МАТЕРИАЛОВ, РУБ БЕЗ НДС. ЗА ЕДИНИЦУ" },
-                { StaticColumns.CostMaterialsTotal, "ЦЕНА МАТЕРИАЛОВ, РУБ БЕЗ НДС. ВСЕГО" },
-                { StaticColumns.CostWorksPerUnit, "ЦЕНА РАБОТ, РУБ БЕЗ НДС. ЗА ЕДИНИЦУ" },
-                { StaticColumns.CostWorksTotal, "ЦЕНА РАБОТ, РУБ БЕЗ НДС. ВСЕГО" },
-                { StaticColumns.CostTotalPerUnit, "ЦЕНА ЗА ЕДИНИЦУ. РУБ БЕЗ НДС" },
-                { StaticColumns.CostTotal, "ИТОГО. РУБ БЕЗ НДС" },
-                { StaticColumns.Comment, "ПРИМЕЧАНИЕ" }
+                { StaticColumns.CostMaterialsPerUnit, "Цена материалы за ед." },
+                { StaticColumns.CostMaterialsTotal, "Цена материалы всего" },
+                { StaticColumns.CostWorksPerUnit, "Цена работы за ед." },
+                { StaticColumns.CostWorksTotal, "Цена работы всего" },
+                { StaticColumns.CostTotalPerUnit, "Итого за ед." },
+                { StaticColumns.CostTotal, "Итого" },
+                { StaticColumns.Comment, "Примечание" }
             };
             
 

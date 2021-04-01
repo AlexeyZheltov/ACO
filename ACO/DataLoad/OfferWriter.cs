@@ -46,20 +46,7 @@ namespace ACO
             _CurrentProject.SetColumnNumbers(_sheetProject);
         }
 
-        //public OfferWriter(string file)
-        //{
-        //    _app = Globals.ThisAddIn.Application;
-        //    _wb = _app.ActiveWorkbook;
-        //    _offerManager = new OfferManager();
-        //    _CurrentProject = new ProjectManager.ProjectManager().ActiveProject;
-        //    // Лист анализ в текущем проекте
-        //    _sheetProject = ExcelHelper.GetSheet(_wb, _CurrentProject.AnalysisSheetName);
-        //    _CurrentProject.SetColumnNumbers(_sheetProject);            
-        //    _offerBook = _app.Workbooks.Open(file);
-        //    _app.ActiveWindow.WindowState = XlWindowState.xlMinimized;
-        //}
-
-
+      
         /// <summary>
         /// Печать КП
         /// </summary>
@@ -345,9 +332,8 @@ namespace ACO
                     Excel.Range cellPrint = _sheetProject.Cells[rowPaste, projectCollumn];
                     if (double.TryParse(text , out double number))
                     {
-                        cellPrint.Value = Math.Round(number, 2);
-                        //cellPrint.Value = number;
-                      if(projectCollumn>1)  cellPrint.NumberFormat = "#,##0.##";
+                        cellPrint.Value = Math.Round(number, 2);                   
+                     // if(projectCollumn>1)  cellPrint.NumberFormat = "#,##0.00";
                     }
                     else if (!string.IsNullOrEmpty(text))
                     {
@@ -373,8 +359,6 @@ namespace ACO
             catch (Exception)
             { }
         }
-
- 
 
         /// <summary>
         ///  Найти последнюю заполненную строку в столбце

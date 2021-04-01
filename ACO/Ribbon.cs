@@ -11,6 +11,7 @@ using ACO.ExcelHelpers;
 using ACO.ProjectManager;
 using ACO.ProjectBook;
 using System.Drawing;
+using Microsoft.Office.Interop.Excel;
 
 namespace ACO
 {
@@ -152,7 +153,7 @@ namespace ACO
 
                 pb.Writeline("Инициализация загрузчика.");
                 OfferWriter offerWriter = new OfferWriter(excelBook);
-                
+
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                 pb.Writeline("Заполнение листа Анализ.");
                 await Task.Run(() =>
@@ -290,10 +291,7 @@ namespace ACO
 
             //======1=======
             pb.MainBarTick("Разгруппировать список");
-            //  await Task.Run(() =>
-            // {
             ExcelHelper.UnGroup(ws);
-            //  });
             PbAbortedStopProcess(pb);
 
             HItem root = new HItem();
@@ -315,14 +313,8 @@ namespace ACO
             pb.ClearSubBar();
             pb.SetSubBarVolume(root.AllCount());
 
-            // await Task.Run(() =>
-            // {
-            // ExcelAcselerate(true);
             ExcelHelper.Write(ws, root, pb, letterNumber);
-            //ExcelAcselerate(false);
-            //   });
             PbAbortedStopProcess(pb);
-
             //======3=======
             pb.MainBarTick("Запись формул");
             string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
@@ -333,8 +325,7 @@ namespace ACO
             string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
             string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
             string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
-            //  await Task.Run(() =>
-            // {
+
             //раз
             FMapping mappin = new FMapping()
             {
@@ -347,7 +338,6 @@ namespace ACO
                 Total = letterTotal
             };
             //два
-            //  ExcelAcselerate(true);
             ExcelHelper.SetFormulas(ws, mappin, root, pb); //Прогресс бар только для отмены
                                                            // Обновление формул КП
             HashSet<int> columnsAmount = GetNumbersCoumnsOfCount(ws);
@@ -355,38 +345,44 @@ namespace ACO
             {
                 ExcelHelper.SetFormulas(ws, mappin.Shift(ws, col), root, pb);
             }
-            //  ExcelAcselerate(false);
-            //});
+
             pb.ClearSubBar();
             PbAbortedStopProcess(pb);
 
             //======4=======
             pb.MainBarTick("Форматирование списка");
             //три
-
-            //  await Task.Run(() =>
-            // {
-            //   ExcelAcselerate(true);
             var pallet = ExcelReader.ReadPallet(pws);
             int count = ws.UsedRange.Rows.Count;
             pb.SetSubBarVolume(count);
-            List<(string, string)> colored_columns = GetColredColumns(ws);
+            List<(string, string)> colored_columns = ProjectWorkbook.GetColredColumns(ws);
             colored_columns.Add(("A", letterComment));
             (string, string)[] columns = colored_columns.ToArray();
 
             //четыре
             ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns);
 
+            List<(string, string)> columns_format = ProjectWorkbook.GetFormatColumns(ws);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, columns_format.ToArray());
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterAmount);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterMaterialPerUnit);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterMaterialTotal);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterWorkPerUnit);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterWorkTotal);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterPricePerUnit);
+            ExcelHelper.SetNumberFormat(ws, project.RowStart, letterTotal);
+
             PbAbortedStopProcess(pb);
             pb.MainBarTick("Группировка списка");
             pb.ClearSubBar();
 
+
             ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
                                                     // ExcelAcselerate(false);
-            ///  });
-
             pb.ClearMainBar();
         }
+
+      
 
         /// <summary>
         ///  Определить номера столбцов с ко-ом для загруженных П
@@ -426,47 +422,8 @@ namespace ACO
             }
         }
 
-        /// <summary>
-        ///  Определить столбцы для окрашивания
-        /// </summary>
-        /// <param name="ws"></param>
-        /// <returns></returns>
-        private List<(string, string)> GetColredColumns(Excel.Worksheet ws)
-        {
-            List<(string, string)> columns = new List<(string, string)>();
-            int lastCol = ws.Cells[1, ws.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
-            Excel.Range cellStart = null;
-            Excel.Range cellEnd = null;
+      
 
-            for (int col = 1; col <= lastCol; col++)
-            {
-                Excel.Range cell = ws.Cells[1, col];
-                string val = cell.Value?.ToString() ?? "";
-
-                if (val == "offer_start")
-                {
-                    cellStart = cell.Offset[0, 1];
-                }
-                if (val == "offer_end")
-                {
-                    cellEnd = cell.Offset[0, -1];
-                }
-                if (cellStart != null && cellEnd != null && cellStart.Column < cellEnd.Column)
-                {
-                    string addressStart = cellStart.Address;
-                    string letterStart = addressStart.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    string addressEnd = cellEnd.Address;
-                    string letterEnd = addressEnd.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
-                    if (!string.IsNullOrEmpty(letterStart) && !string.IsNullOrEmpty(letterEnd))
-                    {
-                        columns.Add((letterStart, letterEnd));
-                    }
-                    cellStart = null;
-                    cellEnd = null;
-                }
-            }
-            return columns;
-        }
 
         /// <summary>
         ///  Окраска ячеек 

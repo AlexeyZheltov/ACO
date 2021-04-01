@@ -44,7 +44,7 @@ namespace ACO.Offers
 
         private void GetOfferMappings()
         {
-            _offersMapping = _manager.GetMappings();
+            _offersMapping = _manager.Mappings;
             if ((_offersMapping?.Count ?? 0) > 0)
             {
                 _CurrentMapping = _offersMapping.First();
@@ -62,16 +62,17 @@ namespace ACO.Offers
         {
             if (ListKP.SelectedItems.Count > 0)
             {
-               string nameSettings = ListKP.SelectedItems[0].Text;
-                _CurrentMapping =  _manager.Mappings.Find(x => x.Name == nameSettings);
+                string nameSettings = ListKP.SelectedItems[0].Text;
+                _CurrentMapping = _manager.Mappings.Find(x => x.Name == nameSettings);
                 SetTableMapping();
-            }            
+            }
         }
         private void BtnCreate_Click(object sender, EventArgs e)
         {
             string name = textBox1.Text;
             OfferSettings.Create(name);
-            _offersMapping = _manager.GetMappings();
+            _manager.UpdateMappings();
+            _offersMapping = _manager.Mappings;
             _CurrentMapping = _offersMapping.Find(m => m.Name == name);
             LoadTableOffers();
             SetTableMapping();
@@ -169,10 +170,10 @@ namespace ACO.Offers
         }
 
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {            
+        {
             if (!(e.RowIndex >= 0 && e.RowIndex >= 0)) return;
             string name = TableColumns.Rows[e.RowIndex].Cells[0].Value?.ToString() ?? "";
-            OfferColumnMapping mapping = _mappingColumnsOffer.Find(f => f.Name == name);        
+            OfferColumnMapping mapping = _mappingColumnsOffer.Find(f => f.Name == name);
 
             if (e.ColumnIndex == 1)
             {
@@ -201,6 +202,6 @@ namespace ACO.Offers
         {
             Close();
         }
-               
+
     }
 }

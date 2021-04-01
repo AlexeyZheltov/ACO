@@ -12,7 +12,7 @@ namespace ACO
         /// <summary>
         /// Возникает когда форма закрывается
         /// </summary>
-        event Action CloseForm;
+       // event Action CloseForm;
 
         /// <summary>
         /// Указывает была ли нажат кнопка Отмена

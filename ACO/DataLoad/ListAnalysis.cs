@@ -40,8 +40,8 @@ namespace ACO
 
         public ListAnalysis()
         {
-
         }
+
         int _rowStart = 1;
         int _lastRow = 1;
 
@@ -94,8 +94,8 @@ namespace ACO
                 { // Ошибка формулы в загружаемом файле
                     if (double.TryParse(val.ToString(), out double dv))
                     {
-                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);                       
-                        cell.NumberFormat = "#,##0.##";                        
+                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                        // cell.NumberFormat = "#,##0.00";
                         cell.Value = Math.Round(dv, 2);
                     }
                     else
@@ -138,7 +138,6 @@ namespace ACO
         internal void PrintTitle(Excel.Worksheet tamplateSheet, List<FieldAddress> addresslist)
         {
             int lastCol = addresslist.Last().MappingAnalysis.Column;
-                              
 
             foreach (FieldAddress address in addresslist)
             {
@@ -168,35 +167,27 @@ namespace ACO
             //Top
             
             Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
-            // Globals.ThisAddIn.Application.ScreenUpdating = true;            
             rng.EntireColumn.AutoFit();
-            //Globals.ThisAddIn.Application.ScreenUpdating = false;
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             rng.Merge();
-
-            //Bottom
-          //  rng = SheetAnalysis.Range[SheetAnalysis.Cells[9, ColumnStartPrint], SheetAnalysis.Cells[9, columnPaste - 1]];
-          //  pallet.Copy();
-           // rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+            rng.HorizontalAlignment = HorizontalAlignment.Center;
             // Left
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint - 1], SheetAnalysis.Cells[9, ColumnStartPrint - 1]];
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             /// Участник
             
-
-
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
+            SheetAnalysis.Rows[1].Hidden = true; 
+            
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];
                 commentsTitleRng.Copy();
                 Excel.Range rngPaste = SheetAnalysis.Cells[5, columnPaste];
                 rngPaste.PasteSpecial(Excel.XlPasteType.xlPasteAll);
-
-               
             }
             catch (Exception e)
             {

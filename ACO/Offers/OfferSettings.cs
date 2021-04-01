@@ -13,13 +13,13 @@ namespace ACO.Offers
     /// <summary>
     ///  Настройки КП. Чтение\ Создание XML
     /// </summary>
-  public  class OfferSettings
+    public class OfferSettings
     {
         public string Name { get; set; }
         public string FileName { get; set; }
 
         public string SheetName { get; set; }
-      
+
         /// <summary>
         /// Строка начала данных
         /// </summary>
@@ -34,15 +34,15 @@ namespace ACO.Offers
         /// <summary>
         /// Ячейки заголовков
         /// </summary>
-        public List<OfferColumnMapping> Columns { get; set; }       
+        public List<OfferColumnMapping> Columns { get; set; }
 
 
         public OfferColumnMapping GetColumn(StaticColumns column)
         {
             OfferColumnMapping columnMapping = Columns.Find(x => x.Name == Project.ColumnsNames[column]);
-            if (columnMapping is null) throw new AddInException($"Не удалось найти столбец {Project.ColumnsNames[column]}") ;
+            if (columnMapping is null) throw new AddInException($"Не удалось найти столбец {Project.ColumnsNames[column]}");
             return columnMapping;
-        } 
+        }
 
         internal static void Create(string name)
         {
@@ -81,10 +81,24 @@ namespace ACO.Offers
         /// <param name="path"></param>
         public static void CreateNewProjectXML(string projectname, string path)
         {
+            List<OfferColumnMapping> columns = new List<OfferColumnMapping>();            
+                foreach (string name in Project.ColumnsNames.Values)
+            {
+                columns.Add(
+                   new OfferColumnMapping()
+                   {
+                       Name = name,
+                       ColumnSymbol = ""
+                   });
+            }
+        
             OfferSettings offerMapping = new OfferSettings
             {
                 Name = projectname,
-                FileName = path
+                FileName = path,
+                RowStart = 14,
+                SheetName = "Рсч-П",
+                Columns = columns
             };
             offerMapping.Save();
         }
@@ -97,10 +111,10 @@ namespace ACO.Offers
             Name = root.Attribute("OfferName").Value?.ToString() ?? "";
             XElement xeSheets = root.Element("Sheets");
             XElement xeDataSheet = xeSheets.Element("DataSheet");
-            SheetName = xeDataSheet.Attribute("SheetName").Value?.ToString()??"";
+            SheetName = xeDataSheet.Attribute("SheetName").Value?.ToString() ?? "";
             XElement xeRows = xeDataSheet.Element("Rows");
             XElement xeRowStart = xeRows.Element("RowStart");
-            RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;           
+            RowStart = int.TryParse(xeRowStart.Attribute("Row").Value?.ToString() ?? "", out int rs) ? rs : 0;
             Columns = LoadColumnsFromXElement(xeDataSheet.Element("Columns"));
         }
 
