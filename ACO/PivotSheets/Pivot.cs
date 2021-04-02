@@ -36,51 +36,41 @@ namespace ACO.PivotSheets
             _AnalisysSheet = ExcelHelper.GetSheet(wb, analisysSheetName);
         }
 
-        private void PasteTitleOffer(int colPaste)
+        private void PasteTitleOffer12(int colPaste)
         {
             int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowCostWorks = ExcelHelper.FindCell(_SheetUrv12, "СТОИМОСТЬ НЕКОТОРЫХ РАБОТ").Row;
             Excel.Range rngTitle = _SheetUrv12.Range["F10:J12"];
             rngTitle.Copy();
             _SheetUrv12.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-            rngTitle = _SheetUrv12.Range[$"F{rowBottomTotal}:J{rowBottomTotal}"];
+            rngTitle = _SheetUrv12.Range[$"F{rowBottomTotal-1}:J{rowCostWorks}"];
             rngTitle.Copy();
-            _SheetUrv12.Cells[rowBottomTotal, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-
-            int rowTotalCommetns = ExcelHelper.FindCell(_SheetUrv12, "ОБЩИЕ КОММЕНТАРИИ СПЕКТРУМ:").Row;
-            rngTitle = _SheetUrv12.Range[$"F{rowTotalCommetns}:J{rowTotalCommetns}"];
-            rngTitle.Copy();
-            _SheetUrv12.Cells[rowTotalCommetns, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-            int rowCostWorks = ExcelHelper.FindCell(_SheetUrv12, "СТОИМОСТЬ НЕКОТОРЫХ РАБОТ").Row;
-            rngTitle = _SheetUrv12.Range[$"F{rowCostWorks}:J{rowCostWorks}"];
-            rngTitle.Copy();
-            _SheetUrv12.Cells[rowCostWorks, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-
+            _SheetUrv12.Cells[rowBottomTotal-1, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
+                      
             //Формат строк в столбце
-            int lastrow = _SheetUrv12.Cells[_SheetUrv12.Rows.Count, 2].End[Excel.XlDirection.xlUp].row;
+            int lastrow = _SheetUrv12.UsedRange.Row + _SheetUrv12.UsedRange.Rows.Count-2;
             Excel.Range formatCell = _SheetUrv12.Range[$"F{rowCostWorks + 1}"];
             Excel.Range rng = _SheetUrv12.Range[_SheetUrv12.Cells[rowCostWorks + 1, colPaste], _SheetUrv12.Cells[lastrow, colPaste]];
             formatCell.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
-
 
             formatCell = _SheetUrv12.Range[$"G{rowCostWorks + 1}"];
             rng = _SheetUrv12.Range[_SheetUrv12.Cells[rowCostWorks + 1, colPaste], _SheetUrv12.Cells[lastrow, colPaste + 4]];
             formatCell.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
         }
-        private void PrintTitlesOffers(List<OfferAddress> addresses)
+
+
+        private void PrintTitlesOffers12(List<OfferAddress> addresses)
         {
-            //int count = addresses.Count;
-            //for (int i = 1; i<count;i++)
             int i = 0;
             foreach (OfferAddress offer in addresses)
             {
-
                 int colPaste = 6 + 5 * i;
-                Excel.Range cell = _SheetUrv12.Cells[10,colPaste];
+                Excel.Range cell = _SheetUrv12.Cells[10, colPaste];
                 if (cell.Value is null)
                 {
-                    PasteTitleOffer(colPaste);
+                    PasteTitleOffer12(colPaste);
                     string headerName = cell.Value?.ToString() ?? "";
                     cell.Value = headerName.Replace("УЧАСТНИК 1", offer.Name);
                 }
@@ -106,7 +96,7 @@ namespace ACO.PivotSheets
             List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress;
 
             pb.Writeline("Копирование заголовков");
-            PrintTitlesOffers(addresses);
+            PrintTitlesOffers12(addresses);
             int rowPaste = 14;
             int colPaste = 6;
             int lastCol = colPaste + 5 * addresses.Count - 1;
@@ -141,7 +131,6 @@ namespace ACO.PivotSheets
                     numberCell.NumberFormat = "@";
                     numberCell.Value = number;
                     _SheetUrv12.Cells[rowPaste, 3].Value = name;
-                    // _SheetUrv12.Cells[rowPaste, 4].Value = cost;
                     string letterOutName = ExcelHelper.GetColumnLetter(numberCell);
                     int colTotalCost = ExcelHelper.GetColumn(letterCost, _AnalisysSheet);
                     int column = colTotalCost - columnCellNumber + 1;
@@ -152,29 +141,21 @@ namespace ACO.PivotSheets
                     Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPalette);
                     if (pallets.TryGetValue(level, out Excel.Range pallet))
                     {
-                        // pallet.Copy();
                         ExcelHelper.SetCellFormat(_SheetUrv12.Range[_SheetUrv12.Cells[rowPaste, 2], _SheetUrv12.Cells[rowPaste, lastCol]], pallet);
-
-                       // _SheetUrv12.Range[_SheetUrv12.Cells[rowPaste, 2], _SheetUrv12.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                     // Вывод и форматирование значений
                     foreach (OfferAddress address in addresses)
                     {
-
                         int col = address.ColTotalCost - columnCellNumber + 1;
                         //РУБ. РФ
                         _SheetUrv12.Cells[rowPaste, colPaste].Formula =
                            $"= VLOOKUP(${letterOutName}{rowPaste}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
-                        //_SheetUrv12.Cells[rowPaste, colPaste].Value = _AnalisysSheet.Cells[row, address.ColTotalCost].Value?.ToString() ?? "";
-
                         //% отклонения материалы
                         col = address.ColPercentWorks - columnCellNumber + 1;
                         _SheetUrv12.Cells[rowPaste, colPaste + 1].Formula =
                           $"= VLOOKUP(${letterOutName}{rowPaste}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
                         _SheetUrv12.Cells[rowPaste, colPaste + 1].NumberFormat = "0%";
                         projectWorkbook.ColorCell(_SheetUrv12.Cells[rowPaste, colPaste + 1], level);
-                        //_SheetUrv12.Cells[rowPaste, colPaste + 1].Value = _AnalisysSheet.Cells[row, address.ColPercentMaterial].Value?.ToString() ?? "";
-                        // projectWorkbook.ColorCell(_SheetUrv12.Cells[rowPaste, colPaste + 1], level);
 
                         //% отклонения работы
                         col = address.ColPercentWorks - columnCellNumber + 1;
@@ -182,23 +163,17 @@ namespace ACO.PivotSheets
                           $"= VLOOKUP(${letterOutName}{rowPaste}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
                         _SheetUrv12.Cells[rowPaste, colPaste + 2].NumberFormat = "0%";
                         projectWorkbook.ColorCell(_SheetUrv12.Cells[rowPaste, colPaste + 2], level);
-                        //_SheetUrv12.Cells[rowPaste, colPaste + 2].Value = _AnalisysSheet.Cells[row, address.ColPercentWorks].Value?.ToString() ?? "";
-                        //projectWorkbook.ColorCell(_SheetUrv12.Cells[rowPaste, colPaste + 2], level);
 
                         // % отклонения всего
                         string letterOutTotalDiff = ExcelHelper.GetColumnLetter(_SheetUrv12.Cells[rowPaste, colPaste]);
                         _SheetUrv12.Cells[rowPaste, colPaste + 3].Formula = $"=${letterOutTotalDiff}{rowPaste}/$D{rowPaste}-1";
                         _SheetUrv12.Cells[rowPaste, colPaste + 3].NumberFormat = "0%";
                         projectWorkbook.ColorCell(_SheetUrv12.Cells[rowPaste, colPaste + 3], level);
-                        //  _SheetUrv12.Cells[rowPaste, colPaste + 4].Value = _AnalisysSheet.Cells[row, address.ColComments].Value?.ToString() ?? "";
 
                         //КОММЕНТАРИИ К СТОИМОСТИ
                         col = address.ColComments - columnCellNumber + 1;
                         _SheetUrv12.Cells[rowPaste, colPaste + 4].Formula =
                             $"= VLOOKUP(${letterOutName}{rowPaste}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
-
-                        //projectWorkbook.ColorCell(_SheetUrv12.Cells[rowPaste, colPaste + 3], level);
-                        // _SheetUrv12.Cells[rowPaste, colPaste + 3].Value = _AnalisysSheet.Cells[row, address.ColPercentTotal].Value?.ToString() ?? "";
 
                         colPaste += 5;
                     }
@@ -222,13 +197,12 @@ namespace ACO.PivotSheets
             pb.MainBarTick("Обновление формул \"Урв 12\"");
             int rowStart = 13;
             int colPaste = 1;
-            
+
             ProjectWorkbook projectWorkbook = new ProjectWorkbook();
             Excel.Range dataRange = projectWorkbook.GetAnalysisRange();
             List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress;
-            //Excel.Range cellNumber = _SheetUrv12.Cells[rowStart, 2];
             pb.Writeline("Копирование заголовков");
-            PrintTitlesOffers(addresses);
+            PrintTitlesOffers12(addresses);
 
             string letterNumber = projectWorkbook.GetLetter(StaticColumns.Number);
             Excel.Range cellNumber = _AnalisysSheet.Range[$"${letterNumber}{_project.RowStart}"];
@@ -266,8 +240,6 @@ namespace ACO.PivotSheets
                     if (pallets.TryGetValue(keyLvl, out Excel.Range pallet))
                     {
                         ExcelHelper.SetCellFormat(_SheetUrv12.Range[_SheetUrv12.Cells[row, colPaste], _SheetUrv12.Cells[row, colPaste + 4]], pallet);
-                        //pallet.Copy();
-                        //_SheetUrv12.Range[_SheetUrv12.Cells[row, colPaste], _SheetUrv12.Cells[row, colPaste + 4]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 }
 
@@ -290,15 +262,12 @@ namespace ACO.PivotSheets
                 _SheetUrv12.Cells[rowStart, colPaste + 4].Formula =
                     $"= VLOOKUP($B{rowStart}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
 
-
-
                 Excel.Range rng = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, colPaste], _SheetUrv12.Cells[rowStart, colPaste + 4]];
                 Excel.Range destination = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, colPaste], _SheetUrv12.Cells[lastRow, colPaste + 4]];
                 rng.AutoFill(destination, Excel.XlAutoFillType.xlFillValues);
                 destination.Columns[2].NumberFormat = "0%";
                 destination.Columns[3].NumberFormat = "0%";
                 destination.Columns[4].NumberFormat = "0%";
-
 
                 if (!string.IsNullOrEmpty(formulaSumm))
                 {
@@ -308,7 +277,6 @@ namespace ACO.PivotSheets
                     _SheetUrv12.Cells[rowBottomTotal + 2, colPaste].Formula =
                                         $"={_SheetUrv12.Cells[rowBottomTotal, colPaste].Address}+" +
                                         $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
-
                 }
             }
         }
@@ -318,7 +286,6 @@ namespace ACO.PivotSheets
             List<OfferAddress> addresses = new ProjectWorkbook().OfferAddress;
             int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
             int lastRow = rowBottomTotal - 2;
-            //int lastRow = GetLastRowUrv12();
             string formulaSumm = "";
             for (int row = 13; row <= lastRow; row++)
             {
@@ -376,7 +343,7 @@ namespace ACO.PivotSheets
         private void TotalFormuls11()
         {
             int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "СУММА ПРЕДЛОЖЕННЫХ ОПТИМИЗАЦИЙ (с НДС)").Row;
-            int lastRow = rowBottomTotal - 2; //GetLastRowUrv11();
+            int lastRow = rowBottomTotal - 2; 
             int colPaste = 9;
 
             List<OfferAddress> addresses = GetAdderssLvl12();
@@ -396,7 +363,6 @@ namespace ACO.PivotSheets
                                                                                 $"+{_SheetUrv11.Cells[row, colPaste]}";
                     }
                 }
-                // int colPaste = address.ColTotalCost;
                 if (!string.IsNullOrEmpty(formulaSumm))
                 {
                     _SheetUrv11.Cells[rowBottomTotal, colPaste].Formula = formulaSumm;
@@ -418,8 +384,37 @@ namespace ACO.PivotSheets
         }
         private int GetLastRowUrv11()
         {
-            int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "СУММА ПРЕДЛОЖЕННЫХ ОПТИМИЗАЦИЙ (с НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
             return rowBottomTotal - 2;
+        }
+
+
+        private void PasteTitleOffer11(int colPaste)
+        {
+            int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            Excel.Range rngTitle = _SheetUrv11.Range["I10:K12"];
+            rngTitle.Copy();
+            _SheetUrv11.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
+            rngTitle = _SheetUrv11.Range[$"I{rowBottomTotal-1}:K{rowBottomTotal+6}"];
+            rngTitle.Copy();
+            _SheetUrv11.Cells[rowBottomTotal-1, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);         
+        }
+
+        private void PrintTitlesOffers11(List<OfferAddress> addresses)
+        {
+            int i = 0;
+            foreach (OfferAddress offer in addresses)
+            {
+                int colPaste = 9 + 3 * i;
+                Excel.Range cell = _SheetUrv11.Cells[10, colPaste];
+                if (cell.Value is null)
+                {
+                    PasteTitleOffer11(colPaste);
+                    string headerName = cell.Value?.ToString() ?? "";
+                    cell.Value = offer.Name;
+                }
+                i++;
+            }
         }
 
         public void LoadUrv11(IProgressBarWithLogUI pb)
@@ -432,8 +427,10 @@ namespace ACO.PivotSheets
             Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPalette);
             ProjectWorkbook projectWorkbook = new ProjectWorkbook();
             List<OfferAddress> addresses = GetAdderssLvl12();
-            int offersCount = addresses.Count;
+            pb.Writeline("Копирование заголовков");
+            PrintTitlesOffers11(addresses);
 
+            int offersCount = addresses.Count;
             int rowPaste = 14;
             int colPaste = 9;
             int lastCol = colPaste + 3 * offersCount - 1;
@@ -473,38 +470,18 @@ namespace ACO.PivotSheets
                     // Формат строки по уровню
                     if (pallets.TryGetValue(levelNum.ToString(), out Excel.Range pallet))
                     {
-                        ExcelHelper.SetCellFormat(_SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]],pallet);
-                       //pallet.Copy();
-                      //  _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        ExcelHelper.SetCellFormat(_SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, 2], _SheetUrv11.Cells[rowPaste, lastCol]], pallet);
                     }
-                
+
                     foreach (OfferAddress address in addresses)
                     {
-                        //ix++;
-                        //if (ix > 4)
-                        //{
-                        //    Excel.Range rngTitle = _SheetUrv11.Range["I10:K11"];
-                        //    rngTitle.Copy();
-                        //    _SheetUrv11.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-                        //    int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "СУММА ПРЕДЛОЖЕННЫХ ОПТИМИЗАЦИЙ (с НДС)").Row;
-                        //    rngTitle = _SheetUrv11.Range[$"I{rowBottomTotal}:J{rowBottomTotal}"];
-                        //    _SheetUrv11.Cells[rowBottomTotal, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-                        //} TODO Всставка заголовков урв 11
-
-
                         // Вывод и форматирование значений
                         _SheetUrv11.Cells[rowPaste, colPaste].Formula = $"='{_SheetUrv12.Name}'!{_SheetUrv12.Cells[row, address.ColTotalCost].Address}";
-                        ///_SheetUrv11.Cells[rowPaste, colPaste].Value = _SheetUrv12.Cells[row, address.ColTotalCost].Value?.ToString() ?? "";
-
                         string letterOutTotalDiff = ExcelHelper.GetColumnLetter(_SheetUrv12.Cells[rowPaste, colPaste]);
                         _SheetUrv11.Cells[rowPaste, colPaste + 1].Formula = $"=${letterOutTotalDiff}{rowPaste}/$G{rowPaste}-1";
                         _SheetUrv11.Cells[rowPaste, colPaste + 1].NumberFormat = "0%";
                         projectWorkbook.ColorCell(_SheetUrv11.Cells[rowPaste, colPaste + 1], levelNum.ToString());
-                        //_SheetUrv11.Cells[rowPaste, colPaste + 1].Value = _SheetUrv12.Cells[row, address.ColPercentTotal].Value?.ToString() ?? "";
-                        //projectWorkbook.ColorCell(_SheetUrv11.Cells[rowPaste, colPaste + 1], levelNum.ToString());
-
                         _SheetUrv11.Cells[rowPaste, colPaste + 2].Formula = $"='{_SheetUrv12.Name}'!{_SheetUrv12.Cells[row, address.ColComments].Address}";
-                        //_SheetUrv11.Cells[rowPaste, colPaste + 2].Value = _SheetUrv12.Cells[row, address.ColComments].Value?.ToString() ?? "";
                         colPaste += 3;
                     }
                     colPaste = 9;
@@ -563,8 +540,6 @@ namespace ACO.PivotSheets
             }
         }
 
-
-
         /// <summary>
         ///  Номера столбцов заполненных кп
         /// </summary>
@@ -583,7 +558,8 @@ namespace ACO.PivotSheets
                     {
                         ColTotalCost = col,
                         ColPercentTotal = col + 3,
-                        ColComments = col + 4
+                        ColComments = col + 4,
+                        Name = _SheetUrv12.Cells[10, col].Value?.ToString() ?? ""
                     };
                     addresses.Add(address);
                 }
@@ -600,7 +576,6 @@ namespace ACO.PivotSheets
             dataRng.EntireRow.Delete();
             dataRng = _SheetUrv12.Range[_SheetUrv12.Cells[13, 2], _SheetUrv12.Cells[13, lastColumn]];
             dataRng.ClearContents();
-            //TODO формат dataRng.
             return;
         }
         private void ClearDataRng11()
@@ -612,7 +587,6 @@ namespace ACO.PivotSheets
             dataRng.EntireRow.Delete();
             dataRng = _SheetUrv11.Range[_SheetUrv11.Cells[13, 2], _SheetUrv11.Cells[13, lastColumn]];
             dataRng.ClearContents();
-            //TODO формат dataRng.
             return;
         }
 
@@ -627,32 +601,21 @@ namespace ACO.PivotSheets
             pb.SetMainBarVolum(2);
             pb.MainBarTick("Обновление \"Урв 11\"");
             int lastRowSh12 = GetLastRowUrv12();
-            int lastRowSh11 = GetLastRowUrv11();
-            int ix = 0;
+            int lastRowSh11 = GetLastRowUrv11();           
             int colPaste = 9;
 
             ProjectWorkbook projectWorkbook = new ProjectWorkbook();
             Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPalette);
 
             List<OfferAddress> addresses = GetAdderssLvl12();
+            pb.Writeline("Копирование заголовков");
+            PrintTitlesOffers11(addresses);
             pb.SetSubBarVolume(addresses.Count);
 
             foreach (OfferAddress address in addresses)
             {
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                 pb.SubBarTick();
-                ix++;
-                if (ix > 4)
-                {
-                    Excel.Range rngTitle = _SheetUrv11.Range["I10:K11"];
-                    rngTitle.Copy();
-                    _SheetUrv11.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-                    int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "СУММА ПРЕДЛОЖЕННЫХ ОПТИМИЗАЦИЙ (с НДС)").Row;
-                    rngTitle = _SheetUrv11.Range[$"I{rowBottomTotal}:J{rowBottomTotal}"];
-                    rngTitle.Copy();
-                    _SheetUrv11.Cells[rowBottomTotal, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
-                }
-
                 for (int rowPaste = 13; rowPaste <= lastRowSh11; rowPaste++)
                 {
                     string number11 = _SheetUrv11.Cells[rowPaste, 2].Value?.ToString() ?? "";
@@ -671,8 +634,6 @@ namespace ACO.PivotSheets
                             if (pallets.TryGetValue(levelNum.ToString(), out Excel.Range pallet))
                             {
                                 ExcelHelper.SetCellFormat(_SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, colPaste], _SheetUrv11.Cells[rowPaste, colPaste + 2]], pallet);
-                               //pallet.Copy();
-                               // _SheetUrv11.Range[_SheetUrv11.Cells[rowPaste, colPaste], _SheetUrv11.Cells[rowPaste, colPaste + 2]].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                             }
 
                             // Вывод и форматирование значений

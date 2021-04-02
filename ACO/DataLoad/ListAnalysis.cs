@@ -14,7 +14,6 @@ namespace ACO
     /// </summary>
     class ListAnalysis
     {
-
         public Excel.Worksheet SheetAnalysis { get; }
         public Project CurrentProject { get; }
 
@@ -171,7 +170,7 @@ namespace ACO
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             rng.Merge();
-            rng.HorizontalAlignment = HorizontalAlignment.Center;
+            SheetAnalysis.Cells[6, ColumnStartPrint].HorizontalAlignment = HorizontalAlignment.Center;
             // Left
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint - 1], SheetAnalysis.Cells[9, ColumnStartPrint - 1]];
             pallet.Copy();

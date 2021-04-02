@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ACO.Offers;
 using System;
-using Microsoft.Office.Interop.Excel;
 using System.Drawing;
 
 namespace ACO
@@ -32,7 +31,6 @@ namespace ACO
         OfferManager _offerManager = null;
 
         Project _CurrentProject = null;
-     //   ExcelFile _excelFile = null;
 
         public OfferWriter(ExcelFile offerBook)
         {
@@ -179,7 +177,7 @@ namespace ACO
 
             //Комментарии к строкам "0"
             _sheetProject.Cells[rowStart, colStart + 8].Formula =
-                        $"=IF(${letterDiffCost}{rowStart}=-100,\"Указать стоимость единичной расценки и посчитать итог\",\".\")";
+                        $"=IF(${letterDiffCost}{rowStart}=-1,\"Указать стоимость единичной расценки и посчитать итог\",\".\")";
 
 
             // Протянуть до конца листов
