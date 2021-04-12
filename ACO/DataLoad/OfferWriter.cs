@@ -44,7 +44,7 @@ namespace ACO
             _CurrentProject.SetColumnNumbers(_sheetProject);
         }
 
-      
+
         /// <summary>
         /// Печать КП
         /// </summary>
@@ -55,7 +55,7 @@ namespace ACO
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
             pb.Writeline($"Выбор листа {offerSettings.SheetName}");
             // Лист данных КП
-                        
+
             Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);
             pb.Writeline("Разгруппировка строк");
             ShowSheetRows(offerSheet);
@@ -76,7 +76,7 @@ namespace ACO
             // Массив загружаемых данных
             object[,] arrData = GetArrData(offerSheet, offerSettings.RowStart, lastRowOffer);
 
-            int countRows = lastRowOffer - offerSettings.RowStart - 1;
+            int countRows = lastRowOffer - offerSettings.RowStart + 1;
             pb.SetSubBarVolume(countRows);
             pb.Writeline("Вывод строк");
             for (int i = 1; i <= countRows; i++)
@@ -95,17 +95,19 @@ namespace ACO
                     string text = val?.ToString() ?? "";
 
                     offerRecord.Values.Add(field.ColumnPaste, val);
-
-                    if (field.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Number])
+                    if (!string.IsNullOrEmpty(text))
                     {
-                        offerRecord.Number = text;
-                    }
-                    if (field.MappingAnalysis.Check)
-                    {
-                        offerRecord.KeyFilds.Add(text);
+                        if (field.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Number])
+                        {
+                            offerRecord.Number = text;
+                        }
+                        if (field.MappingAnalysis.Check)
+                        {
+                            offerRecord.KeyFilds.Add(text);
+                        }
                     }
                 }
-                SheetAnalysis.Print(offerRecord);
+                SheetAnalysis.PrintRec(offerRecord);
             }
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
@@ -131,7 +133,7 @@ namespace ACO
             }
             Excel.Range cell = _sheetProject.Cells[rowStart, colStart];
             string letterNameSpectrum = _CurrentProject.GetColumn(StaticColumns.Name).ColumnSymbol;
-            string letterNameOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.Name]); 
+            string letterNameOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.Name]);
             string letterAmountSpectrum = _CurrentProject.GetColumn(StaticColumns.Amount).ColumnSymbol;
             string letterAmountOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.Amount]);
 
@@ -163,13 +165,13 @@ namespace ACO
             _sheetProject.Cells[rowStart, colStart + 5].Formula =
                 $"=IF(${letterDiffCost}{rowStart}>15%,Комментарии!$A$9,IF(${letterDiffCost}{rowStart}<-15%,Комментарии!$A$10,\".\"))";
             //Отклонение по стоимости МАТ
-            string letterWorkslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostWorksTotal]); 
+            string letterWorkslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostWorksTotal]);
             string letterWorksSpectrum = _CurrentProject.GetColumn(StaticColumns.CostWorksTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 6].Formula =
                         $"=IFERROR(IF(${letterWorkslOffer}{rowStart}<>0," +
                         $"${letterWorkslOffer}{rowStart}/${letterWorksSpectrum}{rowStart}-1,\"Отс-ет ст-ть мат.\"),\"#НД\")";
             //Отклонение по стоимости РАБ
-            string letterMaterialslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostMaterialsTotal]);  
+            string letterMaterialslOffer = GetLetter(columnsOffer, Project.ColumnsNames[StaticColumns.CostMaterialsTotal]);
             string letterMaterialsSpectrum = _CurrentProject.GetColumn(StaticColumns.CostMaterialsTotal).ColumnSymbol;
             _sheetProject.Cells[rowStart, colStart + 7].Formula =
                         $"=IFERROR(IF(${letterMaterialslOffer}{rowStart}<>0," +
@@ -184,7 +186,7 @@ namespace ACO
             Excel.Range rng = _sheetProject.Range[_sheetProject.Cells[rowStart, colStart],
                                                 _sheetProject.Cells[rowStart, colStart + 8]];
             int lastRow = GetLastRow(_sheetProject, letterNameOffer);
-          
+
             if (lastRow > rowStart)
             {
                 Excel.Range destination = _sheetProject.Range[_sheetProject.Cells[rowStart, colStart], _sheetProject.Cells[lastRow, colStart + 8]];
@@ -298,7 +300,7 @@ namespace ACO
             int lastRow = GetLastRow(offerSheet, colNumber.ColumnSymbol);
 
             int countRows = lastRow - offerSettings.RowStart + 1;
-            pb.SetSubBarVolume(countRows);
+            pb.SetSubBarVolume(countRows);///100-1
 
             List<(int, int)> colPair = new List<(int projectCollumn, int offerColumn)>();
             int rightColumn = 10;
@@ -308,30 +310,40 @@ namespace ACO
                 ColumnMapping projectColumn = _CurrentProject.Columns.Find(a => a.Name == col.Name);
                 if (!string.IsNullOrWhiteSpace(projectColumn?.ColumnSymbol ?? ""))
                 {
-                    int cnP = ExcelHelper.GetColumn(projectColumn.ColumnSymbol, _sheetProject); 
+                    int cnP = ExcelHelper.GetColumn(projectColumn.ColumnSymbol, _sheetProject);
                     int cnO = ExcelHelper.GetColumn(col.ColumnSymbol, _sheetProject);
                     colPair.Add((cnP, cnO));
                     if (rightColumn < cnO) rightColumn = cnO;
                 }
             }
-            
+
             Excel.Range RngData = offerSheet.Range[offerSheet.Cells[offerSettings.RowStart, 1], offerSheet.Cells[lastRow, rightColumn]];
             object[,] arrData = RngData.Value;
 
+            //int k = 1;
+
+            //  pb.SubBarTick();
             for (int i = 1; i <= countRows; i++)
             {
                 int rowPaste = _CurrentProject.RowStart + i - 1;
                 pb.SubBarTick();
+                //if (k == 1)
+                //{
+                //    //int r = i % 100; 
+                //    k = -99;
+                //}
+                //k++;
+
                 if (pb.IsAborted) return;
                 foreach ((int projectCollumn, int offerColumn) in colPair)
                 {
-                    object val = arrData[i, offerColumn] ;
-                    string text = val?.ToString()??"";
+                    object val = arrData[i, offerColumn];
+                    string text = val?.ToString() ?? "";
                     Excel.Range cellPrint = _sheetProject.Cells[rowPaste, projectCollumn];
-                    if (double.TryParse(text , out double number))
+                    if (double.TryParse(text, out double number))
                     {
-                        cellPrint.Value = Math.Round(number, 2);                   
-                     // if(projectCollumn>1)  cellPrint.NumberFormat = "#,##0.00";
+                        cellPrint.Value = Math.Round(number, 2);
+                        // if(projectCollumn>1)  cellPrint.NumberFormat = "#,##0.00";
                     }
                     else if (!string.IsNullOrEmpty(text))
                     {

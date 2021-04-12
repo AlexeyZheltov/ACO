@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ACO
 {
     /// <summary>
-    ///  Запсись КП
+    ///  Запись КП
     /// </summary>
     class Record
     {
@@ -21,7 +21,7 @@ namespace ACO
             {
                 if (_Level == 0)
                 {
-                    _Level = Numbers.Length;
+                    _Level = Numbers?.Length ?? 0;
                 }
                 return _Level;
             }
@@ -40,7 +40,7 @@ namespace ACO
         {
             get
             {
-                if (_numbers is null)
+                if (_numbers is null && !string.IsNullOrEmpty(Number))
                 {
                     _numbers = Number.Split('.');
                 }
@@ -86,6 +86,16 @@ namespace ACO
             }
         }
         List<string> _KeyFilds;
+
+        public bool IsEmpty()
+        {
+            bool empty = true;
+            foreach (string field in KeyFilds)
+            {
+                if (!string.IsNullOrEmpty(field)) return false;
+            }
+            return empty;
+        }
 
         /// <summary>
         ///  Сравнение проверяемых полей 

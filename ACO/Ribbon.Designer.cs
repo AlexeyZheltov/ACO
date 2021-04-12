@@ -37,23 +37,23 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.RbnTab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
+            this.group6 = this.Factory.CreateRibbonGroup();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.group3 = this.Factory.CreateRibbonGroup();
+            this.group5 = this.Factory.CreateRibbonGroup();
+            this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnCreateProgect = this.Factory.CreateRibbonButton();
             this.BtnSpectrum = this.Factory.CreateRibbonButton();
             this.BtnLoadKP = this.Factory.CreateRibbonButton();
-            this.group6 = this.Factory.CreateRibbonGroup();
             this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.BtnColorComments = this.Factory.CreateRibbonButton();
-            this.group2 = this.Factory.CreateRibbonGroup();
             this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
-            this.group3 = this.Factory.CreateRibbonGroup();
             this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
-            this.group5 = this.Factory.CreateRibbonGroup();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
-            this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -84,6 +84,42 @@
             this.group1.Label = "Создание";
             this.group1.Name = "group1";
             // 
+            // group6
+            // 
+            this.group6.Items.Add(this.BtnUpdateFormuls);
+            this.group6.Items.Add(this.BtnColorComments);
+            this.group6.Label = "Формат";
+            this.group6.Name = "group6";
+            // 
+            // group2
+            // 
+            this.group2.Items.Add(this.BtnLoadLvl12);
+            this.group2.Items.Add(this.BtnLoadLvl11);
+            this.group2.Label = "Загрузить";
+            this.group2.Name = "group2";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.BtnUpdateLvl12);
+            this.group3.Items.Add(this.BtnUpdateLvl11);
+            this.group3.Label = "Обновить";
+            this.group3.Name = "group3";
+            // 
+            // group5
+            // 
+            this.group5.Items.Add(this.BtnProjectManager);
+            this.group5.Items.Add(this.BtnKP);
+            this.group5.Items.Add(this.BtnSettings);
+            this.group5.Label = "Настройки";
+            this.group5.Name = "group5";
+            // 
+            // group4
+            // 
+            this.group4.Items.Add(this.BtnAbout);
+            this.group4.Label = "Информация";
+            this.group4.Name = "group4";
+            this.group4.Visible = false;
+            // 
             // BtnCreateProgect
             // 
             this.BtnCreateProgect.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -97,7 +133,7 @@
             // 
             this.BtnSpectrum.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnSpectrum.Image = ((System.Drawing.Image)(resources.GetObject("BtnSpectrum.Image")));
-            this.BtnSpectrum.Label = "Загрузить \"Спектрум\"";
+            this.BtnSpectrum.Label = "Загрузить базовую оценку";
             this.BtnSpectrum.Name = "BtnSpectrum";
             this.BtnSpectrum.ShowImage = true;
             this.BtnSpectrum.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSpectrum_Click);
@@ -110,13 +146,6 @@
             this.BtnLoadKP.Name = "BtnLoadKP";
             this.BtnLoadKP.ShowImage = true;
             this.BtnLoadKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadKP_Click);
-            // 
-            // group6
-            // 
-            this.group6.Items.Add(this.BtnUpdateFormuls);
-            this.group6.Items.Add(this.BtnColorComments);
-            this.group6.Label = "Формат";
-            this.group6.Name = "group6";
             // 
             // BtnUpdateFormuls
             // 
@@ -136,13 +165,6 @@
             this.BtnColorComments.ShowImage = true;
             this.BtnColorComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnColorComments_Click);
             // 
-            // group2
-            // 
-            this.group2.Items.Add(this.BtnLoadLvl12);
-            this.group2.Items.Add(this.BtnLoadLvl11);
-            this.group2.Label = "Загрузить";
-            this.group2.Name = "group2";
-            // 
             // BtnLoadLvl12
             // 
             this.BtnLoadLvl12.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -161,13 +183,6 @@
             this.BtnLoadLvl11.ShowImage = true;
             this.BtnLoadLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl11_Click);
             // 
-            // group3
-            // 
-            this.group3.Items.Add(this.BtnUpdateLvl12);
-            this.group3.Items.Add(this.BtnUpdateLvl11);
-            this.group3.Label = "Обновить";
-            this.group3.Name = "group3";
-            // 
             // BtnUpdateLvl12
             // 
             this.BtnUpdateLvl12.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -185,14 +200,6 @@
             this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
             this.BtnUpdateLvl11.ShowImage = true;
             this.BtnUpdateLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl11_Click);
-            // 
-            // group5
-            // 
-            this.group5.Items.Add(this.BtnProjectManager);
-            this.group5.Items.Add(this.BtnKP);
-            this.group5.Items.Add(this.BtnSettings);
-            this.group5.Label = "Настройки";
-            this.group5.Name = "group5";
             // 
             // BtnProjectManager
             // 
@@ -220,13 +227,6 @@
             this.BtnSettings.Name = "BtnSettings";
             this.BtnSettings.ShowImage = true;
             this.BtnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
-            // 
-            // group4
-            // 
-            this.group4.Items.Add(this.BtnAbout);
-            this.group4.Label = "Информация";
-            this.group4.Name = "group4";
-            this.group4.Visible = false;
             // 
             // BtnAbout
             // 

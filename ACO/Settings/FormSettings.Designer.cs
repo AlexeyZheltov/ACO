@@ -1,5 +1,5 @@
 ﻿
-namespace ACO.Settings
+namespace ACO
 {
     partial class FormSettings
     {
@@ -42,7 +42,7 @@ namespace ACO.Settings
             // 
             // TBoxTamplate
             // 
-            this.TBoxTamplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.TBoxTamplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TBoxTamplate.Location = new System.Drawing.Point(197, 26);
             this.TBoxTamplate.Name = "TBoxTamplate";

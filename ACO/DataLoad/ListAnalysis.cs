@@ -49,9 +49,169 @@ namespace ACO
             SheetAnalysis = sheetProjerct;
             CurrentProject = currentProject;
             _rowStart = CurrentProject.RowStart;
-            _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count;
+            _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count -1;
         }
 
+        List<Record> _levelRecords;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="record"></param>
+        //public void PrintRecord(Record record)
+        //{
+        //    int rowPaste = _rowStart;
+        //    int level = 0;
+        //    Record recordAnalysis = null;
+
+        //    if (_levelRecords == null)
+        //    {
+        //        _levelRecords = new List<Record>();
+        //        _levelRecords = GetLevelRecords(rowPaste);
+        //    }
+
+        //    /// Найти строку с совпадающими полями
+        //    Record recordFind = _levelRecords.Find(x => x.KeyEqual(record));
+        //    if (recordFind != null)
+        //    {
+        //       // recordFind.
+        //    }
+        //    else
+        //    {
+        //        //if (l)
+        //        if (_levelRecords.First().LevelEqual(record))
+        //        {
+
+        //        }
+        //        else
+        //        {
+        //            // find next level records
+        //            level = _levelRecords.First().Level;
+        //        }
+        //    }
+        //    for (int row = _rowStart; row <= _lastRow; row++)
+        //    {
+        //        recordAnalysis = GetRecocdAnalysis(row);
+        //        //      if (record.)
+        //    }
+
+
+        //    for (int row = _rowStart; row <= _lastRow; row++)
+        //    {
+        //        recordAnalysis = GetRecocdAnalysis(row);
+        //        if (!string.IsNullOrEmpty(record.Number) && !recordAnalysis.LevelEqual(record))
+        //        {
+        //            rowPaste = row - 1;
+        //            break;
+        //        }
+        //        if (!string.IsNullOrEmpty(recordAnalysis.Number))
+        //        {
+        //            _rowStart = row;
+        //            // existRecord = true;
+        //            break;
+        //        }
+        //    }
+        //}
+
+        //private List<Record> GetLevelRecords(int rowPaste)
+        //{
+        //    int level=0 ;
+        //    for (int row = rowPaste; row <= _lastRow; row++)
+        //    {
+        //        Record record = GetRecocdAnalysis(row);
+        //        if (level == 0)
+        //        {
+        //            _levelRecords = new List<Record>();
+        //            level = record.Level;
+        //        }
+        //        else if (level != record.Level)
+        //        {
+        //            break;
+        //        }
+        //        _levelRecords.Add(record);
+        //    }
+        //    return _levelRecords;
+        //}
+        ///----------------------------------------------------
+
+        /// <summary>
+        ///  Запись строки КП на лист Анализ. Вставка строк.
+        /// </summary>
+        /// <param name="recordPrint"></param>
+        internal void PrintRec(Record recordPrint)
+        {
+            int rowPaste = _rowStart;
+            int preveuslevel = 0;
+            /// Последняя строка списка 
+            bool existRecord = false;
+            Record recordAnalysis = null;
+            if (recordPrint.KeyFilds.Count == 0) return;
+            for (int row = _rowStart; row <= _lastRow; row++)
+            {
+                recordAnalysis = GetRecocdAnalysis(row);
+                if (preveuslevel == 0 && recordAnalysis.Level != 0)
+                {
+                    preveuslevel = recordAnalysis.Level;
+                }
+                if (recordAnalysis.IsEmpty() ) continue;
+
+                if (preveuslevel == recordAnalysis.Level)
+                {
+                    if (recordAnalysis.KeyEqual(recordPrint) && preveuslevel == recordPrint.Level)
+                    {
+                        rowPaste = row;
+                        existRecord = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    /// Уровень изменился
+                    if (recordAnalysis.Level == recordPrint.Level)
+                    {
+                        _rowStart = row;
+                        PrintRec(recordPrint);
+                        return;
+                    }
+                    else
+                    {
+                        rowPaste = row;
+                        SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+                        _lastRow++;
+                        existRecord = true;
+                        break;
+                    }
+                }
+            }
+            if (!existRecord)
+            {
+                _lastRow = _lastRow + 1;
+                rowPaste = _lastRow;
+            }
+            PrintValues(recordPrint, rowPaste);
+        }
+
+        private void PrintValues(Record recordPrint, int rowPaste)
+        {
+            foreach (FieldAddress field in recordPrint.Addresslist)
+            {
+                object val = recordPrint.Values[field.ColumnPaste];
+                Excel.Range cell = SheetAnalysis.Cells[rowPaste, field.ColumnPaste];
+                if (val != null)
+                { // Ошибка формулы в загружаемом файле
+                    if (double.TryParse(val.ToString(), out double dv))
+                    {
+                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
+                        // cell.NumberFormat = "#,##0.00";
+                        cell.Value = Math.Round(dv, 2);
+                    }
+                    else
+                    {
+                        cell.Value = val;
+                    }
+                }
+            }
+        }
+        ///----------------------------------------------------
         /// <summary>
         ///  Запись строки КП на лист Анализ. Вставка строк.
         /// </summary>
@@ -59,14 +219,13 @@ namespace ACO
         internal void Print(Record recordPrint)
         {
             int rowPaste = _rowStart;
-
             /// Последняя строка списка 
-
             bool existRecord = false;
             Record recordAnalysis = null;
+
             for (int row = _rowStart; row <= _lastRow; row++)
             {
-                recordAnalysis = GetRecocdAnalysis(_rowStart);
+                recordAnalysis = GetRecocdAnalysis(row);
                 if (!string.IsNullOrEmpty(recordAnalysis.Number))
                 {
                     _rowStart = row;
@@ -80,6 +239,7 @@ namespace ACO
                 if (!recordAnalysis.KeyEqual(recordPrint))
                 {
                     SheetAnalysis.Rows[_rowStart].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+                    //_rowStart++;
                     _lastRow++;
                 }
             }
@@ -157,14 +317,13 @@ namespace ACO
                 if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal] ||
                     address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal])
                 {
-                    SheetAnalysis.Range[SheetAnalysis.Cells[7, columnPaste - 1], SheetAnalysis.Cells[7, columnPaste]].Merge();                   
+                    SheetAnalysis.Range[SheetAnalysis.Cells[7, columnPaste - 1], SheetAnalysis.Cells[7, columnPaste]].Merge();
                 }
                 columnPaste++;
             }
             /// Цвет шапки
             Excel.Range pallet = SheetAnalysis.Cells[6, 1];
-            //Top
-            
+            //Top            
             Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
             rng.EntireColumn.AutoFit();
             pallet.Copy();
@@ -176,11 +335,11 @@ namespace ACO
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             /// Участник
-            
+
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
-            SheetAnalysis.Rows[1].Hidden = true; 
-            
+            SheetAnalysis.Rows[1].Hidden = true;
+
             try
             {
                 Excel.Range commentsTitleRng = tamplateSheet.Range["ШаблонКомментарии"];

@@ -185,6 +185,7 @@ namespace ACO.PivotSheets
             pb.MainBarTick("Удаление стр №13");
             Excel.Range rng = _SheetUrv12.Cells[13, 1];
             rng.EntireRow.Delete();
+            _SheetUrv12.Activate();
         }
 
         /// <summary>
@@ -278,6 +279,22 @@ namespace ACO.PivotSheets
                                         $"={_SheetUrv12.Cells[rowBottomTotal, colPaste].Address}+" +
                                         $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
                 }
+                //TODO подсчитать кол-во.
+                PrintTotalComments(address, colPaste);
+
+            }
+            //TODO загрузить наиболее дорогии позиции 
+        }
+
+        private void PrintTotalComments(OfferAddress address, int colPaste)
+        {
+            int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
+            int countChangedName = 0;
+            for (int row = _project.RowStart; row<=lastRow; row++)
+            {
+                string changedName = _AnalisysSheet.Cells[row, address.ColStartOfferComments].Value?.ToString() ?? "";
+                if(changedName == "ЛОЖЬ"){ countChangedName++; }
+
             }
         }
 
@@ -465,7 +482,7 @@ namespace ACO.PivotSheets
                     numberCell.Value = number;
 
                     _SheetUrv11.Cells[rowPaste, 3].Value = name;
-                    _SheetUrv11.Cells[rowPaste, 7].Formula = $"='{_SheetUrv12.Name}'!{_SheetUrv12.Cells[row, 4].Address}"; //cost;
+                    _SheetUrv11.Cells[rowPaste, 7].Formula = $"='{_SheetUrv12.Name}'!{_SheetUrv12.Cells[row, 4].Address}"; 
 
                     // Формат строки по уровню
                     if (pallets.TryGetValue(levelNum.ToString(), out Excel.Range pallet))
@@ -494,6 +511,7 @@ namespace ACO.PivotSheets
             rng.EntireRow.Delete();
             pb.MainBarTick("Обновление диаграммы");
             UpdateDiagramm();
+            _SheetUrv11.Activate();
         }
 
         /// <summary>

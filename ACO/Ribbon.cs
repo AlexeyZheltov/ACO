@@ -6,12 +6,12 @@ using System;
 using System.Threading.Tasks;
 using System.IO;
 using ACO.Offers;
-using ACO.Settings;
 using ACO.ExcelHelpers;
 using ACO.ProjectManager;
 using ACO.ProjectBook;
 using System.Drawing;
 using Microsoft.Office.Interop.Excel;
+
 
 namespace ACO
 {
@@ -85,52 +85,56 @@ namespace ACO
 
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             pb.Show(new AddinWindow(Globals.ThisAddIn));
-            pb.SetMainBarVolum(files.Length);
-
-            ExcelHelpers.ExcelFile.Init();
-            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-
-            pb.Writeline("Инициализацция диспетчера проектов.");
-            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-            foreach (string fileName in files)
+            await Task.Run(() =>
             {
-                try
-                {
-                    if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-                    pb.Writeline("Открытие файла");
-                    pb.MainBarTick(fileName);
-                    excelBook.Open(fileName);
-                    pb.Writeline("Инициализация загрузчика");
-                    OfferWriter offerWriter = new OfferWriter(excelBook);
-                    pb.Writeline("Заполнение листа Анализ\n");
+                int count = files.Length;
+                pb.SetMainBarVolum(count);
 
-                    await Task.Run(() =>
-                     {
-                         ExcelAcselerate(true);
-                         offerWriter.Print(pb, offerSettingsName);
-                         pb.Writeline("Завершение");
-                         ExcelAcselerate(false);
-                         pb.CloseFrm();
-                     });
-                }
-                catch (AddInException addInEx)
+                ExcelHelpers.ExcelFile.Init();
+                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+
+                pb.Writeline("Инициализацция диспетчера проектов.");
+                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+                foreach (string fileName in files)
                 {
-                    string message = $"Ошибка:{addInEx.Message }";
-                    if (addInEx.InnerException != null) message += $"{addInEx.InnerException.Message}";
-                    pb.Writeline(message);
+                    try
+                    {
+                        if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                        pb.Writeline("Открытие файла");
+                        pb.MainBarTick(fileName);
+                        excelBook.Open(fileName);
+                        pb.Writeline("Инициализация загрузчика");
+                        OfferWriter offerWriter = new OfferWriter(excelBook);
+                        pb.Writeline("Заполнение листа Анализ\n");
+
+                        //   await Task.Run(() =>
+                        //    {
+                        ExcelAcselerate(true);
+                        offerWriter.Print(pb, offerSettingsName);
+                        pb.Writeline("Завершение");
+                        ExcelAcselerate(false);
+                        pb.CloseFrm();
+                        //  });
+                    }
+                    catch (AddInException addInEx)
+                    {
+                        string message = $"Ошибка:{addInEx.Message }";
+                        if (addInEx.InnerException != null) message += $"{addInEx.InnerException.Message}";
+                        pb.Writeline(message);
+                    }
+                    catch (Exception ex)
+                    {
+                        string message = $"Ошибка:{ex.Message }";
+                        if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                        MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        excelBook.Close();
+                        ExcelHelpers.ExcelFile.Finish();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    string message = $"Ошибка:{ex.Message }";
-                    if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                    MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    excelBook.Close();
-                    ExcelHelpers.ExcelFile.Finish();
-                }
-            }
+            });
         }
 
         private async void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
@@ -142,22 +146,24 @@ namespace ACO
                 if (!File.Exists(file)) { return; }
                 pb.Show(new AddinWindow(Globals.ThisAddIn));
                 // PrintSpectrum(pb, file);
-                pb.SetMainBarVolum(1);
-                ExcelHelpers.ExcelFile.Init();
-                ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-
-                pb.Writeline($"Открытие файла :");
-                pb.MainBarTick(file);
-                excelBook.Open(file);
-
-                pb.Writeline("Инициализация загрузчика.");
-                OfferWriter offerWriter = new OfferWriter(excelBook);
-
-                if (pb.IsAborted) throw new AddInException("Процесс остановлен");
-                pb.Writeline("Заполнение листа Анализ.");
                 await Task.Run(() =>
                 {
+                    pb.SetMainBarVolum(1);
+                    ExcelHelpers.ExcelFile.Init();
+                    ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+                    if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+
+                    pb.Writeline($"Открытие файла :");
+                    pb.MainBarTick(file);
+                    excelBook.Open(file);
+
+                    pb.Writeline("Инициализация загрузчика.");
+                    OfferWriter offerWriter = new OfferWriter(excelBook);
+
+                    if (pb.IsAborted) throw new AddInException("Процесс остановлен");
+                    pb.Writeline("Заполнение листа Анализ.");
+                    //await Task.Run(() =>
+                    //{
                     ExcelAcselerate(true);
                     offerWriter.PrintSpectrum(pb);
                     pb.Writeline("Завершение.");
@@ -382,7 +388,7 @@ namespace ACO
             pb.ClearMainBar();
         }
 
-      
+
 
         /// <summary>
         ///  Определить номера столбцов с ко-ом для загруженных П
@@ -422,7 +428,7 @@ namespace ACO
             }
         }
 
-      
+
 
 
         /// <summary>

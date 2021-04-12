@@ -50,7 +50,7 @@ namespace ACO
             this.LogTextBox.Multiline = true;
             this.LogTextBox.Name = "LogTextBox";
             this.LogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LogTextBox.Size = new System.Drawing.Size(770, 91);
+            this.LogTextBox.Size = new System.Drawing.Size(770, 140);
             this.LogTextBox.TabIndex = 0;
             // 
             // SubProgressBar
@@ -117,7 +117,7 @@ namespace ACO
             this.LogGroupBox.Controls.Add(this.LogTextBox);
             this.LogGroupBox.Location = new System.Drawing.Point(12, 91);
             this.LogGroupBox.Name = "LogGroupBox";
-            this.LogGroupBox.Size = new System.Drawing.Size(776, 110);
+            this.LogGroupBox.Size = new System.Drawing.Size(776, 159);
             this.LogGroupBox.TabIndex = 7;
             this.LogGroupBox.TabStop = false;
             this.LogGroupBox.Text = "Процесс";
@@ -125,7 +125,7 @@ namespace ACO
             // OpenLogFolderButton
             // 
             this.OpenLogFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OpenLogFolderButton.Location = new System.Drawing.Point(537, 209);
+            this.OpenLogFolderButton.Location = new System.Drawing.Point(537, 258);
             this.OpenLogFolderButton.Name = "OpenLogFolderButton";
             this.OpenLogFolderButton.Size = new System.Drawing.Size(136, 23);
             this.OpenLogFolderButton.TabIndex = 8;
@@ -137,7 +137,7 @@ namespace ACO
             // AbortButton
             // 
             this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AbortButton.Location = new System.Drawing.Point(710, 209);
+            this.AbortButton.Location = new System.Drawing.Point(710, 258);
             this.AbortButton.Name = "AbortButton";
             this.AbortButton.Size = new System.Drawing.Size(75, 23);
             this.AbortButton.TabIndex = 9;
@@ -149,7 +149,7 @@ namespace ACO
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 240);
+            this.ClientSize = new System.Drawing.Size(800, 289);
             this.Controls.Add(this.AbortButton);
             this.Controls.Add(this.OpenLogFolderButton);
             this.Controls.Add(this.LogGroupBox);

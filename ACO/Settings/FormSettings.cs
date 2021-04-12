@@ -9,11 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ACO.Settings
+namespace ACO
 {
     public partial class FormSettings : Form
     {
-        readonly Properties.Settings settings = Properties.Settings.Default;
+        readonly ACO.Properties.Settings settings = ACO.Properties.Settings.Default;
         public FormSettings()
         {
             InitializeComponent();

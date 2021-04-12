@@ -65,7 +65,7 @@ namespace ACO
         private static string GetSpectrumFilename()
         {
             string folder = GetFolderSettingsKP();
-            string filename = Path.Combine(folder, "Спектрум.xml");
+            string filename = Path.Combine(folder, "Базовая оценка.xml");
             return filename;
         }
 
@@ -157,7 +157,7 @@ namespace ACO
 
             OfferSettings spectrumSettings = new OfferSettings()
             {
-                Name = "Спектрум",
+                Name = "Базовая оценка",
                 FileName = filename,
                 RowStart = 23,
                 SheetName = "Рсч-П",
