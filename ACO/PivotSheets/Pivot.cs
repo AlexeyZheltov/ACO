@@ -420,13 +420,13 @@ namespace ACO.PivotSheets
             _SheetUrv11.Cells[rowBottomTotal + 1, colPaste].Formula =
                  $"={_SheetUrv11.Cells[rowBottomTotal, colPaste].Address}*0.2";
             _SheetUrv11.Cells[rowBottomTotal + 2, colPaste].Formula =
-                                $"={_SheetUrv12.Cells[rowBottomTotal, colPaste].Address}+" +
-                                $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
+                                $"={_SheetUrv11.Cells[rowBottomTotal, colPaste].Address}+" +
+                                $"{_SheetUrv11.Cells[rowBottomTotal + 1, colPaste].Address}";
 
             _SheetUrv11.Cells[rowBottomTotal + 5, colPaste+1].Formula =
-                                $"={_SheetUrv12.Cells[rowBottomTotal, colPaste].Address}/$G{rowBottomTotal}-1";
+                                $"={_SheetUrv11.Cells[rowBottomTotal, colPaste].Address}/$G{rowBottomTotal}-1";
             _SheetUrv11.Cells[rowBottomTotal + 5, colPaste ].Formula =
-                                $"={_SheetUrv12.Cells[rowBottomTotal+4, colPaste].Address}+{_SheetUrv12.Cells[rowBottomTotal+2, colPaste].Address}";
+                                $"={_SheetUrv11.Cells[rowBottomTotal+4, colPaste].Address}+{_SheetUrv11.Cells[rowBottomTotal+2, colPaste].Address}";
 
             List<OfferAddress> addresses = GetAdderssLvl12();
 
@@ -456,6 +456,12 @@ namespace ACO.PivotSheets
                 _SheetUrv11.Cells[rowBottomTotal + 2, colPaste].Formula =
                                     $"={_SheetUrv11.Cells[rowBottomTotal, colPaste].Address}+" +
                                     $"{_SheetUrv11.Cells[rowBottomTotal + 1, colPaste].Address}";
+                _SheetUrv11.Cells[rowBottomTotal + 5, colPaste + 1].Formula =
+                                $"={_SheetUrv11.Cells[rowBottomTotal, colPaste].Address}/$G{rowBottomTotal}-1";
+                _SheetUrv11.Cells[rowBottomTotal + 5, colPaste + 1].NumberFormat = "0%";
+                _SheetUrv11.Cells[rowBottomTotal + 5, colPaste].Formula =
+                                    $"={_SheetUrv11.Cells[rowBottomTotal + 4, colPaste].Address}+{_SheetUrv11.Cells[rowBottomTotal + 2, colPaste].Address}";
+
 
                 colPaste += 3;
             }
