@@ -108,8 +108,9 @@ namespace ACO
             {
                 bool exist = false;
                 foreach (string recordField in recordPrint.KeyFilds)
-                {
-                    if (string.IsNullOrEmpty(keyFild) || string.IsNullOrEmpty(recordField)) continue;
+                {                    
+                   if ( keyFild == recordField ) { exist = true; } 
+                  // if (string.IsNullOrEmpty(keyFild) || string.IsNullOrEmpty(recordField)) continue;
                     string text1 = keyFild.Trim().Replace("  ", "").ToLower();
                     string text2 = recordField.Trim().Replace("  ", "").ToLower();
 

@@ -75,13 +75,15 @@ namespace ACO
         {
             Action action = () =>
             {
-                SubProgressBar.Maximum = volume;
+                SetCount(volume);
+                SubProgressBar.Maximum = volume;// SubProgressBar.Maximum = volume;
             };
 
             if (InvokeRequired)
                 Invoke(action);
             else
-                SubProgressBar.Maximum = volume;
+                SetCount(volume);
+            SubProgressBar.Maximum = volume; //SubProgressBar.Maximum = volume;
         }
 
         /// <summary>
@@ -138,6 +140,20 @@ namespace ACO
                 action();
         }
 
+        int _value = 0;
+        int _k = 1;
+        private void Tick(int amount = 1)
+        {
+            _value += amount;
+            if (_k == 1)
+            {
+                SubProgressBar.Value = _value;
+                SubLabel.Text = $"Этап {_value} из {_Count}";
+                _k = - _Step + 1;
+            }
+            _k++;
+        }
+
         /// <summary>
         /// Делает приращение вспомогательного PB
         /// </summary>
@@ -146,8 +162,9 @@ namespace ACO
         {
             Action action = () =>
             {
-                SubProgressBar.Value += amount;
-                SubLabel.Text = $"Обрабатывается строка: {SubProgressBar.Value} из {SubProgressBar.Maximum}";
+                Tick(amount);
+                // SubProgressBar.Value += amount;
+                // SubLabel.Text = $"Обрабатывается строка: {SubProgressBar.Value} из {SubProgressBar.Maximum}";
             };
 
             if (InvokeRequired)
@@ -160,6 +177,27 @@ namespace ACO
             //    SubLabel.Text = $"{_subBarText}: {SubProgressBar.Value} из {SubProgressBar.Maximum}";
             //}));
         }
+        int _Step = 1;
+        int _Count = 0;
+        private int SetCount(int count)
+        {
+            _value = 0;
+            if (count > 1000)
+            {
+                _Step = 100;
+            }
+            else if (count > 100)
+            {
+                _Step = 10;
+            }
+            _Count = count;
+            double c = count / _Step;
+           
+            count = (int)Math.Round(c, 0);
+            return count;
+        }
+
+
 
         /// <summary>
         /// Получить TextBox для вывода лога

@@ -86,6 +86,7 @@ namespace ACO
                     {
                         Name = name,
                         ColStartOffer = columnStart,
+                        ColCost = columnStart -2,
                         ColStartOfferComments = col,
                         ColTotalCost = columnTotal,
                         ColPercentTotal = col + 4,
@@ -117,7 +118,7 @@ namespace ACO
             string letterNumber =  GetLetter(StaticColumns.Number);
             Excel.Range cell = AnalisysSheet.Cells[lastRow,lastCol];
             Excel.Range rng = AnalisysSheet.Range[$"{letterNumber}{_project.RowStart}:{cell.Address[ColumnAbsolute: false]}"];
-            //Excel.Range rng = AnalisysSheet.Range[AnalisysSheet.Cells[_project.RowStart,2], AnalisysSheet.Cells[lastRow, lastCol]];
+           
             return rng;
         }
 
@@ -154,9 +155,7 @@ namespace ACO
                     Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPallet);
                     if (pallets.TryGetValue(lvl, out Excel.Range pallet))
                     {
-                        ExcelHelper.SetCellFormat(cell, pallet);
-                        //pallet.Copy();
-                        //cell.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                        ExcelHelper.SetCellFormat(cell, pallet);                       
                     }
                 }
                 else
@@ -250,5 +249,8 @@ namespace ACO
             }
             return columns;
         }
+
+
+
     }
 }

@@ -11,6 +11,7 @@ namespace ACO.ProjectBook
         /// <summary>
         ///  Столбцы КП на листе анализ
         /// </summary>
+        public int ColCost { get; set; }
         public int ColPercentMaterial { get; set; }
         public int ColPercentWorks { get; set; }
         public int ColPercentTotal { get; set; }

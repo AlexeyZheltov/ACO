@@ -95,8 +95,9 @@ namespace ACO
                     string text = val?.ToString() ?? "";
 
                     offerRecord.Values.Add(field.ColumnPaste, val);
-                    if (!string.IsNullOrEmpty(text))
-                    {
+                    //if (!string.IsNullOrEmpty(text))
+                    //{
+                    //}
                         if (field.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Number])
                         {
                             offerRecord.Number = text;
@@ -105,7 +106,6 @@ namespace ACO
                         {
                             offerRecord.KeyFilds.Add(text);
                         }
-                    }
                 }
                 SheetAnalysis.PrintRec(offerRecord);
             }

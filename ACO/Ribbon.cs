@@ -446,18 +446,17 @@ namespace ACO
             {
                 IProgressBarWithLogUI pb = new ProgressBarWithLog();
                 pb.Show();
-                pb.SetMainBarVolum(1);
-                pb.MainBarTick("Уловное форматирование ячеек комментариев");
-                pb.SetSubBarVolume(count);
                 try
                 {
+                    pb.SetMainBarVolum(1);
+                    pb.MainBarTick("Уловное форматирование ячеек комментариев");
+                    pb.SetSubBarVolume(count);
                     await Task.Run(() =>
                     {
                         ExcelAcselerate(true);
-
+                        int k = 0;
                         for (int row = startRow; row <= lastRow; row++)
                         {
-                            //string level = projectWorkbook.AnalisysSheet.Range[$"${projectWorkbook.GetLetter(StaticColumns.Level)}{row}"].Text;
                             pb.SubBarTick();
                             PbAbortedStopProcess(pb);
                             foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)

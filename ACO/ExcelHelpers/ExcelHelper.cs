@@ -108,7 +108,7 @@ namespace ACO.ExcelHelpers
                     pb.SubBarTick();
                     currentRow = row.Row;
 
-                    if (row.Row < 10) continue; //ws.Cells[currentRow, 1].Text == ""
+                    if (row.Row < 10) continue; 
 
                     if (int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
                     {
@@ -195,8 +195,6 @@ namespace ACO.ExcelHelpers
                     ws.Range[$"{mapping.WorkTotal}{s_row}"].Formula = $"=ROUND({mapping.WorkPerUnit}{s_row}*{mapping.Amount}{s_row},2)";
                     ws.Range[$"{mapping.PricePerUnit}{s_row}"].Formula = $"=ROUND({mapping.MaterialPerUnit}{s_row}+{mapping.WorkPerUnit}{s_row},2)";
                     ws.Range[$"{mapping.Total}{s_row}"].Formula = $"=ROUND({mapping.PricePerUnit}{s_row}*{mapping.Amount}{s_row},2)";
-
-
                     //ws.Range[$"{mapping.MaterialTotal}{s_row}"].NumberFormat = "# ##0,00";
                     //ws.Range[$"{mapping.WorkTotal}{s_row}"].NumberFormat = "# ##0,00";
                     //ws.Range[$"{mapping.PricePerUnit}{s_row}"].NumberFormat = "# ##0,00";

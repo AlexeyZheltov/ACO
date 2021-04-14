@@ -49,7 +49,7 @@ namespace ACO
             SheetAnalysis = sheetProjerct;
             CurrentProject = currentProject;
             _rowStart = CurrentProject.RowStart;
-            _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count -1;
+            _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 1;
         }
 
         List<Record> _levelRecords;
@@ -144,7 +144,7 @@ namespace ACO
             /// Последняя строка списка 
             bool existRecord = false;
             Record recordAnalysis = null;
-            if (recordPrint.KeyFilds.Count == 0) return;
+            if (recordPrint.KeyFilds.Count == 0 && string.IsNullOrWhiteSpace(recordPrint.Number)) return;
             for (int row = _rowStart; row <= _lastRow; row++)
             {
                 recordAnalysis = GetRecocdAnalysis(row);
@@ -152,13 +152,22 @@ namespace ACO
                 {
                     preveuslevel = recordAnalysis.Level;
                 }
-                if (recordAnalysis.IsEmpty() ) continue;
+                if (recordAnalysis.IsEmpty()) continue;
 
                 if (preveuslevel == recordAnalysis.Level)
                 {
-                    if (recordAnalysis.KeyEqual(recordPrint) && preveuslevel == recordPrint.Level)
+                    if (recordAnalysis.Number == recordPrint.Number)
                     {
-                        rowPaste = row;
+                        // Поля совпали
+                        if (recordAnalysis.KeyEqual(recordPrint))
+                        {
+                            rowPaste = row;
+                            existRecord = true;
+                            break;
+                        }
+                        rowPaste = row + 1;
+                        SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+                        _lastRow++;
                         existRecord = true;
                         break;
                     }
@@ -283,7 +292,7 @@ namespace ACO
                 if (columnMapping.Check)
                 {
                     object val = SheetAnalysis.Range[$"{columnMapping.ColumnSymbol}{row}"].Value;
-                    string key = val?.ToString();
+                    string key = val?.ToString()??"" ;
                     recordAnalysis.KeyFilds.Add(key);
                 }
             }
