@@ -55,6 +55,7 @@
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
+            this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -191,6 +192,7 @@
             this.group5.Items.Add(this.BtnProjectManager);
             this.group5.Items.Add(this.BtnKP);
             this.group5.Items.Add(this.BtnSettings);
+            this.group5.Items.Add(this.BtnExcelScreenUpdating);
             this.group5.Label = "Настройки";
             this.group5.Name = "group5";
             // 
@@ -235,6 +237,15 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
+            // 
+            // BtnExcelScreenUpdating
+            // 
+            this.BtnExcelScreenUpdating.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnExcelScreenUpdating.Image = ((System.Drawing.Image)(resources.GetObject("BtnExcelScreenUpdating.Image")));
+            this.BtnExcelScreenUpdating.Label = "Включить обновление Excel";
+            this.BtnExcelScreenUpdating.Name = "BtnExcelScreenUpdating";
+            this.BtnExcelScreenUpdating.ShowImage = true;
+            this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
             // 
             // Ribbon
             // 
@@ -281,6 +292,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnKP;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSpectrum;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnColorComments;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnExcelScreenUpdating;
     }
 
     partial class ThisRibbonCollection

@@ -77,7 +77,17 @@ namespace ACO.Offers
             LoadTableOffers();
             SetTableMapping();
         }
-
+        private void BtnCopoySettings_Click(object sender, EventArgs e)
+        {
+            string name = textBox1.Text;
+            if (string.IsNullOrWhiteSpace(name)) { return; }
+            OfferSettings.Copy(_CurrentMapping, name);
+            _manager.UpdateMappings();
+            _offersMapping = _manager.Mappings;
+            _CurrentMapping = _offersMapping.Find(m => m.Name == name);
+            LoadTableOffers();
+            SetTableMapping();
+        }
 
         private void SetTableMapping()
         {
@@ -203,5 +213,6 @@ namespace ACO.Offers
             Close();
         }
 
+      
     }
 }

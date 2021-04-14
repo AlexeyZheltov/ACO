@@ -44,6 +44,16 @@ namespace ACO.Offers
             return columnMapping;
         }
 
+        internal static void Copy(OfferSettings currentMapping, string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) { return; }
+            string path = GetNamesSettingsKP();
+            string filename = Path.Combine(path, name + ".xml");
+            currentMapping.Name = name;
+            currentMapping.FileName = filename;
+            currentMapping.Save();
+        }
+
         internal static void Create(string name)
         {
             if (string.IsNullOrWhiteSpace(name)) { return; }
@@ -102,6 +112,8 @@ namespace ACO.Offers
             };
             offerMapping.Save();
         }
+
+     
 
         public void GetFromXML(string filename)
         {

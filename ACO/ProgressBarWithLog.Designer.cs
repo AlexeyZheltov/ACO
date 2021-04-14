@@ -67,18 +67,18 @@ namespace ACO
             this.SubLabel.AutoSize = true;
             this.SubLabel.Location = new System.Drawing.Point(12, 52);
             this.SubLabel.Name = "SubLabel";
-            this.SubLabel.Size = new System.Drawing.Size(42, 13);
+            this.SubLabel.Size = new System.Drawing.Size(108, 13);
             this.SubLabel.TabIndex = 2;
-            this.SubLabel.Text = "SubBar";
+            this.SubLabel.Text = "Выполнение задачи";
             // 
             // MainLabel
             // 
             this.MainLabel.AutoSize = true;
             this.MainLabel.Location = new System.Drawing.Point(12, 12);
             this.MainLabel.Name = "MainLabel";
-            this.MainLabel.Size = new System.Drawing.Size(46, 13);
+            this.MainLabel.Size = new System.Drawing.Size(92, 13);
             this.MainLabel.TabIndex = 4;
-            this.MainLabel.Text = "MainBar";
+            this.MainLabel.Text = "Общий прогресс";
             // 
             // MainProgressBar
             // 

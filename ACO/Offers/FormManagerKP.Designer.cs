@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManagerKP));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ListKP = new System.Windows.Forms.ListView();
             this.ColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -41,15 +41,16 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.BtnOpenFolder = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.BtnCopoySettings = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.label6 = new System.Windows.Forms.Label();
-            this.TBoxSheetName = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.BtnSetSelectedRangeValues = new System.Windows.Forms.Button();
+            this.TBoxSheetName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.TBoxFirstRowRangeValues = new System.Windows.Forms.TextBox();
             this.BtnSave = new System.Windows.Forms.Button();
@@ -76,11 +77,11 @@
             this.ListKP.GridLines = true;
             this.ListKP.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.ListKP.HideSelection = false;
-            this.ListKP.Location = new System.Drawing.Point(6, 60);
+            this.ListKP.Location = new System.Drawing.Point(6, 55);
             this.ListKP.MultiSelect = false;
             this.ListKP.Name = "ListKP";
             this.ListKP.ShowGroups = false;
-            this.ListKP.Size = new System.Drawing.Size(529, 355);
+            this.ListKP.Size = new System.Drawing.Size(529, 360);
             this.ListKP.TabIndex = 3;
             this.ListKP.UseCompatibleStateImageBehavior = false;
             this.ListKP.View = System.Windows.Forms.View.List;
@@ -97,17 +98,17 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(59, 25);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(353, 20);
+            this.textBox1.Size = new System.Drawing.Size(257, 20);
             this.textBox1.TabIndex = 4;
             // 
             // BtnCreate
             // 
             this.BtnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCreate.Location = new System.Drawing.Point(418, 19);
+            this.BtnCreate.Location = new System.Drawing.Point(322, 22);
             this.BtnCreate.Name = "BtnCreate";
             this.BtnCreate.Size = new System.Drawing.Size(81, 27);
             this.BtnCreate.TabIndex = 5;
-            this.BtnCreate.Text = "Добавить";
+            this.BtnCreate.Text = "Добавить ";
             this.BtnCreate.UseVisualStyleBackColor = true;
             this.BtnCreate.Click += new System.EventHandler(this.BtnCreate_Click);
             // 
@@ -142,6 +143,7 @@
             this.groupBox1.Controls.Add(this.BtnOpenFolder);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.ListKP);
+            this.groupBox1.Controls.Add(this.BtnCopoySettings);
             this.groupBox1.Controls.Add(this.BtnCreate);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Location = new System.Drawing.Point(5, 14);
@@ -156,7 +158,7 @@
             this.BtnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnOpenFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnOpenFolder.BackgroundImage")));
             this.BtnOpenFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnOpenFolder.Location = new System.Drawing.Point(505, 19);
+            this.BtnOpenFolder.Location = new System.Drawing.Point(505, 22);
             this.BtnOpenFolder.Name = "BtnOpenFolder";
             this.BtnOpenFolder.Size = new System.Drawing.Size(27, 27);
             this.BtnOpenFolder.TabIndex = 9;
@@ -166,11 +168,22 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 28);
+            this.label1.Location = new System.Drawing.Point(12, 29);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 13);
             this.label1.TabIndex = 8;
             this.label1.Text = "Новый";
+            // 
+            // BtnCopoySettings
+            // 
+            this.BtnCopoySettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnCopoySettings.Location = new System.Drawing.Point(412, 22);
+            this.BtnCopoySettings.Name = "BtnCopoySettings";
+            this.BtnCopoySettings.Size = new System.Drawing.Size(84, 27);
+            this.BtnCopoySettings.TabIndex = 5;
+            this.BtnCopoySettings.Text = "Копировать";
+            this.BtnCopoySettings.UseVisualStyleBackColor = true;
+            this.BtnCopoySettings.Click += new System.EventHandler(this.BtnCopoySettings_Click);
             // 
             // tabControl1
             // 
@@ -217,15 +230,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TableColumns.BackgroundColor = System.Drawing.Color.White;
             this.TableColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TableColumns.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.TableColumns.Location = new System.Drawing.Point(6, 6);
             this.TableColumns.MultiSelect = false;
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.TableColumns.Size = new System.Drawing.Size(544, 423);
             this.TableColumns.TabIndex = 7;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
@@ -241,22 +253,6 @@
             this.tabPage2.Text = "Диапазон";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(23, 23);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Лист Анализ";
-            // 
-            // TBoxSheetName
-            // 
-            this.TBoxSheetName.Location = new System.Drawing.Point(123, 23);
-            this.TBoxSheetName.Name = "TBoxSheetName";
-            this.TBoxSheetName.Size = new System.Drawing.Size(147, 20);
-            this.TBoxSheetName.TabIndex = 11;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label6);
@@ -270,6 +266,15 @@
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(23, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Лист Анализ";
+            // 
             // BtnSetSelectedRangeValues
             // 
             this.BtnSetSelectedRangeValues.Location = new System.Drawing.Point(126, 101);
@@ -279,6 +284,13 @@
             this.BtnSetSelectedRangeValues.Text = "Выделенный диапазон";
             this.BtnSetSelectedRangeValues.UseVisualStyleBackColor = true;
             this.BtnSetSelectedRangeValues.Click += new System.EventHandler(this.BtnSetSelectedRangeValues_Click);
+            // 
+            // TBoxSheetName
+            // 
+            this.TBoxSheetName.Location = new System.Drawing.Point(123, 23);
+            this.TBoxSheetName.Name = "TBoxSheetName";
+            this.TBoxSheetName.Size = new System.Drawing.Size(147, 20);
+            this.TBoxSheetName.TabIndex = 11;
             // 
             // label5
             // 
@@ -369,5 +381,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox TBoxSheetName;
         private System.Windows.Forms.Button BtnCancel;
+        private System.Windows.Forms.Button BtnCopoySettings;
     }
 }

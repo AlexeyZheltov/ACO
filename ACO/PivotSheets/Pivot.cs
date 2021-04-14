@@ -417,7 +417,7 @@ namespace ACO.PivotSheets
             {
                 _SheetUrv11.Cells[rowBottomTotal, colPaste].Formula = formulaSumm;
             }
-            _SheetUrv11.Cells[rowBottomTotal + 1, colPaste].Formula =
+           // _SheetUrv11.Cells[rowBottomTotal + 1, colPaste].Formula =
             _SheetUrv11.Cells[rowBottomTotal + 2, colPaste].Formula =
                                 $"={_SheetUrv12.Cells[rowBottomTotal, colPaste].Address}+" +
                                 $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";

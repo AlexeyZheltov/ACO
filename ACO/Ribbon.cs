@@ -112,7 +112,7 @@ namespace ACO
                         ExcelAcselerate(true);
                         offerWriter.Print(pb, offerSettingsName);
                         pb.Writeline("Завершение");
-                        ExcelAcselerate(false);
+                       // ExcelAcselerate(false);
                         pb.CloseFrm();
                         //  });
                     }
@@ -132,6 +132,7 @@ namespace ACO
                     {
                         excelBook.Close();
                         ExcelHelpers.ExcelFile.Finish();
+                        ExcelAcselerate(false);
                     }
                 }
             });
@@ -139,16 +140,16 @@ namespace ACO
 
         private async void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
         {
-            IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            try
+            string file = GetFile();
+                    if (!File.Exists(file)) { return; }
+                IProgressBarWithLogUI pb = new ProgressBarWithLog();
+                    pb.Show(new AddinWindow(Globals.ThisAddIn));
+            await Task.Run(() =>
             {
-                string file = GetFile();
-                if (!File.Exists(file)) { return; }
-                pb.Show(new AddinWindow(Globals.ThisAddIn));
-                // PrintSpectrum(pb, file);
-                await Task.Run(() =>
+                try
                 {
                     pb.SetMainBarVolum(1);
+                    // PrintSpectrum(pb, file);
                     ExcelHelpers.ExcelFile.Init();
                     ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
@@ -167,26 +168,26 @@ namespace ACO
                     ExcelAcselerate(true);
                     offerWriter.PrintSpectrum(pb);
                     pb.Writeline("Завершение.");
-                    ExcelAcselerate(false);
+                   // ExcelAcselerate(false);
                     pb.CloseFrm();
-                });
-            }
-            catch (AddInException ex)
-            {
-                string message = $"Ошибка:{ex.Message }";
-                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                pb.Writeline(message);
-            }
-            catch (Exception ex)
-            {
-                string message = $"Ошибка:{ex.Message }";
-                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
+                }
+                catch (AddInException ex)
+                {
+                    string message = $"Ошибка:{ex.Message }";
+                    if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                    pb.Writeline(message);
+                }
+                catch (Exception ex)
+                {
+                    string message = $"Ошибка:{ex.Message }";
+                    if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                    MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
         }
 
 
@@ -428,9 +429,6 @@ namespace ACO
             }
         }
 
-
-
-
         /// <summary>
         ///  Окраска ячеек 
         /// </summary>
@@ -446,13 +444,13 @@ namespace ACO
             {
                 IProgressBarWithLogUI pb = new ProgressBarWithLog();
                 pb.Show();
-                try
+                await Task.Run(() =>
                 {
-                    pb.SetMainBarVolum(1);
-                    pb.MainBarTick("Уловное форматирование ячеек комментариев");
-                    pb.SetSubBarVolume(count);
-                    await Task.Run(() =>
+                    try
                     {
+                        pb.SetMainBarVolum(1);
+                        pb.MainBarTick("Уловное форматирование ячеек комментариев");
+                        pb.SetSubBarVolume(count);
                         ExcelAcselerate(true);
                         int k = 0;
                         for (int row = startRow; row <= lastRow; row++)
@@ -466,19 +464,23 @@ namespace ACO
                                 projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
                             }
                         }
-                        ExcelAcselerate(false);
+                      //  ExcelAcselerate(false);
                         pb.CloseFrm();
-                    });
 
-                }
-                catch (AddInException addinEx)
-                {
-                    pb.Writeline(addinEx.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    }
+                    catch (AddInException addinEx)
+                    {
+                        pb.Writeline(addinEx.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        ExcelAcselerate(false);
+                    }
+                });
             }
         }
 
@@ -606,9 +608,9 @@ namespace ACO
             });
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void BtnExcelScreenUpdating_Click(object sender, RibbonControlEventArgs e)
         {
-            new PivotSheets.Pivot().UpdateDiagramm();
+            ExcelAcselerate(false);
         }
     }
 }

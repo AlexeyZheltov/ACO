@@ -206,10 +206,18 @@ namespace ACO.ExcelHelpers
                     builder.Append($"SUM({mapping.Total}{sub_lvl.First().Row}:{mapping.Total}{sub_lvl.Last().Row})");
                 else
                 {
-                    foreach (var sub_item in sub_lvl)
+                    //int maxLvl = sub_lvl.Max(x => x.Level);
+                    //if (maxLvl == 6)
+                    //{
+
+                    //}
+                    //else
+                    //{
+                        foreach (var sub_item in sub_lvl)
                         builder.Append($"{mapping.Total}{sub_item.Row}+");
 
                     builder.Remove(builder.Length - 1, 1);
+                    //}
                 }
 
                 int t_row = item.Row;

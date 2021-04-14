@@ -145,11 +145,19 @@ namespace ACO
         private void Tick(int amount = 1)
         {
             _value += amount;
-            if (_k == 1)
+            if (_k == 1 || _value == _Count)
             {
                 SubProgressBar.Value = _value;
                 SubLabel.Text = $"Этап {_value} из {_Count}";
-                _k = - _Step + 1;
+                if (_value == 1)
+                {
+                    _k = -_Step + 1;
+
+                }
+                else
+                {
+                    _k = -_Step;
+                }
             }
             _k++;
         }
@@ -179,22 +187,18 @@ namespace ACO
         }
         int _Step = 1;
         int _Count = 0;
-        private int SetCount(int count)
+        private void SetCount(int count)
         {
             _value = 0;
+            _Count = count;
             if (count > 1000)
             {
-                _Step = 100;
+                _Step = 99;
             }
             else if (count > 100)
             {
-                _Step = 10;
+                _Step = 9;
             }
-            _Count = count;
-            double c = count / _Step;
-           
-            count = (int)Math.Round(c, 0);
-            return count;
         }
 
 
