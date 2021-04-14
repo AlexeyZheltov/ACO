@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManager));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.BtnSetCurrentSheet = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.TBoxSheetName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.TBoxFirstRowRangeValues = new System.Windows.Forms.TextBox();
             this.PageColumns = new System.Windows.Forms.TabPage();
+            this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
             this.PageProject = new System.Windows.Forms.TabPage();
             this.BtnOpenFolder = new System.Windows.Forms.Button();
             this.BtnDelete = new System.Windows.Forms.Button();
@@ -48,17 +50,15 @@
             this.BtnAddProject = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TableProjects = new ACO.ProjectManager.CustomDataGrid();
-            this.TableColumns = new ACO.ProjectManager.CustomDataGrid();
-            this.BtnSetCurrentSheet = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2.SuspendLayout();
             this.PageColumns.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
             this.PageProject.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TableProjects)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // BtnAccept
@@ -82,6 +82,7 @@
             this.BtnCancel.TabIndex = 1;
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
+            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // tabPage2
             // 
@@ -97,6 +98,17 @@
             this.tabPage2.TabIndex = 3;
             this.tabPage2.Text = "Диапазон";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // BtnSetCurrentSheet
+            // 
+            this.BtnSetCurrentSheet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnSetCurrentSheet.Location = new System.Drawing.Point(286, 13);
+            this.BtnSetCurrentSheet.Name = "BtnSetCurrentSheet";
+            this.BtnSetCurrentSheet.Size = new System.Drawing.Size(94, 30);
+            this.BtnSetCurrentSheet.TabIndex = 13;
+            this.BtnSetCurrentSheet.Text = "Текущий лист";
+            this.BtnSetCurrentSheet.UseVisualStyleBackColor = true;
+            this.BtnSetCurrentSheet.Click += new System.EventHandler(this.BtnSetCurrentSheet_Click);
             // 
             // label6
             // 
@@ -140,6 +152,30 @@
             this.PageColumns.TabIndex = 0;
             this.PageColumns.Text = "Столбцы";
             this.PageColumns.UseVisualStyleBackColor = true;
+            // 
+            // TableColumns
+            // 
+            this.TableColumns.AllowUserToAddRows = false;
+            this.TableColumns.AllowUserToResizeColumns = false;
+            this.TableColumns.AllowUserToResizeRows = false;
+            this.TableColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TableColumns.BackgroundColor = System.Drawing.Color.White;
+            this.TableColumns.Location = new System.Drawing.Point(6, 6);
+            this.TableColumns.MultiSelect = false;
+            this.TableColumns.Name = "TableColumns";
+            this.TableColumns.ReadOnly = true;
+            this.TableColumns.RowHeadersVisible = false;
+            this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.TableColumns.Size = new System.Drawing.Size(482, 433);
+            this.TableColumns.TabIndex = 0;
+            this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
+            this.TableColumns.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.TableColumns_RowsRemoved);
             // 
             // PageProject
             // 
@@ -242,20 +278,6 @@
             this.label3.TabIndex = 1;
             this.label3.Text = "Конфигурация проекта";
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.PageProject);
-            this.tabControl1.Controls.Add(this.PageColumns);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(3, 15);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(502, 472);
-            this.tabControl1.TabIndex = 0;
-            // 
             // TableProjects
             // 
             this.TableProjects.AllowUserToAddRows = false;
@@ -271,48 +293,27 @@
             this.TableProjects.ReadOnly = true;
             this.TableProjects.RowHeadersVisible = false;
             this.TableProjects.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableProjects.Size = new System.Drawing.Size(482, 333);
             this.TableProjects.TabIndex = 0;
             this.TableProjects.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellContentClick);
             this.TableProjects.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableProjects_CellValueChanged);
             // 
-            // TableColumns
+            // tabControl1
             // 
-            this.TableColumns.AllowUserToAddRows = false;
-            this.TableColumns.AllowUserToResizeColumns = false;
-            this.TableColumns.AllowUserToResizeRows = false;
-            this.TableColumns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TableColumns.BackgroundColor = System.Drawing.Color.White;
-            this.TableColumns.Location = new System.Drawing.Point(6, 6);
-            this.TableColumns.MultiSelect = false;
-            this.TableColumns.Name = "TableColumns";
-            this.TableColumns.ReadOnly = true;
-            this.TableColumns.RowHeadersVisible = false;
-            this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle8;
-            this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.TableColumns.Size = new System.Drawing.Size(482, 433);
-            this.TableColumns.TabIndex = 0;
-            this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
-            this.TableColumns.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.TableColumns_RowsRemoved);
-            // 
-            // BtnSetCurrentSheet
-            // 
-            this.BtnSetCurrentSheet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSetCurrentSheet.Location = new System.Drawing.Point(286, 13);
-            this.BtnSetCurrentSheet.Name = "BtnSetCurrentSheet";
-            this.BtnSetCurrentSheet.Size = new System.Drawing.Size(94, 30);
-            this.BtnSetCurrentSheet.TabIndex = 13;
-            this.BtnSetCurrentSheet.Text = "Текущий лист";
-            this.BtnSetCurrentSheet.UseVisualStyleBackColor = true;
-            this.BtnSetCurrentSheet.Click += new System.EventHandler(this.BtnSetCurrentSheet_Click);
+            this.tabControl1.Controls.Add(this.PageProject);
+            this.tabControl1.Controls.Add(this.PageColumns);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(3, 15);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(502, 472);
+            this.tabControl1.TabIndex = 0;
             // 
             // FormManager
             // 
@@ -330,13 +331,13 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.PageColumns.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).EndInit();
             this.PageProject.ResumeLayout(false);
             this.PageProject.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TableProjects)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

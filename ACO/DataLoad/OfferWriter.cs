@@ -319,21 +319,10 @@ namespace ACO
 
             Excel.Range RngData = offerSheet.Range[offerSheet.Cells[offerSettings.RowStart, 1], offerSheet.Cells[lastRow, rightColumn]];
             object[,] arrData = RngData.Value;
-
-            //int k = 1;
-
-            //  pb.SubBarTick();
             for (int i = 1; i <= countRows; i++)
             {
                 int rowPaste = _CurrentProject.RowStart + i - 1;
                 pb.SubBarTick();
-                //if (k == 1)
-                //{
-                //    //int r = i % 100; 
-                //    k = -99;
-                //}
-                //k++;
-
                 if (pb.IsAborted) return;
                 foreach ((int projectCollumn, int offerColumn) in colPair)
                 {

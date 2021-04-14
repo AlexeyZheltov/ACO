@@ -299,5 +299,10 @@ namespace ACO.ProjectManager
             Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
             if (ws != null) TBoxSheetName.Text = ws.Name;
         }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

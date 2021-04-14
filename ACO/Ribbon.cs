@@ -143,6 +143,7 @@ namespace ACO
             string file = GetFile();
                     if (!File.Exists(file)) { return; }
                 IProgressBarWithLogUI pb = new ProgressBarWithLog();
+                    ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
                     pb.Show(new AddinWindow(Globals.ThisAddIn));
             await Task.Run(() =>
             {
@@ -151,7 +152,6 @@ namespace ACO
                     pb.SetMainBarVolum(1);
                     // PrintSpectrum(pb, file);
                     ExcelHelpers.ExcelFile.Init();
-                    ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
 
                     pb.Writeline($"Открытие файла :");
@@ -163,8 +163,7 @@ namespace ACO
 
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                     pb.Writeline("Заполнение листа Анализ.");
-                    //await Task.Run(() =>
-                    //{
+                   
                     ExcelAcselerate(true);
                     offerWriter.PrintSpectrum(pb);
                     pb.Writeline("Завершение.");
@@ -185,6 +184,8 @@ namespace ACO
                 }
                 finally
                 {
+                    //excelBook.Close();
+                    ExcelHelpers.ExcelFile.Finish();
                     ExcelAcselerate(false);
                 }
             });
