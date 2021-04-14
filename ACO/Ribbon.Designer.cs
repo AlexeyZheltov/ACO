@@ -53,9 +53,9 @@
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
+            this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -223,6 +223,15 @@
             this.BtnSettings.ShowImage = true;
             this.BtnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
             // 
+            // BtnExcelScreenUpdating
+            // 
+            this.BtnExcelScreenUpdating.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnExcelScreenUpdating.Image = ((System.Drawing.Image)(resources.GetObject("BtnExcelScreenUpdating.Image")));
+            this.BtnExcelScreenUpdating.Label = "Включить обновление Excel";
+            this.BtnExcelScreenUpdating.Name = "BtnExcelScreenUpdating";
+            this.BtnExcelScreenUpdating.ShowImage = true;
+            this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
+            // 
             // group4
             // 
             this.group4.Items.Add(this.BtnAbout);
@@ -237,15 +246,6 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
-            // 
-            // BtnExcelScreenUpdating
-            // 
-            this.BtnExcelScreenUpdating.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnExcelScreenUpdating.Image = ((System.Drawing.Image)(resources.GetObject("BtnExcelScreenUpdating.Image")));
-            this.BtnExcelScreenUpdating.Label = "Включить обновление Excel";
-            this.BtnExcelScreenUpdating.Name = "BtnExcelScreenUpdating";
-            this.BtnExcelScreenUpdating.ShowImage = true;
-            this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
             // 
             // Ribbon
             // 
