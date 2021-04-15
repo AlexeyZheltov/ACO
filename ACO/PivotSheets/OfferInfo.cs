@@ -8,15 +8,17 @@ namespace ACO.PivotSheets
     class OfferInfo
     {
         /*
-                Описание менялось				                                ПОЗИЦИЯМ 
-                Объемы завышены				                                    ПОЗИЦИЯМ 
-                Объемы занижены				                                    ПОЗИЦИЯМ 
-                Сумма завышеных работ по разделам				                РУБ БЕЗ НДС 
-                Разница в стоимости с оценкой СПЕКТРУМ				            РУБ БЕЗ НДС 
-                НЕ оценено на сумму				                                РУБ БЕЗ НДС 
-                Выявленные ошибки				                                РУБ БЕЗ НДС 
-                Итого включая не оцененные работы и корректировку ошибок		РУБ БЕЗ НДС 
+            Описание менялось				                            ПОЗИЦИЯМ
+            Объемы завышены				                                ПОЗИЦИЯМ
+            Объемы занижены				                                ПОЗИЦИЯМ
+            Сумма завышеных работ по разделам				            РУБ БЕЗ НДС
+            Разница в стоимости с оценкой СПЕКТРУМ				        РУБ БЕЗ НДС
+            НЕ оценено на сумму				                            РУБ БЕЗ НДС
+            Выявленные ошибки				                            РУБ БЕЗ НДС
+            Итого включая не оцененные работы и корректировку ошибок	РУБ БЕЗ НДС
+
          */
+
         Excel.Application _app = Globals.ThisAddIn.Application;
         Excel.Worksheet _SheetUrv12;
         Excel.Worksheet _AnalisysSheet;
@@ -58,12 +60,12 @@ namespace ACO.PivotSheets
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы занижены").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeCostComments}, \"Расценки занижены\"), \"#НД\")";
 
-
+/*
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
             row = ExcelHelper.FindCell(_SheetUrv12, "НЕ оценено на сумму").Row;
             row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
-
+*/
 
 
             int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
@@ -88,11 +90,17 @@ namespace ACO.PivotSheets
 
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
             int rowStart = _project.RowStart;
-            int col = 1;
+            
+            Excel.Range range = _AnalisysSheet.Range[
+                    _AnalisysSheet.Cells[rowStart, address.ColStartOfferComments], 
+                    _AnalisysSheet.Cells[lastRow, address.ColStartOfferComments]];
 
-            Excel.Range range = _AnalisysSheet.Range[_AnalisysSheet.Cells[rowStart, address.ColStartOfferComments], _AnalisysSheet.Cells[lastRow, address.ColStartOfferComments]];
             _rangeChengedNames = $"'{_AnalisysSheet.Name}'!{range.Address}";
-            range = _AnalisysSheet.Range[_AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1], _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
+
+            range = _AnalisysSheet.Range[
+                    _AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1], 
+                    _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
+
             _rangeCostComments = $"'{_AnalisysSheet.Name}'!{range.Address}";
         }
     }

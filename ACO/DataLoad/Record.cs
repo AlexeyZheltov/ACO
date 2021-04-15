@@ -12,25 +12,26 @@ namespace ACO
     /// </summary>
     class Record
     {
+        public int Level { get; set; }
         /// <summary>
         /// Уровень номера
         /// </summary>
-        public int Level
-        {
-            get
-            {
-                if (_Level == 0)
-                {
-                    _Level = Numbers?.Length ?? 0;
-                }
-                return _Level;
-            }
-            private set
-            {
-                _Level = value;
-            }
-        }
-        int _Level;
+        //public int Level
+        //{
+        //    get
+        //    {
+        //        if (_Level == 0)
+        //        {
+        //            _Level = Numbers?.Length ?? 0;
+        //        }
+        //        return _Level;
+        //    }
+        //    private set
+        //    {
+        //        _Level = value;
+        //    }
+        //}
+        //int _Level;
 
 
         /// <summary>
@@ -89,10 +90,10 @@ namespace ACO
 
         public bool IsEmpty()
         {
-            bool empty = true;
+            bool empty = Level>0 ;
             foreach (string field in KeyFilds)
             {
-                if (!string.IsNullOrEmpty(field)) return false;
+               if (!string.IsNullOrEmpty(field)) return false;
             }
             return empty;
         }

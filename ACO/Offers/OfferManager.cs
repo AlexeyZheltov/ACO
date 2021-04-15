@@ -53,7 +53,7 @@ namespace ACO
             }
 
 
-            string filename = GetSpectrumFilename();
+            string filename = GetBaseEstimateFilename();
             if (mappings.Find(x => x.FileName == filename) == null)
             {
                 mappings.Add(CreateSpectrum(filename));
@@ -62,27 +62,27 @@ namespace ACO
             _Mappings = mappings;
         }
 
-        private static string GetSpectrumFilename()
+        private static string GetBaseEstimateFilename() //  SpectrumFilename()
         {
             string folder = GetFolderSettingsKP();
             string filename = Path.Combine(folder, "Базовая оценка.xml");
             return filename;
         }
 
-        public static OfferSettings GetSpectrumSettigsDefault()
-        {
-            string filename = GetSpectrumFilename();
-            OfferSettings spectrumSettings;
-            if (File.Exists(filename))
-            {
-                spectrumSettings = new OfferSettings(filename);
-            }
-            else
-            {
-                spectrumSettings = CreateSpectrum(filename);
-            }
-            return spectrumSettings;
-        }
+        //public static OfferSettings GetSpectrumSettigsDefault()
+        //{
+        //    string filename = GetSpectrumFilename();
+        //    OfferSettings spectrumSettings;
+        //    if (File.Exists(filename))
+        //    {
+        //        spectrumSettings = new OfferSettings(filename);
+        //    }
+        //    else
+        //    {
+        //        spectrumSettings = CreateSpectrum(filename);
+        //    }
+        //    return spectrumSettings;
+        //}
 
         private static OfferSettings CreateSpectrum(string filename)
         {

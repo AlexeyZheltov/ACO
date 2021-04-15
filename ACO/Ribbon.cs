@@ -112,7 +112,7 @@ namespace ACO
                         ExcelAcselerate(true);
                         offerWriter.Print(pb, offerSettingsName);
                         pb.Writeline("Завершение");
-                       // ExcelAcselerate(false);
+                        // ExcelAcselerate(false);
                         pb.CloseFrm();
                         //  });
                     }
@@ -138,13 +138,14 @@ namespace ACO
             });
         }
 
-        private async void BtnSpectrum_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnBaseEstimate_Click(object sender, RibbonControlEventArgs e)
         {
             string file = GetFile();
-                    if (!File.Exists(file)) { return; }
-                IProgressBarWithLogUI pb = new ProgressBarWithLog();
-                    ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
-                    pb.Show(new AddinWindow(Globals.ThisAddIn));
+            string offerSettingsName = GetOfferSettings();
+            if (!File.Exists(file)) { return; }
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
+            pb.Show(new AddinWindow(Globals.ThisAddIn));
             await Task.Run(() =>
             {
                 try
@@ -163,11 +164,11 @@ namespace ACO
 
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                     pb.Writeline("Заполнение листа Анализ.");
-                   
+
                     ExcelAcselerate(true);
-                    offerWriter.PrintSpectrum(pb);
+                    offerWriter.PrintBaseEstimate(pb, offerSettingsName);
                     pb.Writeline("Завершение.");
-                   // ExcelAcselerate(false);
+                    // ExcelAcselerate(false);
                     pb.CloseFrm();
                 }
                 catch (AddInException ex)
@@ -465,7 +466,7 @@ namespace ACO
                                 projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
                             }
                         }
-                      //  ExcelAcselerate(false);
+                        //  ExcelAcselerate(false);
                         pb.CloseFrm();
 
                     }

@@ -53,151 +53,167 @@ namespace ACO
         }
 
         List<Record> _levelRecords;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="record"></param>
-        //public void PrintRecord(Record record)
+      
+        public void PrintRecord(Record recordPrint)
+        {
+            int rowPaste = 0;
+            Record recordAnalysis = null;
+
+           // if (recordPrint.KeyFilds.Count == 0 &&
+           //       string.IsNullOrWhiteSpace(recordPrint.Number)) return;
+            recordAnalysis = GetRecocdAnalysis(_rowStart);
+
+            if (recordAnalysis.KeyEqual(recordPrint))
+            {
+                rowPaste = _rowStart;
+                _rowStart++;
+                PrintValues(recordPrint, rowPaste);               
+                return;
+            }
+            else
+            {
+                // Строка с пустым номером
+                if (recordPrint.Level > 1 && recordPrint.Level < 6 )
+                {
+                    // Найти уровень выше 
+                    if (FindPrevLevelRow(recordPrint.Level - 1, out int rowPrevLevel))
+                    {
+                        for (int row = _rowStart + 1; row < rowPrevLevel; row++)
+                        {
+                            recordAnalysis = GetRecocdAnalysis(row);
+                            // Сравнить записи
+                            if (recordAnalysis.KeyEqual(recordPrint))
+                            {
+                                PrintValues(recordPrint, row);
+                                _rowStart = row+1;
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                string letterNames = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
+                rowPaste = FindNextLevelRow();
+                PrintValues(recordPrint, rowPaste);
+                SetLevel(recordPrint.Level, rowPaste);
+                _rowStart = rowPaste + 1;
+                
+            }
+        }
+        private void SetLevel(int lvl, int  row)
+        {
+                string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+                SheetAnalysis.Range[$"{letterLevel}{row}"].Value = lvl.ToString();
+        }
+
+        private int FindNextLevelRow()
+        {
+            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+            string letterLevelText = SheetAnalysis.Range[$"{letterLevel}{_rowStart}"].Value?.ToString() ?? "";
+            int levelFirst = int.TryParse(letterLevelText, out int lvlf) ? lvlf : 0;
+
+            for (int row = _rowStart + 1; row <= _lastRow; row++)
+            {
+                string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
+                if (int.TryParse(text, out int lvl))
+                {
+                    if (levelFirst != lvl)
+                    {                        
+                        SheetAnalysis.Rows[row - 1].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+                        _lastRow++;
+                        return row - 1;
+                    }
+                }
+            }
+            _lastRow++;
+            return _lastRow;
+        }
+
+        private bool FindPrevLevelRow(int level, out int rowNextLevel)
+        {
+            rowNextLevel = _rowStart;
+            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+
+            if (level > 0)
+            {
+                for (int row = _rowStart; row <= _lastRow; row++)
+                {
+                    string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
+                    if (int.TryParse(text, out int lvl))
+                    {
+                        rowNextLevel = row;
+                        if (level == lvl) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        ///// <summary>
+        /////  Запись строки КП на лист Анализ. Вставка строк.
+        ///// </summary>
+        ///// <param name="recordPrint"></param>
+        //internal void PrintRec(Record recordPrint)
         //{
         //    int rowPaste = _rowStart;
-        //    int level = 0;
+        //    int preveuslevel = 0;
+        //    /// Последняя строка списка 
+        //    bool existRecord = false;
         //    Record recordAnalysis = null;
-
-        //    if (_levelRecords == null)
+        //    if (recordPrint.KeyFilds.Count == 0 && string.IsNullOrWhiteSpace(recordPrint.Number)) return;
+        //    for (int row = _rowStart; row <= _lastRow; row++)
         //    {
-        //        _levelRecords = new List<Record>();
-        //        _levelRecords = GetLevelRecords(rowPaste);
-        //    }
-
-        //    /// Найти строку с совпадающими полями
-        //    Record recordFind = _levelRecords.Find(x => x.KeyEqual(record));
-        //    if (recordFind != null)
-        //    {
-        //       // recordFind.
-        //    }
-        //    else
-        //    {
-        //        //if (l)
-        //        if (_levelRecords.First().LevelEqual(record))
+        //        recordAnalysis = GetRecocdAnalysis(row);
+        //        if (preveuslevel == 0 && recordAnalysis.Level != 0)
         //        {
+        //            preveuslevel = recordAnalysis.Level;
+        //        }
+        //        if (recordAnalysis.IsEmpty()) continue;
 
+        //        if (preveuslevel == recordAnalysis.Level)
+        //        {
+        //            if (recordAnalysis.Number == recordPrint.Number)
+        //            {
+        //                // Поля совпали
+        //                if (recordAnalysis.KeyEqual(recordPrint))
+        //                {
+        //                    rowPaste = row;
+        //                    existRecord = true;
+        //                    break;
+        //                }
+        //                rowPaste = row + 1;
+        //                SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+        //                _lastRow++;
+        //                existRecord = true;
+        //                break;
+        //            }
         //        }
         //        else
         //        {
-        //            // find next level records
-        //            level = _levelRecords.First().Level;
+        //            /// Уровень изменился
+        //            if (recordAnalysis.Level == recordPrint.Level)
+        //            {
+        //                _rowStart = row;
+        //                PrintRec(recordPrint);
+        //                return;
+        //            }
+        //            else
+        //            {
+        //                rowPaste = row;
+        //                SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+        //                _lastRow++;
+        //                existRecord = true;
+        //                break;
+        //            }
         //        }
         //    }
-        //    for (int row = _rowStart; row <= _lastRow; row++)
+        //    if (!existRecord)
         //    {
-        //        recordAnalysis = GetRecocdAnalysis(row);
-        //        //      if (record.)
+        //        _lastRow = _lastRow + 1;
+        //        rowPaste = _lastRow;
         //    }
-
-
-        //    for (int row = _rowStart; row <= _lastRow; row++)
-        //    {
-        //        recordAnalysis = GetRecocdAnalysis(row);
-        //        if (!string.IsNullOrEmpty(record.Number) && !recordAnalysis.LevelEqual(record))
-        //        {
-        //            rowPaste = row - 1;
-        //            break;
-        //        }
-        //        if (!string.IsNullOrEmpty(recordAnalysis.Number))
-        //        {
-        //            _rowStart = row;
-        //            // existRecord = true;
-        //            break;
-        //        }
-        //    }
+        //    PrintValues(recordPrint, rowPaste);
         //}
-
-        //private List<Record> GetLevelRecords(int rowPaste)
-        //{
-        //    int level=0 ;
-        //    for (int row = rowPaste; row <= _lastRow; row++)
-        //    {
-        //        Record record = GetRecocdAnalysis(row);
-        //        if (level == 0)
-        //        {
-        //            _levelRecords = new List<Record>();
-        //            level = record.Level;
-        //        }
-        //        else if (level != record.Level)
-        //        {
-        //            break;
-        //        }
-        //        _levelRecords.Add(record);
-        //    }
-        //    return _levelRecords;
-        //}
-        ///----------------------------------------------------
-
-        /// <summary>
-        ///  Запись строки КП на лист Анализ. Вставка строк.
-        /// </summary>
-        /// <param name="recordPrint"></param>
-        internal void PrintRec(Record recordPrint)
-        {
-            int rowPaste = _rowStart;
-            int preveuslevel = 0;
-            /// Последняя строка списка 
-            bool existRecord = false;
-            Record recordAnalysis = null;
-            if (recordPrint.KeyFilds.Count == 0 && string.IsNullOrWhiteSpace(recordPrint.Number)) return;
-            for (int row = _rowStart; row <= _lastRow; row++)
-            {
-                recordAnalysis = GetRecocdAnalysis(row);
-                if (preveuslevel == 0 && recordAnalysis.Level != 0)
-                {
-                    preveuslevel = recordAnalysis.Level;
-                }
-                if (recordAnalysis.IsEmpty()) continue;
-
-                if (preveuslevel == recordAnalysis.Level)
-                {
-                    if (recordAnalysis.Number == recordPrint.Number)
-                    {
-                        // Поля совпали
-                        if (recordAnalysis.KeyEqual(recordPrint))
-                        {
-                            rowPaste = row;
-                            existRecord = true;
-                            break;
-                        }
-                        rowPaste = row + 1;
-                        SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                        _lastRow++;
-                        existRecord = true;
-                        break;
-                    }
-                }
-                else
-                {
-                    /// Уровень изменился
-                    if (recordAnalysis.Level == recordPrint.Level)
-                    {
-                        _rowStart = row;
-                        PrintRec(recordPrint);
-                        return;
-                    }
-                    else
-                    {
-                        rowPaste = row;
-                        SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                        _lastRow++;
-                        existRecord = true;
-                        break;
-                    }
-                }
-            }
-            if (!existRecord)
-            {
-                _lastRow = _lastRow + 1;
-                rowPaste = _lastRow;
-            }
-            PrintValues(recordPrint, rowPaste);
-        }
 
         private void PrintValues(Record recordPrint, int rowPaste)
         {
@@ -292,7 +308,7 @@ namespace ACO
                 if (columnMapping.Check)
                 {
                     object val = SheetAnalysis.Range[$"{columnMapping.ColumnSymbol}{row}"].Value;
-                    string key = val?.ToString()??"" ;
+                    string key = val?.ToString() ?? "";
                     recordAnalysis.KeyFilds.Add(key);
                 }
             }

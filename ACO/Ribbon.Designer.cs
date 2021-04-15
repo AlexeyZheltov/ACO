@@ -101,7 +101,7 @@
             this.BtnSpectrum.Label = "Загрузить базовую оценку";
             this.BtnSpectrum.Name = "BtnSpectrum";
             this.BtnSpectrum.ShowImage = true;
-            this.BtnSpectrum.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSpectrum_Click);
+            this.BtnSpectrum.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBaseEstimate_Click);
             // 
             // BtnLoadKP
             // 
