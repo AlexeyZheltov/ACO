@@ -110,18 +110,14 @@ namespace ACO
                 }
                 SheetAnalysis.PrintRecord(offerRecord);
                 pb.Writeline("Группировка столбцов");
-                GroupColumn(addresslist);
+                SheetAnalysis.GroupColumn(addresslist);
             }
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
             SetFormuls();
         }
 
-        private void GroupColumn(List<FieldAddress> addresslist)
-        {
-            
-
-        }
+     
 
         /// <summary>
         ///  Комментарии Спектрум  

@@ -58,9 +58,6 @@ namespace ACO
         {
             int rowPaste = 0;
             Record recordAnalysis = null;
-
-           // if (recordPrint.KeyFilds.Count == 0 &&
-           //       string.IsNullOrWhiteSpace(recordPrint.Number)) return;
             recordAnalysis = GetRecocdAnalysis(_rowStart);
 
             if (recordAnalysis.KeyEqual(recordPrint))
@@ -376,6 +373,15 @@ namespace ACO
             {
                 throw new AddInException($"При копировании диапазона \"ШаблонКомментарии\" возникла ошибка: {e.Message}");
             }
+        }
+
+        public void GroupColumn(List<FieldAddress> addresslist)
+        {
+            int colCostTotal = addresslist.Find(x => x.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnPaste;
+            Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, _ColumnStartPrint], SheetAnalysis.Cells[1, colCostTotal]];
+            rng.Columns.Group();
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostTotal+2], SheetAnalysis.Cells[1, colCostTotal+4]];
+            rng.Columns.Group();
         }
     }
 }
