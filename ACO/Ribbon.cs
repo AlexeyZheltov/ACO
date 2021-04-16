@@ -614,5 +614,10 @@ namespace ACO
         {
             ExcelAcselerate(false);
         }
+
+        private void BtnFormatComments_Click(object sender, RibbonControlEventArgs e)
+        {
+            new FrmColorCommentsFomat().ShowDialog();
+        }
     }
 }

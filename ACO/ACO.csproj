@@ -183,11 +183,11 @@
   <ItemGroup>
     <Compile Include="AddInException.cs" />
     <Compile Include="AddinWindow.cs" />
-    <Compile Include="ColorCommentsFomat.cs">
+    <Compile Include="FrmColorCommentsFomat.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorCommentsFomat.Designer.cs">
-      <DependentUpon>ColorCommentsFomat.cs</DependentUpon>
+    <Compile Include="FrmColorCommentsFomat.Designer.cs">
+      <DependentUpon>FrmColorCommentsFomat.cs</DependentUpon>
     </Compile>
     <Compile Include="ExcelHelpers\ExcelFile.cs" />
     <Compile Include="ExcelHelpers\ExcelHelper.cs" />
@@ -240,6 +240,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataLoad\OfferWriter.cs" />
+    <EmbeddedResource Include="FrmColorCommentsFomat.resx">
+      <DependentUpon>FrmColorCommentsFomat.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Offers\FormManagerKP.resx">
       <DependentUpon>FormManagerKP.cs</DependentUpon>
     </EmbeddedResource>

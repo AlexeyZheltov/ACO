@@ -99,25 +99,26 @@ namespace ACO
                     {
                         offerRecord.Level = int.TryParse(text, out int lvl) ? lvl : 0;
                     }
-                        if (field.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Number])
-                        {
-                            offerRecord.Number = text;
-                        }
-                        if (field.MappingAnalysis.Check)
-                        {
-                            offerRecord.KeyFilds.Add(text);
-                        }
+                    if (field.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Number])
+                    {
+                        offerRecord.Number = text;
+                    }
+                    if (field.MappingAnalysis.Check)
+                    {
+                        offerRecord.KeyFilds.Add(text);
+                    }
                 }
                 SheetAnalysis.PrintRecord(offerRecord);
-                pb.Writeline("Группировка столбцов");
-                SheetAnalysis.GroupColumn(addresslist);
+
             }
+            pb.Writeline("Группировка столбцов");
+            SheetAnalysis.GroupColumn(addresslist);
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
             SetFormuls();
         }
 
-     
+
 
         /// <summary>
         ///  Комментарии Спектрум  
@@ -292,10 +293,10 @@ namespace ACO
         /// Печать КП
         /// </summary>
         /// <param name="offer"></param>
-        internal void PrintBaseEstimate( IProgressBarWithLogUI pb, string offerSettingsName)
+        internal void PrintBaseEstimate(IProgressBarWithLogUI pb, string offerSettingsName)
         {
             OfferSettings offerSettings = _offerManager.Mappings.Find(s => s.Name == offerSettingsName);
-            
+
             Excel.Worksheet offerSheet = ExcelHelper.GetSheet(_offerBook, offerSettings.SheetName);
 
             ShowSheetRows(offerSheet);

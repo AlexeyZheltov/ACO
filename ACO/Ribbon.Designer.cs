@@ -56,6 +56,8 @@
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
+            this.splitButton1 = this.Factory.CreateRibbonSplitButton();
+            this.BtnFormatComments = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -116,6 +118,7 @@
             // 
             this.group6.Items.Add(this.BtnUpdateFormuls);
             this.group6.Items.Add(this.BtnColorComments);
+            this.group6.Items.Add(this.splitButton1);
             this.group6.Label = "Формат";
             this.group6.Name = "group6";
             // 
@@ -247,6 +250,22 @@
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
             // 
+            // splitButton1
+            // 
+            this.splitButton1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.splitButton1.Image = ((System.Drawing.Image)(resources.GetObject("splitButton1.Image")));
+            this.splitButton1.Items.Add(this.BtnFormatComments);
+            this.splitButton1.Label = "Форматирование комментариев";
+            this.splitButton1.Name = "splitButton1";
+            // 
+            // BtnFormatComments
+            // 
+            this.BtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("BtnFormatComments.Image")));
+            this.BtnFormatComments.Label = "Настройки формата";
+            this.BtnFormatComments.Name = "BtnFormatComments";
+            this.BtnFormatComments.ShowImage = true;
+            this.BtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatComments_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -293,6 +312,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSpectrum;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnColorComments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnExcelScreenUpdating;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButton1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatComments;
     }
 
     partial class ThisRibbonCollection

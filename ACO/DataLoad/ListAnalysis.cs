@@ -378,9 +378,15 @@ namespace ACO
         public void GroupColumn(List<FieldAddress> addresslist)
         {
             int colCostTotal = addresslist.Find(x => x.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnPaste;
-            Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, _ColumnStartPrint], SheetAnalysis.Cells[1, colCostTotal]];
+            int colNames = addresslist.Find(x => x.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnPaste;
+            int colCostMaterialsPerUnit = colCostTotal - 5 ;
+            Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, _ColumnStartPrint], SheetAnalysis.Cells[1, colCostTotal-1]];
             rng.Columns.Group();
-            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostTotal+2], SheetAnalysis.Cells[1, colCostTotal+4]];
+
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames  + 1], SheetAnalysis.Cells[1, colCostMaterialsPerUnit -1 ]];
+            rng.Columns.Group();
+
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostTotal + 2], SheetAnalysis.Cells[1, colCostTotal + 5]];
             rng.Columns.Group();
         }
     }
