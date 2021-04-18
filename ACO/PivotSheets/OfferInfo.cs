@@ -60,14 +60,6 @@ namespace ACO.PivotSheets
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы занижены").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeCostComments}, \"Расценки занижены\"), \"#НД\")";
 
-/*
-
-            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
-            row = ExcelHelper.FindCell(_SheetUrv12, "НЕ оценено на сумму").Row;
-            row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
-*/
-
-
             int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
             string cellAddress = _SheetUrv12.Cells[rowTotalSumm, column].Address;
 
@@ -80,11 +72,27 @@ namespace ACO.PivotSheets
             _SheetUrv12.Cells[row, column].Formula = $"= {cellAddress}" +
                                                         $"+{_SheetUrv12.Cells[row - 1, column].Address}" +
                                                         $"+{_SheetUrv12.Cells[row - 2, column].Address}";
+
+
+            Excel.Range rngOfferSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column], _SheetUrv12.Cells[rowTotalSumm - 2,column]];
+            Excel.Range rngOfferCommentCost = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column+3], _SheetUrv12.Cells[rowTotalSumm - 2,column+3]];
+            Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, 4], _SheetUrv12.Cells[ rowTotalSumm - 2, 4]];
+
+            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
+
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">0.1\",{rngOfferSum.Address}) - {rngOfferCommentCost.Address}, \">0.1\" ,{rngBasisSum.Address})";
+                        
+            row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=\"#НД\"\",{rngOfferSum.Address} )";
+            
+            row = ExcelHelper.FindCell(_SheetUrv12, "НЕ оценено на сумму").Row;
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=\"#НД\"\",{rngBasisSum.Address} )";
         }
 
         //Описание менялось
         string _rangeChengedNames = "";
         string _rangeCostComments = "";
+        string _rangeCostTotal = "";
         private void SetColumns(OfferAddress address)
         {
 
@@ -102,6 +110,11 @@ namespace ACO.PivotSheets
                     _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
 
             _rangeCostComments = $"'{_AnalisysSheet.Name}'!{range.Address}";
+
+            //range = _AnalisysSheet.Range[
+            //       _AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1],
+            //       _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
+            //_rangeCostTotal = $"'{_AnalisysSheet.Name}'!{range.Address}";
         }
     }
 }

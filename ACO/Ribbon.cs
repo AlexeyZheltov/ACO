@@ -462,7 +462,7 @@ namespace ACO
                             foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
                             {
                                 projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
-                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterial]);
+                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterials]);
                                 projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
                             }
                         }
@@ -618,6 +618,12 @@ namespace ACO
         private void BtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
             new FrmColorCommentsFomat().ShowDialog();
+        }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Range rng = _app.ActiveSheet.UsedRange;
+            rng.Columns.Ungroup();
         }
     }
 }

@@ -112,7 +112,7 @@ namespace ACO
 
             }
             pb.Writeline("Группировка столбцов");
-            SheetAnalysis.GroupColumn(addresslist);
+            SheetAnalysis.GroupColumn();
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
             SetFormuls();

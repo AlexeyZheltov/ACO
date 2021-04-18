@@ -6,6 +6,7 @@ using ACO.Offers;
 using ACO.ProjectManager;
 using System.Windows.Forms;
 using ACO.ExcelHelpers;
+using ACO.ProjectBook;
 
 namespace ACO
 {
@@ -53,7 +54,7 @@ namespace ACO
         }
 
         List<Record> _levelRecords;
-      
+
         public void PrintRecord(Record recordPrint)
         {
             int rowPaste = 0;
@@ -64,13 +65,13 @@ namespace ACO
             {
                 rowPaste = _rowStart;
                 _rowStart++;
-                PrintValues(recordPrint, rowPaste);               
+                PrintValues(recordPrint, rowPaste);
                 return;
             }
             else
             {
                 // Строка с пустым номером
-                if (recordPrint.Level > 1 && recordPrint.Level < 6 )
+                if (recordPrint.Level > 1 && recordPrint.Level < 6)
                 {
                     // Найти уровень выше 
                     if (FindPrevLevelRow(recordPrint.Level - 1, out int rowPrevLevel))
@@ -82,7 +83,7 @@ namespace ACO
                             if (recordAnalysis.KeyEqual(recordPrint))
                             {
                                 PrintValues(recordPrint, row);
-                                _rowStart = row+1;
+                                _rowStart = row + 1;
                                 return;
                             }
                         }
@@ -94,13 +95,13 @@ namespace ACO
                 PrintValues(recordPrint, rowPaste);
                 SetLevel(recordPrint.Level, rowPaste);
                 _rowStart = rowPaste + 1;
-                
+
             }
         }
-        private void SetLevel(int lvl, int  row)
+        private void SetLevel(int lvl, int row)
         {
-                string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
-                SheetAnalysis.Range[$"{letterLevel}{row}"].Value = lvl.ToString();
+            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+            SheetAnalysis.Range[$"{letterLevel}{row}"].Value = lvl.ToString();
         }
 
         private int FindNextLevelRow()
@@ -115,7 +116,7 @@ namespace ACO
                 if (int.TryParse(text, out int lvl))
                 {
                     if (levelFirst != lvl)
-                    {                        
+                    {
                         SheetAnalysis.Rows[row - 1].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
                         _lastRow++;
                         return row - 1;
@@ -261,7 +262,6 @@ namespace ACO
                 if (!recordAnalysis.KeyEqual(recordPrint))
                 {
                     SheetAnalysis.Rows[_rowStart].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                    //_rowStart++;
                     _lastRow++;
                 }
             }
@@ -276,7 +276,6 @@ namespace ACO
                     if (double.TryParse(val.ToString(), out double dv))
                     {
                         if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
-                        // cell.NumberFormat = "#,##0.00";
                         cell.Value = Math.Round(dv, 2);
                     }
                     else
@@ -334,7 +333,8 @@ namespace ACO
                 SheetAnalysis.Cells[1, columnPaste].Value = address.MappingAnalysis.Name;
 
                 SheetAnalysis.Cells[7, columnPaste].Copy();
-                SheetAnalysis.Cells[9, columnPaste].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
+                SheetAnalysis.Cells[9, columnPaste].PasteSpecial(Excel.XlPasteType.xlPasteFormats,
+                                            Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
 
                 if (address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal] ||
                     address.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal])
@@ -347,7 +347,6 @@ namespace ACO
             Excel.Range pallet = SheetAnalysis.Cells[6, 1];
             //Top            
             Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste - 1]];
-            rng.EntireColumn.AutoFit();
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
             rng.Merge();
@@ -356,10 +355,14 @@ namespace ACO
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint - 1], SheetAnalysis.Cells[9, ColumnStartPrint - 1]];
             pallet.Copy();
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
-            /// Участник
 
+            /// Метки
             SheetAnalysis.Cells[1, ColumnStartPrint - 1].Value = "offer_start";
             SheetAnalysis.Cells[1, columnPaste].Value = "offer_end";
+            ColumnCommentsMark(columnPaste);
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[6, ColumnStartPrint], SheetAnalysis.Cells[6, columnPaste + 8]];
+            rng.EntireColumn.AutoFit();
+
             SheetAnalysis.Rows[1].Hidden = true;
 
             try
@@ -375,19 +378,66 @@ namespace ACO
             }
         }
 
-        public void GroupColumn(List<FieldAddress> addresslist)
+
+        /// <summary>
+        ///  Метки комментариев 
+        /// </summary>
+        /// <param name="column"></param>
+        private void ColumnCommentsMark(int column)
         {
-            int colCostTotal = addresslist.Find(x => x.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnPaste;
-            int colNames = addresslist.Find(x => x.MappingAnalysis.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnPaste;
-            int colCostMaterialsPerUnit = colCostTotal - 5 ;
-            Excel.Range rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, _ColumnStartPrint], SheetAnalysis.Cells[1, colCostTotal-1]];
+            SheetAnalysis.Cells[1, column + 1].Value = "Комментарии к описанию работ";
+            SheetAnalysis.Cells[1, column + 2].Value = "Отклонение по объемам";
+            SheetAnalysis.Cells[1, column + 3].Value = "Комментарии к объемам работ";
+            SheetAnalysis.Cells[1, column + 4].Value = "Отклонение по стоимости";
+            SheetAnalysis.Cells[1, column + 5].Value = "Комментарии к стоимости работ";
+            SheetAnalysis.Cells[1, column + 6].Value = "Отклонение МАТ";
+            SheetAnalysis.Cells[1, column + 7].Value = "Отклонение РАБ";
+            SheetAnalysis.Cells[1, column + 8].Value = "Комментарии к строкам";
+        }
+
+        //public enum StaticColumnsComments 
+        // { 
+        //     CommentDiscriptionWorks,
+        //     DeviationVolume
+        // }
+
+        // Dictionary<StaticColumnsComments, string> ColumnCommentsValues;
+        public void GroupColumn()
+        {
+            GroupColumnsBasis();
+            List<OfferAddress> addresslist = new ProjectWorkbook().GetAddersses();
+            foreach (OfferAddress address in addresslist)
+            {
+                Excel.Range rngCoulumn = SheetAnalysis.Cells[1, address.ColComments];
+                rngCoulumn.Columns.Group();
+
+                rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
+                rngCoulumn.Columns.Group();
+            }
+        }
+
+        /// <summary>
+        ///  Группировать столбцы базовой оценки
+        /// </summary>
+        public void GroupColumnsBasis()
+        {
+            string letterNumber = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+            Excel.Range rng = SheetAnalysis.Range[$"A:{letterNumber}"];
+            rng.Columns.Group();
+            
+            int colCostTotal = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
+                x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol, SheetAnalysis);
+            int colNames = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
+               x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol, SheetAnalysis);
+
+            // Комментарии
+            rng = SheetAnalysis.Cells[1, colCostTotal+1];
             rng.Columns.Group();
 
-            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames  + 1], SheetAnalysis.Cells[1, colCostMaterialsPerUnit -1 ]];
-            rng.Columns.Group();
-
-            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostTotal + 2], SheetAnalysis.Cells[1, colCostTotal + 5]];
+            int colCostMaterialsPerUnit = colCostTotal - 5;
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames + 1], SheetAnalysis.Cells[1, colCostMaterialsPerUnit - 1]];
             rng.Columns.Group();
         }
+       
     }
 }

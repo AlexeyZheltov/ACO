@@ -49,7 +49,7 @@ namespace ACO.ExcelHelpers
             bool result = false;
             try
             {
-                WorkBook = _application.Workbooks.Open(path);
+                WorkBook = _application.Workbooks.Open(path, UpdateLinks: false);
 
                 // TODO Убрать
                 //_application.Visible = true;

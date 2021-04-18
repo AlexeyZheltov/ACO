@@ -151,7 +151,7 @@ namespace ACO.PivotSheets
                         _SheetUrv12.Cells[rowPaste, colPaste].Formula =
                            $"= VLOOKUP(${letterOutName}{rowPaste}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
                         //% отклонения материалы
-                        col = address.ColPercentWorks - columnCellNumber + 1;
+                        col = address.ColPercentMaterials - columnCellNumber + 1;
                         _SheetUrv12.Cells[rowPaste, colPaste + 1].Formula =
                           $"= VLOOKUP(${letterOutName}{rowPaste}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
                         // _SheetUrv12.Cells[rowPaste, colPaste + 1].NumberFormat = "0%";
@@ -278,7 +278,7 @@ namespace ACO.PivotSheets
                 _SheetUrv12.Cells[rowStart, colPaste].Formula =
                    $"= VLOOKUP($B{rowStart}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
                 //% отклонения материалы
-                col = address.ColPercentMaterial - columnCellNumber + 1;
+                col = address.ColPercentMaterials - columnCellNumber + 1;
                 _SheetUrv12.Cells[rowStart, colPaste + 1].Formula =
                   $"= VLOOKUP($B{rowStart}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
                 //% отклонения работы

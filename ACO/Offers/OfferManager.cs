@@ -20,7 +20,6 @@ namespace ACO
     /// </summary>
     class OfferManager
     {
-        //  private Excel.Worksheet _sheet;
 
         public OfferManager() { }
 
@@ -56,7 +55,7 @@ namespace ACO
             string filename = GetBaseEstimateFilename();
             if (mappings.Find(x => x.FileName == filename) == null)
             {
-                mappings.Add(CreateSpectrum(filename));
+                mappings.Add(CreateBaseEstimateSettings(filename));
             }
 
             _Mappings = mappings;
@@ -69,22 +68,7 @@ namespace ACO
             return filename;
         }
 
-        //public static OfferSettings GetSpectrumSettigsDefault()
-        //{
-        //    string filename = GetSpectrumFilename();
-        //    OfferSettings spectrumSettings;
-        //    if (File.Exists(filename))
-        //    {
-        //        spectrumSettings = new OfferSettings(filename);
-        //    }
-        //    else
-        //    {
-        //        spectrumSettings = CreateSpectrum(filename);
-        //    }
-        //    return spectrumSettings;
-        //}
-
-        private static OfferSettings CreateSpectrum(string filename)
+        private static OfferSettings CreateBaseEstimateSettings(string filename)
         {
             List<OfferColumnMapping> columns = new List<OfferColumnMapping>
             {
@@ -155,7 +139,7 @@ namespace ACO
                 }
             };
 
-            OfferSettings spectrumSettings = new OfferSettings()
+            OfferSettings BaseEstimateSettings = new OfferSettings()
             {
                 Name = "Базовая оценка",
                 FileName = filename,
@@ -163,8 +147,8 @@ namespace ACO
                 SheetName = "Рсч-П",
                 Columns = columns
             };
-            spectrumSettings.Save();
-            return spectrumSettings;
+            BaseEstimateSettings.Save();
+            return BaseEstimateSettings;
         }
 
         public static string GetFolderSettingsKP()
