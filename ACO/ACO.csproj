@@ -293,6 +293,7 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\ConditionFormat.cs" />
+    <Compile Include="Settings\ConditonsFormatManager.cs" />
     <Compile Include="Settings\FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>

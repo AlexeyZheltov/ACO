@@ -49,6 +49,7 @@
             this.BtnColorComments = this.Factory.CreateRibbonButton();
             this.splitButton1 = this.Factory.CreateRibbonSplitButton();
             this.BtnFormatComments = this.Factory.CreateRibbonButton();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
@@ -58,7 +59,6 @@
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -179,6 +179,7 @@
             this.splitButton1.Items.Add(this.BtnFormatComments);
             this.splitButton1.Label = "Форматирование комментариев";
             this.splitButton1.Name = "splitButton1";
+            this.splitButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.splitButton1_Click);
             // 
             // BtnFormatComments
             // 
@@ -187,6 +188,12 @@
             this.BtnFormatComments.Name = "BtnFormatComments";
             this.BtnFormatComments.ShowImage = true;
             this.BtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatComments_Click);
+            // 
+            // button1
+            // 
+            this.button1.Label = "button1";
+            this.button1.Name = "button1";
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // BtnLoadLvl12
             // 
@@ -267,12 +274,6 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
-            // 
-            // button1
-            // 
-            this.button1.Label = "button1";
-            this.button1.Name = "button1";
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // Ribbon
             // 

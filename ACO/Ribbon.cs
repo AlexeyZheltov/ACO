@@ -607,7 +607,7 @@ namespace ACO
                 {
                     ExcelAcselerate(false);
                 }
-            });
+            } );
         }
 
         private void BtnExcelScreenUpdating_Click(object sender, RibbonControlEventArgs e)
@@ -622,8 +622,12 @@ namespace ACO
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Range rng = _app.ActiveSheet.UsedRange;
-            rng.Columns.Ungroup();
+          
+        }
+
+        private void splitButton1_Click(object sender, RibbonControlEventArgs e)
+        {
+
         }
     }
 }

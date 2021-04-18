@@ -1,22 +1,23 @@
 ﻿using System;
 using Excel = Microsoft.Office.Interop.Excel;
-
 using System.Windows.Forms;
-using ACO.Settings;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace ACO
 {
     public partial class FrmColorCommentsFomat : Form
     {
-        public List<ConditionFormat> ListCondintions;
+        public List<ConditionFormat> _ListCondintions;
+        ConditionFormat _ConditionFormat;
 
+        ConditonsFormatManager manager;
+        //ConditionsFormatManager formatManager;
         Dictionary<string, Excel.XlFormatConditionOperator> ConditionOperator;
         public FrmColorCommentsFomat()
         {
             InitializeComponent();
-
+            manager = new ConditonsFormatManager();
+            _ListCondintions = manager.ListConditionFormats;
             ConditionOperator = new Dictionary<string, Excel.XlFormatConditionOperator>()
             {
                 {"Больше",Excel.XlFormatConditionOperator.xlGreater },
@@ -25,50 +26,6 @@ namespace ACO
                 {"Меньше равно",Excel.XlFormatConditionOperator.xlLessEqual },
                 {"Между",Excel.XlFormatConditionOperator.xlBetween }
             };
-            ListCondintions = new List<ConditionFormat>();
-            ListCondintions.Add(
-                new ConditionFormat()
-                {
-                    ColumnName = "",
-                    Operator = "Между",
-                    FontName = "Tahoma",
-                    FontSize = 10,
-                    FontStyle = FontStyle.Regular,
-                    ForeColor = Color.AliceBlue,
-                    InteriorColor = Color.Yellow,
-                    Formula1 = -0.1,
-                    Formula2 = -0.15
-                }
-            );
-
-            ListCondintions.Add(
-            new ConditionFormat()
-            {
-                ColumnName = "",
-                Operator = "Меньше равно",
-                FontName = "Tahoma",
-                FontSize = 10,
-                FontStyle = FontStyle.Regular,
-                ForeColor = Color.White,
-                InteriorColor = Color.Red,
-                Formula1 = -0.15,
-            }
-            );
-
-            ListCondintions.Add(
-                 new ConditionFormat()
-                 {
-                     ColumnName = "",
-                     Operator = "Между",
-                     FontName = "Tahoma",
-                     FontSize = 10,
-                     FontStyle = FontStyle.Regular,
-                     ForeColor = Color.Red,
-                     InteriorColor = Color.Yellow,
-                     Formula1 = 0.1,
-                     Formula2 = 0.15
-                 }
-            );
 
             FillData();
         }
@@ -76,22 +33,13 @@ namespace ACO
 
         private void FillData()
         {
-            customDataGrid.Rows.Clear();
+            customDataGrid.Rows.Clear();          
 
-            foreach (DataGridViewRow row in customDataGrid.Rows)
-            {
-                var cellOprerators = (DataGridViewComboBoxCell)(row.Cells[customDataGrid.Columns[1].Name]);
-                BindingSource source = new BindingSource();
-                foreach (string operatorEqual in ConditionOperator.Keys)
-                {
-                    source.Add(operatorEqual);
-                }
-                cellOprerators.DataSource = source;
-            }
-
-            foreach (ConditionFormat conditionFormat in ListCondintions)
-            {
-                customDataGrid.Rows.Add(conditionFormat.ColumnName, conditionFormat.Operator,
+            foreach (ConditionFormat conditionFormat in _ListCondintions)
+            {              
+                conditionFormat.ID = _ListCondintions.IndexOf(conditionFormat);
+                customDataGrid.Rows.Add(conditionFormat.ID,
+                                        conditionFormat.ColumnName, conditionFormat.Operator,
                                         conditionFormat.Formula1, conditionFormat.Formula2);
             }
         }
@@ -102,6 +50,8 @@ namespace ACO
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 richTextBox1.BackColor = colorDialog.Color;
+                if (_ConditionFormat != null)
+                _ConditionFormat.InteriorColor = colorDialog.Color;
             }
         }
 
@@ -111,6 +61,8 @@ namespace ACO
             if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 richTextBox1.Font = fontDialog.Font;
+                if (_ConditionFormat != null)
+                    _ConditionFormat.Font = fontDialog.Font;
             }
         }
         private void button3_Click(object sender, EventArgs e)
@@ -119,6 +71,8 @@ namespace ACO
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 richTextBox1.ForeColor = colorDialog.Color;
+                if (_ConditionFormat != null)
+                    _ConditionFormat.ForeColor = colorDialog.Color;
             }
         }
 
@@ -132,7 +86,6 @@ namespace ACO
             cell.Font.Name = richTextBox1.Font.Name;
             cell.Font.Bold = richTextBox1.Font.Bold;
             cell.Font.Size = richTextBox1.Font.Size;
-
             cell.Font.Color = richTextBox1.ForeColor;
         }
 
@@ -150,7 +103,7 @@ namespace ACO
             condition.Font.Bold = richTextBox1.Font.Bold;
             condition.Font.Size = richTextBox1.Font.Size;
             condition.Font.Color = richTextBox1.ForeColor;
-           
+
             //Excel.FormatCondition condition1 = cell.FormatConditions.Add(
             //Excel.XlFormatConditionType.cu ConditionalFormatType.custom);
             //Type: Excel.XlFormatConditionType.xlTextString,
@@ -184,7 +137,37 @@ namespace ACO
 
         private void BtnAccept_Click(object sender, EventArgs e)
         {
+            foreach(DataGridViewRow row in customDataGrid.Rows)
+            {
+                int id =(int) row.Cells[0].Value;
+                string oprator = row.Cells[2].Value.ToString();
+                string formula1 = row.Cells[3].Value.ToString();
+                string formula2 = row.Cells[4].Value.ToString();
 
+                _ConditionFormat = _ListCondintions[id];
+                _ConditionFormat.Operator = oprator;
+                _ConditionFormat.Formula1 = double.TryParse(formula1,out double d)? d: 0;
+                _ConditionFormat.Formula2 = double.TryParse(formula2, out double d2) ? d2 : 0;
+
+            }
+
+            manager.ListConditionFormats = _ListCondintions;
+            manager.Save();
+        }
+
+        private void customDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            int id = (int)customDataGrid.Rows[e.RowIndex].Cells[0].Value;
+            if (id < _ListCondintions.Count)
+            {
+                _ConditionFormat = _ListCondintions[id];
+                richTextBox1.ForeColor = _ConditionFormat.ForeColor;
+                richTextBox1.BackColor = _ConditionFormat.InteriorColor;
+                richTextBox1.Font = _ConditionFormat.Font;
+
+               
+            }
         }
     }
 }

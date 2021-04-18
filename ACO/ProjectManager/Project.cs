@@ -83,7 +83,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.Producer, "Производитель" },
                 { StaticColumns.Unit, "Ед. изм." },
                 { StaticColumns.Amount, "Кол-во" },
-              // { StaticColumns.ContractorAmount, "КОЛ-ВО (подрядчик)" },
+                { StaticColumns.ContractorAmount, "Кол-во (подрядчик)" },
                 { StaticColumns.CostMaterialsPerUnit, "Цена материалы за ед." },
                 { StaticColumns.CostMaterialsTotal, "Цена материалы всего" },
                 { StaticColumns.CostWorksPerUnit, "Цена работы за ед." },

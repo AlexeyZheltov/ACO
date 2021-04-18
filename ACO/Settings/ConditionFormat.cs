@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace ACO.Settings
+namespace ACO
 {
     public class ConditionFormat
     {
@@ -30,6 +30,28 @@ namespace ACO.Settings
         public double Formula2 { set; get; } = 0;
 
         public Excel.Range Range { set; get; }
+
+        public Font Font 
+        {
+            set
+            {
+                _Font = value;
+                FontName = _Font.Name;
+                FontSize = _Font.Size;
+                FontStyle = _Font.Style;
+            }
+            get
+            {
+                if (_Font is null)
+                {
+                    _Font = new Font(FontName, FontSize, FontStyle);
+                }
+                return _Font;
+            }
+        }
+        Font _Font;
+
+
 
     }
 }
