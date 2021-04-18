@@ -48,9 +48,6 @@ namespace ACO
             this.Column4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BtnSet = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.customDataGrid)).BeginInit();
@@ -240,39 +237,6 @@ namespace ACO
             this.Column3.Name = "Column3";
             this.Column3.Width = 86;
             // 
-            // BtnSet
-            // 
-            this.BtnSet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSet.Location = new System.Drawing.Point(333, 251);
-            this.BtnSet.Name = "BtnSet";
-            this.BtnSet.Size = new System.Drawing.Size(93, 26);
-            this.BtnSet.TabIndex = 3;
-            this.BtnSet.Text = "Принять";
-            this.BtnSet.UseVisualStyleBackColor = true;
-            this.BtnSet.Click += new System.EventHandler(this.BtnSet_Click);
-            // 
-            // button4
-            // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button4.Location = new System.Drawing.Point(277, 251);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(40, 26);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Ф";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button5
-            // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button5.Location = new System.Drawing.Point(232, 251);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(40, 26);
-            this.button5.TabIndex = 3;
-            this.button5.Text = "Ф";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
             // FrmColorCommentsFomat
             // 
             this.AcceptButton = this.BtnAccept;
@@ -283,9 +247,6 @@ namespace ACO
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.BtnCancel);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.BtnSet);
             this.Controls.Add(this.BtnAccept);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmColorCommentsFomat";
@@ -311,9 +272,6 @@ namespace ACO
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button BtnSet;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
         private ProjectManager.CustomDataGrid customDataGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnID;
         private System.Windows.Forms.DataGridViewTextBoxColumn column1;

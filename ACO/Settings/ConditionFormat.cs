@@ -27,7 +27,7 @@ namespace ACO
 
         public double Formula1 { set; get; } = 0;
 
-        public double Formula2 { set; get; } = 0;
+        public double Formula2 { set; get; }
 
         public Excel.Range Range { set; get; }
 

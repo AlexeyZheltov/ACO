@@ -126,15 +126,15 @@ namespace ACO.ProjectManager
         }
 
 
-        private static string GetApplicationSettingsFilename()
-        {
-            string path = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "Spectrum",
-            "ACO");
-            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-            string filename = Path.Combine(path, "settings.xml");
-            return filename;
-        }      
+        //private static string GetApplicationSettingsFilename()
+        //{
+        //    string path = Path.Combine(
+        //    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        //    "Spectrum",
+        //    "ACO");
+        //    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        //    string filename = Path.Combine(path, "settings.xml");
+        //    return filename;
+        //}      
     }
 }

@@ -379,29 +379,49 @@ namespace ACO
         }
 
 
+    
         /// <summary>
         ///  Метки комментариев 
         /// </summary>
         /// <param name="column"></param>
         private void ColumnCommentsMark(int column)
         {
-            SheetAnalysis.Cells[1, column + 1].Value = "Комментарии к описанию работ";
-            SheetAnalysis.Cells[1, column + 2].Value = "Отклонение по объемам";
-            SheetAnalysis.Cells[1, column + 3].Value = "Комментарии к объемам работ";
-            SheetAnalysis.Cells[1, column + 4].Value = "Отклонение по стоимости";
-            SheetAnalysis.Cells[1, column + 5].Value = "Комментарии к стоимости работ";
-            SheetAnalysis.Cells[1, column + 6].Value = "Отклонение МАТ";
-            SheetAnalysis.Cells[1, column + 7].Value = "Отклонение РАБ";
-            SheetAnalysis.Cells[1, column + 8].Value = "Комментарии к строкам";
+            SheetAnalysis.Cells[1, column + 1].Value = ColumnCommentsValues[StaticColumnsComments.CommentDiscriptionWorks];//  "Комментарии к описанию работ";
+            SheetAnalysis.Cells[1, column + 2].Value = ColumnCommentsValues[StaticColumnsComments.DeviationVolume]; //"Отклонение по объемам";
+            SheetAnalysis.Cells[1, column + 3].Value = ColumnCommentsValues[StaticColumnsComments.CommentsVolume];  //"Комментарии к объемам работ";
+            SheetAnalysis.Cells[1, column + 4].Value = ColumnCommentsValues[StaticColumnsComments.DeviationCost];   //"Отклонение по стоимости";
+            SheetAnalysis.Cells[1, column + 5].Value = ColumnCommentsValues[StaticColumnsComments.CommentsCost];    //"Комментарии к стоимости работ";
+            SheetAnalysis.Cells[1, column + 6].Value = ColumnCommentsValues[StaticColumnsComments.DeviationMat];    //"Отклонение МАТ";
+            SheetAnalysis.Cells[1, column + 7].Value = ColumnCommentsValues[StaticColumnsComments.DeviationWorks];  //"Отклонение РАБ";
+            SheetAnalysis.Cells[1, column + 8].Value = ColumnCommentsValues[StaticColumnsComments.Comments];        //"Комментарии к строкам";
         }
 
-        //public enum StaticColumnsComments 
-        // { 
-        //     CommentDiscriptionWorks,
-        //     DeviationVolume
-        // }
+        /*
+          "Комментарии к описанию работ";
+          "Отклонение по объемам";
+          "Комментарии к объемам работ";
+          "Отклонение по стоимости";
+          "Комментарии к стоимости работ";
+          "Отклонение МАТ";
+          "Отклонение РАБ";
+          "Комментарии к строкам";
 
-        // Dictionary<StaticColumnsComments, string> ColumnCommentsValues;
+        */
+        public static Dictionary<StaticColumnsComments, string> ColumnCommentsValues =
+              new Dictionary<StaticColumnsComments, string>()
+              {
+                  {StaticColumnsComments.CommentDiscriptionWorks, "Комментарии к описанию работ" },
+                  {StaticColumnsComments.DeviationVolume, "Отклонение по объемам" },
+                  {StaticColumnsComments.CommentsVolume, "Комментарии к объемам работ" },
+                  {StaticColumnsComments.DeviationCost, "Отклонение по стоимости" },
+                  {StaticColumnsComments.CommentsCost , "Комментарии к стоимости работ" },
+                  {StaticColumnsComments.DeviationMat ,"Отклонение МАТ" },
+                  {StaticColumnsComments.DeviationWorks ,"Отклонение РАБ" },
+                  {StaticColumnsComments.Comments,"Комментарии к строкам" },
+
+              };
+
+
         public void GroupColumn()
         {
             GroupColumnsBasis();
@@ -412,6 +432,9 @@ namespace ACO
                 rngCoulumn.Columns.Group();
 
                 rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
+                rngCoulumn.Columns.Group();
+
+                rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer], SheetAnalysis.Cells[1, address.ColTotalCost - 1]];
                 rngCoulumn.Columns.Group();
             }
         }
@@ -424,20 +447,33 @@ namespace ACO
             string letterNumber = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
             Excel.Range rng = SheetAnalysis.Range[$"A:{letterNumber}"];
             rng.Columns.Group();
-            
+
             int colCostTotal = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
                 x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol, SheetAnalysis);
             int colNames = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
                x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol, SheetAnalysis);
 
             // Комментарии
-            rng = SheetAnalysis.Cells[1, colCostTotal+1];
+            rng = SheetAnalysis.Cells[1, colCostTotal + 1];
             rng.Columns.Group();
 
             int colCostMaterialsPerUnit = colCostTotal - 5;
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostMaterialsPerUnit], SheetAnalysis.Cells[1, colCostTotal - 1]];
+            rng.Columns.Group();
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames + 1], SheetAnalysis.Cells[1, colCostMaterialsPerUnit - 1]];
             rng.Columns.Group();
         }
-       
-    }
+
+    }   
+    public enum StaticColumnsComments
+        {
+            CommentDiscriptionWorks,
+            DeviationVolume,
+            CommentsVolume,
+            DeviationCost,
+            CommentsCost,
+            DeviationMat,
+            DeviationWorks,
+            Comments
+        }
 }
