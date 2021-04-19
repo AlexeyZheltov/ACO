@@ -356,5 +356,15 @@ namespace ACO.ExcelHelpers
                 Excel.Range rng = ws.Range[$"{letterAmount}{rowStart}:{letterAmount}{lastRow}"];
                 rng.NumberFormat = "#,##0.00";
         }
+
+        internal static void ClearFormatConditions(Excel.Range rng)
+        {
+            //Excel.Range rng = _app.Selection;
+            rng.FormatConditions.Delete();
+            //foreach (Excel.FormatCondition condition in rng.FormatConditions)
+            //{
+            //    condition.Delete();
+            //}
+        }
     }
 }

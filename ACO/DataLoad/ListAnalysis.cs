@@ -417,9 +417,9 @@ namespace ACO
                   {StaticColumnsComments.CommentsCost , "Комментарии к стоимости работ" },
                   {StaticColumnsComments.DeviationMat ,"Отклонение МАТ" },
                   {StaticColumnsComments.DeviationWorks ,"Отклонение РАБ" },
-                  {StaticColumnsComments.Comments,"Комментарии к строкам" },
-
+                  {StaticColumnsComments.Comments,"Комментарии к строкам" }
               };
+
 
 
         public void GroupColumn()
@@ -434,7 +434,7 @@ namespace ACO
                 rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
                 rngCoulumn.Columns.Group();
 
-                rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer], SheetAnalysis.Cells[1, address.ColTotalCost - 1]];
+                rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer + 1], SheetAnalysis.Cells[1, address.ColCost - 1]];
                 rngCoulumn.Columns.Group();
             }
         }

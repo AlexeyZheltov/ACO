@@ -607,7 +607,7 @@ namespace ACO
                 {
                     ExcelAcselerate(false);
                 }
-            } );
+            });
         }
 
         private void BtnExcelScreenUpdating_Click(object sender, RibbonControlEventArgs e)
@@ -618,16 +618,53 @@ namespace ACO
         private void BtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
             new FrmColorCommentsFomat().ShowDialog();
+        }       
+
+        private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
+        {
+            ProjectWorkbook projectWorkbook = new ProjectWorkbook();
+            ExcelHelper.ClearFormatConditions(projectWorkbook.AnalisysSheet.UsedRange);
+                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
+            foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+            {
+                /// Works
+            List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName == 
+                                             ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks]);
+           Excel.Range rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentWorks];
+            conditions.ForEach(x => x.SetCondition(rng));
+                /// Materials
+                conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
+                                            ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat]);
+                rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentMaterials];
+                conditions.ForEach(x => x.SetCondition(rng));
+
+                /// Стоимость
+                conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
+                                            ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost]);
+                rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentTotal];
+                conditions.ForEach(x => x.SetCondition(rng));
+            }
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void button1_Click_1(object sender, RibbonControlEventArgs e)
         {
-          
+            Excel.Range rng = _app.Selection;
+            ExcelHelper.ClearFormatConditions(rng);
         }
 
-        private void splitButton1_Click(object sender, RibbonControlEventArgs e)
+        private void BtnCol_Click(object sender, RibbonControlEventArgs e)
         {
-
+            Excel.Range rng = _app.Selection;
+            ExcelHelper.ClearFormatConditions(rng);
+            ConditonsFormatManager formatManager = new ConditonsFormatManager();
+            List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(a=>a.ColumnName == "Выделение");
+            conditions.ForEach(x => x.SetCondition(rng));
+            /*
+               Excel.Range rng = _app.Selection;
+            ConditonsFormatManager formatManager = new ConditonsFormatManager();
+            List<ConditionFormat> conditions = formatManager.ListConditionFormats;
+            conditions.ForEach(x => x.SetCondition(rng));
+             */
         }
     }
 }
