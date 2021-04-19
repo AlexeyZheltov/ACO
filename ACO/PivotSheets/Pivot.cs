@@ -15,17 +15,18 @@ namespace ACO.PivotSheets
     class Pivot
     {
         //private int const rowStart= 
-        Excel.Application _app = Globals.ThisAddIn.Application;
-        Excel.Worksheet _SheetUrv12;
-        Excel.Worksheet _SheetUrv11;
-        Excel.Worksheet _SheetPalette;
+        readonly Excel.Application _app = Globals.ThisAddIn.Application;
+        readonly Excel.Worksheet _SheetUrv12;
+        readonly Excel.Worksheet _SheetUrv11;
+        readonly Excel.Worksheet _SheetPalette;
+        readonly Excel.Worksheet _AnalisysSheet;
+        readonly ProjectManager.ProjectManager _projectManager;
+        readonly Project _project;
+        readonly IProgressBarWithLogUI pb;
 
-        Excel.Worksheet _AnalisysSheet;
-        ProjectManager.ProjectManager _projectManager;
-        Project _project;
-
-        public Pivot()
+        public Pivot(IProgressBarWithLogUI pb)
         {
+            this.pb = pb;
             Excel.Workbook wb = _app.ActiveWorkbook;
             _SheetUrv12 = ExcelHelper.GetSheet(wb, "Урв12");
             _SheetUrv11 = ExcelHelper.GetSheet(wb, "Урв11");
@@ -81,9 +82,9 @@ namespace ACO.PivotSheets
         /// Добавить список
         /// Добавить столбцы КП
         /// Проставить формулы
-        public void LoadUrv12(IProgressBarWithLogUI pb)
+        public void LoadUrv12()
         {
-            pb.SetMainBarVolum(4);
+            pb.SetMainBarVolum(6);
             pb.MainBarTick("Очистка");
             ClearDataRng12();
             string letterName = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
@@ -181,11 +182,14 @@ namespace ACO.PivotSheets
                     rowPaste++;
                 }
             }
+            pb.MainBarTick("Формулы итогов");
             TotalFormuls12();
+            pb.MainBarTick("Формат ячеек");
             SetNumberFormat12(addresses.Count);
+            pb.MainBarTick("Общие комментарии");
             new OfferInfo(projectWorkbook).SetInfo();
             
-            pb.MainBarTick("Удаление стр №13");
+            pb.MainBarTick("Удаление строки №13");
             Excel.Range rng = _SheetUrv12.Cells[13, 1];
             rng.EntireRow.Delete();
             _SheetUrv12.Activate();
@@ -222,7 +226,7 @@ namespace ACO.PivotSheets
         ///  Обновление значений урв 12
         /// </summary>
         /// <param name="pb"></param>
-        internal void UpdateUrv12(IProgressBarWithLogUI pb)
+        internal void UpdateUrv12()
         {
             pb.SetMainBarVolum(1);
             pb.MainBarTick("Обновление формул \"Урв 12\"");
@@ -310,13 +314,13 @@ namespace ACO.PivotSheets
                                         $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
                 }
                 //TODO подсчитать кол-во.
-                PrintTotalComments(address, colPaste);
+                PrintTotalComments(address);
 
             }
             //TODO загрузить наиболее дорогии позиции 
         }
 
-        private void PrintTotalComments(OfferAddress address, int colPaste)
+        private void PrintTotalComments(OfferAddress address)
         {
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
             int countChangedName = 0;
@@ -324,7 +328,6 @@ namespace ACO.PivotSheets
             {
                 string changedName = _AnalisysSheet.Cells[row, address.ColStartOfferComments].Value?.ToString() ?? "";
                 if (changedName == "ЛОЖЬ") { countChangedName++; }
-
             }
         }
 
@@ -510,7 +513,7 @@ namespace ACO.PivotSheets
             }
         }
 
-        public void LoadUrv11(IProgressBarWithLogUI pb)
+        public void LoadUrv11()
         {
             pb.SetMainBarVolum(5);
             pb.MainBarTick("Очистка");
@@ -708,7 +711,7 @@ namespace ACO.PivotSheets
             return lastCol;
         }
 
-        internal void UpdateUrv11(IProgressBarWithLogUI pb)
+        internal void UpdateUrv11()
         {
             pb.SetMainBarVolum(2);
             pb.MainBarTick("Обновление \"Урв 11\"");

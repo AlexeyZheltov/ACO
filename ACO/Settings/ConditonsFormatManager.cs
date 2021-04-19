@@ -31,7 +31,7 @@ namespace ACO
 
         private List<ConditionFormat> GetFromXML()
         {
-            List<ConditionFormat> listConditionFormats = new List<ConditionFormat>();
+            List<ConditionFormat> listConditionFormats;
             string filename = GetPath();
             if (File.Exists(filename))
             {
@@ -49,181 +49,166 @@ namespace ACO
         private List<ConditionFormat> GetDefault()
         {
 
-            List<ConditionFormat> listConditionFormats = new List<ConditionFormat>();
-            listConditionFormats.Add(
-            new ConditionFormat()
+            List<ConditionFormat> listConditionFormats = new List<ConditionFormat>
             {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
-                Operator = "Содержит",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.White,
-                Text = "#НД"
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
-                Operator = "Меньше",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.Yellow,
-                Formula1 = -0.15
-            });
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
+                    Operator = "Содержит",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.White,
+                    Text = "#НД"
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
+                    Operator = "Меньше",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.Yellow,
+                    Formula1 = -0.15
+                },
 
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
-                Operator = "Между",
-                FontBold = false,
-                ForeColor = Color.Brown,
-                InteriorColor = Color.LightYellow,
-                Formula1 = -0.15,
-                Formula2 = -0.05
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
-                Operator = "Между",
-                FontBold = false,
-                ForeColor = Color.Black,
-                InteriorColor = Color.LightPink,
-                Formula1 = 0.05,
-                Formula2 = 0.15
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
-                Operator = "Больше",
-                FontBold = false,
-                ForeColor = Color.White,
-                InteriorColor = Color.Red,
-                Formula1 = 0.15
-            });
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Brown,
+                    InteriorColor = Color.LightYellow,
+                    Formula1 = -0.15,
+                    Formula2 = -0.05
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Black,
+                    InteriorColor = Color.LightPink,
+                    Formula1 = 0.05,
+                    Formula2 = 0.15
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost],
+                    Operator = "Больше",
+                    FontBold = false,
+                    ForeColor = Color.White,
+                    InteriorColor = Color.Red,
+                    Formula1 = 0.15
+                },
 
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
-                Operator = "Содержит",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.White,
-                Text = "#НД"
-            }
-            );
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
-                Operator = "Меньше",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.Yellow,
-                Formula1 = -0.15
-            });
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
+                    Operator = "Содержит",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.White,
+                    Text = "#НД"
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
+                    Operator = "Меньше",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.Yellow,
+                    Formula1 = -0.15
+                },
 
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
-                Operator = "Между",
-                FontBold = false,
-                ForeColor = Color.Brown,
-                InteriorColor = Color.LightYellow,
-                Formula1 = -0.15,
-                Formula2 = -0.05
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
-                Operator = "Между",
-                FontBold = false,
-                ForeColor = Color.Black,
-                InteriorColor = Color.LightPink,
-                Formula1 = 0.05,
-                Formula2 = 0.15
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
-                Operator = "Больше",
-                FontBold = false,
-                ForeColor = Color.White,
-                InteriorColor = Color.Red,
-                Formula1 = 0.15
-            });
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Brown,
+                    InteriorColor = Color.LightYellow,
+                    Formula1 = -0.15,
+                    Formula2 = -0.05
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Black,
+                    InteriorColor = Color.LightPink,
+                    Formula1 = 0.05,
+                    Formula2 = 0.15
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat],
+                    Operator = "Больше",
+                    FontBold = false,
+                    ForeColor = Color.White,
+                    InteriorColor = Color.Red,
+                    Formula1 = 0.15
+                },
 
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
-                Operator = "Содержит",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.White,
-                Text = "#НД"
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
-                Operator = "Меньше",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.Yellow,
-                Formula1 = -0.15
-            });
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
+                    Operator = "Содержит",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.White,
+                    Text = "#НД"
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
+                    Operator = "Меньше",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.Yellow,
+                    Formula1 = -0.15
+                },
 
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
-                Operator = "Между",
-                FontBold = false,
-                ForeColor = Color.Brown,
-                InteriorColor = Color.LightYellow,
-                Formula1 = -0.15,
-                Formula2 = -0.05
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
-                Operator = "Между",
-                FontBold = false,
-                ForeColor = Color.Black,
-                InteriorColor = Color.LightPink,
-                Formula1 = 0.05,
-                Formula2 = 0.15
-            });
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
-                Operator = "Больше",
-                FontBold = false,
-                ForeColor = Color.White,
-                InteriorColor = Color.Red,
-                Formula1 = 0.15
-            });
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Brown,
+                    InteriorColor = Color.LightYellow,
+                    Formula1 = -0.15,
+                    Formula2 = -0.05
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Black,
+                    InteriorColor = Color.LightPink,
+                    Formula1 = 0.05,
+                    Formula2 = 0.15
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks],
+                    Operator = "Больше",
+                    FontBold = false,
+                    ForeColor = Color.White,
+                    InteriorColor = Color.Red,
+                    Formula1 = 0.15
+                },
 
-            listConditionFormats.Add(
-            new ConditionFormat()
-            {
-                ColumnName = "Выделение",
-                Operator = "Содержит",
-                FontBold = false,
-                ForeColor = Color.Red,
-                InteriorColor = Color.White,
-                Text = "#НД"
-            });
-        return listConditionFormats;
+                new ConditionFormat()
+                {
+                    ColumnName = "Выделение",
+                    Operator = "Содержит",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.White,
+                    Text = "#НД"
+                }
+            };
+            return listConditionFormats;
         }
         List<ConditionFormat> _ListConditionFormats;
 
@@ -254,9 +239,11 @@ namespace ACO
             XElement xeConditions = root.Element("Conditions");
             foreach (XElement xeCondition in xeConditions.Elements())
             {
-                ConditionFormat conditionFormat = new ConditionFormat();
-                conditionFormat.ColumnName = xeCondition.Attribute("ColumnName").Value;
-                conditionFormat.Operator = xeCondition.Attribute("Operator").Value;
+                ConditionFormat conditionFormat = new ConditionFormat
+                {
+                    ColumnName = xeCondition.Attribute("ColumnName").Value,
+                    Operator = xeCondition.Attribute("Operator").Value
+                };
                 string formula1 = xeCondition.Attribute("Formula1").Value;
 
                 conditionFormat.Text = xeCondition.Attribute("Text").Value;

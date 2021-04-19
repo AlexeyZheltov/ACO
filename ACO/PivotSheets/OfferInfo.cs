@@ -16,17 +16,21 @@ namespace ACO.PivotSheets
             НЕ оценено на сумму				                            РУБ БЕЗ НДС
             Выявленные ошибки				                            РУБ БЕЗ НДС
             Итого включая не оцененные работы и корректировку ошибок	РУБ БЕЗ НДС
-
          */
 
-        Excel.Application _app = Globals.ThisAddIn.Application;
-        Excel.Worksheet _SheetUrv12;
-        Excel.Worksheet _AnalisysSheet;
-        ProjectWorkbook _projectWorkbook;
-        ProjectManager.ProjectManager _projectManager;
-        ProjectManager.Project _project;
+        readonly Excel.Application _app = Globals.ThisAddIn.Application;
+        readonly Excel.Worksheet _SheetUrv12;
+        readonly Excel.Worksheet _AnalisysSheet;
+        readonly ProjectWorkbook _projectWorkbook;
+        readonly ProjectManager.ProjectManager _projectManager;
+        readonly ProjectManager.Project _project;
 
-       public OfferInfo(ProjectWorkbook projectWorkbook)
+        //Описание менялось
+        string _rangeChengedNames;
+        string _rangeCostComments;
+      //  string _rangeCostTotal;
+
+        public OfferInfo(ProjectWorkbook projectWorkbook)
         {
             Excel.Workbook wb = _app.ActiveWorkbook;
             _projectWorkbook = projectWorkbook;
@@ -74,39 +78,34 @@ namespace ACO.PivotSheets
                                                         $"+{_SheetUrv12.Cells[row - 2, column].Address}";
 
 
-            Excel.Range rngOfferSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column], _SheetUrv12.Cells[rowTotalSumm - 2,column]];
-            Excel.Range rngOfferCommentCost = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column+3], _SheetUrv12.Cells[rowTotalSumm - 2,column+3]];
-            Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, 4], _SheetUrv12.Cells[ rowTotalSumm - 2, 4]];
+            Excel.Range rngOfferSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column], _SheetUrv12.Cells[rowTotalSumm - 2, column]];
+            Excel.Range rngOfferCommentCost = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column + 3], _SheetUrv12.Cells[rowTotalSumm - 2, column + 3]];
+            Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, 4], _SheetUrv12.Cells[rowTotalSumm - 2, 4]];
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
 
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">0.1\",{rngOfferSum.Address}) - {rngOfferCommentCost.Address}, \">0.1\" ,{rngBasisSum.Address})";
-                        
+
             row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=\"#НД\"\",{rngOfferSum.Address} )";
-            
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address},\"#НД\",{rngOfferSum.Address} )";
+
             row = ExcelHelper.FindCell(_SheetUrv12, "НЕ оценено на сумму").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=\"#НД\"\",{rngBasisSum.Address} )";
         }
 
-        //Описание менялось
-        string _rangeChengedNames = "";
-        string _rangeCostComments = "";
-        string _rangeCostTotal = "";
         private void SetColumns(OfferAddress address)
         {
-
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
             int rowStart = _project.RowStart;
-            
+
             Excel.Range range = _AnalisysSheet.Range[
-                    _AnalisysSheet.Cells[rowStart, address.ColStartOfferComments], 
+                    _AnalisysSheet.Cells[rowStart, address.ColStartOfferComments],
                     _AnalisysSheet.Cells[lastRow, address.ColStartOfferComments]];
 
             _rangeChengedNames = $"'{_AnalisysSheet.Name}'!{range.Address}";
 
             range = _AnalisysSheet.Range[
-                    _AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1], 
+                    _AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1],
                     _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
 
             _rangeCostComments = $"'{_AnalisysSheet.Name}'!{range.Address}";

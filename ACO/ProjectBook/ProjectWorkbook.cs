@@ -13,8 +13,8 @@ namespace ACO
 {
     public class ProjectWorkbook
     {
-        Excel.Workbook _ProjectBook = Globals.ThisAddIn.Application.ActiveWorkbook;
-        Project _project;
+        readonly Excel.Workbook _ProjectBook = Globals.ThisAddIn.Application.ActiveWorkbook;
+        readonly Project _project;
         public Excel.Worksheet AnalisysSheet
         {
             get
@@ -31,7 +31,7 @@ namespace ACO
             }
         }
         Excel.Worksheet _AnalisysSheet;
-        Excel.Worksheet _SheetPallet;
+        readonly Excel.Worksheet _SheetPallet;
 
         public List<OfferAddress> OfferAddress
         {
@@ -255,8 +255,7 @@ namespace ACO
 
         public void GroupColumns()
         {
-            int lastColumn = AnalisysSheet.UsedRange.Column - AnalisysSheet.UsedRange.Columns.Count - 1;
-
+          //  int lastColumn = AnalisysSheet.UsedRange.Column - AnalisysSheet.UsedRange.Columns.Count - 1;
         }
 
         public void ShowGroups()

@@ -391,8 +391,6 @@ namespace ACO
             pb.ClearMainBar();
         }
 
-
-
         /// <summary>
         ///  Определить номера столбцов с ко-ом для загруженных П
         /// </summary>
@@ -454,7 +452,6 @@ namespace ACO
                         pb.MainBarTick("Уловное форматирование ячеек комментариев");
                         pb.SetSubBarVolume(count);
                         ExcelAcselerate(true);
-                        int k = 0;
                         for (int row = startRow; row <= lastRow; row++)
                         {
                             pb.SubBarTick();
@@ -468,7 +465,6 @@ namespace ACO
                         }
                         //  ExcelAcselerate(false);
                         pb.CloseFrm();
-
                     }
                     catch (AddInException addinEx)
                     {
@@ -501,7 +497,7 @@ namespace ACO
                 ExcelAcselerate(true);
                 try
                 {
-                    new PivotSheets.Pivot().LoadUrv11(pb);
+                    new PivotSheets.Pivot(pb).LoadUrv11();
                     pb.CloseFrm();
                 }
                 catch (AddInException addinEx)
@@ -535,7 +531,7 @@ namespace ACO
                 try
                 {
                     ExcelAcselerate(true);
-                    new PivotSheets.Pivot().LoadUrv12(pb);
+                    new PivotSheets.Pivot(pb).LoadUrv12();
                     pb.CloseFrm();
                 }
                 catch (AddInException addinEx)
@@ -564,7 +560,7 @@ namespace ACO
                 {
                     ExcelAcselerate(true);
                     pb.Show();
-                    new PivotSheets.Pivot().UpdateUrv11(pb);
+                    new PivotSheets.Pivot(pb).UpdateUrv11();
                     pb.CloseFrm();
                 }
                 catch (AddInException addinEx)
@@ -592,7 +588,7 @@ namespace ACO
                 try
                 {
                     ExcelAcselerate(true);
-                    new PivotSheets.Pivot().UpdateUrv12(pb);
+                    new PivotSheets.Pivot(pb).UpdateUrv12();
                     pb.CloseFrm();
                 }
                 catch (AddInException addinEx)
@@ -645,8 +641,7 @@ namespace ACO
                 conditions.ForEach(x => x.SetCondition(rng));
             }
         }
-
-        private void button1_Click_1(object sender, RibbonControlEventArgs e)
+        private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
             ExcelHelper.ClearFormatConditions(rng);
@@ -666,5 +661,7 @@ namespace ACO
             conditions.ForEach(x => x.SetCondition(rng));
              */
         }
+
+       
     }
 }

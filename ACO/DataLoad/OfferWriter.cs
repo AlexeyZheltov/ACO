@@ -12,25 +12,25 @@ namespace ACO
 {
     class OfferWriter
     {
-        Excel.Application _app = default;
+        readonly Excel.Application _app = default;
+
         /// <summary>
         ///  Текущая книга с проектом
         /// </summary>
-        Excel.Workbook _wb = null;
+        readonly Excel.Workbook _wb = null;
 
         /// <summary>
         ///  Книга КП
         /// </summary>
         // ExcelFile
-        Excel.Workbook _offerBook = null;
+        readonly Excel.Workbook _offerBook = null;
 
         /// <summary>
         /// Лист  Анализ
         /// </summary>
         Excel.Worksheet _sheetProject = null;
-        OfferManager _offerManager = null;
-
-        Project _CurrentProject = null;
+        readonly OfferManager _offerManager = null;
+        readonly Project _CurrentProject = null;
 
         public OfferWriter(ExcelFile offerBook)
         {

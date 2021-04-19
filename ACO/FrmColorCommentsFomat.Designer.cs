@@ -201,8 +201,8 @@ namespace ACO
             this.RulesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.RulesDataGrid.Size = new System.Drawing.Size(486, 206);
             this.RulesDataGrid.TabIndex = 0;
-            this.RulesDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.customDataGrid_CellClick);
-            this.RulesDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.customDataGrid_CellValueChanged);
+            this.RulesDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellClick);
+            this.RulesDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellValueChanged);
             // 
             // ColumnID
             // 

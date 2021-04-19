@@ -44,6 +44,8 @@
             this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
             this.SptBtnFormatComments = this.Factory.CreateRibbonSplitButton();
             this.BtnFormatComments = this.Factory.CreateRibbonButton();
+            this.BtnCol = this.Factory.CreateRibbonButton();
+            this.BtnClearFormateContions = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
             this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
             this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
@@ -57,8 +59,6 @@
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.BtnCol = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -137,7 +137,7 @@
             this.SptBtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnFormatComments.Image")));
             this.SptBtnFormatComments.Items.Add(this.BtnFormatComments);
             this.SptBtnFormatComments.Items.Add(this.BtnCol);
-            this.SptBtnFormatComments.Items.Add(this.button1);
+            this.SptBtnFormatComments.Items.Add(this.BtnClearFormateContions);
             this.SptBtnFormatComments.Label = "Форматирование комментариев";
             this.SptBtnFormatComments.Name = "SptBtnFormatComments";
             this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
@@ -149,6 +149,22 @@
             this.BtnFormatComments.Name = "BtnFormatComments";
             this.BtnFormatComments.ShowImage = true;
             this.BtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatComments_Click);
+            // 
+            // BtnCol
+            // 
+            this.BtnCol.Image = ((System.Drawing.Image)(resources.GetObject("BtnCol.Image")));
+            this.BtnCol.Label = "Применить к выделеному";
+            this.BtnCol.Name = "BtnCol";
+            this.BtnCol.ShowImage = true;
+            this.BtnCol.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCol_Click);
+            // 
+            // BtnClearFormateContions
+            // 
+            this.BtnClearFormateContions.Image = ((System.Drawing.Image)(resources.GetObject("BtnClearFormateContions.Image")));
+            this.BtnClearFormateContions.Label = "Очистить";
+            this.BtnClearFormateContions.Name = "BtnClearFormateContions";
+            this.BtnClearFormateContions.ShowImage = true;
+            this.BtnClearFormateContions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnClearFormateContions_Click);
             // 
             // group2
             // 
@@ -260,22 +276,6 @@
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
             // 
-            // BtnCol
-            // 
-            this.BtnCol.Image = ((System.Drawing.Image)(resources.GetObject("BtnCol.Image")));
-            this.BtnCol.Label = "Применить к выделеному";
-            this.BtnCol.Name = "BtnCol";
-            this.BtnCol.ShowImage = true;
-            this.BtnCol.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCol_Click);
-            // 
-            // button1
-            // 
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Label = "Очистить";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click_1);
-            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -324,7 +324,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnFormatComments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatComments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCol;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnClearFormateContions;
     }
 
     partial class ThisRibbonCollection

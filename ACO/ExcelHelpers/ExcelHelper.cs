@@ -70,7 +70,6 @@ namespace ACO.ExcelHelpers
                     {
                         (string f_column, string l_column) = columns_pair;
                         SetCellFormat(ws.Range[$"{f_column}{row}:{l_column}{row}"], pallet);
-
                         //ws.Range[$"{f_column}{row}:{l_column}{row}"].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 }
@@ -107,7 +106,6 @@ namespace ACO.ExcelHelpers
                     if (pb.IsAborted) break;
                     pb.SubBarTick();
                     currentRow = row.Row;
-
                     if (row.Row < 10) continue; 
 
                     if (int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
@@ -130,10 +128,8 @@ namespace ACO.ExcelHelpers
                         }
                     }
                 }
-
                 if (flag && currentRow > firstRow)
                     ws.Range[$"{firstRow}:{currentRow}"].Rows.Group();
-
                 flag = false;
             }
         }
@@ -280,20 +276,20 @@ namespace ACO.ExcelHelpers
         /// </summary>
         /// <param name="cell"></param>
         /// <returns></returns>
-        public static string GetText(Excel.Range cell)
-        {
-            bool IsXLCVErr(object obj)
-            {
-                return (obj) is Int32; // Ошибка Формулы Excel
-            }
-            string text = "";
-            Excel.Application app = Globals.ThisAddIn.Application;          
-            if (!IsXLCVErr(cell.Value))
-            {
-                text = cell?.Value?.ToString() ?? "";
-            }
-            return text;
-        }
+        //public static string GetText(Excel.Range cell)
+        //{
+        //    bool IsXLCVErr(object obj)
+        //    {
+        //        return (obj) is Int32; // Ошибка Формулы Excel
+        //    }
+        //    string text = "";
+        //    Excel.Application app = Globals.ThisAddIn.Application;          
+        //    if (!IsXLCVErr(cell.Value))
+        //    {
+        //        text = cell?.Value?.ToString() ?? "";
+        //    }
+        //    return text;
+        //}
 
         /// <summary>
         /// Ячейка в ржиме редактирования
@@ -357,14 +353,13 @@ namespace ACO.ExcelHelpers
                 rng.NumberFormat = "#,##0.00";
         }
 
+        /// <summary>
+        /// Удалить условное форматирование
+        /// </summary>
+        /// <param name="rng"></param>
         internal static void ClearFormatConditions(Excel.Range rng)
         {
-            //Excel.Range rng = _app.Selection;
             rng.FormatConditions.Delete();
-            //foreach (Excel.FormatCondition condition in rng.FormatConditions)
-            //{
-            //    condition.Delete();
-            //}
         }
     }
 }

@@ -11,8 +11,8 @@ namespace ACO
     {
         public List<ConditionFormat> _ListCondintions;
         ConditionFormat _ConditionFormat;
+        readonly ConditonsFormatManager manager;
 
-        ConditonsFormatManager manager;
         public FrmColorCommentsFomat()
         {
             InitializeComponent();
@@ -104,7 +104,7 @@ namespace ACO
             Close();
         }
 
-        private void customDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void CustomDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
             int id = (int)RulesDataGrid.Rows[e.RowIndex].Cells[0].Value;
@@ -119,7 +119,7 @@ namespace ACO
             }
         }
 
-        private void customDataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void CustomDataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex != 2) return;
             string operatorequal = RulesDataGrid.Rows[e.RowIndex].Cells[2].Value?.ToString();

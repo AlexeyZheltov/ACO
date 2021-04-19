@@ -18,6 +18,9 @@ namespace ACO
         public Excel.Worksheet SheetAnalysis { get; }
         public Project CurrentProject { get; }
 
+        int _rowStart = 1;
+        int _lastRow = 1;
+        private readonly List<Record> _levelRecords;
         /// <summary>
         ///  Столбец для вставки загруд
         /// </summary>
@@ -38,13 +41,6 @@ namespace ACO
         }
         int _ColumnStartPrint = 0;
 
-        public ListAnalysis()
-        {
-        }
-
-        int _rowStart = 1;
-        int _lastRow = 1;
-
         public ListAnalysis(Excel.Worksheet sheetProjerct, Project currentProject)
         {
             SheetAnalysis = sheetProjerct;
@@ -53,13 +49,10 @@ namespace ACO
             _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 1;
         }
 
-        List<Record> _levelRecords;
-
         public void PrintRecord(Record recordPrint)
         {
-            int rowPaste = 0;
-            Record recordAnalysis = null;
-            recordAnalysis = GetRecocdAnalysis(_rowStart);
+            int rowPaste;             
+           Record recordAnalysis = GetRecocdAnalysis(_rowStart);
 
             if (recordAnalysis.KeyEqual(recordPrint))
             {
@@ -95,9 +88,9 @@ namespace ACO
                 PrintValues(recordPrint, rowPaste);
                 SetLevel(recordPrint.Level, rowPaste);
                 _rowStart = rowPaste + 1;
-
             }
         }
+
         private void SetLevel(int lvl, int row)
         {
             string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
@@ -234,7 +227,7 @@ namespace ACO
                 }
             }
         }
-        ///----------------------------------------------------
+
         /// <summary>
         ///  Запись строки КП на лист Анализ. Вставка строк.
         /// </summary>
@@ -379,7 +372,7 @@ namespace ACO
         }
 
 
-    
+
         /// <summary>
         ///  Метки комментариев 
         /// </summary>
@@ -405,7 +398,6 @@ namespace ACO
           "Отклонение МАТ";
           "Отклонение РАБ";
           "Комментарии к строкам";
-
         */
         public static Dictionary<StaticColumnsComments, string> ColumnCommentsValues =
               new Dictionary<StaticColumnsComments, string>()
@@ -419,8 +411,6 @@ namespace ACO
                   {StaticColumnsComments.DeviationWorks ,"Отклонение РАБ" },
                   {StaticColumnsComments.Comments,"Комментарии к строкам" }
               };
-
-
 
         public void GroupColumn()
         {
@@ -463,17 +453,17 @@ namespace ACO
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames + 1], SheetAnalysis.Cells[1, colCostMaterialsPerUnit - 1]];
             rng.Columns.Group();
         }
+    }
 
-    }   
     public enum StaticColumnsComments
-        {
-            CommentDiscriptionWorks,
-            DeviationVolume,
-            CommentsVolume,
-            DeviationCost,
-            CommentsCost,
-            DeviationMat,
-            DeviationWorks,
-            Comments
-        }
+    {
+        CommentDiscriptionWorks,
+        DeviationVolume,
+        CommentsVolume,
+        DeviationCost,
+        CommentsCost,
+        DeviationMat,
+        DeviationWorks,
+        Comments
+    }
 }

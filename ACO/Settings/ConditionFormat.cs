@@ -12,7 +12,7 @@ namespace ACO
         public int ID { set; get; }
         public string ColumnName { set; get; } = "";
 
-        public Excel.XlFormatConditionOperator xlFormatConditionOperator
+        public Excel.XlFormatConditionOperator XlFormatConditionOperator
         {
             set
             {
@@ -42,7 +42,7 @@ namespace ACO
         public string Text { set; get; }
 
 
-        private static Dictionary<string, Excel.XlFormatConditionOperator> Operators =
+        private static readonly Dictionary<string, Excel.XlFormatConditionOperator> Operators =
                new Dictionary<string, Excel.XlFormatConditionOperator>()
            {
                 {"Больше",Excel.XlFormatConditionOperator.xlGreater},
@@ -51,17 +51,15 @@ namespace ACO
                 { "Меньше равно",Excel.XlFormatConditionOperator.xlLessEqual },
                 { "Между",Excel.XlFormatConditionOperator.xlBetween },
                 {"Равно",Excel.XlFormatConditionOperator.xlEqual },
-                {"Не равно",Excel.XlFormatConditionOperator.xlNotEqual },             
+                {"Не равно",Excel.XlFormatConditionOperator.xlNotEqual },
            };
 
         public void SetCondition(Excel.Range range)
         {
-            Excel.Application app = Globals.ThisAddIn.Application;
-            Excel.FormatCondition condition = null;
+            //  Excel.Application app = Globals.ThisAddIn.Application;
+            Excel.FormatCondition condition;
             try
             {
-
-
                 if (Operator == "Содержит")
                 {
                     condition = range.FormatConditions.Add(
@@ -74,7 +72,7 @@ namespace ACO
                 {
                     condition = range.FormatConditions.Add(
                     Type: Excel.XlFormatConditionType.xlCellValue,
-                    Operator: xlFormatConditionOperator,
+                    Operator: XlFormatConditionOperator,
                     Formula1: $"={Formula1}",
                     Formula2: $"={Formula2}"
                     );
@@ -83,7 +81,7 @@ namespace ACO
                 {
                     condition = range.FormatConditions.Add(
                Type: Excel.XlFormatConditionType.xlCellValue,
-               Operator: xlFormatConditionOperator,
+               Operator: XlFormatConditionOperator,
                Formula1: $"={Formula1}");
                 }
                 condition.Interior.Color = InteriorColor;
