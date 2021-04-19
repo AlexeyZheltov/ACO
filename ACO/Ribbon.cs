@@ -300,7 +300,7 @@ namespace ACO
 
             //======1=======
             pb.MainBarTick("Разгруппировать список");
-            ExcelHelper.UnGroup(ws);
+            ExcelHelper.UnGroupRows(ws);
             PbAbortedStopProcess(pb);
 
             HItem root = new HItem();
@@ -387,7 +387,7 @@ namespace ACO
 
 
             ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
-                                                    // ExcelAcselerate(false);
+
             pb.ClearMainBar();
         }
 
@@ -434,53 +434,53 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
-        {
-            ProjectWorkbook projectWorkbook = new ProjectWorkbook();
-            int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count - 1;
-            int startRow = projectWorkbook.GetFirstRow();
-            int count = lastRow - startRow + 1;
-            if (count > 0)
-            {
-                IProgressBarWithLogUI pb = new ProgressBarWithLog();
-                pb.Show();
-                await Task.Run(() =>
-                {
-                    try
-                    {
-                        pb.SetMainBarVolum(1);
-                        pb.MainBarTick("Уловное форматирование ячеек комментариев");
-                        pb.SetSubBarVolume(count);
-                        ExcelAcselerate(true);
-                        for (int row = startRow; row <= lastRow; row++)
-                        {
-                            pb.SubBarTick();
-                            PbAbortedStopProcess(pb);
-                            foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
-                            {
-                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
-                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterials]);
-                                projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
-                            }
-                        }
-                        //  ExcelAcselerate(false);
-                        pb.CloseFrm();
-                    }
-                    catch (AddInException addinEx)
-                    {
-                        pb.Writeline(addinEx.Message);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    finally
-                    {
-                        ExcelAcselerate(false);
-                    }
-                });
-            }
-        }
+        //private async void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    ProjectWorkbook projectWorkbook = new ProjectWorkbook();
+        //    int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count - 1;
+        //    int startRow = projectWorkbook.GetFirstRow();
+        //    int count = lastRow - startRow + 1;
+        //    if (count > 0)
+        //    {
+        //        IProgressBarWithLogUI pb = new ProgressBarWithLog();
+        //        pb.Show();
+        //        await Task.Run(() =>
+        //        {
+        //            try
+        //            {
+        //                pb.SetMainBarVolum(1);
+        //                pb.MainBarTick("Уловное форматирование ячеек комментариев");
+        //                pb.SetSubBarVolume(count);
+        //                ExcelAcselerate(true);
+        //                for (int row = startRow; row <= lastRow; row++)
+        //                {
+        //                    pb.SubBarTick();
+        //                    PbAbortedStopProcess(pb);
+        //                    foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+        //                    {
+        //                        projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
+        //                        projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterials]);
+        //                        projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
+        //                    }
+        //                }
+        //                //  ExcelAcselerate(false);
+        //                pb.CloseFrm();
+        //            }
+        //            catch (AddInException addinEx)
+        //            {
+        //                pb.Writeline(addinEx.Message);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //            }
+        //            finally
+        //            {
+        //                ExcelAcselerate(false);
+        //            }
+        //        });
+        //    }
+        //}
 
         /// <summary>
         ///  Запись формул на уровень
@@ -614,31 +614,50 @@ namespace ACO
         private void BtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
             new FrmColorCommentsFomat().ShowDialog();
-        }       
+        }
 
+
+        /// <summary>
+        ///  Окраска комментариев
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
-            ProjectWorkbook projectWorkbook = new ProjectWorkbook();
-            ExcelHelper.ClearFormatConditions(projectWorkbook.AnalisysSheet.UsedRange);
-                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
-            foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+            if (ExcelHelper.IsEditing()) return;
+            try
             {
-                /// Works
-            List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName == 
-                                             ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks]);
-           Excel.Range rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentWorks];
-            conditions.ForEach(x => x.SetCondition(rng));
-                /// Materials
-                conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
-                                            ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat]);
-                rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentMaterials];
-                conditions.ForEach(x => x.SetCondition(rng));
+                ExcelAcselerate(true);
+                ProjectWorkbook projectWorkbook = new ProjectWorkbook();
+                ExcelHelper.ClearFormatConditions(projectWorkbook.AnalisysSheet.UsedRange);
+                ConditonsFormatManager formatManager = new ConditonsFormatManager();
+                foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+                {
+                    /// Works
+                    List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
+                                                     ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks]);
+                    Excel.Range rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentWorks];
+                    conditions.ForEach(x => x.SetCondition(rng));
+                    /// Materials
+                    conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
+                                                ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat]);
+                    rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentMaterials];
+                    conditions.ForEach(x => x.SetCondition(rng));
 
-                /// Стоимость
-                conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
-                                            ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost]);
-                rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentTotal];
-                conditions.ForEach(x => x.SetCondition(rng));
+                    /// Стоимость
+                    conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
+                                                ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost]);
+                    rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentTotal];
+                    conditions.ForEach(x => x.SetCondition(rng));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
             }
         }
         private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
@@ -652,16 +671,130 @@ namespace ACO
             Excel.Range rng = _app.Selection;
             ExcelHelper.ClearFormatConditions(rng);
             ConditonsFormatManager formatManager = new ConditonsFormatManager();
-            List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(a=>a.ColumnName == "Выделение");
+            List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(a => a.ColumnName == "Выделение");
             conditions.ForEach(x => x.SetCondition(rng));
-            /*
-               Excel.Range rng = _app.Selection;
-            ConditonsFormatManager formatManager = new ConditonsFormatManager();
-            List<ConditionFormat> conditions = formatManager.ListConditionFormats;
-            conditions.ForEach(x => x.SetCondition(rng));
-             */
         }
 
-       
+        private void GroupColumns()
+        {
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            Project project = projectManager.ActiveProject;
+            Excel.Workbook wb = _app.ActiveWorkbook;
+            Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+            new ListAnalysis(sh, project).GroupColumn();
+        }
+        private void UngroupColumns()
+        {
+            //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            //Project project = projectManager.ActiveProject;
+            //Excel.Workbook wb = _app.ActiveWorkbook;
+            //Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+            ExcelHelper.UnGroupColumns(_app.ActiveSheet);
+        }
+        private void UngroupRows()
+        {            
+           ExcelHelper.UnGroupRows(_app.ActiveSheet);
+        }
+
+        /// <summary>
+        /// Группировка строк
+        /// </summary>
+        private void GroupRows()
+        {
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            pb.SetMainBarVolum(1);
+            try
+            {
+                ExcelAcselerate(true);
+                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+                Project project = projectManager.ActiveProject;
+                Excel.Workbook wb = _app.ActiveWorkbook;
+                Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+
+                string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+                pb.Writeline("Группировка строк");
+                ExcelHelper.Group(sh, pb, letterLevel);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                pb.ClearMainBar();
+                pb.CloseFrm();
+                ExcelAcselerate(false);
+            }
+        }
+
+        private void BtnGroupColumns_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
+            try
+            {
+                ExcelAcselerate(true);
+                GroupColumns();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
+        }
+
+        private void BtnGroupRows_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
+            try
+            {
+                ExcelAcselerate(true);
+
+                //new ListAnalysis(sh, project).GroupColumn();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
+        }
+
+        private void BtnUngroupColumns_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
+            try
+            {
+                ExcelAcselerate(true);
+                UngroupColumns();
+                //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+                //Project project = projectManager.ActiveProject;
+                //Excel.Workbook wb = _app.ActiveWorkbook;
+                //Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+                //ExcelHelper.UnGroupColumns(sh);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
+        }
+
+        private void BtnColorLevels_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnUngroupRows_Click(object sender, RibbonControlEventArgs e)
+        {
+            UngroupRows();
+        }
     }
 }

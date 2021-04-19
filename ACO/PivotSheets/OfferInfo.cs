@@ -84,13 +84,13 @@ namespace ACO.PivotSheets
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
 
-            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">0.1\",{rngOfferSum.Address}) - {rngOfferCommentCost.Address}, \">0.1\" ,{rngBasisSum.Address})";
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">0,1\",{rngOfferSum.Address}) - SUMIF({rngOfferCommentCost.Address}, \">0,1\" ,{rngBasisSum.Address})";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address},\"#НД\",{rngOfferSum.Address} )";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "НЕ оценено на сумму").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=\"#НД\"\",{rngBasisSum.Address} )";
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=#НД\",{rngBasisSum.Address} )";
         }
 
         private void SetColumns(OfferAddress address)

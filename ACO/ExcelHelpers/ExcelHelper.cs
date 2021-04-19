@@ -138,7 +138,7 @@ namespace ACO.ExcelHelpers
         /// Разгрупировывает группировку по строкам
         /// </summary>
         /// <param name="ws">Лист для разгруппировки</param>
-        public static void UnGroup(Excel.Worksheet ws)
+        public static void UnGroupRows(Excel.Worksheet ws)
         {
             try
             {
@@ -147,6 +147,16 @@ namespace ACO.ExcelHelpers
             }
             catch { }
         }
+        public static void UnGroupColumns(Excel.Worksheet ws)
+        {
+            try
+            {
+                while (true)
+                    ws.UsedRange.Columns.Ungroup();
+            }
+            catch { }
+        }
+
 
         /// <summary>
         /// поиск ячейки по тексту 

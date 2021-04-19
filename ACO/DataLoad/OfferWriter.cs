@@ -338,8 +338,7 @@ namespace ACO
                     Excel.Range cellPrint = _sheetProject.Cells[rowPaste, projectCollumn];
                     if (double.TryParse(text, out double number))
                     {
-                        cellPrint.Value = Math.Round(number, 2);
-                        // if(projectCollumn>1)  cellPrint.NumberFormat = "#,##0.00";
+                        cellPrint.Value = Math.Round(number, 2);                       
                     }
                     else if (!string.IsNullOrEmpty(text))
                     {

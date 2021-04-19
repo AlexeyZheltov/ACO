@@ -1,10 +1,8 @@
 ﻿using ACO.ExcelHelpers;
 using ACO.ProjectBook;
 using ACO.ProjectManager;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ACO.PivotSheets
@@ -61,7 +59,6 @@ namespace ACO.PivotSheets
             rng.PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
         }
 
-
         private void PrintTitlesOffers12(List<OfferAddress> addresses)
         {
             int i = 0;
@@ -84,7 +81,7 @@ namespace ACO.PivotSheets
         /// Проставить формулы
         public void LoadUrv12()
         {
-            pb.SetMainBarVolum(6);
+            pb.SetMainBarVolum(7);
             pb.MainBarTick("Очистка");
             ClearDataRng12();
             string letterName = _project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
@@ -182,6 +179,7 @@ namespace ACO.PivotSheets
                     rowPaste++;
                 }
             }
+
             pb.MainBarTick("Формулы итогов");
             TotalFormuls12();
             pb.MainBarTick("Формат ячеек");
@@ -252,7 +250,6 @@ namespace ACO.PivotSheets
                 if (pb.IsAborted) throw new AddInException("Процесс остановлен");
                 pb.SubBarTick();
                 colPaste += 5;
-
              
                 string textCost = _SheetUrv12.Cells[rowStart, colPaste].Value?.ToString() ?? "";
                 if (!string.IsNullOrEmpty(textCost)) continue;  // Пропустить заполненные КП
@@ -277,6 +274,7 @@ namespace ACO.PivotSheets
                         ExcelHelper.SetCellFormat(_SheetUrv12.Range[_SheetUrv12.Cells[row, colPaste], _SheetUrv12.Cells[row, colPaste + 4]], pallet);
                     }
                 }
+
                 int col = address.ColTotalCost - columnCellNumber + 1;
                 //РУБ. РФ
                 _SheetUrv12.Cells[rowStart, colPaste].Formula =
@@ -315,7 +313,6 @@ namespace ACO.PivotSheets
                 }
                 //TODO подсчитать кол-во.
                 PrintTotalComments(address);
-
             }
             //TODO загрузить наиболее дорогии позиции 
         }
@@ -355,7 +352,6 @@ namespace ACO.PivotSheets
             }
             if (!string.IsNullOrEmpty(formulaSumm))
             {
-
                 _SheetUrv12.Cells[rowBottomTotal, 4].Formula = formulaSumm;
                 _SheetUrv12.Cells[rowBottomTotal + 1, 4].Formula =
                                     $"={_SheetUrv12.Cells[rowBottomTotal, 4].Address}*0.2";
@@ -391,8 +387,6 @@ namespace ACO.PivotSheets
                                         $"{_SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
                     colPaste += 5;
                 }
-
-               // string formula = GetFormuls();
             }
         }
 
@@ -467,8 +461,6 @@ namespace ACO.PivotSheets
                 //_SheetUrv11.Cells[rowBottomTotal + 5, colPaste + 1].NumberFormat = "0%";
                 //_SheetUrv11.Cells[rowBottomTotal + 5, colPaste].Formula =
                 //                    $"={_SheetUrv11.Cells[rowBottomTotal + 4, colPaste].Address}+{_SheetUrv11.Cells[rowBottomTotal + 2, colPaste].Address}";
-
-
                 colPaste += 3;
             }
         }
@@ -484,7 +476,10 @@ namespace ACO.PivotSheets
             return rowBottomTotal - 2;
         }
 
-
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="colPaste"></param>
         private void PasteTitleOffer11(int colPaste)
         {
             int rowBottomTotal = ExcelHelper.FindCell(_SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
@@ -612,50 +607,6 @@ namespace ACO.PivotSheets
         }
 
         /// <summary>
-        ///  Обновление Диаграммы
-        /// </summary>
-        internal void UpdateDiagramm()
-        {
-            Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
-            Excel.Chart chartPage = shp.Chart;
-            Excel.SeriesCollection seriesCol = (Excel.SeriesCollection)chartPage.SeriesCollection();
-            Excel.FullSeriesCollection fullColl = chartPage.FullSeriesCollection();
-            Debug.WriteLine(fullColl.Count);
-
-            int rowStart = 13;
-            int lastCol = GetLastColumnUrv(_SheetUrv11, 13);
-            int lastRow = GetLastRowUrv11();
-            int ix = 1;
-            string letterCost = "G";
-            fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
-            fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
-            fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
-
-            for (int col = 9; col <= lastCol; col += 3)
-            {
-                Excel.Range cellFirstCost = _SheetUrv11.Cells[13, col];
-                string text = cellFirstCost.Value?.ToString() ?? "";
-                if (string.IsNullOrEmpty(text)) continue;
-                letterCost = ExcelHelper.GetColumnLetter(cellFirstCost);
-                ix++;
-                if (ix > fullColl.Count)
-                {
-                    seriesCol.NewSeries();
-                }
-                fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
-                fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
-                fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
-            }
-            if (ix < fullColl.Count)
-            {
-                for (int i = ix + 1; i <= fullColl.Count; i++)
-                {
-                    fullColl.Item(i).Delete();
-                }
-            }
-        }
-
-        /// <summary>
         ///  Номера столбцов заполненных кп
         /// </summary>
         /// <returns></returns>
@@ -711,6 +662,9 @@ namespace ACO.PivotSheets
             return lastCol;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         internal void UpdateUrv11()
         {
             pb.SetMainBarVolum(2);
@@ -766,5 +720,50 @@ namespace ACO.PivotSheets
             pb.MainBarTick("Обновление диаграммы");
             UpdateDiagramm();
         }
+
+        /// <summary>
+        ///  Обновление Диаграммы
+        /// </summary>
+        internal void UpdateDiagramm()
+        {
+            Excel.ChartObject shp = _SheetUrv11.ChartObjects("Chart 2");
+            Excel.Chart chartPage = shp.Chart;
+            Excel.SeriesCollection seriesCol = (Excel.SeriesCollection)chartPage.SeriesCollection();
+            Excel.FullSeriesCollection fullColl = chartPage.FullSeriesCollection();
+            Debug.WriteLine(fullColl.Count);
+
+            int rowStart = 13;
+            int lastCol = GetLastColumnUrv(_SheetUrv11, 13);
+            int lastRow = GetLastRowUrv11();
+            int ix = 1;
+            string letterCost = "G";
+            fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
+            fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
+            fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
+
+            for (int col = 9; col <= lastCol; col += 3)
+            {
+                Excel.Range cellFirstCost = _SheetUrv11.Cells[13, col];
+                string text = cellFirstCost.Value?.ToString() ?? "";
+                if (string.IsNullOrEmpty(text)) continue;
+                letterCost = ExcelHelper.GetColumnLetter(cellFirstCost);
+                ix++;
+                if (ix > fullColl.Count)
+                {
+                    seriesCol.NewSeries();
+                }
+                fullColl.Item(ix).Name = $"={_SheetUrv11.Name}!${letterCost}10";
+                fullColl.Item(ix).Values = $"={_SheetUrv11.Name}!${letterCost}{rowStart}:${letterCost}{lastRow}";
+                fullColl.Item(ix).XValues = $"={_SheetUrv11.Name}!$C{rowStart}:$C{lastRow}";
+            }
+            if (ix < fullColl.Count)
+            {
+                for (int i = ix + 1; i <= fullColl.Count; i++)
+                {
+                    fullColl.Item(i).Delete();
+                }
+            }
+        }
+
     }
 }

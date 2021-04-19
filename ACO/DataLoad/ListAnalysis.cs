@@ -51,8 +51,8 @@ namespace ACO
 
         public void PrintRecord(Record recordPrint)
         {
-            int rowPaste;             
-           Record recordAnalysis = GetRecocdAnalysis(_rowStart);
+            int rowPaste;
+            Record recordAnalysis = GetRecocdAnalysis(_rowStart);
 
             if (recordAnalysis.KeyEqual(recordPrint))
             {
@@ -371,8 +371,6 @@ namespace ACO
             }
         }
 
-
-
         /// <summary>
         ///  Метки комментариев 
         /// </summary>
@@ -414,19 +412,31 @@ namespace ACO
 
         public void GroupColumn()
         {
+           ExcelHelper.UnGroupColumns(SheetAnalysis);
             GroupColumnsBasis();
+            GroupOfferColumns();
             List<OfferAddress> addresslist = new ProjectWorkbook().GetAddersses();
             foreach (OfferAddress address in addresslist)
             {
-                Excel.Range rngCoulumn = SheetAnalysis.Cells[1, address.ColComments];
-                rngCoulumn.Columns.Group();
-
-                rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
-                rngCoulumn.Columns.Group();
-
-                rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer + 1], SheetAnalysis.Cells[1, address.ColCost - 1]];
+                GroupCommetnsColumns(address);
+            }
+        }
+        private void GroupOfferColumns()
+        {
+            ProjectWorkbook projectWorkbook = new ProjectWorkbook();
+            foreach (OfferAddress address in projectWorkbook.OfferAddress)
+            {
+                Excel.Range rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer + 1], SheetAnalysis.Cells[1, address.ColTotalCost - 1]];
                 rngCoulumn.Columns.Group();
             }
+        }
+            private void GroupCommetnsColumns(OfferAddress address)
+        {
+            Excel.Range rngCoulumn = SheetAnalysis.Cells[1, address.ColStartOfferComments-1];
+            rngCoulumn.Columns.Group();
+
+            rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer+1], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
+            rngCoulumn.Columns.Group();            
         }
 
         /// <summary>
@@ -434,23 +444,38 @@ namespace ACO
         /// </summary>
         public void GroupColumnsBasis()
         {
+            // Группировать столбцы A:B
             string letterNumber = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
-            Excel.Range rng = SheetAnalysis.Range[$"A:{letterNumber}"];
+            Excel.Range rng = SheetAnalysis.Range[$"{letterNumber}1"];
+            int colNumber = rng.Column;
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, 1], 
+                                      SheetAnalysis.Cells[1, colNumber-1]];
             rng.Columns.Group();
+
+            string letterBasisComment = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
+            SheetAnalysis.Range[$"{letterBasisComment}1"].Columns.Group();
 
             int colCostTotal = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
                 x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol, SheetAnalysis);
             int colNames = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
                x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol, SheetAnalysis);
 
-            // Комментарии
-            rng = SheetAnalysis.Cells[1, colCostTotal + 1];
+            // Комментарий базовой оценки
+           // rng = SheetAnalysis.Cells[1, colCostTotal + 1];
+           // rng.Columns.Group();
+
+            string letterUnit = CurrentProject.Columns.
+                            Find(x => x.Name == Project.ColumnsNames[StaticColumns.Unit]).ColumnSymbol;
+            Excel.Range cellUnit = SheetAnalysis.Range[$"{letterUnit}1"];
+
+            // доп аттрибуты базовой оценки
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames + 1], cellUnit];
             rng.Columns.Group();
 
+            //Базовая оценка стоимости
             int colCostMaterialsPerUnit = colCostTotal - 5;
-            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostMaterialsPerUnit], SheetAnalysis.Cells[1, colCostTotal - 1]];
-            rng.Columns.Group();
-            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colNames + 1], SheetAnalysis.Cells[1, colCostMaterialsPerUnit - 1]];
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostMaterialsPerUnit],
+                                      SheetAnalysis.Cells[1, colCostTotal-1]];
             rng.Columns.Group();
         }
     }
