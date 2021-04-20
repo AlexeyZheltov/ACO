@@ -87,6 +87,11 @@ namespace ACO
                     Name = Project.ColumnsNames[StaticColumns.Cipher],
                     ColumnSymbol = "L"
                 },
+                  new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.Label],
+                    ColumnSymbol = ""
+                },
                 new OfferColumnMapping()
                 {
                     Name = Project.ColumnsNames[StaticColumns.Number],
@@ -101,6 +106,11 @@ namespace ACO
                 {
                     Name = Project.ColumnsNames[StaticColumns.Amount],
                     ColumnSymbol = "U"
+                },
+                  new OfferColumnMapping()
+                {
+                    Name = Project.ColumnsNames[StaticColumns.ContractorAmount],
+                    ColumnSymbol = ""
                 },
                 new OfferColumnMapping()
                 {

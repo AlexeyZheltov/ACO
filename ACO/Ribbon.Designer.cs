@@ -98,7 +98,9 @@
             this.BtnCreateProgect.Image = ((System.Drawing.Image)(resources.GetObject("BtnCreateProgect.Image")));
             this.BtnCreateProgect.Label = "Открыть шаблон";
             this.BtnCreateProgect.Name = "BtnCreateProgect";
+            this.BtnCreateProgect.ScreenTip = "Создать новый проект на основе шаблона.";
             this.BtnCreateProgect.ShowImage = true;
+            this.BtnCreateProgect.SuperTip = "Укажите в настройках файл шаблона.";
             this.BtnCreateProgect.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCreateProject_Click);
             // 
             // BtnSpectrum
@@ -107,7 +109,9 @@
             this.BtnSpectrum.Image = ((System.Drawing.Image)(resources.GetObject("BtnSpectrum.Image")));
             this.BtnSpectrum.Label = "Загрузить базовую оценку";
             this.BtnSpectrum.Name = "BtnSpectrum";
+            this.BtnSpectrum.ScreenTip = "Загрузка списка базовой оценки из файла.";
             this.BtnSpectrum.ShowImage = true;
+            this.BtnSpectrum.SuperTip = "Укажите столбцы в настройках. Выберите файл. Выберите настройки столбцов.";
             this.BtnSpectrum.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBaseEstimate_Click);
             // 
             // BtnLoadKP
@@ -116,7 +120,9 @@
             this.BtnLoadKP.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadKP.Image")));
             this.BtnLoadKP.Label = "Загрузить КП";
             this.BtnLoadKP.Name = "BtnLoadKP";
+            this.BtnLoadKP.ScreenTip = "Сопоставление с базовой оценкой списка КП .";
             this.BtnLoadKP.ShowImage = true;
+            this.BtnLoadKP.SuperTip = "Укажите столбцы в настройках КП . Выберите файл. Выберите настройки столбцов.";
             this.BtnLoadKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadKP_Click);
             // 
             // SptBtn
@@ -131,6 +137,7 @@
             this.SptBtn.Items.Add(this.BtnUpdateLvl11);
             this.SptBtn.Label = "Итоги";
             this.SptBtn.Name = "SptBtn";
+            this.SptBtn.SuperTip = "Подготовить сводные данные на листах Урв12, Урв11";
             this.SptBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtn_Click);
             // 
             // separator2
@@ -190,12 +197,15 @@
             this.SptBtnUpdateFormate.Items.Add(this.BtnFormatNumber);
             this.SptBtnUpdateFormate.Label = "Обновить формат списка";
             this.SptBtnUpdateFormate.Name = "SptBtnUpdateFormate";
+            this.SptBtnUpdateFormate.ScreenTip = "Обновляет формат таблицы на листе Анализ";
+            this.SptBtnUpdateFormate.SuperTip = "Обновляет нумерацию, Группирует данные, Устанавливает цвет строк в зависимости от" +
+    " уровня списка";
             this.SptBtnUpdateFormate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
             // 
             // BtnFormatNumber
             // 
             this.BtnFormatNumber.Image = ((System.Drawing.Image)(resources.GetObject("BtnFormatNumber.Image")));
-            this.BtnFormatNumber.Label = "Формат столбцов";
+            this.BtnFormatNumber.Label = "Формат ячеек";
             this.BtnFormatNumber.Name = "BtnFormatNumber";
             this.BtnFormatNumber.ShowImage = true;
             this.BtnFormatNumber.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatNumber_Click);
@@ -209,6 +219,7 @@
             this.SptBtnGroup.Items.Add(this.BtnUngroupRows);
             this.SptBtnGroup.Label = "Группировка";
             this.SptBtnGroup.Name = "SptBtnGroup";
+            this.SptBtnGroup.SuperTip = "Группирует столбцы и строки на листе Анализ";
             this.SptBtnGroup.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGroupColumns_Click);
             // 
             // BtnGroupColumns
@@ -252,6 +263,7 @@
             this.SptBtnFormatComments.Label = "Форматирование";
             this.SptBtnFormatComments.Name = "SptBtnFormatComments";
             this.SptBtnFormatComments.ScreenTip = "Форматирование комментариев";
+            this.SptBtnFormatComments.SuperTip = "Добавлят правила условного форматирования  на листе Анализ";
             this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
             // 
             // BtnFormatComments
@@ -293,6 +305,7 @@
             this.BtnProjectManager.Image = ((System.Drawing.Image)(resources.GetObject("BtnProjectManager.Image")));
             this.BtnProjectManager.Label = "Диспетчер проекта";
             this.BtnProjectManager.Name = "BtnProjectManager";
+            this.BtnProjectManager.ScreenTip = "Настройки столбцов проектов";
             this.BtnProjectManager.ShowImage = true;
             this.BtnProjectManager.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnProjectManager_Click);
             // 
@@ -302,6 +315,7 @@
             this.BtnKP.Image = ((System.Drawing.Image)(resources.GetObject("BtnKP.Image")));
             this.BtnKP.Label = "Диспетчер КП";
             this.BtnKP.Name = "BtnKP";
+            this.BtnKP.ScreenTip = "Настройки столбцов в файлах КП.";
             this.BtnKP.ShowImage = true;
             this.BtnKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnKP_Click);
             // 
@@ -320,7 +334,7 @@
             this.BtnExcelScreenUpdating.Image = ((System.Drawing.Image)(resources.GetObject("BtnExcelScreenUpdating.Image")));
             this.BtnExcelScreenUpdating.Label = "Разблокировать";
             this.BtnExcelScreenUpdating.Name = "BtnExcelScreenUpdating";
-            this.BtnExcelScreenUpdating.ScreenTip = "Разблокировать Excel";
+            this.BtnExcelScreenUpdating.ScreenTip = "Разблокировать обновление окна Excel";
             this.BtnExcelScreenUpdating.ShowImage = true;
             this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
             // 
