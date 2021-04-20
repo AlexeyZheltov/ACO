@@ -106,15 +106,10 @@ namespace ACO
                         pb.Writeline("Инициализация загрузчика");
                         OfferWriter offerWriter = new OfferWriter(excelBook);
                         pb.Writeline("Заполнение листа Анализ\n");
-
-                        //   await Task.Run(() =>
-                        //    {
                         ExcelAcselerate(true);
                         offerWriter.Print(pb, offerSettingsName);
                         pb.Writeline("Завершение");
-                        // ExcelAcselerate(false);
                         pb.CloseFrm();
-                        //  });
                     }
                     catch (AddInException addInEx)
                     {
@@ -151,7 +146,6 @@ namespace ACO
                 try
                 {
                     pb.SetMainBarVolum(1);
-                    // PrintSpectrum(pb, file);
                     ExcelHelpers.ExcelFile.Init();
                     if (pb.IsAborted) throw new AddInException("Процесс остановлен");
 
@@ -168,7 +162,6 @@ namespace ACO
                     ExcelAcselerate(true);
                     offerWriter.PrintBaseEstimate(pb, offerSettingsName);
                     pb.Writeline("Завершение.");
-                    // ExcelAcselerate(false);
                     pb.CloseFrm();
                 }
                 catch (AddInException ex)
@@ -185,7 +178,7 @@ namespace ACO
                 }
                 finally
                 {
-                    //excelBook.Close();
+                    excelBook.Close();
                     ExcelHelpers.ExcelFile.Finish();
                     ExcelAcselerate(false);
                 }
@@ -281,17 +274,6 @@ namespace ACO
                     ExcelAcselerate(false);
                 }
             });
-        }
-
-
-
-        private void button1_Click(object sender, RibbonControlEventArgs e)
-        {
-            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
-            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-            ProjectManager.Project project = projectManager.ActiveProject;
-            Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
-            ExcelHelper.CollapseColumns(ws);
         }
 
         /// <summary>
@@ -439,60 +421,7 @@ namespace ACO
                 throw new AddInException("Выполнение было прервано");
             }
         }
-
-        /// <summary>
-        ///  Окраска ячеек 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //private async void BtnColorComments_Click(object sender, RibbonControlEventArgs e)
-        //{
-        //    ProjectWorkbook projectWorkbook = new ProjectWorkbook();
-        //    int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count - 1;
-        //    int startRow = projectWorkbook.GetFirstRow();
-        //    int count = lastRow - startRow + 1;
-        //    if (count > 0)
-        //    {
-        //        IProgressBarWithLogUI pb = new ProgressBarWithLog();
-        //        pb.Show();
-        //        await Task.Run(() =>
-        //        {
-        //            try
-        //            {
-        //                pb.SetMainBarVolum(1);
-        //                pb.MainBarTick("Уловное форматирование ячеек комментариев");
-        //                pb.SetSubBarVolume(count);
-        //                ExcelAcselerate(true);
-        //                for (int row = startRow; row <= lastRow; row++)
-        //                {
-        //                    pb.SubBarTick();
-        //                    PbAbortedStopProcess(pb);
-        //                    foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
-        //                    {
-        //                        projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentWorks]);
-        //                        projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentMaterials]);
-        //                        projectWorkbook.ColorCell(projectWorkbook.AnalisysSheet.Cells[row, offeraddress.ColPercentTotal]);
-        //                    }
-        //                }
-        //                //  ExcelAcselerate(false);
-        //                pb.CloseFrm();
-        //            }
-        //            catch (AddInException addinEx)
-        //            {
-        //                pb.Writeline(addinEx.Message);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //            }
-        //            finally
-        //            {
-        //                ExcelAcselerate(false);
-        //            }
-        //        });
-        //    }
-        //}
-
+                
         /// <summary>
         ///  Запись формул на уровень
         /// </summary>
@@ -741,19 +670,7 @@ namespace ACO
             Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
             new ListAnalysis(sh, project).GroupColumn();
         }
-        private void UngroupColumns()
-        {
-            //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-            //Project project = projectManager.ActiveProject;
-            //Excel.Workbook wb = _app.ActiveWorkbook;
-            //Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
-            ExcelHelper.UnGroupColumns(_app.ActiveSheet);
-        }
-        private void UngroupRows()
-        {
-            ExcelHelper.UnGroupRows(_app.ActiveSheet);
-        }
-
+    
         /// <summary>
         /// Группировка строк
         /// </summary>
@@ -829,32 +746,22 @@ namespace ACO
 
         private void BtnUngroupColumns_Click(object sender, RibbonControlEventArgs e)
         {
-            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
+            if (ExcelHelper.IsEditing()) return;
             try
             {
-                ExcelAcselerate(true);
-                UngroupColumns();
-                //ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-                //Project project = projectManager.ActiveProject;
-                //Excel.Workbook wb = _app.ActiveWorkbook;
-                //Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
-                //ExcelHelper.UnGroupColumns(sh);
+                ExcelHelper.UnGroupColumns(_app.ActiveSheet);
             }
             catch (Exception ex)
             {
                 string message = $"Ошибка:{ex.Message }";
                 if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
                 MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
+            }           
         }
 
         private void BtnUngroupRows_Click(object sender, RibbonControlEventArgs e)
         {
-            UngroupRows();
+            ExcelHelper.UnGroupRows(_app.ActiveSheet);
         }
 
         private void BtnNumber_Click(object sender, RibbonControlEventArgs e)
@@ -912,7 +819,6 @@ namespace ACO
                 MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-       
+             
     }
 }

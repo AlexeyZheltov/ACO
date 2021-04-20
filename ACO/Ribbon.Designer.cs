@@ -37,9 +37,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.RbnTab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.group6 = this.Factory.CreateRibbonGroup();
-            this.group5 = this.Factory.CreateRibbonGroup();
-            this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnCreateProgect = this.Factory.CreateRibbonButton();
             this.BtnSpectrum = this.Factory.CreateRibbonButton();
             this.BtnLoadKP = this.Factory.CreateRibbonButton();
@@ -50,6 +47,7 @@
             this.separator1 = this.Factory.CreateRibbonSeparator();
             this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
             this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
+            this.group6 = this.Factory.CreateRibbonGroup();
             this.SptBtnUpdateFormate = this.Factory.CreateRibbonSplitButton();
             this.BtnFormatNumber = this.Factory.CreateRibbonButton();
             this.SptBtnGroup = this.Factory.CreateRibbonSplitButton();
@@ -61,10 +59,12 @@
             this.BtnFormatComments = this.Factory.CreateRibbonButton();
             this.BtnCol = this.Factory.CreateRibbonButton();
             this.BtnClearFormateContions = this.Factory.CreateRibbonButton();
+            this.group5 = this.Factory.CreateRibbonGroup();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
+            this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -91,30 +91,6 @@
             this.group1.Items.Add(this.SptBtn);
             this.group1.Label = "Создание";
             this.group1.Name = "group1";
-            // 
-            // group6
-            // 
-            this.group6.Items.Add(this.SptBtnUpdateFormate);
-            this.group6.Items.Add(this.SptBtnGroup);
-            this.group6.Items.Add(this.SptBtnFormatComments);
-            this.group6.Label = "Формат";
-            this.group6.Name = "group6";
-            // 
-            // group5
-            // 
-            this.group5.Items.Add(this.BtnProjectManager);
-            this.group5.Items.Add(this.BtnKP);
-            this.group5.Items.Add(this.BtnSettings);
-            this.group5.Items.Add(this.BtnExcelScreenUpdating);
-            this.group5.Label = "Настройки";
-            this.group5.Name = "group5";
-            // 
-            // group4
-            // 
-            this.group4.Items.Add(this.BtnAbout);
-            this.group4.Label = "Информация";
-            this.group4.Name = "group4";
-            this.group4.Visible = false;
             // 
             // BtnCreateProgect
             // 
@@ -198,6 +174,14 @@
             this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
             this.BtnUpdateLvl11.ShowImage = true;
             this.BtnUpdateLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl11_Click);
+            // 
+            // group6
+            // 
+            this.group6.Items.Add(this.SptBtnUpdateFormate);
+            this.group6.Items.Add(this.SptBtnGroup);
+            this.group6.Items.Add(this.SptBtnFormatComments);
+            this.group6.Label = "Формат";
+            this.group6.Name = "group6";
             // 
             // SptBtnUpdateFormate
             // 
@@ -294,6 +278,15 @@
             this.BtnClearFormateContions.ShowImage = true;
             this.BtnClearFormateContions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnClearFormateContions_Click);
             // 
+            // group5
+            // 
+            this.group5.Items.Add(this.BtnProjectManager);
+            this.group5.Items.Add(this.BtnKP);
+            this.group5.Items.Add(this.BtnSettings);
+            this.group5.Items.Add(this.BtnExcelScreenUpdating);
+            this.group5.Label = "Настройки";
+            this.group5.Name = "group5";
+            // 
             // BtnProjectManager
             // 
             this.BtnProjectManager.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -330,6 +323,13 @@
             this.BtnExcelScreenUpdating.ScreenTip = "Разблокировать Excel";
             this.BtnExcelScreenUpdating.ShowImage = true;
             this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
+            // 
+            // group4
+            // 
+            this.group4.Items.Add(this.BtnAbout);
+            this.group4.Label = "Информация";
+            this.group4.Name = "group4";
+            this.group4.Visible = false;
             // 
             // BtnAbout
             // 

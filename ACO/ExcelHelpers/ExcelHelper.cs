@@ -283,8 +283,7 @@ namespace ACO.ExcelHelpers
 
         internal static void CollapseColumns(Excel.Worksheet ws)
         {
-            ws.Columns.ClearOutline();// AutoOutline();
-           // ws.Columns.ClearOutline();
+            ws.Columns.ClearOutline();
         }
 
         /// <summary>
