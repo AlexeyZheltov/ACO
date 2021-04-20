@@ -77,29 +77,40 @@ namespace ACO
         private void BtnAccept_Click(object sender, EventArgs e)
         {
             IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "," };
+            List<ConditionFormat> listCondintions = new List<ConditionFormat>();
+
             foreach (DataGridViewRow row in RulesDataGrid.Rows)
             {
                 int id = (int)row.Cells[0].Value;
-                string name = row.Cells[1].Value?.ToString();
+                ConditionFormat cf = _ListCondintions.Find(x => x.ID == id);
+                if (cf is null)
+                {
+                        cf = new ConditionFormat();
+                    cf.ID = _ListCondintions.Count;
+                }
+                
+                string name = row.Cells[1].Value?.ToString()??"";
                 string operatorCon = row.Cells[2].Value?.ToString();
                 string formula1 = row.Cells[3].Value?.ToString()??"";
                 string formula2 = row.Cells[4].Value?.ToString()??"";
 
-                _ConditionFormat = _ListCondintions[id];
-                _ConditionFormat.Operator = operatorCon;
-                _ConditionFormat.ColumnName = name;
+                cf = _ListCondintions[id];
+                cf.Operator = operatorCon;
+                cf.ColumnName = name;
                 if (operatorCon == "Содержит" )
                 {
-                _ConditionFormat.Text = formula1;
+                cf.Text = formula1;
                 }
                 else
                 {
-                _ConditionFormat.Formula1 = double.Parse(formula1, formatter);
-                _ConditionFormat.Formula2 = double.Parse(formula2, formatter);
+                cf.Formula1 = double.Parse(formula1, formatter);
+                cf.Formula2 = double.Parse(formula2, formatter);
                 }
+
+                listCondintions.Add(cf);
             }
 
-            manager.ListConditionFormats = _ListCondintions;
+            manager.ListConditionFormats = listCondintions;
             manager.Save();
             Close();
         }
