@@ -86,6 +86,14 @@ namespace ACO.ProjectManager
                         Obligatory = false,
                         ColumnSymbol = "J"
                     },
+                     new ColumnMapping()
+                    {
+                        Name = Project.ColumnsNames[StaticColumns.Markrer],
+                        Check = false,
+                        Obligatory = false,
+                        ColumnSymbol = ""
+                    },
+
                     new ColumnMapping()
                     {
                         Name = Project.ColumnsNames[StaticColumns.VendorCode],
@@ -114,13 +122,15 @@ namespace ACO.ProjectManager
                         Obligatory = true,
                         ColumnSymbol = "N"
                     },
-                    // new ColumnMapping()
-                    //{
-                    //    Name = Project.ColumnsNames[StaticColumns.ContractorAmountAmount],
-                    //    Check = true,
-                    //    Obligatory = true,
-                    //    ColumnSymbol = ""
-                    //},
+
+                      new ColumnMapping()
+                    {
+                        Name = Project.ColumnsNames[StaticColumns.ContractorAmount],
+                        Check = false,
+                        Obligatory = false,
+                        ColumnSymbol = ""
+                    },
+                   
                     new ColumnMapping()
                     {
                         Name = Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit],

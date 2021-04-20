@@ -209,7 +209,7 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnCreateProgect_Click(object sender, RibbonControlEventArgs e)
+        private void BtnCreateProject_Click(object sender, RibbonControlEventArgs e)
         {
             string pathTamplate = Properties.Settings.Default.TamplateProgectPath;
             string path;
@@ -255,7 +255,7 @@ namespace ACO
 
         private async void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
         {
-            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
+            if (ExcelHelper.IsEditing()) return;
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             pb.Show();
             await Task.Run(() =>
@@ -283,6 +283,17 @@ namespace ACO
             });
         }
 
+
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ProjectManager.Project project = projectManager.ActiveProject;
+            Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+            ExcelHelper.CollapseColumns(ws);
+        }
+
         /// <summary>
         /// Формулы, окраска уровней
         /// </summary>
@@ -298,6 +309,7 @@ namespace ACO
             Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
             Excel.Worksheet pws = ExcelHelper.GetSheet(wb, "Палитра");
 
+            ExcelHelper.CollapseColumns(ws);
             //======1=======
             pb.MainBarTick("Разгруппировать список");
             ExcelHelper.UnGroupRows(ws);
@@ -384,7 +396,6 @@ namespace ACO
             PbAbortedStopProcess(pb);
             pb.MainBarTick("Группировка списка");
             pb.ClearSubBar();
-
 
             ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
 
@@ -497,7 +508,9 @@ namespace ACO
                 ExcelAcselerate(true);
                 try
                 {
-                    new PivotSheets.Pivot(pb).LoadUrv11();
+                    PivotSheets.Pivot pivot = new PivotSheets.Pivot(pb);
+                    pivot.LoadUrv11();
+                    pivot.SheetUrv11.Activate();
                     pb.CloseFrm();
                 }
                 catch (AddInException addinEx)
@@ -531,7 +544,44 @@ namespace ACO
                 try
                 {
                     ExcelAcselerate(true);
-                    new PivotSheets.Pivot(pb).LoadUrv12();
+                    PivotSheets.Pivot pivot = new PivotSheets.Pivot(pb);
+                    pivot.LoadUrv12();
+                    pivot.SheetUrv12.Activate();
+
+                    pb.CloseFrm();
+                }
+                catch (AddInException addinEx)
+                {
+                    pb.Writeline(addinEx.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    ExcelAcselerate(false);
+                }
+            });
+        }
+
+        private async void SptBtn_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (ExcelHelper.IsEditing()) return;
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            pb.Show();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    ExcelAcselerate(true);
+                    PivotSheets.Pivot pivot = new PivotSheets.Pivot(pb);
+                    pivot.LoadUrv12();
+                    pb.ClearSubBar();
+                    pb.ClearMainBar();
+                    pivot.LoadUrv11();
+                    pivot.SheetUrv12.Activate();
                     pb.CloseFrm();
                 }
                 catch (AddInException addinEx)
@@ -631,23 +681,31 @@ namespace ACO
                 ProjectWorkbook projectWorkbook = new ProjectWorkbook();
                 ExcelHelper.ClearFormatConditions(projectWorkbook.AnalisysSheet.UsedRange);
                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
+                int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count + 1;
+                int firstRow = projectWorkbook.GetFirstRow();
                 foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
                 {
                     /// Works
                     List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                      ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks]);
-                    Excel.Range rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentWorks];
+                    Excel.Range rng = projectWorkbook.AnalisysSheet.Range[
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColPercentWorks],
+                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColPercentWorks]];
                     conditions.ForEach(x => x.SetCondition(rng));
                     /// Materials
                     conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                 ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat]);
-                    rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentMaterials];
+                    rng = projectWorkbook.AnalisysSheet.Range[
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColPercentMaterials],
+                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColPercentMaterials]];
                     conditions.ForEach(x => x.SetCondition(rng));
 
                     /// Стоимость
                     conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                 ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost]);
-                    rng = projectWorkbook.AnalisysSheet.Columns[offeraddress.ColPercentTotal];
+                    rng = projectWorkbook.AnalisysSheet.Range[
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColPercentTotal],
+                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColPercentTotal]];
                     conditions.ForEach(x => x.SetCondition(rng));
                 }
             }
@@ -692,8 +750,8 @@ namespace ACO
             ExcelHelper.UnGroupColumns(_app.ActiveSheet);
         }
         private void UngroupRows()
-        {            
-           ExcelHelper.UnGroupRows(_app.ActiveSheet);
+        {
+            ExcelHelper.UnGroupRows(_app.ActiveSheet);
         }
 
         /// <summary>
@@ -717,7 +775,9 @@ namespace ACO
             }
             catch (Exception ex)
             {
-
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -737,7 +797,9 @@ namespace ACO
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -751,12 +813,13 @@ namespace ACO
             try
             {
                 ExcelAcselerate(true);
-
-                //new ListAnalysis(sh, project).GroupColumn();
+                GroupRows();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -779,7 +842,9 @@ namespace ACO
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -787,14 +852,67 @@ namespace ACO
             }
         }
 
-        private void BtnColorLevels_Click(object sender, RibbonControlEventArgs e)
-        {
-
-        }
-
         private void BtnUngroupRows_Click(object sender, RibbonControlEventArgs e)
         {
             UngroupRows();
         }
+
+        private void BtnNumber_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
+            IProgressBarWithLogUI pb = new ProgressBarWithLog();
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ProjectManager.Project project = projectManager.ActiveProject;
+            ExcelHelper.UnGroupRows(ws);
+            string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+            string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+            HItem root = new HItem();
+            foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letterLevel, project.RowStart))
+                root.Add(new HItem()
+                {
+                    Level = Level,
+                    Row = Row
+                });
+            ExcelHelper.Write(ws, root, pb, letterNumber);
+        }
+
+        private void BtnFormatNumber_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+                ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+                ProjectManager.Project project = projectManager.ActiveProject;
+                Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+
+                string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
+                string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
+                string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
+                string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
+                string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
+                string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
+                string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
+                string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
+
+                List<(string, string)> columns_format = ProjectWorkbook.GetFormatColumns(ws);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, columns_format.ToArray());
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterAmount);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterMaterialPerUnit);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterMaterialTotal);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterWorkPerUnit);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterWorkTotal);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterPricePerUnit);
+                ExcelHelper.SetNumberFormat(ws, project.RowStart, letterTotal);
+            }
+            catch (Exception ex)
+            {
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+       
     }
 }

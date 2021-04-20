@@ -38,39 +38,37 @@
             this.RbnTab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.group6 = this.Factory.CreateRibbonGroup();
-            this.group2 = this.Factory.CreateRibbonGroup();
-            this.group3 = this.Factory.CreateRibbonGroup();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnCreateProgect = this.Factory.CreateRibbonButton();
             this.BtnSpectrum = this.Factory.CreateRibbonButton();
             this.BtnLoadKP = this.Factory.CreateRibbonButton();
-            this.BtnUpdateFormuls = this.Factory.CreateRibbonButton();
-            this.SptBtnFormatComments = this.Factory.CreateRibbonSplitButton();
-            this.BtnFormatComments = this.Factory.CreateRibbonButton();
-            this.BtnCol = this.Factory.CreateRibbonButton();
-            this.BtnClearFormateContions = this.Factory.CreateRibbonButton();
+            this.SptBtn = this.Factory.CreateRibbonSplitButton();
+            this.separator2 = this.Factory.CreateRibbonSeparator();
+            this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
+            this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
+            this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
+            this.SptBtnUpdateFormate = this.Factory.CreateRibbonSplitButton();
+            this.BtnFormatNumber = this.Factory.CreateRibbonButton();
             this.SptBtnGroup = this.Factory.CreateRibbonSplitButton();
             this.BtnGroupColumns = this.Factory.CreateRibbonButton();
             this.BtnUngroupColumns = this.Factory.CreateRibbonButton();
             this.BtnGroupRows = this.Factory.CreateRibbonButton();
-            this.splitButton2 = this.Factory.CreateRibbonSplitButton();
-            this.BtnLoadLvl12 = this.Factory.CreateRibbonButton();
-            this.BtnLoadLvl11 = this.Factory.CreateRibbonButton();
-            this.BtnUpdateLvl12 = this.Factory.CreateRibbonButton();
-            this.BtnUpdateLvl11 = this.Factory.CreateRibbonButton();
+            this.BtnUngroupRows = this.Factory.CreateRibbonButton();
+            this.SptBtnFormatComments = this.Factory.CreateRibbonSplitButton();
+            this.BtnFormatComments = this.Factory.CreateRibbonButton();
+            this.BtnCol = this.Factory.CreateRibbonButton();
+            this.BtnClearFormateContions = this.Factory.CreateRibbonButton();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.BtnUngroupRows = this.Factory.CreateRibbonButton();
-            this.BtnColorLevels = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
-            this.group2.SuspendLayout();
-            this.group3.SuspendLayout();
             this.group5.SuspendLayout();
             this.group4.SuspendLayout();
             this.SuspendLayout();
@@ -79,8 +77,6 @@
             // 
             this.RbnTab.Groups.Add(this.group1);
             this.RbnTab.Groups.Add(this.group6);
-            this.RbnTab.Groups.Add(this.group2);
-            this.RbnTab.Groups.Add(this.group3);
             this.RbnTab.Groups.Add(this.group5);
             this.RbnTab.Groups.Add(this.group4);
             this.RbnTab.Label = "Спектрум";
@@ -92,32 +88,17 @@
             this.group1.Items.Add(this.BtnCreateProgect);
             this.group1.Items.Add(this.BtnSpectrum);
             this.group1.Items.Add(this.BtnLoadKP);
+            this.group1.Items.Add(this.SptBtn);
             this.group1.Label = "Создание";
             this.group1.Name = "group1";
             // 
             // group6
             // 
-            this.group6.Items.Add(this.BtnUpdateFormuls);
-            this.group6.Items.Add(this.BtnColorLevels);
+            this.group6.Items.Add(this.SptBtnUpdateFormate);
             this.group6.Items.Add(this.SptBtnGroup);
             this.group6.Items.Add(this.SptBtnFormatComments);
-            this.group6.Items.Add(this.splitButton2);
             this.group6.Label = "Формат";
             this.group6.Name = "group6";
-            // 
-            // group2
-            // 
-            this.group2.Items.Add(this.BtnLoadLvl12);
-            this.group2.Items.Add(this.BtnLoadLvl11);
-            this.group2.Label = "Загрузить";
-            this.group2.Name = "group2";
-            // 
-            // group3
-            // 
-            this.group3.Items.Add(this.BtnUpdateLvl12);
-            this.group3.Items.Add(this.BtnUpdateLvl11);
-            this.group3.Label = "Обновить";
-            this.group3.Name = "group3";
             // 
             // group5
             // 
@@ -142,7 +123,7 @@
             this.BtnCreateProgect.Label = "Открыть шаблон";
             this.BtnCreateProgect.Name = "BtnCreateProgect";
             this.BtnCreateProgect.ShowImage = true;
-            this.BtnCreateProgect.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCreateProgect_Click);
+            this.BtnCreateProgect.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCreateProject_Click);
             // 
             // BtnSpectrum
             // 
@@ -162,48 +143,78 @@
             this.BtnLoadKP.ShowImage = true;
             this.BtnLoadKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadKP_Click);
             // 
-            // BtnUpdateFormuls
+            // SptBtn
             // 
-            this.BtnUpdateFormuls.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnUpdateFormuls.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateFormuls.Image")));
-            this.BtnUpdateFormuls.Label = "Обновление";
-            this.BtnUpdateFormuls.Name = "BtnUpdateFormuls";
-            this.BtnUpdateFormuls.ShowImage = true;
-            this.BtnUpdateFormuls.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
+            this.SptBtn.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.SptBtn.Image = ((System.Drawing.Image)(resources.GetObject("SptBtn.Image")));
+            this.SptBtn.Items.Add(this.separator2);
+            this.SptBtn.Items.Add(this.BtnLoadLvl12);
+            this.SptBtn.Items.Add(this.BtnLoadLvl11);
+            this.SptBtn.Items.Add(this.separator1);
+            this.SptBtn.Items.Add(this.BtnUpdateLvl12);
+            this.SptBtn.Items.Add(this.BtnUpdateLvl11);
+            this.SptBtn.Label = "Итоги";
+            this.SptBtn.Name = "SptBtn";
+            this.SptBtn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtn_Click);
             // 
-            // SptBtnFormatComments
+            // separator2
             // 
-            this.SptBtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnFormatComments.Image")));
-            this.SptBtnFormatComments.Items.Add(this.BtnFormatComments);
-            this.SptBtnFormatComments.Items.Add(this.BtnCol);
-            this.SptBtnFormatComments.Items.Add(this.BtnClearFormateContions);
-            this.SptBtnFormatComments.Label = "Форматирование комментариев";
-            this.SptBtnFormatComments.Name = "SptBtnFormatComments";
-            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
+            this.separator2.Name = "separator2";
+            this.separator2.Title = "Загрузить";
             // 
-            // BtnFormatComments
+            // BtnLoadLvl12
             // 
-            this.BtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("BtnFormatComments.Image")));
-            this.BtnFormatComments.Label = "Настройки формата";
-            this.BtnFormatComments.Name = "BtnFormatComments";
-            this.BtnFormatComments.ShowImage = true;
-            this.BtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatComments_Click);
+            this.BtnLoadLvl12.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl12.Image")));
+            this.BtnLoadLvl12.Label = "Урв 12";
+            this.BtnLoadLvl12.Name = "BtnLoadLvl12";
+            this.BtnLoadLvl12.ShowImage = true;
+            this.BtnLoadLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl12_Click);
             // 
-            // BtnCol
+            // BtnLoadLvl11
             // 
-            this.BtnCol.Image = ((System.Drawing.Image)(resources.GetObject("BtnCol.Image")));
-            this.BtnCol.Label = "Применить к выделеному";
-            this.BtnCol.Name = "BtnCol";
-            this.BtnCol.ShowImage = true;
-            this.BtnCol.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCol_Click);
+            this.BtnLoadLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl11.Image")));
+            this.BtnLoadLvl11.Label = "Урв 11";
+            this.BtnLoadLvl11.Name = "BtnLoadLvl11";
+            this.BtnLoadLvl11.ShowImage = true;
+            this.BtnLoadLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl11_Click);
             // 
-            // BtnClearFormateContions
+            // separator1
             // 
-            this.BtnClearFormateContions.Image = ((System.Drawing.Image)(resources.GetObject("BtnClearFormateContions.Image")));
-            this.BtnClearFormateContions.Label = "Очистить";
-            this.BtnClearFormateContions.Name = "BtnClearFormateContions";
-            this.BtnClearFormateContions.ShowImage = true;
-            this.BtnClearFormateContions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnClearFormateContions_Click);
+            this.separator1.Name = "separator1";
+            this.separator1.Title = "Обновить";
+            // 
+            // BtnUpdateLvl12
+            // 
+            this.BtnUpdateLvl12.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl12.Image")));
+            this.BtnUpdateLvl12.Label = "Урв 12";
+            this.BtnUpdateLvl12.Name = "BtnUpdateLvl12";
+            this.BtnUpdateLvl12.ShowImage = true;
+            this.BtnUpdateLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl12_Click);
+            // 
+            // BtnUpdateLvl11
+            // 
+            this.BtnUpdateLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl11.Image")));
+            this.BtnUpdateLvl11.Label = "Урв 11";
+            this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
+            this.BtnUpdateLvl11.ShowImage = true;
+            this.BtnUpdateLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl11_Click);
+            // 
+            // SptBtnUpdateFormate
+            // 
+            this.SptBtnUpdateFormate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.SptBtnUpdateFormate.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnUpdateFormate.Image")));
+            this.SptBtnUpdateFormate.Items.Add(this.BtnFormatNumber);
+            this.SptBtnUpdateFormate.Label = "Обновить формат списка";
+            this.SptBtnUpdateFormate.Name = "SptBtnUpdateFormate";
+            this.SptBtnUpdateFormate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
+            // 
+            // BtnFormatNumber
+            // 
+            this.BtnFormatNumber.Image = ((System.Drawing.Image)(resources.GetObject("BtnFormatNumber.Image")));
+            this.BtnFormatNumber.Label = "Формат столбцов";
+            this.BtnFormatNumber.Name = "BtnFormatNumber";
+            this.BtnFormatNumber.ShowImage = true;
+            this.BtnFormatNumber.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatNumber_Click);
             // 
             // SptBtnGroup
             // 
@@ -214,6 +225,7 @@
             this.SptBtnGroup.Items.Add(this.BtnUngroupRows);
             this.SptBtnGroup.Label = "Группировка";
             this.SptBtnGroup.Name = "SptBtnGroup";
+            this.SptBtnGroup.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGroupColumns_Click);
             // 
             // BtnGroupColumns
             // 
@@ -239,46 +251,48 @@
             this.BtnGroupRows.ShowImage = true;
             this.BtnGroupRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGroupRows_Click);
             // 
-            // splitButton2
+            // BtnUngroupRows
             // 
-            this.splitButton2.Label = "splitButton1";
-            this.splitButton2.Name = "splitButton2";
+            this.BtnUngroupRows.Image = ((System.Drawing.Image)(resources.GetObject("BtnUngroupRows.Image")));
+            this.BtnUngroupRows.Label = "Разгруппировать строки";
+            this.BtnUngroupRows.Name = "BtnUngroupRows";
+            this.BtnUngroupRows.ShowImage = true;
+            this.BtnUngroupRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUngroupRows_Click);
             // 
-            // BtnLoadLvl12
+            // SptBtnFormatComments
             // 
-            this.BtnLoadLvl12.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnLoadLvl12.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl12.Image")));
-            this.BtnLoadLvl12.Label = "Урв 12";
-            this.BtnLoadLvl12.Name = "BtnLoadLvl12";
-            this.BtnLoadLvl12.ShowImage = true;
-            this.BtnLoadLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl12_Click);
+            this.SptBtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnFormatComments.Image")));
+            this.SptBtnFormatComments.Items.Add(this.BtnFormatComments);
+            this.SptBtnFormatComments.Items.Add(this.BtnCol);
+            this.SptBtnFormatComments.Items.Add(this.BtnClearFormateContions);
+            this.SptBtnFormatComments.Label = "Форматирование";
+            this.SptBtnFormatComments.Name = "SptBtnFormatComments";
+            this.SptBtnFormatComments.ScreenTip = "Форматирование комментариев";
+            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
             // 
-            // BtnLoadLvl11
+            // BtnFormatComments
             // 
-            this.BtnLoadLvl11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnLoadLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnLoadLvl11.Image")));
-            this.BtnLoadLvl11.Label = "Урв 11";
-            this.BtnLoadLvl11.Name = "BtnLoadLvl11";
-            this.BtnLoadLvl11.ShowImage = true;
-            this.BtnLoadLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnLoadLvl11_Click);
+            this.BtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("BtnFormatComments.Image")));
+            this.BtnFormatComments.Label = "Настройки формата";
+            this.BtnFormatComments.Name = "BtnFormatComments";
+            this.BtnFormatComments.ShowImage = true;
+            this.BtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatComments_Click);
             // 
-            // BtnUpdateLvl12
+            // BtnCol
             // 
-            this.BtnUpdateLvl12.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnUpdateLvl12.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl12.Image")));
-            this.BtnUpdateLvl12.Label = "Урв 12";
-            this.BtnUpdateLvl12.Name = "BtnUpdateLvl12";
-            this.BtnUpdateLvl12.ShowImage = true;
-            this.BtnUpdateLvl12.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl12_Click);
+            this.BtnCol.Image = ((System.Drawing.Image)(resources.GetObject("BtnCol.Image")));
+            this.BtnCol.Label = "Применить к выделеному";
+            this.BtnCol.Name = "BtnCol";
+            this.BtnCol.ShowImage = true;
+            this.BtnCol.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCol_Click);
             // 
-            // BtnUpdateLvl11
+            // BtnClearFormateContions
             // 
-            this.BtnUpdateLvl11.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnUpdateLvl11.Image = ((System.Drawing.Image)(resources.GetObject("BtnUpdateLvl11.Image")));
-            this.BtnUpdateLvl11.Label = "Урв 11";
-            this.BtnUpdateLvl11.Name = "BtnUpdateLvl11";
-            this.BtnUpdateLvl11.ShowImage = true;
-            this.BtnUpdateLvl11.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateLvl11_Click);
+            this.BtnClearFormateContions.Image = ((System.Drawing.Image)(resources.GetObject("BtnClearFormateContions.Image")));
+            this.BtnClearFormateContions.Label = "Очистить";
+            this.BtnClearFormateContions.Name = "BtnClearFormateContions";
+            this.BtnClearFormateContions.ShowImage = true;
+            this.BtnClearFormateContions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnClearFormateContions_Click);
             // 
             // BtnProjectManager
             // 
@@ -311,8 +325,9 @@
             // 
             this.BtnExcelScreenUpdating.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnExcelScreenUpdating.Image = ((System.Drawing.Image)(resources.GetObject("BtnExcelScreenUpdating.Image")));
-            this.BtnExcelScreenUpdating.Label = "Включить обновление Excel";
+            this.BtnExcelScreenUpdating.Label = "Разблокировать";
             this.BtnExcelScreenUpdating.Name = "BtnExcelScreenUpdating";
+            this.BtnExcelScreenUpdating.ScreenTip = "Разблокировать Excel";
             this.BtnExcelScreenUpdating.ShowImage = true;
             this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
             // 
@@ -323,22 +338,6 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
-            // 
-            // BtnUngroupRows
-            // 
-            this.BtnUngroupRows.Image = ((System.Drawing.Image)(resources.GetObject("BtnUngroupRows.Image")));
-            this.BtnUngroupRows.Label = "Разгруппировать строки";
-            this.BtnUngroupRows.Name = "BtnUngroupRows";
-            this.BtnUngroupRows.ShowImage = true;
-            this.BtnUngroupRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUngroupRows_Click);
-            // 
-            // BtnColorLevels
-            // 
-            this.BtnColorLevels.Image = ((System.Drawing.Image)(resources.GetObject("BtnColorLevels.Image")));
-            this.BtnColorLevels.Label = "Цвет уровней";
-            this.BtnColorLevels.Name = "BtnColorLevels";
-            this.BtnColorLevels.ShowImage = true;
-            this.BtnColorLevels.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnColorLevels_Click);
             // 
             // Ribbon
             // 
@@ -352,10 +351,6 @@
             this.group1.PerformLayout();
             this.group6.ResumeLayout(false);
             this.group6.PerformLayout();
-            this.group2.ResumeLayout(false);
-            this.group2.PerformLayout();
-            this.group3.ResumeLayout(false);
-            this.group3.PerformLayout();
             this.group5.ResumeLayout(false);
             this.group5.PerformLayout();
             this.group4.ResumeLayout(false);
@@ -367,10 +362,8 @@
         #endregion
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCreateProgect;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadLvl12;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadLvl11;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group3;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateLvl12;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateLvl11;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnLoadKP;
@@ -381,7 +374,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnProjectManager;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group6;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUpdateFormuls;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnKP;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSpectrum;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnExcelScreenUpdating;
@@ -391,11 +383,14 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnClearFormateContions;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGroupColumns;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitButton2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGroupRows;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUngroupColumns;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnColorLevels;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUngroupRows;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtn;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnUpdateFormate;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatNumber;
     }
 
     partial class ThisRibbonCollection

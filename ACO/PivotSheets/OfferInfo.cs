@@ -24,6 +24,7 @@ namespace ACO.PivotSheets
         readonly ProjectWorkbook _projectWorkbook;
         readonly ProjectManager.ProjectManager _projectManager;
         readonly ProjectManager.Project _project;
+          private const int _rowStart = 13;
 
         //Описание менялось
         string _rangeChengedNames;
@@ -54,7 +55,6 @@ namespace ACO.PivotSheets
         private void PrintInfo(int ix)
         {
             int column = 6 + 5 * ix;
-            int rowStart = 13;
             //string = "Описание менялось";
             int row = ExcelHelper.FindCell(_SheetUrv12, "Описание менялось").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeChengedNames}, \"ЛОЖЬ\"), \"#НД\")";
@@ -71,16 +71,15 @@ namespace ACO.PivotSheets
             string addresBaseSumm = _SheetUrv12.Cells[rowTotalSumm, 4].Address;
             _SheetUrv12.Cells[row, column].Formula = $"= {addresBaseSumm} - {cellAddress}";
 
-
             row = ExcelHelper.FindCell(_SheetUrv12, "Итого включая не оцененные работы и корректировку ошибок").Row;
             _SheetUrv12.Cells[row, column].Formula = $"= {cellAddress}" +
                                                         $"+{_SheetUrv12.Cells[row - 1, column].Address}" +
                                                         $"+{_SheetUrv12.Cells[row - 2, column].Address}";
 
 
-            Excel.Range rngOfferSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column], _SheetUrv12.Cells[rowTotalSumm - 2, column]];
-            Excel.Range rngOfferCommentCost = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, column + 3], _SheetUrv12.Cells[rowTotalSumm - 2, column + 3]];
-            Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[rowStart, 4], _SheetUrv12.Cells[rowTotalSumm - 2, 4]];
+            Excel.Range rngOfferSum = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, column], _SheetUrv12.Cells[rowTotalSumm - 2, column]];
+            Excel.Range rngOfferCommentCost = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, column + 3], _SheetUrv12.Cells[rowTotalSumm - 2, column + 3]];
+            Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, 4], _SheetUrv12.Cells[rowTotalSumm - 2, 4]];
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
 

@@ -139,73 +139,8 @@ namespace ACO
             }
             return false;
         }
-
-        ///// <summary>
-        /////  Запись строки КП на лист Анализ. Вставка строк.
-        ///// </summary>
-        ///// <param name="recordPrint"></param>
-        //internal void PrintRec(Record recordPrint)
-        //{
-        //    int rowPaste = _rowStart;
-        //    int preveuslevel = 0;
-        //    /// Последняя строка списка 
-        //    bool existRecord = false;
-        //    Record recordAnalysis = null;
-        //    if (recordPrint.KeyFilds.Count == 0 && string.IsNullOrWhiteSpace(recordPrint.Number)) return;
-        //    for (int row = _rowStart; row <= _lastRow; row++)
-        //    {
-        //        recordAnalysis = GetRecocdAnalysis(row);
-        //        if (preveuslevel == 0 && recordAnalysis.Level != 0)
-        //        {
-        //            preveuslevel = recordAnalysis.Level;
-        //        }
-        //        if (recordAnalysis.IsEmpty()) continue;
-
-        //        if (preveuslevel == recordAnalysis.Level)
-        //        {
-        //            if (recordAnalysis.Number == recordPrint.Number)
-        //            {
-        //                // Поля совпали
-        //                if (recordAnalysis.KeyEqual(recordPrint))
-        //                {
-        //                    rowPaste = row;
-        //                    existRecord = true;
-        //                    break;
-        //                }
-        //                rowPaste = row + 1;
-        //                SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-        //                _lastRow++;
-        //                existRecord = true;
-        //                break;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            /// Уровень изменился
-        //            if (recordAnalysis.Level == recordPrint.Level)
-        //            {
-        //                _rowStart = row;
-        //                PrintRec(recordPrint);
-        //                return;
-        //            }
-        //            else
-        //            {
-        //                rowPaste = row;
-        //                SheetAnalysis.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-        //                _lastRow++;
-        //                existRecord = true;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    if (!existRecord)
-        //    {
-        //        _lastRow = _lastRow + 1;
-        //        rowPaste = _lastRow;
-        //    }
-        //    PrintValues(recordPrint, rowPaste);
-        //}
-
+        
+        
         private void PrintValues(Record recordPrint, int rowPaste)
         {
             foreach (FieldAddress field in recordPrint.Addresslist)
@@ -432,11 +367,11 @@ namespace ACO
         }
             private void GroupCommetnsColumns(OfferAddress address)
         {
-            Excel.Range rngCoulumn = SheetAnalysis.Cells[1, address.ColStartOfferComments-1];
-            rngCoulumn.Columns.Group();
+            //Excel.Range rngCoulumn = SheetAnalysis.Cells[1, address.ColStartOfferComments-1];
+            //rngCoulumn.Columns.Group();
 
-            rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer+1], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
-            rngCoulumn.Columns.Group();            
+            Excel.Range rngColumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
+            rngColumn.Columns.Group();            
         }
 
         /// <summary>

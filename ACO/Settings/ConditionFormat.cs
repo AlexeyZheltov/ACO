@@ -58,6 +58,7 @@ namespace ACO
         {
             //  Excel.Application app = Globals.ThisAddIn.Application;
             Excel.FormatCondition condition;
+            if (string.IsNullOrWhiteSpace(Operator)) return;
             try
             {
                 if (Operator == "Содержит")

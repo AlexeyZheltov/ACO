@@ -206,7 +206,48 @@ namespace ACO
                     ForeColor = Color.Red,
                     InteriorColor = Color.White,
                     Text = "#НД"
-                }
+                },
+                             
+                new ConditionFormat()
+                {
+                    ColumnName = "Выделение",
+                    Operator = "Меньше",
+                    FontBold = false,
+                    ForeColor = Color.Red,
+                    InteriorColor = Color.Yellow,
+                    Formula1 = -0.15
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = "Выделение",
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Brown,
+                    InteriorColor = Color.LightYellow,
+                    Formula1 = -0.15,
+                    Formula2 = -0.05
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = "Выделение",
+                    Operator = "Между",
+                    FontBold = false,
+                    ForeColor = Color.Black,
+                    InteriorColor = Color.LightPink,
+                    Formula1 = 0.05,
+                    Formula2 = 0.15
+                },
+                new ConditionFormat()
+                {
+                    ColumnName = "Выделение",
+                    Operator = "Больше",
+                    FontBold = false,
+                    ForeColor = Color.White,
+                    InteriorColor = Color.Red,
+                    Formula1 = 0.15
+                },
+
+
             };
             return listConditionFormats;
         }

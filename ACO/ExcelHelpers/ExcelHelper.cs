@@ -281,6 +281,12 @@ namespace ACO.ExcelHelpers
             throw new AddInException($"Лист {name} отсутствует");
         }
 
+        internal static void CollapseColumns(Excel.Worksheet ws)
+        {
+            ws.Columns.ClearOutline();// AutoOutline();
+           // ws.Columns.ClearOutline();
+        }
+
         /// <summary>
         ///  Получить текст из ячейки
         /// </summary>
