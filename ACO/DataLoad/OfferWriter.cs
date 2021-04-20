@@ -347,7 +347,7 @@ namespace ACO
                 }
             }
             pb.ClearSubBar();
-            _offerBook.Close(false);
+           
         }
 
         /// <summary>

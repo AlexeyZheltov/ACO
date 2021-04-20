@@ -421,7 +421,7 @@ namespace ACO
                 throw new AddInException("Выполнение было прервано");
             }
         }
-                
+
         /// <summary>
         ///  Запись формул на уровень
         /// </summary>
@@ -592,7 +592,18 @@ namespace ACO
 
         private void BtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
-            new FrmColorCommentsFomat().ShowDialog();
+            try
+            {
+                new FrmColorCommentsFomat().ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
         }
 
 
@@ -670,7 +681,7 @@ namespace ACO
             Excel.Worksheet sh = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
             new ListAnalysis(sh, project).GroupColumn();
         }
-    
+
         /// <summary>
         /// Группировка строк
         /// </summary>
@@ -756,7 +767,7 @@ namespace ACO
                 string message = $"Ошибка:{ex.Message }";
                 if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
                 MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }           
+            }
         }
 
         private void BtnUngroupRows_Click(object sender, RibbonControlEventArgs e)
@@ -819,6 +830,6 @@ namespace ACO
                 MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-             
+
     }
 }

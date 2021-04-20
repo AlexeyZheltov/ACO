@@ -37,12 +37,12 @@ namespace ACO
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ChkBoxBold = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.BtnForeColor = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ChkBoxBold = new System.Windows.Forms.CheckBox();
-            this.BtnAdd = new System.Windows.Forms.Button();
             this.RulesDataGrid = new ACO.ProjectManager.CustomDataGrid();
+            this.BtnAdd = new System.Windows.Forms.Button();
             this.ColumnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -119,6 +119,17 @@ namespace ACO
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Формат";
             // 
+            // ChkBoxBold
+            // 
+            this.ChkBoxBold.AutoSize = true;
+            this.ChkBoxBold.Location = new System.Drawing.Point(13, 110);
+            this.ChkBoxBold.Name = "ChkBoxBold";
+            this.ChkBoxBold.Size = new System.Drawing.Size(91, 17);
+            this.ChkBoxBold.TabIndex = 4;
+            this.ChkBoxBold.Text = "Полужирный";
+            this.ChkBoxBold.UseVisualStyleBackColor = true;
+            this.ChkBoxBold.CheckedChanged += new System.EventHandler(this.ChkBoxBold_CheckedChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -156,27 +167,6 @@ namespace ACO
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Правила ";
             // 
-            // ChkBoxBold
-            // 
-            this.ChkBoxBold.AutoSize = true;
-            this.ChkBoxBold.Location = new System.Drawing.Point(13, 110);
-            this.ChkBoxBold.Name = "ChkBoxBold";
-            this.ChkBoxBold.Size = new System.Drawing.Size(91, 17);
-            this.ChkBoxBold.TabIndex = 4;
-            this.ChkBoxBold.Text = "Полужирный";
-            this.ChkBoxBold.UseVisualStyleBackColor = true;
-            this.ChkBoxBold.CheckedChanged += new System.EventHandler(this.ChkBoxBold_CheckedChanged);
-            // 
-            // BtnAdd
-            // 
-            this.BtnAdd.Location = new System.Drawing.Point(19, 253);
-            this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(75, 23);
-            this.BtnAdd.TabIndex = 6;
-            this.BtnAdd.Text = "Добавить";
-            this.BtnAdd.UseVisualStyleBackColor = true;
-            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
-            // 
             // RulesDataGrid
             // 
             this.RulesDataGrid.AllowUserToAddRows = false;
@@ -204,12 +194,22 @@ namespace ACO
             this.RulesDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellClick);
             this.RulesDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellValueChanged);
             // 
+            // BtnAdd
+            // 
+            this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnAdd.Location = new System.Drawing.Point(19, 251);
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(93, 26);
+            this.BtnAdd.TabIndex = 6;
+            this.BtnAdd.Text = "Добавить";
+            this.BtnAdd.UseVisualStyleBackColor = true;
+            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
+            // 
             // ColumnID
             // 
             this.ColumnID.HeaderText = "Номер";
             this.ColumnID.Name = "ColumnID";
             this.ColumnID.ReadOnly = true;
-            this.ColumnID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColumnID.Visible = false;
             // 
             // column1
@@ -255,14 +255,16 @@ namespace ACO
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.Column2.HeaderText = "Значение1";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 86;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column2.Width = 67;
             // 
             // Column3
             // 
             this.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
             this.Column3.HeaderText = "Значение2";
             this.Column3.Name = "Column3";
-            this.Column3.Width = 86;
+            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column3.Width = 67;
             // 
             // FrmColorCommentsFomat
             // 

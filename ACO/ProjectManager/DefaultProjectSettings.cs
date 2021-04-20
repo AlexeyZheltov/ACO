@@ -88,7 +88,7 @@ namespace ACO.ProjectManager
                     },
                      new ColumnMapping()
                     {
-                        Name = Project.ColumnsNames[StaticColumns.Markrer],
+                        Name = Project.ColumnsNames[StaticColumns.Label],
                         Check = false,
                         Obligatory = false,
                         ColumnSymbol = ""
