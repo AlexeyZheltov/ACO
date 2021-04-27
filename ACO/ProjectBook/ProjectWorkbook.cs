@@ -253,15 +253,5 @@ namespace ACO
             return columns;
         }
 
-        public void GroupColumns()
-        {
-          //  int lastColumn = AnalisysSheet.UsedRange.Column - AnalisysSheet.UsedRange.Columns.Count - 1;
-        }
-
-        public void ShowGroups()
-        {
-            AnalisysSheet.Outline.ShowLevels(ColumnLevels: AnalisysSheet.Columns.OutlineLevel);
-        }
-
     }
 }

@@ -66,6 +66,7 @@
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
+            this.BtnSetFormul = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -195,6 +196,7 @@
             this.SptBtnUpdateFormate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.SptBtnUpdateFormate.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnUpdateFormate.Image")));
             this.SptBtnUpdateFormate.Items.Add(this.BtnFormatNumber);
+            this.SptBtnUpdateFormate.Items.Add(this.BtnSetFormul);
             this.SptBtnUpdateFormate.Label = "Обновить формат списка";
             this.SptBtnUpdateFormate.Name = "SptBtnUpdateFormate";
             this.SptBtnUpdateFormate.ScreenTip = "Обновляет формат таблицы на листе Анализ";
@@ -353,6 +355,14 @@
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
             // 
+            // BtnSetFormul
+            // 
+            this.BtnSetFormul.Image = ((System.Drawing.Image)(resources.GetObject("BtnSetFormul.Image")));
+            this.BtnSetFormul.Label = "Настройки анализа";
+            this.BtnSetFormul.Name = "BtnSetFormul";
+            this.BtnSetFormul.ShowImage = true;
+            this.BtnSetFormul.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSetFormul_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -405,6 +415,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnUpdateFormate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatNumber;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSetFormul;
     }
 
     partial class ThisRibbonCollection

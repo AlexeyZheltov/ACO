@@ -11,7 +11,7 @@ using ACO.ProjectManager;
 using ACO.ProjectBook;
 using System.Drawing;
 using Microsoft.Office.Interop.Excel;
-
+using ACO.Settings;
 
 namespace ACO
 {
@@ -831,5 +831,13 @@ namespace ACO
             }
         }
 
+        private void BtnSetFormul_Click(object sender, RibbonControlEventArgs e)
+        {
+            FormSettingFormuls form = new FormSettingFormuls();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                //form.s
+            }
+        }
     }
 }

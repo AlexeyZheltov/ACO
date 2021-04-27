@@ -268,6 +268,9 @@
     <EmbeddedResource Include="Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Settings\FormSettingFormuls.resx">
+      <DependentUpon>FormSettingFormuls.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -294,6 +297,12 @@
     </Compile>
     <Compile Include="Settings\ConditionFormat.cs" />
     <Compile Include="Settings\ConditonsFormatManager.cs" />
+    <Compile Include="Settings\FormSettingFormuls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\FormSettingFormuls.Designer.cs">
+      <DependentUpon>FormSettingFormuls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings\FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -327,7 +336,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0FF77E3A2F14B52D2AC374BAFE7A8737BCB86A56</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Main.ico</ApplicationIcon>
