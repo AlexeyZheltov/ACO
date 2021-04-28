@@ -36,7 +36,7 @@ namespace ACO.ProjectManager
         CostTotal,
         Comment
     }
-       
+
 
     class Project
     {
@@ -94,7 +94,7 @@ namespace ACO.ProjectManager
                 { StaticColumns.CostTotal, "Итого" },
                 { StaticColumns.Comment, "Примечание" }
             };
-            
+
 
         public Project() { }
 

@@ -612,13 +612,17 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
+        private void SetAnalysis(object sender, RibbonControlEventArgs e)
         {
+
             if (ExcelHelper.IsEditing()) return;
             try
             {
                 ExcelAcselerate(true);
                 ProjectWorkbook projectWorkbook = new ProjectWorkbook();
+                SetAnalisysFormuls(projectWorkbook);
+
+                // очистить условное форматирование
                 ExcelHelper.ClearFormatConditions(projectWorkbook.AnalisysSheet.UsedRange);
                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
                 int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count + 1;
@@ -658,6 +662,40 @@ namespace ACO
                 ExcelAcselerate(false);
             }
         }
+
+        /// <summary>
+        ///  Формулы анализа
+        /// </summary>
+        private void SetAnalisysFormuls(ProjectWorkbook projectWorkbook)
+        {
+            // Собрать столбцы 
+           foreach(OfferColumns offerColumns in  projectWorkbook.OfferColumns)
+            {
+                //offerColumns.
+
+
+                /*
+                 	  _sheetProject.Cells[rowStart, colStart + 4].Formula =
+                        $"=IFERROR(IF(${letterTotalSpectrum}{rowStart}<>0," +
+                        $"${letterTotalOffer}{rowStart}/${letterTotalSpectrum}{rowStart}-1,0),\"#НД\")";
+	
+	
+	=ЕСЛИОШИБКА(ЕСЛИ($T10<>0;$AM10/$T10-1;0);"#НД")
+	=ЕСЛИОШИБКА( (AM10/СРЗНАЧ(AM10;T10))-1;"#НД")
+	=ЕСЛИОШИБКА( (AM10/МЕДИАНА(AM10;T10))-1;"#НД")
+	
+	ActiveCell.FormulaR1C1 = _
+        "=IFERROR( (RC[-11]/AVERAGE(RC[-11],RC[-30]))-1,""#НД"")"
+    Range("AY10").Select
+    ActiveCell.FormulaR1C1 = _
+        "=IFERROR( (RC[-12]/MEDIAN(RC[-12],RC[-31]))-1,""#НД"")"
+    Range("AY11").Select
+                 */
+            }
+
+
+        }
+
         private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
@@ -836,7 +874,7 @@ namespace ACO
             FormSettingFormuls form = new FormSettingFormuls();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                //form.s
+              
             }
         }
     }

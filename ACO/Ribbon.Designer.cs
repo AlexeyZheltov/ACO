@@ -56,8 +56,8 @@
             this.BtnGroupRows = this.Factory.CreateRibbonButton();
             this.BtnUngroupRows = this.Factory.CreateRibbonButton();
             this.SptBtnFormatComments = this.Factory.CreateRibbonSplitButton();
+            this.BtnSetFormul = this.Factory.CreateRibbonButton();
             this.BtnFormatComments = this.Factory.CreateRibbonButton();
-            this.BtnCol = this.Factory.CreateRibbonButton();
             this.BtnClearFormateContions = this.Factory.CreateRibbonButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.BtnProjectManager = this.Factory.CreateRibbonButton();
@@ -66,7 +66,6 @@
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.BtnSetFormul = this.Factory.CreateRibbonButton();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -196,7 +195,6 @@
             this.SptBtnUpdateFormate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.SptBtnUpdateFormate.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnUpdateFormate.Image")));
             this.SptBtnUpdateFormate.Items.Add(this.BtnFormatNumber);
-            this.SptBtnUpdateFormate.Items.Add(this.BtnSetFormul);
             this.SptBtnUpdateFormate.Label = "Обновить формат списка";
             this.SptBtnUpdateFormate.Name = "SptBtnUpdateFormate";
             this.SptBtnUpdateFormate.ScreenTip = "Обновляет формат таблицы на листе Анализ";
@@ -259,14 +257,22 @@
             // SptBtnFormatComments
             // 
             this.SptBtnFormatComments.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnFormatComments.Image")));
+            this.SptBtnFormatComments.Items.Add(this.BtnSetFormul);
             this.SptBtnFormatComments.Items.Add(this.BtnFormatComments);
-            this.SptBtnFormatComments.Items.Add(this.BtnCol);
             this.SptBtnFormatComments.Items.Add(this.BtnClearFormateContions);
-            this.SptBtnFormatComments.Label = "Форматирование";
+            this.SptBtnFormatComments.Label = "Анализ";
             this.SptBtnFormatComments.Name = "SptBtnFormatComments";
             this.SptBtnFormatComments.ScreenTip = "Форматирование комментариев";
             this.SptBtnFormatComments.SuperTip = "Добавлят правила условного форматирования  на листе Анализ";
-            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
+            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SetAnalysis);
+            // 
+            // BtnSetFormul
+            // 
+            this.BtnSetFormul.Image = ((System.Drawing.Image)(resources.GetObject("BtnSetFormul.Image")));
+            this.BtnSetFormul.Label = "Настройки анализа";
+            this.BtnSetFormul.Name = "BtnSetFormul";
+            this.BtnSetFormul.ShowImage = true;
+            this.BtnSetFormul.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSetFormul_Click);
             // 
             // BtnFormatComments
             // 
@@ -276,18 +282,10 @@
             this.BtnFormatComments.ShowImage = true;
             this.BtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatComments_Click);
             // 
-            // BtnCol
-            // 
-            this.BtnCol.Image = ((System.Drawing.Image)(resources.GetObject("BtnCol.Image")));
-            this.BtnCol.Label = "Применить к выделеному";
-            this.BtnCol.Name = "BtnCol";
-            this.BtnCol.ShowImage = true;
-            this.BtnCol.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCol_Click);
-            // 
             // BtnClearFormateContions
             // 
             this.BtnClearFormateContions.Image = ((System.Drawing.Image)(resources.GetObject("BtnClearFormateContions.Image")));
-            this.BtnClearFormateContions.Label = "Очистить";
+            this.BtnClearFormateContions.Label = "Очистить форматирование";
             this.BtnClearFormateContions.Name = "BtnClearFormateContions";
             this.BtnClearFormateContions.ShowImage = true;
             this.BtnClearFormateContions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnClearFormateContions_Click);
@@ -355,14 +353,6 @@
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
             // 
-            // BtnSetFormul
-            // 
-            this.BtnSetFormul.Image = ((System.Drawing.Image)(resources.GetObject("BtnSetFormul.Image")));
-            this.BtnSetFormul.Label = "Настройки анализа";
-            this.BtnSetFormul.Name = "BtnSetFormul";
-            this.BtnSetFormul.ShowImage = true;
-            this.BtnSetFormul.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSetFormul_Click);
-            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -403,7 +393,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnExcelScreenUpdating;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnFormatComments;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatComments;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCol;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnClearFormateContions;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnGroup;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGroupColumns;

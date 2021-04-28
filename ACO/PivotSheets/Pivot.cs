@@ -487,8 +487,7 @@ namespace ACO.PivotSheets
             }
             if (!string.IsNullOrEmpty(formulaSumm))
             {
-                //  SheetUrv11.Cells[rowBottomTotal, colPaste].NumberFormat = "#,##0.00";
-                SheetUrv11.Cells[rowBottomTotal, colPaste].Formula = formulaSumm;
+              SheetUrv11.Cells[rowBottomTotal, colPaste].Formula = formulaSumm;
             }
             SheetUrv11.Cells[rowBottomTotal + 1, colPaste].Formula =
                  $"={SheetUrv11.Cells[rowBottomTotal, colPaste].Address}*0.2";

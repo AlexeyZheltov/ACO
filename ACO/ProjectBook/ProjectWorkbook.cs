@@ -11,8 +11,87 @@ using System.Drawing;
 
 namespace ACO
 {
+    public enum StaticColumnsOffer
+    {
+        StartOffer,
+        Level,
+        File,
+        Number,
+        Cipher,
+        Classifier,
+        Name,
+        Code,
+        Material,
+        Size,
+        Type,
+        VendorCode,
+        Label,
+        Producer,
+        Unit,
+        Amount,
+        ContractorAmount,
+        CostMaterialsPerUnit,
+        CostMaterialsTotal,
+        CostWorksPerUnit,
+        CostWorksTotal,
+        CostTotalPerUnit,
+        CostTotal,
+        Comment,               
+        ColStartOfferComments,
+        ColCommentsDescriptionWorks,
+        ColDeviationVolume,
+        ColCommentsVolumeWorks,
+        ColDeviationCost,
+        ColCommentsCostWorks,
+        ColDeviationMaterials,
+        ColDeviationWorks,
+        ColComments
+    }
+
     public class ProjectWorkbook
     {
+
+
+        public static Dictionary<StaticColumnsOffer, string> ColumnsMarksOffer =
+            new Dictionary<StaticColumnsOffer, string>
+            {
+                { StaticColumnsOffer.StartOffer, "offer_start"  },
+                { StaticColumnsOffer.Level, "Уровень" },
+                { StaticColumnsOffer.File, "Файл" },
+                { StaticColumnsOffer.Number, "№ п/п" },
+                { StaticColumnsOffer.Cipher, "Шифр" },
+                { StaticColumnsOffer.Classifier, "Классификатор" },
+                { StaticColumnsOffer.Name, "Наименование работ" },
+                { StaticColumnsOffer.Code, "Маркировка / Обозначение" },
+                { StaticColumnsOffer.Material, "Материал" },
+                { StaticColumnsOffer.Size, "Формат / Габаритные размеры / Диаметр" },
+                { StaticColumnsOffer.Type, "Тип, марка, обозначение" },
+                { StaticColumnsOffer.VendorCode, "Артикул" },
+                { StaticColumnsOffer.Producer, "Производитель" },
+                { StaticColumnsOffer.Label, "Маркировка" },
+                { StaticColumnsOffer.Unit, "Ед. изм." },
+                { StaticColumnsOffer.Amount, "Кол-во" },
+                { StaticColumnsOffer.ContractorAmount, "Кол-во (подрядчик)" },
+                { StaticColumnsOffer.CostMaterialsPerUnit, "Цена материалы за ед." },
+                { StaticColumnsOffer.CostMaterialsTotal, "Цена материалы всего" },
+                { StaticColumnsOffer.CostWorksPerUnit, "Цена работы за ед." },
+                { StaticColumnsOffer.CostWorksTotal, "Цена работы всего" },
+                { StaticColumnsOffer.CostTotalPerUnit, "Итого за ед." },
+                { StaticColumnsOffer.CostTotal, "Итого" },
+                { StaticColumnsOffer.Comment, "Примечание" },
+                { StaticColumnsOffer.ColStartOfferComments, "offer_end" },
+                { StaticColumnsOffer.ColCommentsDescriptionWorks,"Комментарии к описанию работ" },
+                { StaticColumnsOffer.ColDeviationVolume, "Отклонение по объемам" },
+                { StaticColumnsOffer.ColCommentsVolumeWorks,"Комментарии к объемам работ" },
+                { StaticColumnsOffer.ColDeviationCost,"Отклонение по стоимости" },
+                { StaticColumnsOffer.ColCommentsCostWorks,"Комментарии к стоимости работ" },
+                { StaticColumnsOffer.ColDeviationMaterials,"Отклонение МАТ" },
+                { StaticColumnsOffer.ColDeviationWorks, "Отклонение РАБ" },
+                { StaticColumnsOffer.ColComments,"Комментарии к строкам" }
+            };
+
+
+
         readonly Excel.Workbook _ProjectBook = Globals.ThisAddIn.Application.ActiveWorkbook;
         readonly Project _project;
         public Excel.Worksheet AnalisysSheet
@@ -49,11 +128,148 @@ namespace ACO
             }
         }
         List<OfferAddress> _OfferAddress;
-              
+
+
+
+        /// <summary>
+        ///  Столбцы 
+        /// </summary>
+        public List<OfferColumns> OfferColumns
+        {
+            get
+            {
+                if (_OfferColumns == null)
+                {
+                    _OfferColumns = GetOfferColumns();
+                }
+                return _OfferColumns;
+            }
+            set
+            {
+                _OfferColumns = value;
+            }
+        }
+        List<OfferColumns> _OfferColumns;
+        
+
         public ProjectWorkbook()
         {
             _project = new ProjectManager.ProjectManager().ActiveProject;
             _SheetPallet = ExcelHelper.GetSheet(_ProjectBook, "Палитра");
+        }
+
+        /// <summary>
+        ///  Столбцы КП \\ новый
+        /// </summary>
+        /// <returns></returns>
+        public List<OfferColumns> GetOfferColumns()
+        {
+            List<OfferColumns> columns = new List<OfferColumns>();
+            /// Последний столбец в первой строке
+            int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
+           // int columnStart = 0;
+
+            OfferColumns offerColumns = default;
+            for (int col = 1; col <= lastCol; col++)
+            {
+
+                string val = _AnalisysSheet.Cells[1, col].Value?.ToString() ?? "";
+                if (val == ColumnsMarksOffer[StaticColumnsOffer.StartOffer])
+                {
+                    // Первый столбец
+                    offerColumns = new OfferColumns();
+                    offerColumns.ColStartOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColComments] && offerColumns != null)
+                {
+                    // Последний столбец
+                    offerColumns.ColComments = col;
+                    columns.Add(offerColumns);
+
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.Level] && offerColumns != null)
+                {
+                    offerColumns.ColLevelOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.Name] && offerColumns != null)
+                {
+                    offerColumns.ColNameOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.Unit] && offerColumns != null)
+                {
+                    offerColumns.ColUnitOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.Amount] && offerColumns != null)
+                {
+                    offerColumns.ColCountOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.CostMaterialsPerUnit] && offerColumns != null)
+                {
+                    offerColumns.ColCostMaterialsPerUnitOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.CostMaterialsTotal] && offerColumns != null)
+                {
+                    offerColumns.ColCostMaterialsTotalOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.CostWorksPerUnit] && offerColumns != null)
+                {
+                    offerColumns.ColCostWorksPerUnitOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.CostWorksTotal] && offerColumns != null)
+                {
+                    offerColumns.ColCostWorksTotalOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.CostTotalPerUnit] && offerColumns != null)
+                {
+                    offerColumns.ColTotalCostPerUnitOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.CostTotal] && offerColumns != null)
+                {
+                    offerColumns.ColCostTotalOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.Comment] && offerColumns != null)
+                {
+                    offerColumns.ColCommentOffer = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColStartOfferComments] && offerColumns != null)
+                {
+                    offerColumns.ColStartOfferComments = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColCommentsDescriptionWorks] && offerColumns != null)
+                {
+                    offerColumns.ColCommentsDescriptionWorks = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColDeviationVolume] && offerColumns != null)
+                {
+                    offerColumns.ColDeviationVolume = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColCommentsVolumeWorks] && offerColumns != null)
+                {
+                    offerColumns.ColCommentsVolumeWorks = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColDeviationCost] && offerColumns != null)
+                {
+                    offerColumns.ColDeviationCost = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColCommentsCostWorks] && offerColumns != null)
+                {
+                    offerColumns.ColCommentsCostWorks = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColDeviationMaterials] && offerColumns != null)
+                {
+                    offerColumns.ColDeviationMaterials = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColDeviationWorks] && offerColumns != null)
+                {
+                    offerColumns.ColDeviationWorks = col;
+                }
+                else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColComments] && offerColumns != null)
+                {
+                    offerColumns.ColComments = col;
+                }
+              
+            }
+            return columns;
         }
 
         /// <summary>
@@ -89,7 +305,7 @@ namespace ACO
                         Name = name,
                         ColStartOffer = columnStart,
                         ColName = columnName,
-                        ColCost = columnStart -2,
+                        ColCost = columnStart - 2,
                         ColStartOfferComments = col,
                         ColTotalCost = columnTotal,
                         ColPercentTotal = col + 4,
@@ -97,7 +313,7 @@ namespace ACO
                         ColPercentWorks = col + 7,
                         ColComments = col + 8
                     };
-                    addresses.Add(address);                    
+                    addresses.Add(address);
                 }
             }
             return addresses;
@@ -109,65 +325,65 @@ namespace ACO
         }
         public string GetLetter(StaticColumns column)
         {
-           ColumnMapping mapping = _project.Columns.Find(x => x.Name == Project.ColumnsNames[column]);
+            ColumnMapping mapping = _project.Columns.Find(x => x.Name == Project.ColumnsNames[column]);
             if (mapping is null) throw new AddInException($"Не в проекте не указан столбец: {Project.ColumnsNames[column]}");
             return mapping.ColumnSymbol;
         }
 
         public Excel.Range GetAnalysisRange()
         {
-            int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column +8;
+            int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column + 8;
             int lastRow = AnalisysSheet.UsedRange.Row + AnalisysSheet.UsedRange.Rows.Count - 1;
-            string letterNumber =  GetLetter(StaticColumns.Number);
-            Excel.Range cell = AnalisysSheet.Cells[lastRow,lastCol];
+            string letterNumber = GetLetter(StaticColumns.Number);
+            Excel.Range cell = AnalisysSheet.Cells[lastRow, lastCol];
             Excel.Range rng = AnalisysSheet.Range[$"{letterNumber}{_project.RowStart}:{cell.Address[ColumnAbsolute: false]}"];
-           
+
             return rng;
         }
 
-        public void ColorCell(Excel.Range cell, string lvl = "defalut")
-        {
-            string text = cell.Value?.ToString() ?? "";
-            if (text != "#НД" || text != "")
-            {
-                double percent = double.TryParse(text, out double pct) ? pct : 0;
-                if (percent > 0.15 || text.Contains("Отс-ет"))
-                {//Красный  >0.15
-                    cell.Interior.Color = Color.FromArgb(255, 0, 0);
-                    cell.Font.Color = Color.FromArgb(255, 255, 255);
-                }
-                else if (percent < -0.15)
-                {// Желтый 
-                    cell.Interior.Color = Color.FromArgb(242, 255, 0);
-                    cell.Font.Color = Color.FromArgb(242, 0, 0);
-                }
-                else if (percent > 0.05 && percent < 0.15)
-                {
-                    /// Светло фиолетовый
-                    cell.Interior.Color = Color.FromArgb(255, 176, 197);
-                    cell.Font.Color = Color.FromArgb(125, 0, 33);
-                }
-                else if (percent < -0.05 && percent > -0.15)
-                {// Светло желтый
-                    cell.Interior.Color = Color.FromArgb(252, 250, 104);
-                    cell.Font.Color = Color.FromArgb(0, 0, 0);
-                }
-                else if (lvl != "defalut")
-                {
-                    // Формат строки по уровню
-                    Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPallet);
-                    if (pallets.TryGetValue(lvl, out Excel.Range pallet))
-                    {
-                        ExcelHelper.SetCellFormat(cell, pallet);                       
-                    }
-                }
-                else
-                {
-                    cell.Interior.Color = Color.FromArgb(232, 242, 238);
-                    cell.Font.Color = Color.FromArgb(0, 0, 0);
-                }
-            }
-        }
+        //public void ColorCell(Excel.Range cell, string lvl = "defalut")
+        //{
+        //    string text = cell.Value?.ToString() ?? "";
+        //    if (text != "#НД" || text != "")
+        //    {
+        //        double percent = double.TryParse(text, out double pct) ? pct : 0;
+        //        if (percent > 0.15 || text.Contains("Отс-ет"))
+        //        {//Красный  >0.15
+        //            cell.Interior.Color = Color.FromArgb(255, 0, 0);
+        //            cell.Font.Color = Color.FromArgb(255, 255, 255);
+        //        }
+        //        else if (percent < -0.15)
+        //        {// Желтый 
+        //            cell.Interior.Color = Color.FromArgb(242, 255, 0);
+        //            cell.Font.Color = Color.FromArgb(242, 0, 0);
+        //        }
+        //        else if (percent > 0.05 && percent < 0.15)
+        //        {
+        //            /// Светло фиолетовый
+        //            cell.Interior.Color = Color.FromArgb(255, 176, 197);
+        //            cell.Font.Color = Color.FromArgb(125, 0, 33);
+        //        }
+        //        else if (percent < -0.05 && percent > -0.15)
+        //        {// Светло желтый
+        //            cell.Interior.Color = Color.FromArgb(252, 250, 104);
+        //            cell.Font.Color = Color.FromArgb(0, 0, 0);
+        //        }
+        //        else if (lvl != "defalut")
+        //        {
+        //            // Формат строки по уровню
+        //            Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPallet);
+        //            if (pallets.TryGetValue(lvl, out Excel.Range pallet))
+        //            {
+        //                ExcelHelper.SetCellFormat(cell, pallet);                       
+        //            }
+        //        }
+        //        else
+        //        {
+        //            cell.Interior.Color = Color.FromArgb(232, 242, 238);
+        //            cell.Font.Color = Color.FromArgb(0, 0, 0);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         ///  Определить столбцы для окрашивания
