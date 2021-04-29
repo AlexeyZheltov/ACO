@@ -664,36 +664,111 @@ namespace ACO
         }
 
         /// <summary>
-        ///  Формулы анализа
+        ///  Формулы анализа 
         /// </summary>
         private void SetAnalisysFormuls(ProjectWorkbook projectWorkbook)
         {
             // Собрать столбцы 
-           foreach(OfferColumns offerColumns in  projectWorkbook.OfferColumns)
+            int firstRow = projectWorkbook.GetFirstRow();
+
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ProjectManager.Project project = projectManager.ActiveProject;
+            Excel.Worksheet ws = projectWorkbook.AnalisysSheet;
+
+            // Литеры стрлбцов базовой оценки
+            string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
+            string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
+            string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
+            
+            string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
+
+            //string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
+            //string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
+            //string letterPricePerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
+            //string letterComment = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
+
+            // Ячейка Общая стоимость
+            Excel.Range cellBasisCostTotal = ws.Range[$"{letterTotal}{firstRow}"];
+            string addressBasisCostTotal = cellBasisCostTotal.Address[RowAbsolute: false, ColumnAbsolute: true];
+
+            // базовая стоимость работ
+            Excel.Range cellBasisWorks = ws.Range[$"{letterWorkTotal}{firstRow}"];
+            string addressBasisWorks = cellBasisWorks.Address[RowAbsolute: false, ColumnAbsolute: true];
+
+            // базовая стоимость материалов
+            Excel.Range cellBasisMaterials = ws.Range[$"{letterMaterialTotal}{firstRow}"];
+            string addressBasisMaterials = cellBasisMaterials.Address[RowAbsolute: false, ColumnAbsolute: true];
+
+
+
+            string arguments = addressBasisCostTotal;
+            foreach (OfferColumns offerColumns in projectWorkbook.OfferColumns)
             {
-                //offerColumns.
+                Excel.Range cellCostAddress = ws.Cells[firstRow, offerColumns.ColCostTotalOffer];
+               // аргументы для с
+                arguments += "," + cellCostAddress.Address;
 
-
-                /*
-                 	  _sheetProject.Cells[rowStart, colStart + 4].Formula =
-                        $"=IFERROR(IF(${letterTotalSpectrum}{rowStart}<>0," +
-                        $"${letterTotalOffer}{rowStart}/${letterTotalSpectrum}{rowStart}-1,0),\"#НД\")";
-	
-	
-	=ЕСЛИОШИБКА(ЕСЛИ($T10<>0;$AM10/$T10-1;0);"#НД")
-	=ЕСЛИОШИБКА( (AM10/СРЗНАЧ(AM10;T10))-1;"#НД")
-	=ЕСЛИОШИБКА( (AM10/МЕДИАНА(AM10;T10))-1;"#НД")
-	
-	ActiveCell.FormulaR1C1 = _
-        "=IFERROR( (RC[-11]/AVERAGE(RC[-11],RC[-30]))-1,""#НД"")"
-    Range("AY10").Select
-    ActiveCell.FormulaR1C1 = _
-        "=IFERROR( (RC[-12]/MEDIAN(RC[-12],RC[-31]))-1,""#НД"")"
-    Range("AY11").Select
-                 */
             }
 
+            foreach (OfferColumns offerColumns in projectWorkbook.OfferColumns)
+            {
+                string formulaDeviationBasisCost = "";
+                string formulaDviationCostWorks = "";
+                string formulaCostMaterials = "";
 
+                ///Отклонение по стоимости // Адрес ячейки
+                Excel.Range CellOfferTotal = ws.Cells[firstRow, offerColumns.ColCostTotalOffer];
+                string AddressCellOfferTotal = CellOfferTotal.Address[RowAbsolute: false, ColumnAbsolute: true];
+                
+
+                if ( Properties.Settings.Default.AnalysisFormula == (byte)FormulaAnalysis.DeviationBasis)
+                {
+                    // Отклонение  от базовой оценки
+                  formulaDeviationBasisCost = $"=IFERROR(IF(${addressBasisCostTotal}<>0," +
+                                             $"${AddressCellOfferTotal}/${addressBasisCostTotal}-1,0),\"#НД\")";
+                    
+                 // formulaDviationCostWorks =
+                      //  $"=IFERROR(IF(${letterWorkslOffer}{rowStart}<>0," +
+                     //  $"${letterWorkslOffer}{rowStart}/${letterWorksSpectrum}{rowStart}-1,\"Отс-ет ст-ть мат.\"),\"#НД\")";
+
+                  //  formulaCostMaterials = 
+                   //     $"=IFERROR(IF(${letterMaterialslOffer}{rowStart}<>0," +
+                     //   $"${letterMaterialslOffer}{rowStart}/${letterMaterialsSpectrum}{rowStart}-1,\"Отс-ет ст-ть работ\"),\"#НД\")";
+                }
+                else if (Properties.Settings.Default.AnalysisFormula == (byte)FormulaAnalysis.Avarage)
+                {
+                    // Отклонение от среднего
+                    formulaDeviationBasisCost = $"=IFERROR( ({AddressCellOfferTotal}/AVERAGE({ arguments }))-1,\"#НД\")";
+
+                 //   formulaDviationCostWorks = $"=IF(${letter}{rowStart}>15%,Комментарии!$A$5,IF(${letter}{rowStart}<-15%,Комментарии!$A$6,\".\"))";
+
+                    formulaCostMaterials = "";
+                }
+                else if (Properties.Settings.Default.AnalysisFormula == (byte)FormulaAnalysis.Avarage)
+                {
+                    // Отклонение от медианы
+                    formulaDeviationBasisCost = $"=IFERROR( ({AddressCellOfferTotal }/MEDIAN({ arguments }))-1,\"#НД\")";
+
+                    formulaDviationCostWorks = "";
+
+                    formulaCostMaterials = "";
+                }
+                ws.Cells[firstRow, offerColumns.ColDeviationCost].Formula = formulaDeviationBasisCost;
+                ws.Cells[firstRow, offerColumns.ColDeviationWorks].Formula = formulaDviationCostWorks;
+                ws.Cells[firstRow, offerColumns.ColDeviationMaterials].Formula = formulaCostMaterials;
+            }
+                /*
+                =ЕСЛИОШИБКА(ЕСЛИ($T10<>0;$AM10/$T10-1;0);"#НД")
+                =ЕСЛИОШИБКА( (AM10/СРЗНАЧ(AM10;T10))-1;"#НД")
+                =ЕСЛИОШИБКА( (AM10/МЕДИАНА(AM10;T10))-1;"#НД")	
+                $"=IFERROR(IF(${letterTotalSpectrum}{rowStart}<>0," +
+                $"${letterTotalOffer}{rowStart}/${letterTotalSpectrum}{rowStart}-1,0),\"#НД\")";	
+                ActiveCell.FormulaR1C1 = _
+                "=IFERROR( (RC[-11]/AVERAGE(RC[-11],RC[-30]))-1,""#НД"")"                
+                ActiveCell.FormulaR1C1 = _
+                "=IFERROR( (RC[-12]/MEDIAN(RC[-12],RC[-31]))-1,""#НД"")"
+                Range("AY11").Select
+                */
         }
 
         private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
@@ -874,7 +949,7 @@ namespace ACO
             FormSettingFormuls form = new FormSettingFormuls();
             if (form.ShowDialog() == DialogResult.OK)
             {
-              
+
             }
         }
     }

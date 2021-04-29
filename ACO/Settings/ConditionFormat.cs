@@ -47,9 +47,9 @@ namespace ACO
            {
                 {"Больше",Excel.XlFormatConditionOperator.xlGreater},
                 {"Больше равно",Excel.XlFormatConditionOperator.xlGreaterEqual },
-                { "Меньше",Excel.XlFormatConditionOperator.xlLess },
-                { "Меньше равно",Excel.XlFormatConditionOperator.xlLessEqual },
-                { "Между",Excel.XlFormatConditionOperator.xlBetween },
+                {"Меньше",Excel.XlFormatConditionOperator.xlLess },
+                {"Меньше равно",Excel.XlFormatConditionOperator.xlLessEqual },
+                {"Между",Excel.XlFormatConditionOperator.xlBetween },
                 {"Равно",Excel.XlFormatConditionOperator.xlEqual },
                 {"Не равно",Excel.XlFormatConditionOperator.xlNotEqual },
            };

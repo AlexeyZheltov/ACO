@@ -46,5 +46,17 @@ namespace ACO.Properties {
                 this["ActiveProjectName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte AnalysisFormula {
+            get {
+                return ((byte)(this["AnalysisFormula"]));
+            }
+            set {
+                this["AnalysisFormula"] = value;
+            }
+        }
     }
 }

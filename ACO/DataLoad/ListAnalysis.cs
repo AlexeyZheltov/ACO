@@ -336,13 +336,13 @@ namespace ACO
               new Dictionary<StaticColumnsComments, string>()
               {
                   {StaticColumnsComments.CommentDiscriptionWorks, "Комментарии к описанию работ" },
-                  {StaticColumnsComments.DeviationVolume, "Отклонение по объемам" },
-                  {StaticColumnsComments.CommentsVolume, "Комментарии к объемам работ" },
-                  {StaticColumnsComments.DeviationCost, "Отклонение по стоимости" },
-                  {StaticColumnsComments.CommentsCost , "Комментарии к стоимости работ" },
-                  {StaticColumnsComments.DeviationMat ,"Отклонение МАТ" },
-                  {StaticColumnsComments.DeviationWorks ,"Отклонение РАБ" },
-                  {StaticColumnsComments.Comments,"Комментарии к строкам" }
+                  {StaticColumnsComments.DeviationVolume,   "Отклонение по объемам" },
+                  {StaticColumnsComments.CommentsVolume,    "Комментарии к объемам работ" },
+                  {StaticColumnsComments.DeviationCost,     "Отклонение по стоимости" },
+                  {StaticColumnsComments.CommentsCost ,     "Комментарии к стоимости работ" },
+                  {StaticColumnsComments.DeviationMat ,     "Отклонение МАТ" },
+                  {StaticColumnsComments.DeviationWorks ,   "Отклонение РАБ" },
+                  {StaticColumnsComments.Comments,          "Комментарии к строкам" }
               };
 
         public void GroupColumn()
@@ -371,7 +371,7 @@ namespace ACO
             //rngCoulumn.Columns.Group();
 
             Excel.Range rngColumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
-            rngColumn.Columns.Group();            
+            rngColumn.Columns.Group();
         }
 
         /// <summary>
