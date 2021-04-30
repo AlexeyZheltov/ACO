@@ -11,14 +11,14 @@ namespace ACO.ProjectManager
         {
             DoubleBuffered = true;           
             RowHeadersVisible = false;
-            SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            MultiSelect = false;
+           // SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+           // MultiSelect = false;
             AllowUserToAddRows = false;
             AllowUserToResizeColumns = true;
             AllowUserToResizeRows = false;
             RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
            // ReadOnly = false;
-            EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
+            //EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             RowsDefaultCellStyle.WrapMode = DataGridViewTriState.False;
             BackgroundColor = System.Drawing.Color.White;
         }

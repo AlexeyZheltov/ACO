@@ -328,6 +328,7 @@
             this.Name = "FormManager";
             this.ShowIcon = false;
             this.Text = "Диспетчер проектов";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.PageColumns.ResumeLayout(false);

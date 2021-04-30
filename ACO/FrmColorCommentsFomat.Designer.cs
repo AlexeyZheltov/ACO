@@ -42,12 +42,12 @@ namespace ACO
             this.BtnForeColor = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RulesDataGrid = new ACO.ProjectManager.CustomDataGrid();
-            this.BtnAdd = new System.Windows.Forms.Button();
             this.ColumnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.column1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BtnAdd = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RulesDataGrid)).BeginInit();
@@ -103,6 +103,7 @@ namespace ACO
             this.BtnCancel.TabIndex = 3;
             this.BtnCancel.Text = "Отмена";
             this.BtnCancel.UseVisualStyleBackColor = true;
+            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // groupBox1
             // 
@@ -194,17 +195,6 @@ namespace ACO
             this.RulesDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellClick);
             this.RulesDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellValueChanged);
             // 
-            // BtnAdd
-            // 
-            this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnAdd.Location = new System.Drawing.Point(19, 251);
-            this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(93, 26);
-            this.BtnAdd.TabIndex = 6;
-            this.BtnAdd.Text = "Добавить";
-            this.BtnAdd.UseVisualStyleBackColor = true;
-            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
-            // 
             // ColumnID
             // 
             this.ColumnID.HeaderText = "Номер";
@@ -266,6 +256,17 @@ namespace ACO
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column3.Width = 67;
             // 
+            // BtnAdd
+            // 
+            this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnAdd.Location = new System.Drawing.Point(19, 251);
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(93, 26);
+            this.BtnAdd.TabIndex = 6;
+            this.BtnAdd.Text = "Добавить";
+            this.BtnAdd.UseVisualStyleBackColor = true;
+            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
+            // 
             // FrmColorCommentsFomat
             // 
             this.AcceptButton = this.BtnAccept;
@@ -281,6 +282,7 @@ namespace ACO
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmColorCommentsFomat";
             this.Text = "Форматирование комментариев";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

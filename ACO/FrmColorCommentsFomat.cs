@@ -153,5 +153,17 @@ namespace ACO
             FillData();
             RulesDataGrid.Rows[RulesDataGrid.Rows.Count - 1].Cells[3].Selected = true;
         }
+               
+
+        private void Closing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
+
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

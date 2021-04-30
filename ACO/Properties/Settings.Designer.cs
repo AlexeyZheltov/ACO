@@ -58,5 +58,29 @@ namespace ACO.Properties {
                 this["AnalysisFormula"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double TopBoundAnalysis {
+            get {
+                return ((double)(this["TopBoundAnalysis"]));
+            }
+            set {
+                this["TopBoundAnalysis"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double BottomBoundAnalysis {
+            get {
+                return ((double)(this["BottomBoundAnalysis"]));
+            }
+            set {
+                this["BottomBoundAnalysis"] = value;
+            }
+        }
     }
 }

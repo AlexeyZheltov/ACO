@@ -250,7 +250,12 @@ namespace ACO.ProjectManager
             Save();
             Close();
         }
-              
+
+        private void Closing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
+        }
+
         private void BtnOpenFolder_Click(object sender, EventArgs e)
         {
             string folder = ProjectManager.GetFolderProjects();

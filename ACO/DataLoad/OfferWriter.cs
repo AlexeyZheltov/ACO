@@ -115,10 +115,8 @@ namespace ACO
             SheetAnalysis.GroupColumn();
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
-            SetFormuls();
+          //  SetFormuls();
         }
-
-
 
         /// <summary>
         ///  Комментарии Спектрум  
@@ -338,7 +336,7 @@ namespace ACO
                     Excel.Range cellPrint = _sheetProject.Cells[rowPaste, projectCollumn];
                     if (double.TryParse(text, out double number))
                     {
-                        cellPrint.Value = Math.Round(number, 2);                       
+                        cellPrint.Value = Math.Round(number, 2);
                     }
                     else if (!string.IsNullOrEmpty(text))
                     {
@@ -347,7 +345,7 @@ namespace ACO
                 }
             }
             pb.ClearSubBar();
-           
+
         }
 
         /// <summary>
@@ -371,12 +369,12 @@ namespace ACO
         /// <param name="sh"></param>
         /// <param name="columnSymbol"></param>
         /// <returns></returns>
-        private int GetLastRow(Excel.Worksheet sh, string columnSymbol)
+        public static int GetLastRow(Excel.Worksheet sh, string columnSymbol)
         {
             Excel.Range rng = sh.Range[$"{columnSymbol}{sh.Rows.Count}"];
             int lastRow = rng.End[Excel.XlDirection.xlUp].Row;
             return lastRow;
         }
-
+       
     }
 }

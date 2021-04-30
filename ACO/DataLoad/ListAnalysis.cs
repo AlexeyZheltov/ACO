@@ -20,7 +20,7 @@ namespace ACO
 
         int _rowStart = 1;
         int _lastRow = 1;
-        private readonly List<Record> _levelRecords;
+      //  private readonly List<Record> _levelRecords;
         /// <summary>
         ///  Столбец для вставки загруд
         /// </summary>
