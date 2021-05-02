@@ -13,7 +13,7 @@ namespace ACO.ProjectManager
     class DefaultProject : Project
     {
 
-        private const string name = "default";
+        private const string name = "Default";
 
         private DefaultProject() { }
         public static Project Get()
@@ -33,7 +33,7 @@ namespace ACO.ProjectManager
                     {
                         Name = Project.ColumnsNames[StaticColumns.Level],
                         Check = false,
-                        Obligatory = false,
+                        Obligatory = true,
                         ColumnSymbol = "A"
                     },
                     new ColumnMapping()
@@ -76,21 +76,21 @@ namespace ACO.ProjectManager
                     {
                         Name = Project.ColumnsNames[StaticColumns.Size],
                         Check = false,
-                        Obligatory = false,
+                        Obligatory = true,
                         ColumnSymbol = "I"
                     },
                     new ColumnMapping()
                     {
                         Name = Project.ColumnsNames[StaticColumns.Type],
                         Check = false,
-                        Obligatory = false,
+                        Obligatory = true,
                         ColumnSymbol = "J"
                     },
                      new ColumnMapping()
                     {
                         Name = Project.ColumnsNames[StaticColumns.Label],
                         Check = false,
-                        Obligatory = false,
+                        Obligatory = true,
                         ColumnSymbol = ""
                     },
 
@@ -98,14 +98,14 @@ namespace ACO.ProjectManager
                     {
                         Name = Project.ColumnsNames[StaticColumns.VendorCode],
                         Check = false,
-                        Obligatory = false,
+                        Obligatory = true,
                         ColumnSymbol = "K"
                     },
                     new ColumnMapping()
                     {
                         Name = Project.ColumnsNames[StaticColumns.Producer],
                         Check = false,
-                        Obligatory = false,
+                        Obligatory = true,
                         ColumnSymbol = "L"
                     },
                     new ColumnMapping()

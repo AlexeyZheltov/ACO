@@ -350,8 +350,8 @@ namespace ACO
            ExcelHelper.UnGroupColumns(SheetAnalysis);
             GroupColumnsBasis();
             GroupOfferColumns();
-            List<OfferAddress> addresslist = new ProjectWorkbook().GetAddersses();
-            foreach (OfferAddress address in addresslist)
+            List<OfferColumns> addresslist = new ProjectWorkbook().GetOfferColumns();
+            foreach (OfferColumns address in addresslist)
             {
                 GroupCommetnsColumns(address);
             }
@@ -359,18 +359,18 @@ namespace ACO
         private void GroupOfferColumns()
         {
             ProjectWorkbook projectWorkbook = new ProjectWorkbook();
-            foreach (OfferAddress address in projectWorkbook.OfferAddress)
+            foreach (OfferColumns address in projectWorkbook.OfferColumns)
             {
-                Excel.Range rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer + 1], SheetAnalysis.Cells[1, address.ColTotalCost - 1]];
+                Excel.Range rngCoulumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOffer + 1], SheetAnalysis.Cells[1, address.ColCostTotalOffer - 1]];
                 rngCoulumn.Columns.Group();
             }
         }
-            private void GroupCommetnsColumns(OfferAddress address)
+            private void GroupCommetnsColumns(OfferColumns address)
         {
             //Excel.Range rngCoulumn = SheetAnalysis.Cells[1, address.ColStartOfferComments-1];
             //rngCoulumn.Columns.Group();
 
-            Excel.Range rngColumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColPercentTotal - 1]];
+            Excel.Range rngColumn = SheetAnalysis.Range[SheetAnalysis.Cells[1, address.ColStartOfferComments], SheetAnalysis.Cells[1, address.ColDeviationCost - 1]];
             rngColumn.Columns.Group();
         }
 

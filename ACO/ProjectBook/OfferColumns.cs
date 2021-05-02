@@ -11,6 +11,9 @@ namespace ACO.ProjectBook
     /// </summary>
   public  class OfferColumns
     {
+
+        public string ParticipantName { get; set; }
+
         /// <summary>
         /// Столбец перед началом КП / offer_start
         /// </summary>
@@ -100,7 +103,6 @@ namespace ACO.ProjectBook
         /// </summary>
         public int ColCommentsCostWorks { get; set; }
 
-
         /// <summary>
         ///  Отклонение по стоимости МАТ  / offer_end + 6
         /// </summary>
@@ -115,7 +117,6 @@ namespace ACO.ProjectBook
         /// Комментарии к строкам / offer_end + 8
         /// </summary>
         public int ColComments { get; set; }
-
 
     }
 }

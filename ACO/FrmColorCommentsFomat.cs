@@ -85,8 +85,10 @@ namespace ACO
                 ConditionFormat cf = _ListCondintions.Find(x => x.ID == id);
                 if (cf is null)
                 {
-                        cf = new ConditionFormat();
-                    cf.ID = _ListCondintions.Count;
+                    cf = new ConditionFormat
+                    {
+                        ID = _ListCondintions.Count
+                    };
                 }
                 
                 string name = row.Cells[1].Value?.ToString()??"";
@@ -155,11 +157,11 @@ namespace ACO
         }
                
 
-        private void Closing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
+        //private void Closing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
 
-        }
+        //}
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {

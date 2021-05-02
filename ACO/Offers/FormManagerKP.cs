@@ -10,7 +10,7 @@ namespace ACO.Offers
 {
     public partial class FormManagerKP : Form
     {
-        private Excel.Application _app = Globals.ThisAddIn.Application;
+        private readonly Excel.Application _app = Globals.ThisAddIn.Application;
         private List<OfferColumnMapping> _mappingColumnsOffer;
         List<OfferSettings> _offersMapping;
         OfferSettings _CurrentMapping;
@@ -24,8 +24,8 @@ namespace ACO.Offers
             _manager = new OfferManager();
             _mappingColumnsOffer = new List<OfferColumnMapping>();
 
-            ListKP.FullRowSelect = true;
-            ListKP.MultiSelect = false;
+          //  ListKP.FullRowSelect = true;
+           // ListKP.MultiSelect = false;
             ListKP.View = View.List;
             LoadData();
         }
@@ -94,6 +94,7 @@ namespace ACO.Offers
             if ((_projectManager.ActiveProject?.Columns.Count ?? 0) == 0) { return; }
             _mappingColumnsOffer.Clear();
 
+            VewActiveOfferSettings(_CurrentMapping);
             foreach (ColumnMapping col in _projectManager.ActiveProject.Columns)
             {
                 OfferColumnMapping columnMapping = _CurrentMapping.Columns.Find(x => x.Name == col.Name);
@@ -213,6 +214,13 @@ namespace ACO.Offers
             Close();
         }
 
-      
+        /// <summary>
+        ///  Показать активные настройки КП в заголовке формы.
+        /// </summary>
+        /// <param name="project"></param>
+        private void VewActiveOfferSettings(OfferSettings offerSettings)
+        {
+            this.Text = $"Диспетчер КП [{offerSettings.Name}]";
+        }
     }
 }

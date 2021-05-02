@@ -17,19 +17,17 @@ namespace ACO.PivotSheets
             Выявленные ошибки				                            РУБ БЕЗ НДС
             Итого включая не оцененные работы и корректировку ошибок	РУБ БЕЗ НДС
          */
-
         readonly Excel.Application _app = Globals.ThisAddIn.Application;
         readonly Excel.Worksheet _SheetUrv12;
         readonly Excel.Worksheet _AnalisysSheet;
         readonly ProjectWorkbook _projectWorkbook;
         readonly ProjectManager.ProjectManager _projectManager;
         readonly ProjectManager.Project _project;
-          private const int _rowStart = 13;
+        private const int _rowStart = 13;
 
         //Описание менялось
         string _rangeChengedNames;
         string _rangeCostComments;
-      //  string _rangeCostTotal;
 
         public OfferInfo(ProjectWorkbook projectWorkbook)
         {
@@ -44,7 +42,7 @@ namespace ACO.PivotSheets
         public void SetInfo()
         {
             int ix = 0;
-            foreach (OfferAddress address in _projectWorkbook.OfferAddress)
+            foreach (OfferColumns address in _projectWorkbook.OfferColumns)
             {
                 SetColumns(address);
                 PrintInfo(ix);
@@ -55,7 +53,6 @@ namespace ACO.PivotSheets
         private void PrintInfo(int ix)
         {
             int column = 6 + 5 * ix;
-            //string = "Описание менялось";
             int row = ExcelHelper.FindCell(_SheetUrv12, "Описание менялось").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeChengedNames}, \"ЛОЖЬ\"), \"#НД\")";
 
@@ -92,7 +89,7 @@ namespace ACO.PivotSheets
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=#НД\",{rngBasisSum.Address} )";
         }
 
-        private void SetColumns(OfferAddress address)
+        private void SetColumns(OfferColumns address)
         {
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
             int rowStart = _project.RowStart;
@@ -104,15 +101,10 @@ namespace ACO.PivotSheets
             _rangeChengedNames = $"'{_AnalisysSheet.Name}'!{range.Address}";
 
             range = _AnalisysSheet.Range[
-                    _AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1],
-                    _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
+                    _AnalisysSheet.Cells[rowStart, address.ColCommentsCostWorks],
+                    _AnalisysSheet.Cells[lastRow, address.ColCommentsCostWorks]];
 
             _rangeCostComments = $"'{_AnalisysSheet.Name}'!{range.Address}";
-
-            //range = _AnalisysSheet.Range[
-            //       _AnalisysSheet.Cells[rowStart, address.ColPercentTotal + 1],
-            //       _AnalisysSheet.Cells[lastRow, address.ColPercentTotal + 1]];
-            //_rangeCostTotal = $"'{_AnalisysSheet.Name}'!{range.Address}";
         }
     }
 }

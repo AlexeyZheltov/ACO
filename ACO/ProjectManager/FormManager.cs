@@ -11,7 +11,7 @@ namespace ACO.ProjectManager
 {
     public partial class FormManager : Form
     {
-        private Excel.Application _app = Globals.ThisAddIn.Application;
+        private readonly Excel.Application _app = Globals.ThisAddIn.Application;
         private ProjectManager _projectManager;
         private List<ColumnMapping> _mappingColumns;
         public FormManager()
@@ -36,17 +36,17 @@ namespace ACO.ProjectManager
             _projectManager = new ProjectManager();
             if (_projectManager.Projects.Count > 0)
             {
-                // TableProjects.DataSource = _projectManager.Projects;
                 UpdateTableProject();
                 TableProjects.Columns[0].HeaderText = "Текущий";
                 TableProjects.Columns[1].HeaderText = "Проект";
                 TableProjects.Columns[2].HeaderText = "Путь";
+                TableProjects.Columns[2].Visible = false;
                 TableProjects.Columns[3].Visible = false;
                 TableProjects.Columns[4].Visible = false;
 
                 TableProjects.Columns[0].Width = 70;
-                TableProjects.Columns[1].Width = 120;
-                TableProjects.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                //TableProjects.Columns[1].Width = 120;
+                TableProjects.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for(int i = 0;i< TableProjects.Rows.Count; i++)
                 {
                    if (_projectManager.Projects[i].Name ==Properties.Settings.Default.ActiveProjectName)
@@ -69,6 +69,8 @@ namespace ACO.ProjectManager
         {
             if (_projectManager.ActiveProject != null)
             {
+                VewActiveProject(_projectManager.ActiveProject);
+
                 _mappingColumns = _projectManager.ActiveProject.Columns;
                 if ((_mappingColumns?.Count ?? 0) > 0)
                 {
@@ -142,8 +144,6 @@ namespace ACO.ProjectManager
             };
             TableColumns.DataSource = Source;
         }
-
-     
         
         /// <summary>
         ///  Удалить строку
@@ -163,8 +163,6 @@ namespace ACO.ProjectManager
                 }
             }
         }
-
-      
 
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -213,7 +211,6 @@ namespace ACO.ProjectManager
                 }
             }
         }
-        
 
         /// <summary>
         ///  Кнопка Выделенный диапазон \ вкладка 
@@ -251,10 +248,10 @@ namespace ACO.ProjectManager
             Close();
         }
 
-        private void Closing(object sender, FormClosingEventArgs e)
-        {
-            if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
-        }
+        //private void Closing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
+        //}
 
         private void BtnOpenFolder_Click(object sender, EventArgs e)
         {
@@ -295,9 +292,20 @@ namespace ACO.ProjectManager
                     row.Cells[0].Value = true;
                     _projectManager.ActiveProject = newActiveProject;
                     //LoadData();
+                    VewActiveProject(newActiveProject);
                 }
             }
         }
+
+        /// <summary>
+        ///  Показать активный проект в заголовке формы.
+        /// </summary>
+        /// <param name="project"></param>
+        private void VewActiveProject(Project project)
+        {
+            this.Text = $"Диспетчер проектов [{project.Name}]";
+        }
+
 
         private void BtnSetCurrentSheet_Click(object sender, EventArgs e)
         {

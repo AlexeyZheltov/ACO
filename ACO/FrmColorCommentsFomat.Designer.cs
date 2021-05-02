@@ -282,7 +282,6 @@ namespace ACO
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmColorCommentsFomat";
             this.Text = "Форматирование комментариев";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

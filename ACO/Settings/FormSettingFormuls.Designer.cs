@@ -226,7 +226,6 @@ namespace ACO.Settings
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormSettingFormuls";
             this.Text = "Настройки анализа";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Closing);
             this.Load += new System.EventHandler(this.FormSettingFormuls_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

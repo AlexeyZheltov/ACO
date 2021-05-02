@@ -109,6 +109,7 @@ namespace ACO
                         pb.Writeline("Заполнение листа Анализ\n");
                         ExcelAcselerate(true);
                         offerWriter.Print(pb, offerSettingsName);
+                        SetDataFilter();
                         pb.Writeline("Завершение");
                         pb.CloseFrm();
                     }
@@ -628,29 +629,29 @@ namespace ACO
                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
                 int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count + 1;
                 int firstRow = projectWorkbook.GetFirstRow();
-                foreach (OfferAddress offeraddress in projectWorkbook.OfferAddress)
+                foreach (OfferColumns offeraddress in projectWorkbook.OfferColumns)
                 {
                     /// Works
                     List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                      ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks]);
                     Excel.Range rng = projectWorkbook.AnalisysSheet.Range[
-                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColPercentWorks],
-                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColPercentWorks]];
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColDeviationWorks],
+                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColDeviationWorks]];
                     conditions.ForEach(x => x.SetCondition(rng));
                     /// Materials
                     conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                 ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat]);
                     rng = projectWorkbook.AnalisysSheet.Range[
-                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColPercentMaterials],
-                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColPercentMaterials]];
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColDeviationMaterials],
+                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColDeviationMaterials]];
                     conditions.ForEach(x => x.SetCondition(rng));
 
                     /// Стоимость
                     conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                 ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost]);
                     rng = projectWorkbook.AnalisysSheet.Range[
-                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColPercentTotal],
-                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColPercentTotal]];
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColDeviationCost ],
+                               projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColDeviationCost]];
                     conditions.ForEach(x => x.SetCondition(rng));
                 }
             }
@@ -802,6 +803,20 @@ namespace ACO
                     formulaDviationAmount = $"=IFERROR({AddressOfferAmount}/MEDIAN({argumentsAmount})-1,\"#НД\")";
                 }
 
+                //-----------------------------------------------------
+                //Отклонение по объемам 
+                if (Properties.Settings.Default.AnalysisFormulaCount == (byte)FormulaAnalysis.DeviationBasis)
+                {
+                    // Отклонение  от базовой оценки                                      
+                    formulaDviationAmount = $"=IFERROR({addressAmount}/{AddressOfferAmount}-1,\"#НД\")";                  
+                }
+                else if (Properties.Settings.Default.AnalysisFormulaCount == (byte)FormulaAnalysis.Avarage)
+                {
+                    // Отклонение от среднего
+                    formulaDviationAmount = $"=IFERROR({AddressOfferAmount}/AVERAGE({argumentsAmount})-1,\"#НД\")";
+                }
+
+
                 //ws.Cells[firstRow, offerColumns.ColDeviationCost] 
                 CellOfferDeviationCost.Formula = formulaDeviationCost;
                 // ws.Cells[firstRow, offerColumns.ColDeviationWorks]
@@ -818,7 +833,6 @@ namespace ACO
                 //Комментарии Спектрум к описанию работ
                  ws.Cells[firstRow, offerColumns.ColCommentsDescriptionWorks].Formula = $"=IF({AddressChekName}=TRUE,\".\",Комментарии!$A$2)";
 
-               
                //  ws.Cells[firstRow, offerColumns.ColDeviationVolume].Formula = $"=IFERROR({letterAmount}{firstRow}/{AddressOfferAmount}-1,\"#НД\")";
 
                 // TODO Проверить наличие листа 
@@ -1031,10 +1045,8 @@ namespace ACO
 
         private void SetDataFilter()
         {
-          //  Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             ProjectManager.Project project = projectManager.ActiveProject;
-           // Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
             SetFilter(project);
         }
 

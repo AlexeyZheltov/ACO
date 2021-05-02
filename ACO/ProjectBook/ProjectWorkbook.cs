@@ -112,22 +112,22 @@ namespace ACO
         Excel.Worksheet _AnalisysSheet;
         readonly Excel.Worksheet _SheetPallet;
 
-        public List<OfferAddress> OfferAddress
-        {
-            get
-            {
-                if (_OfferAddress == null)
-                {
-                    _OfferAddress = GetAddersses();
-                }
-                return _OfferAddress;
-            }
-            set
-            {
-                _OfferAddress = value;
-            }
-        }
-        List<OfferAddress> _OfferAddress;
+        //public List<OfferAddress> OfferAddress
+        //{
+        //    get
+        //    {
+        //        if (_OfferAddress == null)
+        //        {
+        //            _OfferAddress = GetAddersses();
+        //        }
+        //        return _OfferAddress;
+        //    }
+        //    set
+        //    {
+        //        _OfferAddress = value;
+        //    }
+        //}
+        //List<OfferAddress> _OfferAddress;
 
 
 
@@ -167,7 +167,6 @@ namespace ACO
             List<OfferColumns> columns = new List<OfferColumns>();
             /// Последний столбец в первой строке
             int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
-           // int columnStart = 0;
 
             OfferColumns offerColumns = default;
             for (int col = 1; col <= lastCol; col++)
@@ -177,8 +176,10 @@ namespace ACO
                 if (val == ColumnsMarksOffer[StaticColumnsOffer.StartOffer])
                 {
                     // Первый столбец
-                    offerColumns = new OfferColumns();
-                    offerColumns.ColStartOffer = col;
+                    offerColumns = new OfferColumns
+                    {
+                        ColStartOffer = col
+                    };
                 }
                 else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColComments] && offerColumns != null)
                 {
@@ -272,53 +273,6 @@ namespace ACO
             return columns;
         }
 
-        /// <summary>
-        ///  Номера столбцов 
-        /// </summary>
-        /// <returns></returns>
-        public List<OfferAddress> GetAddersses()
-        {
-            List<OfferAddress> addresses = new List<OfferAddress>();
-            int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
-            int columnStart = 0;
-            int columnTotal = 0;
-         //   int columnName = 0;
-
-            for (int col = 1; col <= lastCol; col++)
-            {
-                string val = _AnalisysSheet.Cells[1, col].Value?.ToString() ?? "";
-                if (val == "offer_start") { columnStart = col; }
-                else if (val == Project.ColumnsNames[StaticColumns.CostTotal]) { columnTotal = col; }
-               // else if (val == Project.ColumnsNames[StaticColumns.Name]) { columnName = col; }
-                else if (val == "offer_end")
-                {
-                    Excel.Range cellName = _AnalisysSheet.Cells[6, columnStart + 1];
-                    string name = cellName.Value?.ToString() ?? "";
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        name = $"УЧАСТНИК {addresses.Count + 1}";
-                        cellName.Value = name;
-                    }
-
-                    OfferAddress address = new OfferAddress
-                    {
-                        Name = name,
-                        ColStartOffer = columnStart,
-                       // ColName = columnName,
-                       // ColCost = columnStart - 2,
-                        ColStartOfferComments = col,
-                        ColTotalCost = columnTotal,
-                        ColPercentTotal = col + 4,
-                        ColPercentMaterials = col + 6,
-                        ColPercentWorks = col + 7,
-                        ColComments = col + 8
-                    };
-                    addresses.Add(address);
-                }
-            }
-            return addresses;
-        }
-
         public int GetFirstRow()
         {
             return _project.RowStart;
@@ -340,50 +294,6 @@ namespace ACO
 
             return rng;
         }
-
-        //public void ColorCell(Excel.Range cell, string lvl = "defalut")
-        //{
-        //    string text = cell.Value?.ToString() ?? "";
-        //    if (text != "#НД" || text != "")
-        //    {
-        //        double percent = double.TryParse(text, out double pct) ? pct : 0;
-        //        if (percent > 0.15 || text.Contains("Отс-ет"))
-        //        {//Красный  >0.15
-        //            cell.Interior.Color = Color.FromArgb(255, 0, 0);
-        //            cell.Font.Color = Color.FromArgb(255, 255, 255);
-        //        }
-        //        else if (percent < -0.15)
-        //        {// Желтый 
-        //            cell.Interior.Color = Color.FromArgb(242, 255, 0);
-        //            cell.Font.Color = Color.FromArgb(242, 0, 0);
-        //        }
-        //        else if (percent > 0.05 && percent < 0.15)
-        //        {
-        //            /// Светло фиолетовый
-        //            cell.Interior.Color = Color.FromArgb(255, 176, 197);
-        //            cell.Font.Color = Color.FromArgb(125, 0, 33);
-        //        }
-        //        else if (percent < -0.05 && percent > -0.15)
-        //        {// Светло желтый
-        //            cell.Interior.Color = Color.FromArgb(252, 250, 104);
-        //            cell.Font.Color = Color.FromArgb(0, 0, 0);
-        //        }
-        //        else if (lvl != "defalut")
-        //        {
-        //            // Формат строки по уровню
-        //            Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPallet);
-        //            if (pallets.TryGetValue(lvl, out Excel.Range pallet))
-        //            {
-        //                ExcelHelper.SetCellFormat(cell, pallet);                       
-        //            }
-        //        }
-        //        else
-        //        {
-        //            cell.Interior.Color = Color.FromArgb(232, 242, 238);
-        //            cell.Font.Color = Color.FromArgb(0, 0, 0);
-        //        }
-        //    }
-        //}
 
         /// <summary>
         ///  Определить столбцы для окрашивания
@@ -468,6 +378,5 @@ namespace ACO
             }
             return columns;
         }
-
     }
 }
