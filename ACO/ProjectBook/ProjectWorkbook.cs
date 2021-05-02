@@ -282,14 +282,14 @@ namespace ACO
             int lastCol = AnalisysSheet.Cells[1, AnalisysSheet.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
             int columnStart = 0;
             int columnTotal = 0;
-            int columnName = 0;
+         //   int columnName = 0;
 
             for (int col = 1; col <= lastCol; col++)
             {
                 string val = _AnalisysSheet.Cells[1, col].Value?.ToString() ?? "";
                 if (val == "offer_start") { columnStart = col; }
                 else if (val == Project.ColumnsNames[StaticColumns.CostTotal]) { columnTotal = col; }
-                else if (val == Project.ColumnsNames[StaticColumns.Name]) { columnName = col; }
+               // else if (val == Project.ColumnsNames[StaticColumns.Name]) { columnName = col; }
                 else if (val == "offer_end")
                 {
                     Excel.Range cellName = _AnalisysSheet.Cells[6, columnStart + 1];
@@ -304,8 +304,8 @@ namespace ACO
                     {
                         Name = name,
                         ColStartOffer = columnStart,
-                        ColName = columnName,
-                        ColCost = columnStart - 2,
+                       // ColName = columnName,
+                       // ColCost = columnStart - 2,
                         ColStartOfferComments = col,
                         ColTotalCost = columnTotal,
                         ColPercentTotal = col + 4,

@@ -50,12 +50,12 @@ namespace ACO.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public byte AnalysisFormula {
+        public byte AnalysisFormulaCost {
             get {
-                return ((byte)(this["AnalysisFormula"]));
+                return ((byte)(this["AnalysisFormulaCost"]));
             }
             set {
-                this["AnalysisFormula"] = value;
+                this["AnalysisFormulaCost"] = value;
             }
         }
         
@@ -80,6 +80,18 @@ namespace ACO.Properties {
             }
             set {
                 this["BottomBoundAnalysis"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte AnalysisFormulaCount {
+            get {
+                return ((byte)(this["AnalysisFormulaCount"]));
+            }
+            set {
+                this["AnalysisFormulaCount"] = value;
             }
         }
     }

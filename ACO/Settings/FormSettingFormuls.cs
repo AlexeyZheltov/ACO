@@ -21,20 +21,35 @@ namespace ACO.Settings
         readonly Properties.Settings settings = Properties.Settings.Default;
         
         //public static readonly FormulaAnalysis formula =FormulaAnalysis.
-        public FormulaAnalysis Formula
+        public FormulaAnalysis FormulaCost
         {
             get
             {
-                _Formula = (FormulaAnalysis)settings.AnalysisFormula;
-                return _Formula;
+                _FormulaCost = (FormulaAnalysis)settings.AnalysisFormulaCost;
+                return _FormulaCost;
             }
             set
             {
-                _Formula = value;
-                settings.AnalysisFormula =(byte) _Formula;               
+                _FormulaCost = value;
+                settings.AnalysisFormulaCost =(byte) _FormulaCost ;               
             }
         }
-        FormulaAnalysis _Formula;
+        FormulaAnalysis _FormulaCost ;
+
+        public FormulaAnalysis FormulaCount
+        {
+            get
+            {
+                _FormulaCount = (FormulaAnalysis)settings.AnalysisFormulaCount;
+                return _FormulaCount;
+            }
+            set
+            {
+                _FormulaCount = value;
+                settings.AnalysisFormulaCount = (byte) _FormulaCount;
+            }
+        }
+        FormulaAnalysis _FormulaCount;
 
         public double TopBound
         {
@@ -73,10 +88,13 @@ namespace ACO.Settings
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            if (Rbtn0.Checked) Formula = FormulaAnalysis.DeviationBasis;
-            else if (Rbtn1.Checked) Formula = FormulaAnalysis.Avarage;
-            else if (Rbtn2.Checked) Formula = FormulaAnalysis.Median;
+            if (RbtnBaseCost0.Checked) FormulaCost = FormulaAnalysis.DeviationBasis;
+            else if (RbtnAvgCost1.Checked) FormulaCost = FormulaAnalysis.Avarage;
+            else if (RbtnCostMedian2.Checked) FormulaCost = FormulaAnalysis.Median;
 
+            if (RbtnBaseCount0.Checked) FormulaCount = FormulaAnalysis.DeviationBasis;
+            else if (RbtnAvgCount1.Checked) FormulaCount = FormulaAnalysis.Avarage;
+          
             TopBound = double.TryParse(TBoxTop.Text, out double top) ? top : 0;
             BottomBound = double.TryParse(TBoxBottom.Text, out double bottom) ? bottom : 0;
             settings.Save();
@@ -85,9 +103,9 @@ namespace ACO.Settings
 
         private void FormSettingFormuls_Load(object sender, EventArgs e)
         {
-            Rbtn0.Checked = Formula == FormulaAnalysis.DeviationBasis;
-            Rbtn1.Checked = Formula == FormulaAnalysis.Avarage;
-            Rbtn2.Checked = Formula == FormulaAnalysis.Median;
+            RbtnBaseCost0.Checked = FormulaCost == FormulaAnalysis.DeviationBasis;
+            RbtnAvgCost1.Checked = FormulaCost == FormulaAnalysis.Avarage;
+            RbtnCostMedian2.Checked = FormulaCost == FormulaAnalysis.Median;
 
             TBoxTop.Text = TopBound.ToString();
             TBoxBottom.Text = BottomBound.ToString();
@@ -109,19 +127,18 @@ namespace ACO.Settings
             /// </summary>
             /// <param name="sender"></param>
             /// <param name="e"></param>
-          //  private void TBoxTextIsDigit(object sender, KeyPressEventArgs e)
-          //  {
+            if (e.KeyChar == '.') e.KeyChar = ',';
 
-                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ',') && (e.KeyChar != '-'))
                 {
                     e.Handled = true;
                 }
                 //only allow one decimal point
-                if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+                if ((e.KeyChar == ',') && ((sender as TextBox).Text.IndexOf(',') > -1) && ((sender as TextBox).Text.IndexOf('-') > -1))
                 {
                     e.Handled = true;
                 }
-            //}
         }
+      
     }
 }

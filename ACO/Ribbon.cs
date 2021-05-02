@@ -137,8 +137,8 @@ namespace ACO
         private async void BtnBaseEstimate_Click(object sender, RibbonControlEventArgs e)
         {
             string file = GetFile();
-            string offerSettingsName = GetOfferSettings();
             if (!File.Exists(file)) { return; }
+            string offerSettingsName = GetOfferSettings();
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
             pb.Show(new AddinWindow(Globals.ThisAddIn));
@@ -686,8 +686,8 @@ namespace ACO
 
             string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
 
-            double top = settings.TopBoundAnalysis;
-            double bottom = settings.BottomBoundAnalysis;
+            string top = settings.TopBoundAnalysis.ToString().Replace(',','.');
+            string bottom = settings.BottomBoundAnalysis.ToString().Replace(',', '.');
 
 
             // Ячейка Общая стоимость
@@ -756,24 +756,23 @@ namespace ACO
                 string AddressDeviationVolume = CellOfferDeviationVolume.Address[RowAbsolute: false, ColumnAbsolute: true];
                 string AddressDeviationWorks = CellOfferDeviationWorks.Address[RowAbsolute: false, ColumnAbsolute: true];
 
-                if (Properties.Settings.Default.AnalysisFormula == (byte)FormulaAnalysis.DeviationBasis)
+                if (Properties.Settings.Default.AnalysisFormulaCost == (byte)FormulaAnalysis.DeviationBasis)
                 {
                     // Отклонение  от базовой оценки
-                    //ws.Cells[firstRow, offerColumns.ColDeviationVolume].Formula = $"=IFERROR({letterAmount}{firstRow}/{AddressOfferAmount}-1,\"#НД\")";
+                    //Отклонение по объемам                    
                     formulaDviationAmount = $"=IFERROR({addressAmount}/{AddressOfferAmount}-1,\"#НД\")";
-
                     formulaDeviationCost = $"=IFERROR(IF({addressBasisCostTotal}<>0," +
                                            $"{AddressOfferCost}/{addressBasisCostTotal}-1,0),\"#НД\")";
-
+                    // по стоимости работ
                     formulaDviationWorks =
                         $"=IFERROR(IF({addressBasisWorks}<>0," +
                        $"{AddressOfferWorks }/{addressBasisWorks}-1,\"Отс-ет ст-ть работ\"),\"#НД\")";
-
+                    // по стоимости материалов
                     formulaDviationMaterials =
                         $"=IFERROR(IF({addressBasisMaterials}<>0," +
                        $"{AddressOfferMaterials}/{addressBasisMaterials}-1,\"Отс-ет ст-ть мат.\"),\"#НД\")";
                 }
-                else if (Properties.Settings.Default.AnalysisFormula == (byte)FormulaAnalysis.Avarage)
+                else if (Properties.Settings.Default.AnalysisFormulaCost == (byte)FormulaAnalysis.Avarage)
                 {
                     // Отклонение от среднего
                     // по стоимости
@@ -784,11 +783,11 @@ namespace ACO
                     // по стоимости материалов
                     formulaDviationMaterials = $"=IFERROR(IF(AVERAGE({ argumentsMaterials })<>0," +
                        $"{AddressOfferMaterials }/ AVERAGE({ argumentsMaterials }) -1 , \"Отс-ет ст-ть мат.\"),\"#НД\")";
-
+                    //Отклонение по объемам
                     formulaDviationAmount = $"=IFERROR({AddressOfferAmount}/AVERAGE({argumentsAmount})-1,\"#НД\")";
 
                 }
-                else if (Properties.Settings.Default.AnalysisFormula == (byte)FormulaAnalysis.Median)
+                else if (Properties.Settings.Default.AnalysisFormulaCost == (byte)FormulaAnalysis.Median)
                 {
                     // Отклонение от медианы
                     // по стоимости
@@ -799,7 +798,7 @@ namespace ACO
                     // по стоимости материалов
                     formulaDviationMaterials = $"=IFERROR(IF(MEDIAN({ argumentsMaterials })<>0," +
                       $"{AddressOfferMaterials }/ MEDIAN({ argumentsMaterials }) -1 ,\"Отс-ет ст-ть мат.\"),\"#НД\")";
-
+                    //Отклонение по объемам
                     formulaDviationAmount = $"=IFERROR({AddressOfferAmount}/MEDIAN({argumentsAmount})-1,\"#НД\")";
                 }
 
@@ -809,7 +808,7 @@ namespace ACO
                 CellOfferDeviationWorks.Formula = formulaDviationWorks;
                 //ws.Cells[firstRow, offerColumns.ColDeviationMaterials].Formula = formulaDviationMaterials;
                 CellOfferDeviationMaterials.Formula = formulaDviationMaterials;
-
+                //Отклонение по объемам
                 CellOfferDeviationVolume.Formula = formulaDviationAmount;
 
                 //Наименование вида работ
@@ -819,7 +818,7 @@ namespace ACO
                 //Комментарии Спектрум к описанию работ
                  ws.Cells[firstRow, offerColumns.ColCommentsDescriptionWorks].Formula = $"=IF({AddressChekName}=TRUE,\".\",Комментарии!$A$2)";
 
-                //Отклонение по объемам
+               
                //  ws.Cells[firstRow, offerColumns.ColDeviationVolume].Formula = $"=IFERROR({letterAmount}{firstRow}/{AddressOfferAmount}-1,\"#НД\")";
 
                 // TODO Проверить наличие листа 
@@ -831,9 +830,6 @@ namespace ACO
                            $"=IF({AddressOfferDeviationCost}=-1,\"Указать стоимость единичной расценки и посчитать итог\",\".\")";
 
                 //Комментарии Спектрум к стоимости работ
-                //cell = _sheetProject.Cells[rowStart, colStart + 4];
-                //address = cell.Address;
-                //string letterDiffCost = address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
                 ws.Cells[firstRow, offerColumns.ColCommentsCostWorks].Formula =
                     $"=IF({AddressOfferDeviationCost}=\"#НД\",\"#НД\", IF({AddressOfferDeviationCost}>{top}%,Комментарии!$A$9,IF({AddressOfferDeviationCost}<{bottom}%,Комментарии!$A$10,\".\")))";
 
@@ -1031,6 +1027,27 @@ namespace ACO
         {
             FormSettingFormuls form = new FormSettingFormuls();
             form.ShowDialog();
+        }
+
+        private void SetDataFilter()
+        {
+          //  Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+            ProjectManager.Project project = projectManager.ActiveProject;
+           // Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+            SetFilter(project);
+        }
+
+        private void SetFilter(Project project )
+        {
+            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+            Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
+
+            int lastRow = ws.UsedRange.Rows.Count + ws.UsedRange.Row - 1;
+            int lastCol = ws.UsedRange.Columns.Count + ws.UsedRange.Column - 1;
+
+            Excel.Range rng = ws.Range[ws.Cells[project.RowStart, 1], ws.Cells[lastRow, lastCol]];
+            rng.AutoFilter();
         }
     }
 }

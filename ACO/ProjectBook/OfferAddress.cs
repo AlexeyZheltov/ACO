@@ -11,10 +11,10 @@ namespace ACO.ProjectBook
         /// <summary>
         ///  Столбцы КП на листе анализ
         /// </summary>
-        public int ColCost { get; set; }
+    //    public int ColCost { get; set; }
 
 
-        public int ColName { get; set; }
+      //  public int ColName { get; set; }
 
         /// <summary>
         ///  Отклонение по стоимости МАТ

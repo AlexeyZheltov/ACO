@@ -42,18 +42,18 @@ namespace ACO
             // 
             // TBoxTamplate
             // 
-            this.TBoxTamplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.TBoxTamplate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TBoxTamplate.Location = new System.Drawing.Point(197, 26);
+            this.TBoxTamplate.Location = new System.Drawing.Point(203, 26);
             this.TBoxTamplate.Name = "TBoxTamplate";
-            this.TBoxTamplate.Size = new System.Drawing.Size(449, 20);
+            this.TBoxTamplate.Size = new System.Drawing.Size(443, 20);
             this.TBoxTamplate.TabIndex = 0;
             // 
             // BtnClose
             // 
             this.BtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnClose.Location = new System.Drawing.Point(641, 71);
+            this.BtnClose.Location = new System.Drawing.Point(638, 59);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(97, 23);
             this.BtnClose.TabIndex = 1;
@@ -65,7 +65,7 @@ namespace ACO
             // 
             this.BtnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.BtnSave.Location = new System.Drawing.Point(535, 71);
+            this.BtnSave.Location = new System.Drawing.Point(532, 59);
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(97, 23);
             this.BtnSave.TabIndex = 1;
@@ -79,7 +79,7 @@ namespace ACO
             this.BtnSetTamplatePath.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnSetTamplatePath.BackgroundImage")));
             this.BtnSetTamplatePath.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BtnSetTamplatePath.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.BtnSetTamplatePath.Location = new System.Drawing.Point(679, 21);
+            this.BtnSetTamplatePath.Location = new System.Drawing.Point(676, 21);
             this.BtnSetTamplatePath.Name = "BtnSetTamplatePath";
             this.BtnSetTamplatePath.Size = new System.Drawing.Size(39, 29);
             this.BtnSetTamplatePath.TabIndex = 1;
@@ -105,7 +105,7 @@ namespace ACO
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnClose;
-            this.ClientSize = new System.Drawing.Size(747, 99);
+            this.ClientSize = new System.Drawing.Size(744, 87);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BtnSetTamplatePath);
             this.Controls.Add(this.BtnSave);
