@@ -50,6 +50,7 @@
             this.group6 = this.Factory.CreateRibbonGroup();
             this.SptBtnUpdateFormate = this.Factory.CreateRibbonSplitButton();
             this.BtnFormatNumber = this.Factory.CreateRibbonButton();
+            this.BtnDataFilter = this.Factory.CreateRibbonButton();
             this.SptBtnGroup = this.Factory.CreateRibbonSplitButton();
             this.BtnGroupColumns = this.Factory.CreateRibbonButton();
             this.BtnUngroupColumns = this.Factory.CreateRibbonButton();
@@ -195,6 +196,7 @@
             this.SptBtnUpdateFormate.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.SptBtnUpdateFormate.Image = ((System.Drawing.Image)(resources.GetObject("SptBtnUpdateFormate.Image")));
             this.SptBtnUpdateFormate.Items.Add(this.BtnFormatNumber);
+            this.SptBtnUpdateFormate.Items.Add(this.BtnDataFilter);
             this.SptBtnUpdateFormate.Label = "Обновить формат списка";
             this.SptBtnUpdateFormate.Name = "SptBtnUpdateFormate";
             this.SptBtnUpdateFormate.ScreenTip = "Обновляет формат таблицы на листе Анализ";
@@ -209,6 +211,14 @@
             this.BtnFormatNumber.Name = "BtnFormatNumber";
             this.BtnFormatNumber.ShowImage = true;
             this.BtnFormatNumber.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFormatNumber_Click);
+            // 
+            // BtnDataFilter
+            // 
+            this.BtnDataFilter.Image = ((System.Drawing.Image)(resources.GetObject("BtnDataFilter.Image")));
+            this.BtnDataFilter.Label = "Фильтр";
+            this.BtnDataFilter.Name = "BtnDataFilter";
+            this.BtnDataFilter.ShowImage = true;
+            this.BtnDataFilter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDataFilter_Click);
             // 
             // SptBtnGroup
             // 
@@ -264,7 +274,7 @@
             this.SptBtnFormatComments.Name = "SptBtnFormatComments";
             this.SptBtnFormatComments.ScreenTip = "Форматирование комментариев";
             this.SptBtnFormatComments.SuperTip = "Добавлят правила условного форматирования  на листе Анализ";
-            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SetAnalysis);
+            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
             // 
             // BtnSetFormul
             // 
@@ -405,6 +415,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SptBtnUpdateFormate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatNumber;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSetFormul;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDataFilter;
     }
 
     partial class ThisRibbonCollection

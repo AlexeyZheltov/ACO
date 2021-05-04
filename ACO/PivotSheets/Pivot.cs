@@ -645,7 +645,7 @@ namespace ACO.PivotSheets
             }
             pb.Writeline("Формат ячеек");
             SetConditionFormat11();
-            SetNumberFormat11(addresses.Count);
+            SetNumberFormat11(offersCount);
 
             pb.Writeline("Формулы итогов");
             TotalFormuls11();
@@ -732,7 +732,7 @@ namespace ACO.PivotSheets
         private void PrintValuesFormuls11(OfferColumns address, int row, int rowPaste, int colPaste)
         {
             // Вывод и форматирование значений
-            SheetUrv11.Cells[rowPaste, colPaste].Formula = $"='{SheetUrv12.Name}'!{SheetUrv12.Cells[row, address.ColDeviationCost].Address}";
+            SheetUrv11.Cells[rowPaste, colPaste].Formula = $"='{SheetUrv12.Name}'!{SheetUrv12.Cells[row, address.ColCostTotalOffer].Address}";
             string letterOutTotalDiff = ExcelHelper.GetColumnLetter(SheetUrv12.Cells[rowPaste, colPaste]);
             SheetUrv11.Cells[rowPaste, colPaste + 1].Formula = $"=${letterOutTotalDiff}{rowPaste}/$G{rowPaste}-1";
             SheetUrv11.Cells[rowPaste, colPaste + 1].NumberFormat = "0%";

@@ -109,6 +109,9 @@ namespace ACO
                         pb.Writeline("Заполнение листа Анализ\n");
                         ExcelAcselerate(true);
                         offerWriter.Print(pb, offerSettingsName);
+                        pb.Writeline("Формулы анализа");
+                        SetAnalysis();
+                        pb.Writeline("Фмльтр");
                         SetDataFilter();
                         pb.Writeline("Завершение");
                         pb.CloseFrm();
@@ -609,12 +612,17 @@ namespace ACO
         }
 
 
+        private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
+        {
+            SetAnalysis(); 
+        }
+
         /// <summary>
         ///  Окраска комментариев
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SetAnalysis(object sender, RibbonControlEventArgs e)
+        private void SetAnalysis()
         {
 
             if (ExcelHelper.IsEditing()) return;
@@ -981,25 +989,25 @@ namespace ACO
             ExcelHelper.UnGroupRows(_app.ActiveSheet);
         }
 
-        private void BtnNumber_Click(object sender, RibbonControlEventArgs e)
-        {
-            Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
-            Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
-            IProgressBarWithLogUI pb = new ProgressBarWithLog();
-            ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
-            ProjectManager.Project project = projectManager.ActiveProject;
-            ExcelHelper.UnGroupRows(ws);
-            string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
-            string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
-            HItem root = new HItem();
-            foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letterLevel, project.RowStart))
-                root.Add(new HItem()
-                {
-                    Level = Level,
-                    Row = Row
-                });
-            ExcelHelper.Write(ws, root, pb, letterNumber);
-        }
+        //private void BtnNumber_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
+        //    Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
+        //    IProgressBarWithLogUI pb = new ProgressBarWithLog();
+        //    ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
+        //    ProjectManager.Project project = projectManager.ActiveProject;
+        //    ExcelHelper.UnGroupRows(ws);
+        //    string letterLevel = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+        //    string letterNumber = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]).ColumnSymbol;
+        //    HItem root = new HItem();
+        //    foreach (var (Row, Level) in ExcelReader.ReadSourceItems(ws, letterLevel, project.RowStart))
+        //        root.Add(new HItem()
+        //        {
+        //            Level = Level,
+        //            Row = Row
+        //        });
+        //    ExcelHelper.Write(ws, root, pb, letterNumber);
+        //}
 
         private void BtnFormatNumber_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1043,6 +1051,21 @@ namespace ACO
             form.ShowDialog();
         }
 
+        private void BtnDataFilter_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (ExcelHelper.IsEditing()) return;
+            try
+            {
+                SetDataFilter();
+            }
+            catch (Exception ex)
+            {
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }          
+        }
+
         private void SetDataFilter()
         {
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
@@ -1058,8 +1081,8 @@ namespace ACO
             int lastRow = ws.UsedRange.Rows.Count + ws.UsedRange.Row - 1;
             int lastCol = ws.UsedRange.Columns.Count + ws.UsedRange.Column - 1;
 
-            Excel.Range rng = ws.Range[ws.Cells[project.RowStart, 1], ws.Cells[lastRow, lastCol]];
-            rng.AutoFilter();
-        }
+            Excel.Range rng = ws.Range[ws.Cells[project.RowStart-1, 1], ws.Cells[lastRow, lastCol]];
+            rng.AutoFilter(1) ;
+        }     
     }
 }

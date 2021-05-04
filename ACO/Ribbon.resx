@@ -631,6 +631,18 @@
         2WUAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="BtnDataFilter.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAAZBJREFUaEPt
+        mE1KA0EQhQtx4cITCG48gR7DhXgSPUB+YIIn0IW68wqC4DH0BG4ED6DJDBGRtgbeYmgfxM5UJxXpD77d
+        S9WDNEWIFAqFgj/CrVyon2pwYttlgnqL0fBH58NefEe9xWh4os47H16383AjFer9nXokV2pYp7OxXKJO
+        OqGSrXos92zwShzKo3bYRp3l0AG7Ouz51/D8PrW7UaMfdSV7OvA1WpDTt2Yo+1hvgz6lIx08jRblcDob
+        yCHW2lIP5FgXfEULLf3Wd3+KdXnQr/acLDaxGckZ1uRFl5mf117nMhXz82pxLlMxPK925zIVg/Nqfy5T
+        6XFe853LVJY4r/nPZSop53Vl5zIV8jOYirg/WFkm4v5gZZmI+4OVZSLuD1aWibg/WFkm4v5gZZmI+4OV
+        ZSLuD1aWibg/WFkm4v5gZZmI+4OVZSLuD1aWibg/WFkm4v5gZZmI+4OVjXxRTxD3R1S2a9P+PR7uZAdR
+        n5DirQ/hWg4Q8U1U3PdzYaD4ZjwXhpbfnOdSKPwLRH4A3dkTZJqLd08AAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="SptBtnGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAABGdBTUEAALGPC/xhBQAACHFJREFUeF7t

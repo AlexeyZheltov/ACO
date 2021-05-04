@@ -19,6 +19,7 @@ namespace ACO.ProjectManager
             InitializeComponent();
             TableColumns.ReadOnly = false;
             TableProjects.ReadOnly = false;
+            TableProjects.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             LoadData();
         }
         private void LoadData()
@@ -164,13 +165,13 @@ namespace ACO.ProjectManager
             }
         }
 
-        private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                _projectManager.ActiveProject.Save();
-            }
-        }
+        //private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.RowIndex >= 0)
+        //    {
+        //        _projectManager.ActiveProject.Save();
+        //    }
+        //}
 
         private void TableProjects_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -310,12 +311,22 @@ namespace ACO.ProjectManager
         private void BtnSetCurrentSheet_Click(object sender, EventArgs e)
         {
             Excel.Worksheet ws = Globals.ThisAddIn.Application.ActiveSheet;
-            if (ws != null) TBoxSheetName.Text = ws.Name;
+            if (ws != null)
+            {
+                TBoxSheetName.Text = ws.Name;
+                int firstrow = ws.UsedRange.Row + ws.UsedRange.Rows.Count;
+                TBoxFirstRowRangeValues.Text = firstrow.ToString();
+            }
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void FormManager_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -85,7 +85,7 @@ namespace ACO
             // BtnAccept
             // 
             this.BtnAccept.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAccept.Location = new System.Drawing.Point(445, 251);
+            this.BtnAccept.Location = new System.Drawing.Point(419, 265);
             this.BtnAccept.Name = "BtnAccept";
             this.BtnAccept.Size = new System.Drawing.Size(93, 26);
             this.BtnAccept.TabIndex = 3;
@@ -97,7 +97,7 @@ namespace ACO
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnCancel.Location = new System.Drawing.Point(543, 251);
+            this.BtnCancel.Location = new System.Drawing.Point(517, 265);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(93, 26);
             this.BtnCancel.TabIndex = 3;
@@ -113,7 +113,7 @@ namespace ACO
             this.groupBox1.Controls.Add(this.richTextBox1);
             this.groupBox1.Controls.Add(this.BtnForeColor);
             this.groupBox1.Controls.Add(this.BtnInteriorColor);
-            this.groupBox1.Location = new System.Drawing.Point(523, 12);
+            this.groupBox1.Location = new System.Drawing.Point(497, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(117, 206);
             this.groupBox1.TabIndex = 4;
@@ -163,7 +163,7 @@ namespace ACO
             this.groupBox2.Controls.Add(this.RulesDataGrid);
             this.groupBox2.Location = new System.Drawing.Point(13, 13);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(498, 231);
+            this.groupBox2.Size = new System.Drawing.Size(472, 245);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Правила ";
@@ -190,7 +190,7 @@ namespace ACO
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.RulesDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.RulesDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.RulesDataGrid.Size = new System.Drawing.Size(486, 206);
+            this.RulesDataGrid.Size = new System.Drawing.Size(460, 220);
             this.RulesDataGrid.TabIndex = 0;
             this.RulesDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellClick);
             this.RulesDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.CustomDataGrid_CellValueChanged);
@@ -259,7 +259,7 @@ namespace ACO
             // BtnAdd
             // 
             this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnAdd.Location = new System.Drawing.Point(19, 251);
+            this.BtnAdd.Location = new System.Drawing.Point(19, 265);
             this.BtnAdd.Name = "BtnAdd";
             this.BtnAdd.Size = new System.Drawing.Size(93, 26);
             this.BtnAdd.TabIndex = 6;
@@ -273,13 +273,14 @@ namespace ACO
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnCancel;
-            this.ClientSize = new System.Drawing.Size(648, 284);
+            this.ClientSize = new System.Drawing.Size(622, 298);
             this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.BtnCancel);
             this.Controls.Add(this.BtnAccept);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(638, 295);
             this.Name = "FrmColorCommentsFomat";
             this.Text = "Форматирование комментариев";
             this.groupBox1.ResumeLayout(false);

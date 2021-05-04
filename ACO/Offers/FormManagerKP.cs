@@ -24,8 +24,10 @@ namespace ACO.Offers
             _manager = new OfferManager();
             _mappingColumnsOffer = new List<OfferColumnMapping>();
 
-          //  ListKP.FullRowSelect = true;
-           // ListKP.MultiSelect = false;
+            //  ListKP.FullRowSelect = true;
+            // ListKP.MultiSelect = false;
+            TableColumns.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+
             ListKP.View = View.List;
             LoadData();
         }
@@ -140,6 +142,8 @@ namespace ACO.Offers
             TableColumns.Columns[0].HeaderText = "Cтолбец";
             TableColumns.Columns[1].HeaderText = "Адрес";
             TableColumns.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            
         }
 
         private void Save()
@@ -152,7 +156,6 @@ namespace ACO.Offers
             {
                 _CurrentMapping.Columns = _mappingColumnsOffer;
             }
-
             _CurrentMapping.Save();
         }
 

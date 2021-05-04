@@ -81,7 +81,7 @@
             this.ListKP.MultiSelect = false;
             this.ListKP.Name = "ListKP";
             this.ListKP.ShowGroups = false;
-            this.ListKP.Size = new System.Drawing.Size(529, 360);
+            this.ListKP.Size = new System.Drawing.Size(470, 378);
             this.ListKP.TabIndex = 3;
             this.ListKP.UseCompatibleStateImageBehavior = false;
             this.ListKP.View = System.Windows.Forms.View.List;
@@ -98,13 +98,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(59, 25);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(257, 20);
+            this.textBox1.Size = new System.Drawing.Size(198, 20);
             this.textBox1.TabIndex = 4;
             // 
             // BtnCreate
             // 
             this.BtnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCreate.Location = new System.Drawing.Point(322, 22);
+            this.BtnCreate.Location = new System.Drawing.Point(263, 22);
             this.BtnCreate.Name = "BtnCreate";
             this.BtnCreate.Size = new System.Drawing.Size(81, 27);
             this.BtnCreate.TabIndex = 5;
@@ -138,7 +138,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.BtnOpenFolder);
             this.groupBox1.Controls.Add(this.label1);
@@ -148,7 +149,7 @@
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Location = new System.Drawing.Point(5, 14);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(541, 442);
+            this.groupBox1.Size = new System.Drawing.Size(482, 439);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки КП";
@@ -158,7 +159,7 @@
             this.BtnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnOpenFolder.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BtnOpenFolder.BackgroundImage")));
             this.BtnOpenFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BtnOpenFolder.Location = new System.Drawing.Point(505, 22);
+            this.BtnOpenFolder.Location = new System.Drawing.Point(446, 22);
             this.BtnOpenFolder.Name = "BtnOpenFolder";
             this.BtnOpenFolder.Size = new System.Drawing.Size(27, 27);
             this.BtnOpenFolder.TabIndex = 9;
@@ -177,7 +178,7 @@
             // BtnCopoySettings
             // 
             this.BtnCopoySettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCopoySettings.Location = new System.Drawing.Point(412, 22);
+            this.BtnCopoySettings.Location = new System.Drawing.Point(353, 22);
             this.BtnCopoySettings.Name = "BtnCopoySettings";
             this.BtnCopoySettings.Size = new System.Drawing.Size(84, 27);
             this.BtnCopoySettings.TabIndex = 5;
@@ -196,7 +197,7 @@
             this.tabControl1.Location = new System.Drawing.Point(4, 5);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(561, 461);
+            this.tabControl1.Size = new System.Drawing.Size(502, 484);
             this.tabControl1.TabIndex = 8;
             // 
             // tabPage1
@@ -205,7 +206,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(553, 435);
+            this.tabPage1.Size = new System.Drawing.Size(494, 458);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Настройки КП";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -216,7 +217,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(553, 435);
+            this.tabPage3.Size = new System.Drawing.Size(494, 458);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Столбцы";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -231,14 +232,13 @@
             this.TableColumns.BackgroundColor = System.Drawing.Color.White;
             this.TableColumns.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.TableColumns.Location = new System.Drawing.Point(6, 6);
-            this.TableColumns.MultiSelect = false;
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.TableColumns.Size = new System.Drawing.Size(544, 423);
+            this.TableColumns.Size = new System.Drawing.Size(485, 446);
             this.TableColumns.TabIndex = 7;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
             // 
@@ -248,7 +248,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(553, 435);
+            this.tabPage2.Size = new System.Drawing.Size(580, 442);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Диапазон";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -262,14 +262,14 @@
             this.groupBox3.Controls.Add(this.TBoxFirstRowRangeValues);
             this.groupBox3.Location = new System.Drawing.Point(21, 17);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(296, 146);
+            this.groupBox3.Size = new System.Drawing.Size(296, 117);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(23, 23);
+            this.label6.Location = new System.Drawing.Point(59, 26);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(72, 13);
             this.label6.TabIndex = 12;
@@ -277,9 +277,9 @@
             // 
             // BtnSetSelectedRangeValues
             // 
-            this.BtnSetSelectedRangeValues.Location = new System.Drawing.Point(126, 101);
+            this.BtnSetSelectedRangeValues.Location = new System.Drawing.Point(143, 78);
             this.BtnSetSelectedRangeValues.Name = "BtnSetSelectedRangeValues";
-            this.BtnSetSelectedRangeValues.Size = new System.Drawing.Size(144, 29);
+            this.BtnSetSelectedRangeValues.Size = new System.Drawing.Size(134, 29);
             this.BtnSetSelectedRangeValues.TabIndex = 6;
             this.BtnSetSelectedRangeValues.Text = "Выделенный диапазон";
             this.BtnSetSelectedRangeValues.UseVisualStyleBackColor = true;
@@ -287,15 +287,15 @@
             // 
             // TBoxSheetName
             // 
-            this.TBoxSheetName.Location = new System.Drawing.Point(123, 23);
+            this.TBoxSheetName.Location = new System.Drawing.Point(144, 23);
             this.TBoxSheetName.Name = "TBoxSheetName";
-            this.TBoxSheetName.Size = new System.Drawing.Size(147, 20);
+            this.TBoxSheetName.Size = new System.Drawing.Size(133, 20);
             this.TBoxSheetName.TabIndex = 11;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(36, 67);
+            this.label5.Location = new System.Drawing.Point(8, 55);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(124, 13);
             this.label5.TabIndex = 2;
@@ -303,15 +303,15 @@
             // 
             // TBoxFirstRowRangeValues
             // 
-            this.TBoxFirstRowRangeValues.Location = new System.Drawing.Point(178, 64);
+            this.TBoxFirstRowRangeValues.Location = new System.Drawing.Point(145, 52);
             this.TBoxFirstRowRangeValues.Name = "TBoxFirstRowRangeValues";
-            this.TBoxFirstRowRangeValues.Size = new System.Drawing.Size(92, 20);
+            this.TBoxFirstRowRangeValues.Size = new System.Drawing.Size(133, 20);
             this.TBoxFirstRowRangeValues.TabIndex = 1;
             // 
             // BtnSave
             // 
             this.BtnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnSave.Location = new System.Drawing.Point(327, 468);
+            this.BtnSave.Location = new System.Drawing.Point(268, 491);
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(110, 23);
             this.BtnSave.TabIndex = 9;
@@ -323,7 +323,7 @@
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnCancel.Location = new System.Drawing.Point(452, 468);
+            this.BtnCancel.Location = new System.Drawing.Point(393, 491);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(106, 23);
             this.BtnCancel.TabIndex = 10;
@@ -335,7 +335,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(568, 496);
+            this.ClientSize = new System.Drawing.Size(509, 519);
             this.Controls.Add(this.BtnCancel);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.BtnSave);
