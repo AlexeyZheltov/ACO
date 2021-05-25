@@ -114,6 +114,7 @@ namespace ACO
 
             manager.ListConditionFormats = listCondintions;
             manager.Save();
+            DialogResult = DialogResult.OK;
             Close();
         }
 

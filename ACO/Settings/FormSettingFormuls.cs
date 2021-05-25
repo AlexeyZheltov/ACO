@@ -98,6 +98,7 @@ namespace ACO.Settings
             TopBound = double.TryParse(TBoxTop.Text, out double top) ? top : 0;
             BottomBound = double.TryParse(TBoxBottom.Text, out double bottom) ? bottom : 0;
             settings.Save();
+            DialogResult = DialogResult.OK;
             Close();
         }
 

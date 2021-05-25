@@ -409,6 +409,8 @@ namespace ACO
                 x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol, SheetAnalysis);
             int colNames = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
                x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol, SheetAnalysis);
+            int colEndBasis = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
+               x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol, SheetAnalysis);
 
             // Комментарий базовой оценки
             // rng = SheetAnalysis.Cells[1, colCostTotal + 1];
@@ -426,6 +428,10 @@ namespace ACO
             int colCostMaterialsPerUnit = colCostTotal - 5;
             rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colCostMaterialsPerUnit],
                                       SheetAnalysis.Cells[1, colCostTotal - 1]];
+            rng.Columns.Group();
+
+            rng = SheetAnalysis.Range[SheetAnalysis.Cells[1, colEndBasis + 1],
+                                      SheetAnalysis.Cells[1, colEndBasis + 7]];
             rng.Columns.Group();
         }
     }
