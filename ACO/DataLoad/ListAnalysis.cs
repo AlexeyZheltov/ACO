@@ -55,128 +55,45 @@ namespace ACO
         /// <param name="recordPrint"></param>
         public void PrintRecord(Record recordPrint)
         {
-            int rowPaste;
+            int rowNextLvl;
+            int row = _rowStart;
             Record recordAnalysis = GetRecocdAnalysis(_rowStart);
 
-            if (recordAnalysis.KeyEqual(recordPrint))
+            /// Последний уровень ищем пока уровень не изменится на любой другой
+            if (recordPrint.Level == 6)
             {
-                rowPaste = _rowStart;
-                _rowStart++;
-                PrintValues(recordPrint, rowPaste);
-                return;
-            }
-
-            // Найти уровень выше 
-            int rowEnd = _lastRow;
-            if (recordPrint.Level>0 && recordPrint.Level <= 6)
-            {
-                FindPrevLevelRow(recordPrint.Level - 1, out int rowPrevLevel);
-                
-                    // rowEnd = rowPrevLevel;
-                    rowPaste = FindRowEqualRecord(recordPrint, _rowStart, rowPrevLevel);
-                    if (rowPaste != 0)
-                    {
-                        PrintValues(recordPrint, rowPaste);
-                        _rowStart = rowPaste + 1;
-                    }
-                }
-                else if (recordPrint.Level == 6)
-                {
-                    rowEnd = FindNextLevelRow();
-                    rowPaste = FindRowEqualRecord(recordPrint, _rowStart, rowEnd);
-                    if (rowPaste != 0)
-                    {
-                        PrintValues(recordPrint, rowPaste);                       
-                    }
-                }
-
-
-                for (int row = _rowStart + 1; row < rowEnd; row++)
-                {
-                    recordAnalysis = GetRecocdAnalysis(row);
-                    // Сравнить записи
-                    if (recordAnalysis.KeyEqual(recordPrint))
-                    {
-                        PrintValues(recordPrint, row);
-                        _rowStart = row + 1;
-                        return;
-                    }
-                }
-            
-
-
-            string letterNames = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
-            rowPaste = FindNextLevelRow();
-            PrintValues(recordPrint, rowPaste);
-            SetLevel(recordPrint.Level, rowPaste);
-            _rowStart = rowPaste + 1;
-        }
-
-        private int FindRowEqualRecord(Record recordPrint, int rowStart, int rowEnd)
-        {
-            int rowPrint = 0;
-            for (int row = rowStart + 1; row < rowEnd; row++)
-            {
-                Record recordAnalysis = GetRecocdAnalysis(row);
-                // Сравнить записи
-                if (recordAnalysis.KeyEqual(recordPrint))
-                {
-                    PrintValues(recordPrint, row);
-                    rowPrint = row;
-                    break;
-                }
-            }
-            return rowPrint;
-        }
-        /*
-                 /// <summary>
-        ///  Сопоставление полей для вставки строки КП
-        /// </summary>
-        /// <param name="recordPrint"></param>
-        public void PrintRecord(Record recordPrint)
-        {
-            int rowPaste;
-            Record recordAnalysis = GetRecocdAnalysis(_rowStart);
-
-            if (recordAnalysis.KeyEqual(recordPrint))
-            {
-                rowPaste = _rowStart;
-                _rowStart++;
-                PrintValues(recordPrint, rowPaste);
-                return;
+                rowNextLvl = FindNextLevelRow(recordAnalysis.Level);
+                if (PrintEqualRecord(recordPrint, row, rowNextLvl)) return;                
             }
             else
             {
-                if (recordPrint.Level > 1 && recordPrint.Level < 6)
-                {
-                    // Найти уровень выше 
-                    if (FindPrevLevelRow(recordPrint.Level - 1, out int rowPrevLevel))
-                    {
-                        for (int row = _rowStart + 1; row < rowPrevLevel; row++)
-                        {
-                            recordAnalysis = GetRecocdAnalysis(row);
-                            // Сравнить записи
-                            if (recordAnalysis.KeyEqual(recordPrint))
-                            {
-                                PrintValues(recordPrint, row);
-                                _rowStart = row + 1;
-                                return;
-                            }
-                        }
-                    }
-                }
-
-
-                string letterNames = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
-                rowPaste = FindNextLevelRow();
-                PrintValues(recordPrint, rowPaste);
-                SetLevel(recordPrint.Level, rowPaste);
-                _rowStart = rowPaste + 1;
+                /// Уровень не последний, ищем пока не изменится на меньший чем текущий
+                rowNextLvl = FindLevelRow(recordPrint.Level - 1);
+                if (PrintEqualRecord(recordPrint, row, rowNextLvl)) return;
+                _rowStart = rowNextLvl;
             }
+
+            // Вставка новой строки
+            SheetAnalysis.Rows[rowNextLvl].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
+            PrintValues(recordPrint, rowNextLvl);
+            SetLevel(recordPrint.Level, rowNextLvl);
         }
 
-         */
-
+        private bool PrintEqualRecord(Record recordPrint, int rowStart, int rowEnd)
+        {
+            for (int i = rowStart; i < rowEnd; i++)
+            {
+                Record recordAnalysis = GetRecocdAnalysis(i);
+                if (recordAnalysis.KeyEqual(recordPrint))
+                {
+                    PrintValues(recordPrint, i);
+                    _rowStart = i + 1;
+                    return true;
+                }
+            }
+            return false;
+        }
+               
         /// <summary>
         ///  Вставлет в базовый список номер уровня добавленной строки
         /// </summary>
@@ -189,42 +106,10 @@ namespace ACO
         }
 
         /// <summary>
-        /// Вставляет строку перед следующим уровнем
+        /// 
         /// </summary>
-        /// <returns>Номер строки</returns>
-        private int FindNextLevelRow()
+        private int FindNextLevelRow(int level)
         {
-            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
-            string letterLevelText = SheetAnalysis.Range[$"{letterLevel}{_rowStart}"].Value?.ToString() ?? "";
-            int levelFirst = int.TryParse(letterLevelText, out int lvlf) ? lvlf : 0;
-
-            for (int row = _rowStart + 1; row <= _lastRow; row++)
-            {
-                string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
-                if (int.TryParse(text, out int lvl))
-                {
-                    if (levelFirst != lvl)
-                    {
-                        SheetAnalysis.Rows[row - 1].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                        _lastRow++;
-                        return row - 1;
-                    }
-                }
-            }
-            _lastRow++;
-            return _lastRow;
-        }
-
-
-        /// <summary>
-        /// Поиск строки указанного уровня вниз по списку, если не найдена возвращает 
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="rowNextLevel"></param>
-        /// <returns></returns>
-        private void FindPrevLevelRow(int level, out int rowNextLevel)
-        {
-            rowNextLevel = _rowStart;
             string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
 
             if (level > 0)
@@ -234,41 +119,39 @@ namespace ACO
                     string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
                     if (int.TryParse(text, out int lvl))
                     {
-                        rowNextLevel = row;
-                        if (level == lvl) return;
+                        if (level != lvl) return row;
                     }
                 }
             }
             _lastRow++;
-            rowNextLevel = _lastRow ;
+            return _lastRow;
         }
+      
+        /// <summary>
+        /// Поиск строки указанного уровня вниз по списку, если не найдена возвращает 
+        /// </summary>
+        /// <param name="level"></param>
+        /// <param name="rowNextLevel"></param>
+        /// <returns></returns>
+        private int FindLevelRow(int level)
+        {
+            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
 
-        ///// <summary>
-        ///// Поиск строки указанного уровня вниз по списку
-        ///// </summary>
-        ///// <param name="level"></param>
-        ///// <param name="rowNextLevel"></param>
-        ///// <returns></returns>
-        //private bool FindPrevLevelRow(int level, out int rowNextLevel)
-        //{
-        //    rowNextLevel = _rowStart;
-        //    string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
-
-        //    if (level > 0)
-        //    {
-        //        for (int row = _rowStart; row <= _lastRow; row++)
-        //        {
-        //            string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
-        //            if (int.TryParse(text, out int lvl))
-        //            {
-        //                rowNextLevel = row;
-        //                if (level == lvl) return true;
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-
+            if (level > 0)
+            {
+                for (int row = _rowStart; row <= _lastRow; row++)
+                {
+                    string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
+                    if (int.TryParse(text, out int lvl))
+                    {
+                        if (level == lvl) return row;
+                    }
+                }
+            }
+            _lastRow++;
+            return _lastRow;
+        }
+    
 
         private void PrintValues(Record recordPrint, int rowPaste)
         {
@@ -353,9 +236,12 @@ namespace ACO
         {
             Record recordAnalysis = new Record();
             ColumnMapping mappingNumber = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Number]);
+            ColumnMapping mappingLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]);
             object number = SheetAnalysis.Range[$"{mappingNumber.ColumnSymbol}{row}"].Value;
             recordAnalysis.Number = number?.ToString() ?? "";
 
+            string levelTtext = SheetAnalysis.Range[$"{mappingLevel.ColumnSymbol}{row}"].Value?.ToString() ?? "";
+            recordAnalysis.Level = int.TryParse(levelTtext, out int lvl) ? lvl : 0;
             foreach (ColumnMapping columnMapping in CurrentProject.Columns)
             {
                 if (columnMapping.Check)
