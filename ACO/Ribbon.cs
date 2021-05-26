@@ -726,7 +726,8 @@ namespace ACO
             Excel.Range cellEndBasis = ws.Range[$"{letterEndBasis}{firstRow}"];
 
             /// ячейки Среднее. медиана
-            Excel.Range CellAvgAmount = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 1]; 
+            Excel.Range CellAvgAmount = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 1];
+
             Excel.Range CellAvgCostMaterials = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 2];
             Excel.Range CellAvgCostWorks = ws.Cells[cellEndBasis.Row, cellEndBasis.Column +  3];
             Excel.Range CellAvgTotalCost = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 4];
@@ -745,9 +746,9 @@ namespace ACO
             string addressMedianTotalCost = CellMedianTotalCost.Address[RowAbsolute: false, ColumnAbsolute: true];
 
             // Аргументы функции
-            string argumentsCost = addressBasisCostTotal;
-            string argumentsWorks = addressBasisWorks;
-            string argumentsMaterials = addressBasisMaterials;
+            string argumentsCommonCost = addressBasisCostTotal;
+            string argumentsCommonWorks = addressBasisWorks;
+            string argumentsCommonMaterials = addressBasisMaterials;
             string argumentsAmount = addressAmount;
 
             foreach (OfferColumns offerColumns in projectWorkbook.OfferColumns)
@@ -758,22 +759,23 @@ namespace ACO
                 Excel.Range cellAmountAddress = ws.Cells[firstRow, offerColumns.ColCountOffer];
 
                 //Аргументы функции
-                argumentsCost += "," + cellCostAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
-                argumentsWorks += "," + cellWorksAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
-                argumentsMaterials += "," + cellMaterialsAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
+                argumentsCommonCost += "," + cellCostAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
+                argumentsCommonWorks += "," + cellWorksAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
+                argumentsCommonMaterials += "," + cellMaterialsAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
                 argumentsAmount += "," + cellAmountAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
+
             }
 
             // Формалы среденее медиана
             CellAvgAmount.Formula = $"=AVERAGE({argumentsAmount})";
-            CellAvgCostMaterials.Formula = $"=AVERAGE({argumentsMaterials})";
-            CellAvgCostWorks.Formula = $"=AVERAGE({argumentsWorks})";
+            CellAvgCostMaterials.Formula = $"=AVERAGE({argumentsCommonMaterials})";
+            CellAvgCostWorks.Formula = $"=AVERAGE({argumentsCommonWorks})";
             //  CellAvgTotalCost.Formula = $"=AVERAGE({argumentsCost})";
             CellAvgTotalCost.Formula = $"={addressAvgCostMaterials}+" +
                                         $"{addressAvgCostWorks}";
 
-            CellMedianCostMaterials.Formula = $"=MEDIAN({argumentsMaterials})";
-            CellMedianCostWorks.Formula = $"=MEDIAN({argumentsWorks})";
+            CellMedianCostMaterials.Formula = $"=MEDIAN({argumentsCommonMaterials})";
+            CellMedianCostWorks.Formula = $"=MEDIAN({argumentsCommonWorks})";
             CellMedianTotalCost.Formula = $"= {addressMedianCostMaterials} + " +
                                             $"{addressMedianCostWorks}"; //$" =MEDIAN({argumentsMaterials})";
           
@@ -1112,6 +1114,6 @@ namespace ACO
 
             Excel.Range rng = ws.Range[ws.Cells[project.RowStart-1, 1], ws.Cells[lastRow, lastCol]];
             rng.AutoFilter(1) ;
-        }     
+        }
     }
 }
