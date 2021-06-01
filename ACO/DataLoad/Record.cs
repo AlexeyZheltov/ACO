@@ -98,6 +98,8 @@ namespace ACO
             return empty;
         }
 
+        private static string[] replaceArr = { "  ", "\r", "\n"};
+
         /// <summary>
         ///  Сравнение проверяемых полей 
         /// </summary>
@@ -112,8 +114,13 @@ namespace ACO
                 {                    
                    if ( keyFild == recordField ) { exist = true; } 
                   // if (string.IsNullOrEmpty(keyFild) || string.IsNullOrEmpty(recordField)) continue;
-                    string text1 = keyFild.Trim().Replace("  ", "").ToLower();
-                    string text2 = recordField.Trim().Replace("  ", "").ToLower();
+                    string text1 = keyFild.Trim().ToLower();
+                    string text2 = recordField.Trim().ToLower();
+                 foreach(string delStr in replaceArr)
+                    {
+                        text1 = text1.Replace(delStr, "");
+                        text2 = text2.Replace(delStr, "");
+                    }
 
                     if (text1 == text2)
                     {

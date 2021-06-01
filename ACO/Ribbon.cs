@@ -1061,8 +1061,6 @@ namespace ACO
         //            // Отклонение от среднего
         //            formulaDviationAmount = $"=IFERROR({AddressOfferAmount}/AVERAGE({argumentsAmount})-1,\"#НД\")";
         //        }
-
-
         //        //ws.Cells[firstRow, offerColumns.ColDeviationCost] 
         //        CellOfferDeviationCost.Formula = formulaDeviationCost;
         //        // ws.Cells[firstRow, offerColumns.ColDeviationWorks]
