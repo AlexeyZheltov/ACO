@@ -44,9 +44,7 @@ namespace ACO.ProjectManager
                 TableProjects.Columns[2].Visible = false;
                 TableProjects.Columns[3].Visible = false;
                 TableProjects.Columns[4].Visible = false;
-
-                TableProjects.Columns[0].Width = 70;
-                //TableProjects.Columns[1].Width = 120;
+                TableProjects.Columns[0].Width = 70;              
                 TableProjects.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 for (int i = 0; i < TableProjects.Rows.Count; i++)
                 {
@@ -164,15 +162,7 @@ namespace ACO.ProjectManager
                 }
             }
         }
-
-        //private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.RowIndex >= 0)
-        //    {
-        //        _projectManager.ActiveProject.Save();
-        //    }
-        //}
-
+             
         private void TableProjects_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             int row = e.RowIndex;
@@ -249,11 +239,6 @@ namespace ACO.ProjectManager
             Close();
         }
 
-        //private void Closing(object sender, FormClosingEventArgs e)
-        //{
-        //    if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
-        //}
-
         private void BtnOpenFolder_Click(object sender, EventArgs e)
         {
             string folder = ProjectManager.GetFolderProjects();
@@ -292,7 +277,6 @@ namespace ACO.ProjectManager
                 {
                     row.Cells[0].Value = true;
                     _projectManager.ActiveProject = newActiveProject;
-                    //LoadData();
                     VewActiveProject(newActiveProject);
                 }
             }
@@ -352,7 +336,13 @@ namespace ACO.ProjectManager
             }
             e.KeyChar = keyChar;
         }
-
-
     }
+
+
 }
+
+
+    //private void Closing(object sender, FormClosingEventArgs e)
+    //{
+    //    if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
+    //}

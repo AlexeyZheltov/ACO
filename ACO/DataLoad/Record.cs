@@ -13,7 +13,7 @@ namespace ACO
     class Record
     {
         /// <summary>
-        /// Уровень номера
+        /// Уровень 
         /// </summary>
         public int Level { get; set; }
       
@@ -114,23 +114,7 @@ namespace ACO
             return true;
         }
 
-        /// <summary>
-        ///  Сравнение уровней номеров 2записей
-        /// </summary>
-        /// <param name="recordAdd"> </param>
-        /// <returns></returns>
-        public bool LevelEqual(Record recordAdd)
-        {
-            //if (Number == recordAdd.Number) return true;
-            if (Level != recordAdd.Level) return false;
-
-            if (Level == 1 || Level != recordAdd.Level) return false;
-            for (int i = 0; i < Numbers.Length - 1; i++)
-            {
-                if (Numbers[i] != recordAdd.Numbers[i]) return false;
-            }
-            return true;
-        }
+     
         /// <summary>
         ///  Библииотека заголовок/ значение
         /// </summary>

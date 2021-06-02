@@ -192,7 +192,6 @@ namespace ACO
             });
         }
 
-
         private string GetOfferSettings()
         {
             string settingsFile = "";
@@ -290,7 +289,7 @@ namespace ACO
         {
             pb.SetMainBarVolum(6);
             pb.MainBarTick("Подготвка");
-            // ExcelAcselerate(true);
+            
             Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             ProjectManager.Project project = projectManager.ActiveProject;
@@ -619,7 +618,6 @@ namespace ACO
             }
         }
 
-
         private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
             SetAnalysis(); 
@@ -642,7 +640,7 @@ namespace ACO
                 SetAnalisysFormuls(projectWorkbook);
 
                 // очистить условное форматирование
-                ExcelHelper.ClearFormatConditions(projectWorkbook.AnalisysSheet.UsedRange);
+               projectWorkbook.AnalisysSheet.UsedRange.FormatConditions.Delete();                
                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
                 int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count + 1;
                 int firstRow = projectWorkbook.GetFirstRow();
@@ -867,13 +865,8 @@ namespace ACO
                     // Отклонение от среднего
                     formulaDviationAmount =  $"=IFERROR({AddressOfferAmount}/{addressAvgAmount}-1,\"#НД\")";                                           
                 }
-
-
-                //ws.Cells[firstRow, offerColumns.ColDeviationCost] 
                 CellOfferDeviationCost.Formula = formulaDeviationCost;
-                // ws.Cells[firstRow, offerColumns.ColDeviationWorks]
                 CellOfferDeviationWorks.Formula = formulaDviationWorks;
-                //ws.Cells[firstRow, offerColumns.ColDeviationMaterials].Formula = formulaDviationMaterials;
                 CellOfferDeviationMaterials.Formula = formulaDviationMaterials;
                 //Отклонение по объемам
                 CellOfferDeviationVolume.Formula = formulaDviationAmount;
@@ -885,9 +878,6 @@ namespace ACO
                 //Комментарии Спектрум к описанию работ
                 ws.Cells[firstRow, offerColumns.ColCommentsDescriptionWorks].Formula = $"=IF({AddressChekName}=TRUE,\".\",Комментарии!$A$2)";
 
-                //  ws.Cells[firstRow, offerColumns.ColDeviationVolume].Formula = $"=IFERROR({letterAmount}{firstRow}/{AddressOfferAmount}-1,\"#НД\")";
-
-                // TODO Проверить наличие листа 
                 //Комментарии Спектрум к объемам работ
                 ws.Cells[firstRow, offerColumns.ColCommentsVolume].Formula = $"=IF({AddressDeviationVolume}=\"#НД\",\"#НД\", IF({AddressDeviationVolume}>{top}%,Комментарии!$A$5,IF({AddressDeviationVolume}<{bottom}%,Комментарии!$A$6,\".\")))";
 
@@ -918,24 +908,19 @@ namespace ACO
                 }
             }
         }
-          
-
-        //}
-
-        //}
-
-        //}
 
         private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
-            ExcelHelper.ClearFormatConditions(rng);
+            // Удалить условное форматирование            
+            rng.FormatConditions.Delete();
         }
 
         private void BtnCol_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
-            ExcelHelper.ClearFormatConditions(rng);
+           // Удалить условное форматирование
+            rng.FormatConditions.Delete();
             ConditonsFormatManager formatManager = new ConditonsFormatManager();
             List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(a => a.ColumnName == "Выделение");
             conditions.ForEach(x => x.SetCondition(rng));

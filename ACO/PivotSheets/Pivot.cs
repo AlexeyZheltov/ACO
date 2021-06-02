@@ -47,8 +47,6 @@ namespace ACO.PivotSheets
             SheetUrv12.Cells[rowBottomTotal - 1, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
 
             //Формат строк в столбце
-           
-            //int lastrow = SheetUrv12.UsedRange.Row + SheetUrv12.UsedRange.Rows.Count - 2;
             
             Excel.Range formatCell = SheetUrv12.Range[$"F{rowCostWorks + 1}"];
             Excel.Range rng = SheetUrv12.Range[SheetUrv12.Cells[rowCostWorks + 1, colPaste], SheetUrv12.Cells[rowCostWorks + 1, colPaste]];
@@ -188,7 +186,6 @@ namespace ACO.PivotSheets
             pb.MainBarTick($"Удаление строки №{_rowStart}");
             Excel.Range rng = SheetUrv12.Cells[_rowStart, 1];
             rng.EntireRow.Delete();
-
         }
 
         /// <summary>
@@ -202,7 +199,8 @@ namespace ACO.PivotSheets
             ConditonsFormatManager formatManager = new ConditonsFormatManager();
             /// Удаление правил
             Excel.Range rng = SheetUrv12.Range[SheetUrv12.Cells[_rowStart, 1], SheetUrv12.Cells[rowBottomTotal, lastCol]];
-            ExcelHelper.ClearFormatConditions(rng);
+            rng.FormatConditions.Delete();
+            
             // Правила для столбца материалы
             string colDeviationMat = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationMat];
             string colDeviationWorks = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationWorks];
@@ -227,13 +225,13 @@ namespace ACO.PivotSheets
         private void SetConditionFormat11()
         {
             int lastCol = SheetUrv11.UsedRange.Column + SheetUrv11.UsedRange.Columns.Count;
-            int rowBottomTotal = GetLastRowUrv11();
-            // ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = GetLastRowUrv11();         
 
             ConditonsFormatManager formatManager = new ConditonsFormatManager();
             /// Удаление правил
             Excel.Range rng = SheetUrv11.Range[SheetUrv11.Cells[_rowStart, 1], SheetUrv11.Cells[rowBottomTotal, lastCol]];
-            ExcelHelper.ClearFormatConditions(rng);
+            
+            rng.FormatConditions.Delete();
             // Правила для столбца материалы           
             string colDeviationCost = ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost];
 
@@ -377,8 +375,6 @@ namespace ACO.PivotSheets
                                         $"={SheetUrv12.Cells[rowBottomTotal, colPaste].Address}+" +
                                         $"{SheetUrv12.Cells[rowBottomTotal + 1, colPaste].Address}";
                 }
-                //TODO подсчитать кол-во.
-                // PrintTotalComments(address);
             }
             pb.Writeline("Условное форматирование");
             SetConditionFormat12();

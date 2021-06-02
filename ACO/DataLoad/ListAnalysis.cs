@@ -20,7 +20,7 @@ namespace ACO
 
         int _rowStart = 1;
         int _lastRow = 1;
-        //  private readonly List<Record> _levelRecords;
+       
         /// <summary>
         ///  Столбец для вставки загруд
         /// </summary>
@@ -74,7 +74,6 @@ namespace ACO
                 if (PrintEqualRecord(recordPrint, rowPrevLvl, rowNextLvl)) return;
                 _rowStart = rowNextLvl;
             }
-
             // Вставка новой строки
             SheetAnalysis.Rows[rowNextLvl].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
             PrintValues(recordPrint, rowNextLvl);
@@ -128,7 +127,7 @@ namespace ACO
         }
 
         /// <summary>
-        /// 
+        /// Найти строку границы уровня ниже по списку
         /// </summary>
         private int FindNextLevelRow(int level)
         {
@@ -174,7 +173,11 @@ namespace ACO
             return _lastRow;
         }
 
-
+        /// <summary>
+        ///  вывести значения в строку
+        /// </summary>
+        /// <param name="recordPrint"></param>
+        /// <param name="rowPaste"></param>
         private void PrintValues(Record recordPrint, int rowPaste)
         {
             foreach (FieldAddress field in recordPrint.Addresslist)
@@ -196,58 +199,7 @@ namespace ACO
                 }
             }
         }
-
-        /// <summary>
-        ///  Запись строки КП на лист Анализ. Вставка строк.
-        /// </summary>
-        /// <param name="recordPrint"></param>
-        internal void Print(Record recordPrint)
-        {
-            int rowPaste = _rowStart;
-            /// Последняя строка списка 
-            bool existRecord = false;
-            Record recordAnalysis = null;
-
-            for (int row = _rowStart; row <= _lastRow; row++)
-            {
-                recordAnalysis = GetRecocdAnalysis(row);
-                if (!string.IsNullOrEmpty(recordAnalysis.Number))
-                {
-                    _rowStart = row;
-                    existRecord = true;
-                    break;
-                }
-            }
-            if (recordAnalysis != null && existRecord)
-            {
-                // Проверка ключевых значений 
-                if (!recordAnalysis.KeyEqual(recordPrint))
-                {
-                    SheetAnalysis.Rows[_rowStart].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
-                    _lastRow++;
-                }
-            }
-
-            /// Печать значений
-            foreach (FieldAddress field in recordPrint.Addresslist)
-            {
-                object val = recordPrint.Values[field.ColumnPaste];
-                Excel.Range cell = SheetAnalysis.Cells[rowPaste, field.ColumnPaste];
-                if (val != null)
-                { // Ошибка формулы в загружаемом файле
-                    if (double.TryParse(val.ToString(), out double dv))
-                    {
-                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
-                        cell.Value = Math.Round(dv, 2);
-                    }
-                    else
-                    {
-                        cell.Value = val;
-                    }
-                }
-            }
-            _rowStart++;
-        }
+              
 
         /// <summary>
         ///  Считывает поля для проверки с листа Анализ.
@@ -434,11 +386,7 @@ namespace ACO
                x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol, SheetAnalysis);
             int colEndBasis = ExcelHelper.GetColumn(CurrentProject.Columns.Find(
                x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol, SheetAnalysis);
-
-            // Комментарий базовой оценки
-            // rng = SheetAnalysis.Cells[1, colCostTotal + 1];
-            // rng.Columns.Group();
-
+                     
             string letterUnit = CurrentProject.Columns.
                             Find(x => x.Name == Project.ColumnsNames[StaticColumns.Unit]).ColumnSymbol;
             Excel.Range cellUnit = SheetAnalysis.Range[$"{letterUnit}1"];

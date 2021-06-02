@@ -16,6 +16,7 @@ namespace ACO.ExcelHelpers
     /// </summary>
     static class ExcelHelper
     {
+        static readonly char[] _allowLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
         /// <summary>
         /// Перекрашивает таблицу, используя палитру
         /// </summary>
@@ -52,8 +53,6 @@ namespace ACO.ExcelHelpers
         /// <param name="columns">Набор юуквенных имен колонок (нач, кон), (начб кон)... в которых будет производится покраска</param>
         public static void Repaint(Excel.Worksheet ws, Dictionary<string, Excel.Range> pallets, int startRow, string levelColumn, IProgressBarWithLogUI pb, params (string, string)[] columns)
         {
-           // Excel.Application application = ws.Application;
-
             foreach (Excel.Range r_row in ws.UsedRange.Rows)
             {
                 if (pb?.IsAborted ?? false) break;
@@ -65,24 +64,21 @@ namespace ACO.ExcelHelpers
 
                 if (pallets.TryGetValue(ws.Range[$"{levelColumn}{row}"].Text, out Excel.Range pallet))
                 {
-                    //pallet.Copy();
                     foreach (var columns_pair in columns)
                     {
                         (string f_column, string l_column) = columns_pair;
                         SetCellFormat(ws.Range[$"{f_column}{row}:{l_column}{row}"], pallet);
-                        //ws.Range[$"{f_column}{row}:{l_column}{row}"].PasteSpecial(Excel.XlPasteType.xlPasteFormats, Excel.XlPasteSpecialOperation.xlPasteSpecialOperationNone, false, false);
                     }
                 }
             }
-           // application.CutCopyMode = (Excel.XlCutCopyMode)0;
         }
 
-        public static void SetCellFormat(Excel.Range cell,Excel.Range cellFormat)
+        public static void SetCellFormat(Excel.Range cell, Excel.Range cellFormat)
         {
-          cell.Interior.Color = cellFormat.Interior.Color;
-          cell.Font.Name = cellFormat.Font.Name;
-          cell.Font.Bold = cellFormat.Font.Bold;
-          cell.Font.Color = cellFormat.Font.Color;
+            cell.Interior.Color = cellFormat.Interior.Color;
+            cell.Font.Name = cellFormat.Font.Name;
+            cell.Font.Bold = cellFormat.Font.Bold;
+            cell.Font.Color = cellFormat.Font.Color;
         }
 
         /// <summary>
@@ -106,7 +102,7 @@ namespace ACO.ExcelHelpers
                     if (pb.IsAborted) break;
                     pb.SubBarTick();
                     currentRow = row.Row;
-                    if (row.Row < 10) continue; 
+                    if (row.Row < 10) continue;
 
                     if (int.TryParse(ws.Cells[currentRow, 1].Text, out int value))
                     {
@@ -201,10 +197,6 @@ namespace ACO.ExcelHelpers
                     ws.Range[$"{mapping.WorkTotal}{s_row}"].Formula = $"=ROUND({mapping.WorkPerUnit}{s_row}*{mapping.Amount}{s_row},2)";
                     ws.Range[$"{mapping.PricePerUnit}{s_row}"].Formula = $"=ROUND({mapping.MaterialPerUnit}{s_row}+{mapping.WorkPerUnit}{s_row},2)";
                     ws.Range[$"{mapping.Total}{s_row}"].Formula = $"=ROUND({mapping.PricePerUnit}{s_row}*{mapping.Amount}{s_row},2)";
-                    //ws.Range[$"{mapping.MaterialTotal}{s_row}"].NumberFormat = "# ##0,00";
-                    //ws.Range[$"{mapping.WorkTotal}{s_row}"].NumberFormat = "# ##0,00";
-                    //ws.Range[$"{mapping.PricePerUnit}{s_row}"].NumberFormat = "# ##0,00";
-                    //ws.Range[$"{mapping.Total}{s_row}"].NumberFormat = "# ##0,00";
                     continue;
                 }
 
@@ -212,7 +204,7 @@ namespace ACO.ExcelHelpers
                     builder.Append($"SUM({mapping.Total}{sub_lvl.First().Row}:{mapping.Total}{sub_lvl.Last().Row})");
                 else
                 {
-                        foreach (var sub_item in sub_lvl)
+                    foreach (var sub_item in sub_lvl)
                         builder.Append($"{mapping.Total}{sub_item.Row}+");
 
                     builder.Remove(builder.Length - 1, 1);
@@ -224,7 +216,6 @@ namespace ACO.ExcelHelpers
                 if (item.Level > 1)
                 {
                     ws.Range[$"{mapping.PricePerUnit}{t_row}"].Formula = $"=ROUND({mapping.Total}{t_row}/{mapping.Amount}{t_row},2)";
-                   // ws.Range[$"{mapping.PricePerUnit}{t_row}"].NumberFormat = "# ##0,00";
                 }
 
                 SetFormulas(ws, mapping, item, pb);
@@ -286,25 +277,6 @@ namespace ACO.ExcelHelpers
             ws.Columns.ClearOutline();
         }
 
-        /// <summary>
-        ///  Получить текст из ячейки
-        /// </summary>
-        /// <param name="cell"></param>
-        /// <returns></returns>
-        //public static string GetText(Excel.Range cell)
-        //{
-        //    bool IsXLCVErr(object obj)
-        //    {
-        //        return (obj) is Int32; // Ошибка Формулы Excel
-        //    }
-        //    string text = "";
-        //    Excel.Application app = Globals.ThisAddIn.Application;          
-        //    if (!IsXLCVErr(cell.Value))
-        //    {
-        //        text = cell?.Value?.ToString() ?? "";
-        //    }
-        //    return text;
-        //}
 
         /// <summary>
         /// Ячейка в ржиме редактирования
@@ -338,15 +310,22 @@ namespace ACO.ExcelHelpers
         }
 
         /// <summary>
-        ///  Номер стодбца по его буквенному обозначению
+        ///  Номер столбца по его буквенному обозначению
         /// </summary>
         /// <param name="columnSymbol"></param>
         /// <param name="sh"></param>
         /// <returns></returns>
         public static int GetColumn(string columnSymbol, Excel.Worksheet sh)
         {
-            int col = sh.Range[$"{columnSymbol}1"].Column;
-            return col;
+            try
+            {
+                int col = sh.Range[$"{columnSymbol}1"].Column;
+                return col;
+            }
+            catch (Exception ex)
+            {
+                throw new AddInException($"Ошибка при получении номера столбца \"{columnSymbol}\" \n Проверьте настройки.\n{ex.Message}");
+            }
         }
 
         internal static void SetNumberFormat(Worksheet ws, int rowStart, (string, string)[] columns)
@@ -363,18 +342,10 @@ namespace ACO.ExcelHelpers
         internal static void SetNumberFormat(Worksheet ws, int rowStart, string letterAmount)
         {
             int lastRow = ws.UsedRange.Row + ws.UsedRange.Rows.Count - 1;
-            if (lastRow <= rowStart) return;            
-                Excel.Range rng = ws.Range[$"{letterAmount}{rowStart}:{letterAmount}{lastRow}"];
-                rng.NumberFormat = "#,##0.00";
-        }
+            if (lastRow <= rowStart) return;
+            Excel.Range rng = ws.Range[$"{letterAmount}{rowStart}:{letterAmount}{lastRow}"];
+            rng.NumberFormat = "#,##0.00";
 
-        /// <summary>
-        /// Удалить условное форматирование
-        /// </summary>
-        /// <param name="rng"></param>
-        internal static void ClearFormatConditions(Excel.Range rng)
-        {
-            rng.FormatConditions.Delete();
         }
     }
 }

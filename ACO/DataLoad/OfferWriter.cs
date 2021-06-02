@@ -6,6 +6,7 @@ using System.Linq;
 using ACO.Offers;
 using System;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace ACO
 
@@ -115,7 +116,7 @@ namespace ACO
             SheetAnalysis.GroupColumn();
             if (pb.IsAborted) throw new AddInException("Процесс остановлен.");
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");
-          //  SetFormuls();
+            //  SetFormuls();
         }
 
         /// <summary>
@@ -247,6 +248,12 @@ namespace ACO
             throw new AddInException("Столбец начала формул не найден.");
         }
 
+        /// <summary>
+        /// Собрать пары маппингов столбцов
+        /// </summary>
+        /// <param name="offerSettings"></param>
+        /// <param name="lastCol"></param>
+        /// <returns></returns>
         private List<FieldAddress> GetFields(OfferSettings offerSettings, int lastCol)
         {
             List<FieldAddress> fields = new List<FieldAddress>();
@@ -255,27 +262,24 @@ namespace ACO
             {
                 if (string.IsNullOrEmpty(columnOffer.ColumnSymbol)) continue;
                 ColumnMapping сolumnProject = _CurrentProject.Columns.Find(a => a.Name == columnOffer.Name);
-
+                if (сolumnProject == null) continue;
                 if (сolumnProject.Obligatory)
                 {
-                    сolumnProject.Column = ExcelHelper.GetColumn(сolumnProject.ColumnSymbol, _sheetProject);
-                    int colPaste = lastCol + k;
                     try
                     {
+                        сolumnProject.Column = ExcelHelper.GetColumn(сolumnProject.ColumnSymbol, _sheetProject);
+                        int colPaste = lastCol + k;
                         int colOffer = ExcelHelper.GetColumn(columnOffer.ColumnSymbol, _sheetProject);
-                    fields.Add(new FieldAddress()
-                    {
-                        ColumnOffer = colOffer,
-                        ColumnPaste = colPaste,
-                        MappingAnalysis = сolumnProject
-                    });
-                    
+                        fields.Add(new FieldAddress()
+                        {
+                            ColumnOffer = colOffer,
+                            ColumnPaste = colPaste,
+                            MappingAnalysis = сolumnProject
+                        });
+                        k++;
                     }
                     catch (Exception ex) 
-                    {
-                        throw new AddInException($"Ошибка при получении номера столбца \"{columnOffer.Name}-{columnOffer.ColumnSymbol}\" \n Проверьте настройки.\n{ex.Message}");
-                    }
-                    k++;
+                    { Debug.WriteLine(ex.Message); }
                 }
             }
             return fields;
@@ -383,6 +387,6 @@ namespace ACO
             int lastRow = rng.End[Excel.XlDirection.xlUp].Row;
             return lastRow;
         }
-       
+
     }
 }
