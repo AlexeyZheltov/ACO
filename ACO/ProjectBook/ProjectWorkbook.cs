@@ -246,7 +246,7 @@ namespace ACO
                 }
                 else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColCommentsVolumeWorks] && offerColumns != null)
                 {
-                    offerColumns.ColCommentsVolumeWorks = col;
+                    offerColumns.ColCommentsVolume = col;
                 }
                 else if (val == ColumnsMarksOffer[StaticColumnsOffer.ColDeviationCost] && offerColumns != null)
                 {

@@ -48,11 +48,11 @@ namespace ACO.ProjectManager
                 TableProjects.Columns[0].Width = 70;
                 //TableProjects.Columns[1].Width = 120;
                 TableProjects.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                for(int i = 0;i< TableProjects.Rows.Count; i++)
+                for (int i = 0; i < TableProjects.Rows.Count; i++)
                 {
-                   if (_projectManager.Projects[i].Name ==Properties.Settings.Default.ActiveProjectName)
+                    if (_projectManager.Projects[i].Name == Properties.Settings.Default.ActiveProjectName)
                     {
-                    TableProjects.Rows[i].Selected = true;
+                        TableProjects.Rows[i].Selected = true;
                     }
                 }
             }
@@ -145,7 +145,7 @@ namespace ACO.ProjectManager
             };
             TableColumns.DataSource = Source;
         }
-        
+
         /// <summary>
         ///  Удалить строку
         /// </summary>
@@ -270,10 +270,10 @@ namespace ACO.ProjectManager
             if (TableProjects.SelectedRows.Count > 0)
             {
                 DataGridViewRow row = TableProjects.SelectedRows[0];
-               string nameProject = row.Cells[1].Value?.ToString() ?? "";
+                string nameProject = row.Cells[1].Value?.ToString() ?? "";
                 if (!string.IsNullOrEmpty(nameProject))
                 {
-                   Project project = _projectManager.Projects.Find(x => x.Name == nameProject);
+                    Project project = _projectManager.Projects.Find(x => x.Name == nameProject);
                     if (project != null) project.Delete();
                     TableProjects.Rows.Remove(row);
                     _projectManager.Projects.Remove(project);
@@ -328,5 +328,31 @@ namespace ACO.ProjectManager
         {
 
         }
+
+        static readonly char[] _allowLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private void TableColumns_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)e.Control;
+            tb.KeyPress += new KeyPressEventHandler(dataGridViewTextBox_KeyPress);
+            e.Control.KeyPress += new KeyPressEventHandler(dataGridViewTextBox_KeyPress);
+        }
+
+        private void dataGridViewTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char keyChar = e.KeyChar;
+            if (Char.IsControl(keyChar))
+                return;
+
+            keyChar = Char.ToUpper(keyChar);
+
+            if ((sender as TextBox).TextLength == 3 || !_allowLetters.Contains(keyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+            e.KeyChar = keyChar;
+        }
+
+
     }
 }

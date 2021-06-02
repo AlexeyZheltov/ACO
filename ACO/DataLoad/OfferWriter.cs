@@ -260,13 +260,21 @@ namespace ACO
                 {
                     сolumnProject.Column = ExcelHelper.GetColumn(сolumnProject.ColumnSymbol, _sheetProject);
                     int colPaste = lastCol + k;
-                    int colOffer = ExcelHelper.GetColumn(columnOffer.ColumnSymbol, _sheetProject);
+                    try
+                    {
+                        int colOffer = ExcelHelper.GetColumn(columnOffer.ColumnSymbol, _sheetProject);
                     fields.Add(new FieldAddress()
                     {
                         ColumnOffer = colOffer,
                         ColumnPaste = colPaste,
                         MappingAnalysis = сolumnProject
                     });
+                    
+                    }
+                    catch (Exception ex) 
+                    {
+                        throw new AddInException($"Ошибка при получении номера столбца \"{columnOffer.Name}-{columnOffer.ColumnSymbol}\" \n Проверьте настройки.\n{ex.Message}");
+                    }
                     k++;
                 }
             }

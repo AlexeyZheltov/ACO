@@ -212,7 +212,7 @@
     <Compile Include="Offers\OfferSettings.cs" />
     <Compile Include="DataLoad\Record.cs" />
     <Compile Include="DataLoad\FieldAddress.cs" />
-    <Compile Include="PivotSheets\OfferInfo.cs" />
+    <Compile Include="PivotSheets\CommonComments.cs" />
     <Compile Include="PivotSheets\Pivot.cs" />
     <Compile Include="ProgressBarWithLog.cs">
       <SubType>Form</SubType>
@@ -337,7 +337,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0FF77E3A2F14B52D2AC374BAFE7A8737BCB86A56</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Main.ico</ApplicationIcon>

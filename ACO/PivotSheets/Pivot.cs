@@ -183,7 +183,7 @@ namespace ACO.PivotSheets
             pb.MainBarTick("Формат ячеек");
             SetNumberFormat12(addresses.Count);
             pb.MainBarTick("Общие комментарии");
-            new OfferInfo(projectWorkbook).SetInfo();
+            new CommonComments(projectWorkbook).SetInfo();
 
             pb.MainBarTick($"Удаление строки №{_rowStart}");
             Excel.Range rng = SheetUrv12.Cells[_rowStart, 1];
@@ -387,7 +387,7 @@ namespace ACO.PivotSheets
             pb.MainBarTick("Формат ячеек");
             SetNumberFormat12(addresses.Count);
             pb.MainBarTick("Общие комментарии");
-            new OfferInfo(projectWorkbook).SetInfo();
+            new CommonComments(projectWorkbook).SetInfo();
             //TODO загрузить наиболее дорогии позиции 
         }
 
@@ -585,7 +585,6 @@ namespace ACO.PivotSheets
             int lastRow = GetLastRowUrv12();
             pb.MainBarTick("Определение столбцов КП");
             Dictionary<string, Excel.Range> pallets = ExcelReader.ReadPallet(_SheetPalette);
-           // ProjectWorkbook projectWorkbook = new ProjectWorkbook();
             List<OfferColumns> addresses = GetAdderssLvl12();
             pb.Writeline("Копирование заголовков");
             PrintTitlesOffers11(addresses);

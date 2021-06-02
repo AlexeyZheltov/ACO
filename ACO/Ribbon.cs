@@ -10,7 +10,6 @@ using ACO.ExcelHelpers;
 using ACO.ProjectManager;
 using ACO.ProjectBook;
 using System.Drawing;
-using Microsoft.Office.Interop.Excel;
 using ACO.Settings;
 
 namespace ACO
@@ -145,6 +144,7 @@ namespace ACO
             string file = GetFile();
             if (!File.Exists(file)) { return; }
             string offerSettingsName = GetOfferSettings();
+            if (string.IsNullOrEmpty(offerSettingsName)) return;
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
             ExcelHelpers.ExcelFile excelBook = new ExcelHelpers.ExcelFile();
             pb.Show(new AddinWindow(Globals.ThisAddIn));
@@ -889,7 +889,7 @@ namespace ACO
 
                 // TODO Проверить наличие листа 
                 //Комментарии Спектрум к объемам работ
-                ws.Cells[firstRow, offerColumns.ColCommentsVolumeWorks].Formula = $"=IF({AddressDeviationVolume}=\"#НД\",\"#НД\", IF({AddressDeviationVolume}>{top}%,Комментарии!$A$5,IF({AddressDeviationVolume}<{bottom}%,Комментарии!$A$6,\".\")))";
+                ws.Cells[firstRow, offerColumns.ColCommentsVolume].Formula = $"=IF({AddressDeviationVolume}=\"#НД\",\"#НД\", IF({AddressDeviationVolume}>{top}%,Комментарии!$A$5,IF({AddressDeviationVolume}<{bottom}%,Комментарии!$A$6,\".\")))";
 
                 //Комментарии к строкам "0"
                 ws.Cells[firstRow, offerColumns.ColComments].Formula =

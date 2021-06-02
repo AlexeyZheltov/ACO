@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManager));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.BtnAccept = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -165,12 +165,13 @@
             this.TableColumns.Name = "TableColumns";
             this.TableColumns.RowHeadersVisible = false;
             this.TableColumns.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableColumns.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.TableColumns.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.TableColumns.Size = new System.Drawing.Size(526, 504);
             this.TableColumns.TabIndex = 0;
+            this.TableColumns.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.TableColumns_EditingControlShowing);
             this.TableColumns.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.TableColumns_RowsRemoved);
             // 
             // PageProject
@@ -289,8 +290,8 @@
             this.TableProjects.ReadOnly = true;
             this.TableProjects.RowHeadersVisible = false;
             this.TableProjects.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.TableProjects.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.TableProjects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TableProjects.Size = new System.Drawing.Size(526, 400);
             this.TableProjects.TabIndex = 0;

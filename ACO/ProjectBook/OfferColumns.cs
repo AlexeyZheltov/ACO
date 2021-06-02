@@ -91,7 +91,7 @@ namespace ACO.ProjectBook
         /// <summary>
         /// Комментарии к объемам работ / offer_end + 3
         /// </summary>
-        public int ColCommentsVolumeWorks { get; set; }
+        public int ColCommentsVolume { get; set; }
 
         /// <summary>
         /// Отклонение по стоимости / offer_end + 4

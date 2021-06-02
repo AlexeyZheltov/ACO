@@ -12,28 +12,11 @@ namespace ACO
     /// </summary>
     class Record
     {
-        public int Level { get; set; }
         /// <summary>
         /// Уровень номера
         /// </summary>
-        //public int Level
-        //{
-        //    get
-        //    {
-        //        if (_Level == 0)
-        //        {
-        //            _Level = Numbers?.Length ?? 0;
-        //        }
-        //        return _Level;
-        //    }
-        //    private set
-        //    {
-        //        _Level = value;
-        //    }
-        //}
-        //int _Level;
-
-
+        public int Level { get; set; }
+      
         /// <summary>
         ///  Массив номеров пункта.
         /// </summary>
@@ -112,9 +95,8 @@ namespace ACO
                 bool exist = false;
                 foreach (string recordField in recordPrint.KeyFilds)
                 {                    
-                   if ( keyFild == recordField ) { exist = true; } 
-                  // if (string.IsNullOrEmpty(keyFild) || string.IsNullOrEmpty(recordField)) continue;
-                    string text1 = keyFild.Trim().ToLower();
+                   if ( keyFild == recordField ) { exist = true; }
+                   string text1 = keyFild.Trim().ToLower();
                     string text2 = recordField.Trim().ToLower();
                  foreach(string delStr in replaceArr)
                     {

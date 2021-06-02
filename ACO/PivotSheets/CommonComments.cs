@@ -5,7 +5,10 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ACO.PivotSheets
 {
-    class OfferInfo
+    /// <summary>
+    /// ОБЩИЕ КОММЕНТАРИИ: Блок ячеек на листе урв12. 
+    /// </summary>
+    class CommonComments
     {
         /*
             Описание менялось				                            ПОЗИЦИЯМ
@@ -27,9 +30,9 @@ namespace ACO.PivotSheets
 
         //Описание менялось
         string _rangeChengedNames;
-        string _rangeCostComments;
+        string _rangeVolumeComments;
 
-        public OfferInfo(ProjectWorkbook projectWorkbook)
+        public CommonComments(ProjectWorkbook projectWorkbook)
         {
             Excel.Workbook wb = _app.ActiveWorkbook;
             _projectWorkbook = projectWorkbook;
@@ -57,9 +60,10 @@ namespace ACO.PivotSheets
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeChengedNames}, \"ЛОЖЬ\"), \"#НД\")";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы завышены").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeCostComments}, \"Расценки завышены\"), \"#НД\")";
+            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, \"Объемы завышены\"), \"#НД\")";
+           
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы занижены").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeCostComments}, \"Расценки занижены\"), \"#НД\")";
+            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, \"Объемы занижены\"), \"#НД\")";
 
             int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
             string cellAddress = _SheetUrv12.Cells[rowTotalSumm, column].Address;
@@ -101,10 +105,10 @@ namespace ACO.PivotSheets
             _rangeChengedNames = $"'{_AnalisysSheet.Name}'!{range.Address}";
 
             range = _AnalisysSheet.Range[
-                    _AnalisysSheet.Cells[rowStart, address.ColCommentsCostWorks],
-                    _AnalisysSheet.Cells[lastRow, address.ColCommentsCostWorks]];
+                    _AnalisysSheet.Cells[rowStart, address.ColCommentsVolume],
+                    _AnalisysSheet.Cells[lastRow, address.ColCommentsVolume]];
 
-            _rangeCostComments = $"'{_AnalisysSheet.Name}'!{range.Address}";
+            _rangeVolumeComments = $"'{_AnalisysSheet.Name}'!{range.Address}";
         }
     }
 }

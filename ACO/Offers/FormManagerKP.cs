@@ -225,5 +225,31 @@ namespace ACO.Offers
         {
             this.Text = $"Диспетчер КП [{offerSettings.Name}]";
         }
+
+        private void TableColumns_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)e.Control;
+            tb.KeyPress += new KeyPressEventHandler(dataGridViewTextBox_KeyPress);
+            e.Control.KeyPress += new KeyPressEventHandler(dataGridViewTextBox_KeyPress);
+
+        }
+
+        static readonly char[] _allowLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        private void dataGridViewTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char keyChar = e.KeyChar;
+            if (Char.IsControl(keyChar))
+                return;
+
+            keyChar = Char.ToUpper(keyChar);
+
+            if ((sender as TextBox).TextLength == 3 || !_allowLetters.Contains(keyChar))
+            {
+                e.Handled = true;
+                return;
+            }
+            e.KeyChar = keyChar;
+        }
+
     }
 }

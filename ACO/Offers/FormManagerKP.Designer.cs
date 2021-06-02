@@ -241,6 +241,7 @@
             this.TableColumns.Size = new System.Drawing.Size(485, 446);
             this.TableColumns.TabIndex = 7;
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
+            this.TableColumns.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.TableColumns_EditingControlShowing);
             // 
             // tabPage2
             // 
@@ -248,7 +249,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(580, 442);
+            this.tabPage2.Size = new System.Drawing.Size(494, 458);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Диапазон";
             this.tabPage2.UseVisualStyleBackColor = true;
