@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormManagerKP));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ListKP = new System.Windows.Forms.ListView();
@@ -55,6 +56,10 @@
             this.TBoxFirstRowRangeValues = new System.Windows.Forms.TextBox();
             this.BtnSave = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.копироватьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.вырезатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.вставитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -62,6 +67,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.TableColumns)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ListKP
@@ -86,6 +92,7 @@
             this.ListKP.UseCompatibleStateImageBehavior = false;
             this.ListKP.View = System.Windows.Forms.View.List;
             this.ListKP.SelectedIndexChanged += new System.EventHandler(this.ListKP_SelectedIndexChanged);
+            this.ListKP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListKP_KeyDown);
             // 
             // ColName
             // 
@@ -240,6 +247,7 @@
             this.TableColumns.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.TableColumns.Size = new System.Drawing.Size(485, 446);
             this.TableColumns.TabIndex = 7;
+            this.TableColumns.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.TableColumns_CellMouseClick);
             this.TableColumns.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.TableColumns_CellValueChanged);
             this.TableColumns.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.TableColumns_EditingControlShowing);
             // 
@@ -332,6 +340,36 @@
             this.BtnCancel.UseVisualStyleBackColor = true;
             this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.копироватьToolStripMenuItem,
+            this.вырезатьToolStripMenuItem,
+            this.вставитьToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(140, 70);
+            // 
+            // копироватьToolStripMenuItem
+            // 
+            this.копироватьToolStripMenuItem.Name = "копироватьToolStripMenuItem";
+            this.копироватьToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.копироватьToolStripMenuItem.Text = "Копировать";
+            this.копироватьToolStripMenuItem.Click += new System.EventHandler(this.копироватьToolStripMenuItem_Click);
+            // 
+            // вырезатьToolStripMenuItem
+            // 
+            this.вырезатьToolStripMenuItem.Name = "вырезатьToolStripMenuItem";
+            this.вырезатьToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.вырезатьToolStripMenuItem.Text = "Вырезать";
+            this.вырезатьToolStripMenuItem.Click += new System.EventHandler(this.вырезатьToolStripMenuItem_Click);
+            // 
+            // вставитьToolStripMenuItem
+            // 
+            this.вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
+            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.вставитьToolStripMenuItem.Text = "Вставить";
+            this.вставитьToolStripMenuItem.Click += new System.EventHandler(this.вставитьToolStripMenuItem_Click);
+            // 
             // FormManagerKP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -353,6 +391,7 @@
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -383,5 +422,9 @@
         private System.Windows.Forms.TextBox TBoxSheetName;
         private System.Windows.Forms.Button BtnCancel;
         private System.Windows.Forms.Button BtnCopoySettings;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem копироватьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem вырезатьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem вставитьToolStripMenuItem;
     }
 }

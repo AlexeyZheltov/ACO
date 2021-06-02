@@ -60,6 +60,7 @@ namespace ACO
             Record recordAnalysis = GetRecocdAnalysis(_rowStart);
 
             /// Последний уровень ищем пока уровень не изменится на любой другой
+            if (recordPrint.Level == 0) return;
             if (recordPrint.Level == 6)
             {
                 rowNextLvl = FindNextLevelRow(recordAnalysis.Level);
@@ -68,7 +69,7 @@ namespace ACO
             else
             {
                 /// Уровень не последний, ищем пока не изменится на меньший чем текущий
-                rowNextLvl = FindPevLvlRow(recordPrint.Level );
+                rowNextLvl = FindPevLvlRow(recordPrint.Level);
                 int rowPrevLvl = FindPrevLvlBackRow(recordPrint.Level);
                 if (PrintEqualRecord(recordPrint, rowPrevLvl, rowNextLvl)) return;
                 _rowStart = rowNextLvl;
@@ -82,19 +83,22 @@ namespace ACO
 
         private bool PrintEqualRecord(Record recordPrint, int rowStart, int rowEnd)
         {
-            for (int i = rowStart; i <= rowEnd; i++)
+            if (rowEnd >= rowStart)
             {
-                Record recordAnalysis = GetRecocdAnalysis(i);
-                if (recordAnalysis.Level == recordPrint.Level && recordAnalysis.KeyEqual(recordPrint))
+                for (int i = rowStart; i <= rowEnd; i++)
                 {
-                    PrintValues(recordPrint, i);
-                    _rowStart = i + 1;
-                    return true;
+                    Record recordAnalysis = GetRecocdAnalysis(i);
+                    if (recordAnalysis.Level == recordPrint.Level && recordAnalysis.KeyEqual(recordPrint))
+                    {
+                        PrintValues(recordPrint, i);
+                        _rowStart = i + 1;
+                        return true;
+                    }
                 }
             }
             return false;
         }
-               
+
         /// <summary>
         ///  Вставлет в базовый список номер уровня добавленной строки
         /// </summary>
@@ -111,16 +115,16 @@ namespace ACO
             string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
             if (level > 0)
             {
-                for (int row = _rowStart ; row >= CurrentProject.RowStart ; row --)
+                for (int row = _rowStart; row >= CurrentProject.RowStart; row--)
                 {
                     string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
-                    if (int.TryParse(text, out int lvl)) 
+                    if (int.TryParse(text, out int lvl))
                     {
                         if (level > lvl) return row;
                     }
                 }
             }
-            return CurrentProject.RowStart;
+            return _rowStart;
         }
 
         /// <summary>
@@ -144,7 +148,7 @@ namespace ACO
             _lastRow++;
             return _lastRow;
         }
-      
+
         /// <summary>
         /// Поиск строки указанного уровня вниз по списку, если не найдена возвращает 
         /// </summary>
@@ -169,7 +173,7 @@ namespace ACO
             _lastRow++;
             return _lastRow;
         }
-    
+
 
         private void PrintValues(Record recordPrint, int rowPaste)
         {
@@ -259,6 +263,7 @@ namespace ACO
             recordAnalysis.Number = number?.ToString() ?? "";
 
             string levelTtext = SheetAnalysis.Range[$"{mappingLevel.ColumnSymbol}{row}"].Value?.ToString() ?? "";
+            levelTtext = levelTtext.Trim();
             recordAnalysis.Level = int.TryParse(levelTtext, out int lvl) ? lvl : 0;
             foreach (ColumnMapping columnMapping in CurrentProject.Columns)
             {
