@@ -69,7 +69,8 @@ namespace ACO
             {
                 /// Уровень не последний, ищем пока не изменится на меньший чем текущий
                 rowNextLvl = FindPevLvlRow(recordPrint.Level );
-                if (PrintEqualRecord(recordPrint, row, rowNextLvl)) return;
+                int rowPrevLvl = FindPrevLvlBackRow(recordPrint.Level);
+                if (PrintEqualRecord(recordPrint, rowPrevLvl, rowNextLvl)) return;
                 _rowStart = rowNextLvl;
             }
 
@@ -84,7 +85,7 @@ namespace ACO
             for (int i = rowStart; i <= rowEnd; i++)
             {
                 Record recordAnalysis = GetRecocdAnalysis(i);
-                if (recordAnalysis.KeyEqual(recordPrint))
+                if (recordAnalysis.Level == recordPrint.Level && recordAnalysis.KeyEqual(recordPrint))
                 {
                     PrintValues(recordPrint, i);
                     _rowStart = i + 1;
@@ -103,6 +104,23 @@ namespace ACO
         {
             string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
             SheetAnalysis.Range[$"{letterLevel}{row}"].Value = lvl.ToString();
+        }
+
+        private int FindPrevLvlBackRow(int level)
+        {
+            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;
+            if (level > 0)
+            {
+                for (int row = _rowStart ; row >= CurrentProject.RowStart ; row --)
+                {
+                    string text = SheetAnalysis.Range[$"{letterLevel}{row}"].Value?.ToString() ?? "";
+                    if (int.TryParse(text, out int lvl)) 
+                    {
+                        if (level > lvl) return row;
+                    }
+                }
+            }
+            return CurrentProject.RowStart;
         }
 
         /// <summary>
