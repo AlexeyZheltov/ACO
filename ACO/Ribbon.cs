@@ -920,6 +920,12 @@ namespace ACO
         }
           
 
+        //}
+
+        //}
+
+        //}
+
         private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
