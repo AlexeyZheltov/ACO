@@ -165,23 +165,7 @@ namespace ACO.Offers
             Close();
         }
 
-
-        /// <summary>
-        ///  Удалить выделенную строку
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnDelete_Click(object sender, EventArgs e)
-        {
-            if (TableColumns.SelectedRows.Count > 0 && _mappingColumnsOffer != null)
-            {
-                DataGridViewRow row = TableColumns.SelectedRows[0];
-                string name = row.Cells[0].Value?.ToString();
-                OfferColumnMapping mapping = _mappingColumnsOffer.Find(x => x.Name == name);
-                TableColumns.Rows.Remove(row);
-                if (mapping != null) _mappingColumnsOffer.Remove(mapping);
-            }
-        }
+   
 
         private void TableColumns_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
@@ -275,14 +259,24 @@ namespace ACO.Offers
                     col++;
                 }
             }
-        }
+            else if (e.Control && e.KeyCode == Keys.X)
+            {
+                CopyToClipboard(); //Copy to clipboard
+                                   //Clear selected cells
+                ClearSelection();
+            }
+            else if (e.KeyCode == Keys.Delete)
+            {
+                ClearSelection();
+            }
+
+            }
 
 
         private void TableColumns_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {            
             if (TableColumns.SelectedCells.Count > 0)
                 TableColumns.ContextMenuStrip = contextMenuStrip1;
-
         }
 
         private void копироватьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -293,7 +287,10 @@ namespace ACO.Offers
         private void вырезатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CopyToClipboard(); //Copy to clipboard
-            //Clear selected cells
+            ClearSelection();
+        }
+        private void ClearSelection()
+        {
             foreach (DataGridViewCell dgvCell in TableColumns.SelectedCells)
                 dgvCell.Value = string.Empty;
         }
@@ -311,6 +308,7 @@ namespace ACO.Offers
             if (dataObj != null)
                 Clipboard.SetDataObject(dataObj);
         }
+
 
         private void PasteClipboardValue()
         {
@@ -365,11 +363,8 @@ namespace ACO.Offers
                 if (dgvCell.ColumnIndex < colIndex)
                     colIndex = dgvCell.ColumnIndex;
             }
-
             return dgView[colIndex, rowIndex];
         }
-
-
 
         private Dictionary<int, Dictionary<int, string>> ClipBoardValues(string clipboardValue)
         {
@@ -396,7 +391,6 @@ namespace ACO.Offers
             return copyValues;
         }
         #endregion
-
         
     }
 }

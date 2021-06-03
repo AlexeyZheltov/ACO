@@ -115,10 +115,6 @@ namespace ACO.Settings
             TBoxBottom.Text = BottomBound.ToString();
         }
 
-        //private void Closing(object sender, FormClosingEventArgs e)
-        //{
-        //    if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
-        //}
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
@@ -146,3 +142,8 @@ namespace ACO.Settings
       
     }
 }
+
+        //private void Closing(object sender, FormClosingEventArgs e)
+        //{
+        //    if (e.CloseReason == CloseReason.UserClosing) DialogResult = DialogResult.Cancel;
+        //}

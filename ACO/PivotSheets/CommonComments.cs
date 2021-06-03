@@ -20,8 +20,10 @@ namespace ACO.PivotSheets
             Выявленные ошибки				                            РУБ БЕЗ НДС
             Итого включая не оцененные работы и корректировку ошибок	РУБ БЕЗ НДС
          */
+        readonly Properties.Settings settings = Properties.Settings.Default;
         readonly Excel.Application _app = Globals.ThisAddIn.Application;
         readonly Excel.Worksheet _SheetUrv12;
+        readonly Excel.Worksheet _SheetComments;
         readonly Excel.Worksheet _AnalisysSheet;
         readonly ProjectWorkbook _projectWorkbook;
         readonly ProjectManager.ProjectManager _projectManager;
@@ -32,11 +34,14 @@ namespace ACO.PivotSheets
         string _rangeChengedNames;
         string _rangeVolumeComments;
 
+
+
         public CommonComments(ProjectWorkbook projectWorkbook)
         {
             Excel.Workbook wb = _app.ActiveWorkbook;
             _projectWorkbook = projectWorkbook;
             _SheetUrv12 = ExcelHelper.GetSheet(wb, "Урв12");
+            
             _projectManager = new ProjectManager.ProjectManager();
             _project = _projectManager.ActiveProject;
             _AnalisysSheet = ExcelHelper.GetSheet(wb, _project.AnalysisSheetName);
@@ -60,10 +65,10 @@ namespace ACO.PivotSheets
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeChengedNames}, \"ЛОЖЬ\"), \"#НД\")";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы завышены").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, \"Объемы завышены\"), \"#НД\")";
+            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, Комментарии!$A$5), \"#НД\")";
            
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы занижены").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, \"Объемы занижены\"), \"#НД\")";
+            _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, Комментарии!$A$6), \"#НД\")";
 
             int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
             string cellAddress = _SheetUrv12.Cells[rowTotalSumm, column].Address;
@@ -84,7 +89,9 @@ namespace ACO.PivotSheets
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
 
-            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">0,1\",{rngOfferSum.Address}) - SUMIF({rngOfferCommentCost.Address}, \">0,1\" ,{rngBasisSum.Address})";
+            double topBound = settings.TopBoundAnalysis / 100;
+
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">{topBound}\",{rngOfferSum.Address}) - SUMIF({rngOfferCommentCost.Address}, \">{topBound}\" ,{rngBasisSum.Address})";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address},\"#НД\",{rngOfferSum.Address} )";
