@@ -35,6 +35,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
+            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl1 = this.Factory.CreateRibbonDropDownItem();
+            Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl2 = this.Factory.CreateRibbonDropDownItem();
             this.RbnTab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.BtnCreateProgect = this.Factory.CreateRibbonButton();
@@ -67,6 +69,7 @@
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
+            this.comboBoxLvlCost = this.Factory.CreateRibbonComboBox();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -306,6 +309,7 @@
             this.group5.Items.Add(this.BtnKP);
             this.group5.Items.Add(this.BtnSettings);
             this.group5.Items.Add(this.BtnExcelScreenUpdating);
+            this.group5.Items.Add(this.comboBoxLvlCost);
             this.group5.Label = "Настройки";
             this.group5.Name = "group5";
             // 
@@ -340,7 +344,6 @@
             // 
             // BtnExcelScreenUpdating
             // 
-            this.BtnExcelScreenUpdating.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnExcelScreenUpdating.Image = ((System.Drawing.Image)(resources.GetObject("BtnExcelScreenUpdating.Image")));
             this.BtnExcelScreenUpdating.Label = "Разблокировать";
             this.BtnExcelScreenUpdating.Name = "BtnExcelScreenUpdating";
@@ -362,6 +365,16 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
+            // 
+            // comboBoxLvlCost
+            // 
+            ribbonDropDownItemImpl1.Label = "Без НДС";
+            ribbonDropDownItemImpl2.Label = "С НДС";
+            this.comboBoxLvlCost.Items.Add(ribbonDropDownItemImpl1);
+            this.comboBoxLvlCost.Items.Add(ribbonDropDownItemImpl2);
+            this.comboBoxLvlCost.Label = "Уровень цен";
+            this.comboBoxLvlCost.Name = "comboBoxLvlCost";
+            this.comboBoxLvlCost.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.comboBox1_TextChanged);
             // 
             // Ribbon
             // 
@@ -416,6 +429,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFormatNumber;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSetFormul;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDataFilter;
+        internal Microsoft.Office.Tools.Ribbon.RibbonComboBox comboBoxLvlCost;
     }
 
     partial class ThisRibbonCollection

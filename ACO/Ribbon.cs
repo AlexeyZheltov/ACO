@@ -289,7 +289,7 @@ namespace ACO
         {
             pb.SetMainBarVolum(6);
             pb.MainBarTick("Подготвка");
-            
+
             Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             ProjectManager.Project project = projectManager.ActiveProject;
@@ -603,7 +603,7 @@ namespace ACO
         {
             try
             {
-              if(  new FrmColorCommentsFomat().ShowDialog() == DialogResult.OK)
+                if (new FrmColorCommentsFomat().ShowDialog() == DialogResult.OK)
                 {
                     SetAnalysis();
                 }
@@ -620,7 +620,7 @@ namespace ACO
 
         private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
-            SetAnalysis(); 
+            SetAnalysis();
         }
 
         /// <summary>
@@ -640,7 +640,7 @@ namespace ACO
                 SetAnalisysFormuls(projectWorkbook);
 
                 // очистить условное форматирование
-               projectWorkbook.AnalisysSheet.UsedRange.FormatConditions.Delete();                
+                projectWorkbook.AnalisysSheet.UsedRange.FormatConditions.Delete();
                 ConditonsFormatManager formatManager = new ConditonsFormatManager();
                 int lastRow = projectWorkbook.AnalisysSheet.UsedRange.Row + projectWorkbook.AnalisysSheet.UsedRange.Rows.Count + 1;
                 int firstRow = projectWorkbook.GetFirstRow();
@@ -665,7 +665,7 @@ namespace ACO
                     conditions = formatManager.ListConditionFormats.FindAll(x => x.ColumnName ==
                                                 ListAnalysis.ColumnCommentsValues[StaticColumnsComments.DeviationCost]);
                     rng = projectWorkbook.AnalisysSheet.Range[
-                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColDeviationCost ],
+                                projectWorkbook.AnalisysSheet.Cells[firstRow, offeraddress.ColDeviationCost],
                                projectWorkbook.AnalisysSheet.Cells[lastRow, offeraddress.ColDeviationCost]];
                     conditions.ForEach(x => x.SetCondition(rng));
                 }
@@ -694,28 +694,31 @@ namespace ACO
             string letterName = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Name]).ColumnSymbol;
 
             string letterAmount = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Amount]).ColumnSymbol;
-            string letterWorkTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksTotal]).ColumnSymbol;
-            string letterTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotal]).ColumnSymbol;
+            string letterCostPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostTotalPerUnit]).ColumnSymbol;
+
+            string letterWorkPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostWorksPerUnit]).ColumnSymbol;
+            string letterMaterialPerUnit = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsPerUnit]).ColumnSymbol;
+
             string letterEndBasis = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Comment]).ColumnSymbol;
 
-            string letterMaterialTotal = project.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.CostMaterialsTotal]).ColumnSymbol;
+
 
             string top = settings.TopBoundAnalysis.ToString().Replace(',', '.');
             string bottom = settings.BottomBoundAnalysis.ToString().Replace(',', '.');
 
-            int lastRow = ws.Range[$"{letterTotal}{ws.Rows.Count}"].End[Excel.XlDirection.xlUp].Row;
+            int lastRow = ws.Range[$"{letterCostPerUnit}{ws.Rows.Count}"].End[Excel.XlDirection.xlUp].Row;
 
 
-            // Ячейка Общая стоимость
-            Excel.Range cellBasisCostTotal = ws.Range[$"{letterTotal}{firstRow}"];
-            string addressBasisCostTotal = cellBasisCostTotal.Address[RowAbsolute: false, ColumnAbsolute: true];
+            // Ячейка  стоимость
+            Excel.Range cellBasisCost = ws.Range[$"{letterCostPerUnit}{firstRow}"];
+            string addressBasisCostPerUnit = cellBasisCost.Address[RowAbsolute: false, ColumnAbsolute: true];
 
             // базовая стоимость работ
-            Excel.Range cellBasisWorks = ws.Range[$"{letterWorkTotal}{firstRow}"];
+            Excel.Range cellBasisWorks = ws.Range[$"{letterWorkPerUnit}{firstRow}"];
             string addressBasisWorks = cellBasisWorks.Address[RowAbsolute: false, ColumnAbsolute: true];
 
             // базовая стоимость материалов
-            Excel.Range cellBasisMaterials = ws.Range[$"{letterMaterialTotal}{firstRow}"];
+            Excel.Range cellBasisMaterials = ws.Range[$"{letterMaterialPerUnit}{firstRow}"];
             string addressBasisMaterials = cellBasisMaterials.Address[RowAbsolute: false, ColumnAbsolute: true];
 
             Excel.Range cellBasisAmount = ws.Range[$"{letterAmount}{firstRow}"];
@@ -727,13 +730,13 @@ namespace ACO
             Excel.Range CellAvgAmount = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 1];
 
             Excel.Range CellAvgCostMaterials = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 2];
-            Excel.Range CellAvgCostWorks = ws.Cells[cellEndBasis.Row, cellEndBasis.Column +  3];
+            Excel.Range CellAvgCostWorks = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 3];
             Excel.Range CellAvgTotalCost = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 4];
 
             Excel.Range CellMedianCostMaterials = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 5];
             Excel.Range CellMedianCostWorks = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 6];
             Excel.Range CellMedianTotalCost = ws.Cells[cellEndBasis.Row, cellEndBasis.Column + 7];
-            
+
             string addressAvgAmount = CellAvgAmount.Address[RowAbsolute: false, ColumnAbsolute: true];
             string addressAvgCostMaterials = CellAvgCostMaterials.Address[RowAbsolute: false, ColumnAbsolute: true];
             string addressAvgCostWorks = CellAvgCostWorks.Address[RowAbsolute: false, ColumnAbsolute: true];
@@ -744,16 +747,16 @@ namespace ACO
             string addressMedianTotalCost = CellMedianTotalCost.Address[RowAbsolute: false, ColumnAbsolute: true];
 
             // Аргументы функции
-            string argumentsCommonCost = addressBasisCostTotal;
+            string argumentsCommonCost = addressBasisCostPerUnit;
             string argumentsCommonWorks = addressBasisWorks;
             string argumentsCommonMaterials = addressBasisMaterials;
             string argumentsAmount = addressAmount;
 
             foreach (OfferColumns offerColumns in projectWorkbook.OfferColumns)
             {
-                Excel.Range cellCostAddress = ws.Cells[firstRow, offerColumns.ColCostTotalOffer];
-                Excel.Range cellWorksAddress = ws.Cells[firstRow, offerColumns.ColCostWorksTotalOffer];
-                Excel.Range cellMaterialsAddress = ws.Cells[firstRow, offerColumns.ColCostMaterialsTotalOffer];
+                Excel.Range cellCostAddress = ws.Cells[firstRow, offerColumns.ColTotalCostPerUnitOffer];
+                Excel.Range cellWorksAddress = ws.Cells[firstRow, offerColumns.ColCostWorksPerUnitOffer];
+                Excel.Range cellMaterialsAddress = ws.Cells[firstRow, offerColumns.ColCostMaterialsPerUnitOffer];
                 Excel.Range cellAmountAddress = ws.Cells[firstRow, offerColumns.ColCountOffer];
 
                 //Аргументы функции
@@ -776,7 +779,7 @@ namespace ACO
             CellMedianCostWorks.Formula = $"=MEDIAN({argumentsCommonWorks})";
             CellMedianTotalCost.Formula = $"= {addressMedianCostMaterials} + " +
                                             $"{addressMedianCostWorks}"; //$" =MEDIAN({argumentsMaterials})";
-          
+
 
 
             /// Для каждого диапазона КП
@@ -815,8 +818,8 @@ namespace ACO
                     // Отклонение  от базовой оценки
                     //Отклонение по объемам                    
                     formulaDviationAmount = $"=IFERROR({addressAmount}/{AddressOfferAmount}-1,\"#НД\")";
-                    formulaDeviationCost = $"=IFERROR(IF({addressBasisCostTotal}<>0," +
-                                           $"{AddressOfferCost}/{addressBasisCostTotal}-1,0),\"#НД\")";
+                    formulaDeviationCost = $"=IFERROR(IF({addressBasisCostPerUnit}<>0," +
+                                           $"{AddressOfferCost}/{addressBasisCostPerUnit}-1,0),\"#НД\")";
                     // по стоимости работ
                     formulaDviationWorks =
                         $"=IFERROR(IF({addressBasisWorks}<>0," +
@@ -837,7 +840,7 @@ namespace ACO
                     // по стоимости материалов
                     formulaDviationMaterials = $"=IFERROR(IF({addressAvgCostMaterials}<>0," +
                        $"{AddressOfferMaterials }/ {addressAvgCostMaterials} -1 , \"Отс-ет ст-ть мат.\"),\"#НД\")";
-                    
+
 
                 }
                 else if (Properties.Settings.Default.AnalysisFormulaCost == (byte)FormulaAnalysis.Median)
@@ -850,7 +853,7 @@ namespace ACO
                       $"{AddressOfferWorks }/ {addressMedianCostWorks} -1 ,\"Отс-ет ст-ть работ\"),\"#НД\")";
                     // по стоимости материалов
                     formulaDviationMaterials = $"=IFERROR(IF({addressMedianCostMaterials}<>0," +
-                      $"{AddressOfferMaterials }/ {addressMedianCostMaterials} -1 ,\"Отс-ет ст-ть мат.\"),\"#НД\")";                   
+                      $"{AddressOfferMaterials }/ {addressMedianCostMaterials} -1 ,\"Отс-ет ст-ть мат.\"),\"#НД\")";
                 }
 
                 //-----------------------------------------------------
@@ -863,7 +866,7 @@ namespace ACO
                 else if (Properties.Settings.Default.AnalysisFormulaCount == (byte)FormulaAnalysis.Avarage)
                 {
                     // Отклонение от среднего
-                    formulaDviationAmount =  $"=IFERROR({AddressOfferAmount}/{addressAvgAmount}-1,\"#НД\")";                                           
+                    formulaDviationAmount = $"=IFERROR({AddressOfferAmount}/{addressAvgAmount}-1,\"#НД\")";
                 }
                 CellOfferDeviationCost.Formula = formulaDeviationCost;
                 CellOfferDeviationWorks.Formula = formulaDviationWorks;
@@ -904,7 +907,7 @@ namespace ACO
 
                     Excel.Range rangeAvgAnalysis = ws.Range[CellAvgAmount, ws.Cells[lastRow, CellMedianTotalCost.Column]];
                     rangeAvgAnalysis.Rows[1].AutoFill(rangeAvgAnalysis);
-                    rangeAvgAnalysis.NumberFormat = "#,##0.00"; 
+                    rangeAvgAnalysis.NumberFormat = "#,##0.00";
                 }
             }
         }
@@ -919,7 +922,7 @@ namespace ACO
         private void BtnCol_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
-           // Удалить условное форматирование
+            // Удалить условное форматирование
             rng.FormatConditions.Delete();
             ConditonsFormatManager formatManager = new ConditonsFormatManager();
             List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(a => a.ColumnName == "Выделение");
@@ -1027,7 +1030,7 @@ namespace ACO
         {
             ExcelHelper.UnGroupRows(_app.ActiveSheet);
         }
-              
+
         private void BtnFormatNumber_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -1067,10 +1070,10 @@ namespace ACO
         private void BtnSetFormul_Click(object sender, RibbonControlEventArgs e)
         {
             FormSettingFormuls form = new FormSettingFormuls();
-           if (form.ShowDialog() == DialogResult.OK)
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                SetAnalysis(); 
-            }            
+                SetAnalysis();
+            }
         }
 
         private void BtnDataFilter_Click(object sender, RibbonControlEventArgs e)
@@ -1085,7 +1088,7 @@ namespace ACO
                 string message = $"Ошибка:{ex.Message }";
                 if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
                 MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }          
+            }
         }
 
         private void SetDataFilter()
@@ -1095,7 +1098,7 @@ namespace ACO
             SetFilter(project);
         }
 
-        private void SetFilter(Project project )
+        private void SetFilter(Project project)
         {
             Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
             Excel.Worksheet ws = ExcelHelper.GetSheet(wb, project.AnalysisSheetName);
@@ -1103,8 +1106,34 @@ namespace ACO
             int lastRow = ws.UsedRange.Rows.Count + ws.UsedRange.Row - 1;
             int lastCol = ws.UsedRange.Columns.Count + ws.UsedRange.Column - 1;
 
-            Excel.Range rng = ws.Range[ws.Cells[project.RowStart-1, 1], ws.Cells[lastRow, lastCol]];
-            rng.AutoFilter(1) ;
+            Excel.Range rng = ws.Range[ws.Cells[project.RowStart - 1, 1], ws.Cells[lastRow, lastCol]];
+            rng.AutoFilter(1);
+        }
+
+        private void comboBox1_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Workbook workbook = _app.ActiveWorkbook;
+            string without = "БЕЗ НДС"; //РУБ БЕЗ НДС
+            string with = "C НДС"; //РУБ БЕЗ НДС
+
+            string find = default;
+            string replacement = default;
+
+            if (comboBoxLvlCost.Text  == "Без НДС")
+            {
+                find = with;
+                replacement = without;
+            }
+            else if (comboBoxLvlCost.Text == "С НДС")
+            {
+                find = without;
+                replacement = with;
+            }
+
+            foreach (Excel.Worksheet sh in workbook.Worksheets)
+            {
+                sh.UsedRange.Replace(What: find, Replacement: replacement, MatchCase: false);
+            }
         }
     }
 }

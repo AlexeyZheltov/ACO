@@ -15,7 +15,7 @@ namespace ACO.PivotSheets
             Объемы завышены				                                ПОЗИЦИЯМ
             Объемы занижены				                                ПОЗИЦИЯМ
             Сумма завышеных работ по разделам				            РУБ БЕЗ НДС
-            Разница в стоимости с оценкой СПЕКТРУМ				        РУБ БЕЗ НДС
+            Разница в стоимости с оценкой				        РУБ БЕЗ НДС
             НЕ оценено на сумму				                            РУБ БЕЗ НДС
             Выявленные ошибки				                            РУБ БЕЗ НДС
             Итого включая не оцененные работы и корректировку ошибок	РУБ БЕЗ НДС
@@ -73,7 +73,6 @@ namespace ACO.PivotSheets
             int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
             string cellAddress = _SheetUrv12.Cells[rowTotalSumm, column].Address;
 
-            row = ExcelHelper.FindCell(_SheetUrv12, "Разница в стоимости с оценкой СПЕКТРУМ").Row;
             string addresBaseSumm = _SheetUrv12.Cells[rowTotalSumm, 4].Address;
             _SheetUrv12.Cells[row, column].Formula = $"= {addresBaseSumm} - {cellAddress}";
 
