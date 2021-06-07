@@ -67,9 +67,9 @@
             this.BtnKP = this.Factory.CreateRibbonButton();
             this.BtnSettings = this.Factory.CreateRibbonButton();
             this.BtnExcelScreenUpdating = this.Factory.CreateRibbonButton();
+            this.comboBoxLvlCost = this.Factory.CreateRibbonComboBox();
             this.group4 = this.Factory.CreateRibbonGroup();
             this.BtnAbout = this.Factory.CreateRibbonButton();
-            this.comboBoxLvlCost = this.Factory.CreateRibbonComboBox();
             this.RbnTab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group6.SuspendLayout();
@@ -351,6 +351,17 @@
             this.BtnExcelScreenUpdating.ShowImage = true;
             this.BtnExcelScreenUpdating.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnExcelScreenUpdating_Click);
             // 
+            // comboBoxLvlCost
+            // 
+            ribbonDropDownItemImpl1.Label = "Без НДС";
+            ribbonDropDownItemImpl2.Label = "С НДС";
+            this.comboBoxLvlCost.Items.Add(ribbonDropDownItemImpl1);
+            this.comboBoxLvlCost.Items.Add(ribbonDropDownItemImpl2);
+            this.comboBoxLvlCost.Label = "Уровень цен";
+            this.comboBoxLvlCost.Name = "comboBoxLvlCost";
+            this.comboBoxLvlCost.Text = null;
+            this.comboBoxLvlCost.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.comboBox1_TextChanged);
+            // 
             // group4
             // 
             this.group4.Items.Add(this.BtnAbout);
@@ -365,16 +376,6 @@
             this.BtnAbout.Label = "О программе";
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.ShowImage = true;
-            // 
-            // comboBoxLvlCost
-            // 
-            ribbonDropDownItemImpl1.Label = "Без НДС";
-            ribbonDropDownItemImpl2.Label = "С НДС";
-            this.comboBoxLvlCost.Items.Add(ribbonDropDownItemImpl1);
-            this.comboBoxLvlCost.Items.Add(ribbonDropDownItemImpl2);
-            this.comboBoxLvlCost.Label = "Уровень цен";
-            this.comboBoxLvlCost.Name = "comboBoxLvlCost";
-            this.comboBoxLvlCost.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.comboBox1_TextChanged);
             // 
             // Ribbon
             // 

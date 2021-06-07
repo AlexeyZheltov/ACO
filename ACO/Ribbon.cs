@@ -764,23 +764,19 @@ namespace ACO
                 argumentsCommonWorks += "," + cellWorksAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
                 argumentsCommonMaterials += "," + cellMaterialsAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
                 argumentsAmount += "," + cellAmountAddress.Address[RowAbsolute: false, ColumnAbsolute: true];
-
             }
+
 
             // Формалы среденее медиана
             CellAvgAmount.Formula = $"=AVERAGE({argumentsAmount})";
             CellAvgCostMaterials.Formula = $"=AVERAGE({argumentsCommonMaterials})";
             CellAvgCostWorks.Formula = $"=AVERAGE({argumentsCommonWorks})";
-            //  CellAvgTotalCost.Formula = $"=AVERAGE({argumentsCost})";
-            CellAvgTotalCost.Formula = $"={addressAvgCostMaterials}+" +
-                                        $"{addressAvgCostWorks}";
-
+            CellAvgTotalCost.Formula = $"=AVERAGE({argumentsCommonCost})";
+          
             CellMedianCostMaterials.Formula = $"=MEDIAN({argumentsCommonMaterials})";
             CellMedianCostWorks.Formula = $"=MEDIAN({argumentsCommonWorks})";
-            CellMedianTotalCost.Formula = $"= {addressMedianCostMaterials} + " +
-                                            $"{addressMedianCostWorks}"; //$" =MEDIAN({argumentsMaterials})";
-
-
+            CellMedianTotalCost.Formula = $"=MEDIAN({argumentsCommonCost})"; ///$"= {addressMedianCostMaterials} + " +
+                                                                             //  $"{addressMedianCostWorks}"; 
 
             /// Для каждого диапазона КП
             foreach (OfferColumns offerColumns in projectWorkbook.OfferColumns)
@@ -793,9 +789,9 @@ namespace ACO
                 ///Отклонение по стоимости // Адрес ячейки
                 Excel.Range CellOfferName = ws.Cells[firstRow, offerColumns.ColNameOffer];
                 Excel.Range CellOfferAmount = ws.Cells[firstRow, offerColumns.ColCountOffer];
-                Excel.Range CellOfferCost = ws.Cells[firstRow, offerColumns.ColCostTotalOffer];
-                Excel.Range CellOfferWorks = ws.Cells[firstRow, offerColumns.ColCostWorksTotalOffer];
-                Excel.Range CellOfferMaterials = ws.Cells[firstRow, offerColumns.ColCostMaterialsTotalOffer];
+                Excel.Range CellOfferCost = ws.Cells[firstRow, offerColumns.ColTotalCostPerUnitOffer];
+                Excel.Range CellOfferWorks = ws.Cells[firstRow, offerColumns.ColCostWorksPerUnitOffer];
+                Excel.Range CellOfferMaterials = ws.Cells[firstRow, offerColumns.ColCostMaterialsPerUnitOffer];
 
                 Excel.Range CellOfferDeviationVolume = ws.Cells[firstRow, offerColumns.ColDeviationVolume];
                 Excel.Range CellOfferDeviationCost = ws.Cells[firstRow, offerColumns.ColDeviationCost];

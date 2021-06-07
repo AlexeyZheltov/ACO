@@ -15,6 +15,7 @@ namespace ACO.PivotSheets
             Объемы завышены				                                ПОЗИЦИЯМ
             Объемы занижены				                                ПОЗИЦИЯМ
             Сумма завышеных работ по разделам				            РУБ БЕЗ НДС
+            Сумма заниженых работ по разделам				            РУБ БЕЗ НДС
             Разница в стоимости с оценкой				        РУБ БЕЗ НДС
             НЕ оценено на сумму				                            РУБ БЕЗ НДС
             Выявленные ошибки				                            РУБ БЕЗ НДС
@@ -70,9 +71,12 @@ namespace ACO.PivotSheets
             row = ExcelHelper.FindCell(_SheetUrv12, "Объемы занижены").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=IFERROR(COUNTIF({_rangeVolumeComments}, Комментарии!$A$6), \"#НД\")";
 
-            int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+           // int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowTotalSumm = ExcelHelper.FindCell(_SheetUrv12, "НДС, 20%").Row -1;
             string cellAddress = _SheetUrv12.Cells[rowTotalSumm, column].Address;
-
+           
+            
+            row = ExcelHelper.FindCell(_SheetUrv12, "Разница в стоимости с оценкой").Row;
             string addresBaseSumm = _SheetUrv12.Cells[rowTotalSumm, 4].Address;
             _SheetUrv12.Cells[row, column].Formula = $"= {addresBaseSumm} - {cellAddress}";
 
@@ -85,12 +89,15 @@ namespace ACO.PivotSheets
             Excel.Range rngOfferSum = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, column], _SheetUrv12.Cells[rowTotalSumm - 2, column]];
             Excel.Range rngOfferCommentCost = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, column + 3], _SheetUrv12.Cells[rowTotalSumm - 2, column + 3]];
             Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, 4], _SheetUrv12.Cells[rowTotalSumm - 2, 4]];
+            Excel.Range rngLvl = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, 1], _SheetUrv12.Cells[rowTotalSumm - 2, 1]];
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIFS({rngOfferSum.Address}, {rngLvl.Address}, 5, {rngOfferCommentCost.Address},\">0\") - " +
+                                                     $"SUMIFS({rngBasisSum.Address},{rngLvl.Address}, 5, {rngOfferCommentCost.Address}, \">0\")";
 
-            double topBound = settings.TopBoundAnalysis / 100;
-
-            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \">{topBound}\",{rngOfferSum.Address}) - SUMIF({rngOfferCommentCost.Address}, \">{topBound}\" ,{rngBasisSum.Address})";
+            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма заниженижений по разделам").Row;
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIFS({rngOfferSum.Address}, {rngLvl.Address}, 5, {rngOfferCommentCost.Address},\"<0\") - " +
+                                                     $"SUMIFS({rngBasisSum.Address},{rngLvl.Address}, 5, {rngOfferCommentCost.Address}, \"<0\")";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "Выявленные ошибки").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address},\"#НД\",{rngOfferSum.Address} )";
@@ -99,21 +106,21 @@ namespace ACO.PivotSheets
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=#НД\",{rngBasisSum.Address} )";
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
         private void SetColumns(OfferColumns address)
         {
             int lastRow = _AnalisysSheet.UsedRange.Row + _AnalisysSheet.UsedRange.Rows.Count - 1;
             int rowStart = _project.RowStart;
-
             Excel.Range range = _AnalisysSheet.Range[
                     _AnalisysSheet.Cells[rowStart, address.ColStartOfferComments],
                     _AnalisysSheet.Cells[lastRow, address.ColStartOfferComments]];
-
             _rangeChengedNames = $"'{_AnalisysSheet.Name}'!{range.Address}";
-
             range = _AnalisysSheet.Range[
                     _AnalisysSheet.Cells[rowStart, address.ColCommentsVolume],
                     _AnalisysSheet.Cells[lastRow, address.ColCommentsVolume]];
-
             _rangeVolumeComments = $"'{_AnalisysSheet.Name}'!{range.Address}";
         }
     }

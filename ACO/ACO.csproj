@@ -220,7 +220,6 @@
     <Compile Include="ProgressBarWithLog.Designer.cs">
       <DependentUpon>ProgressBarWithLog.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProjectBook\OfferAddress.cs" />
     <Compile Include="ProjectBook\OfferColumns.cs" />
     <Compile Include="ProjectManager\ColumnsMapping.cs" />
     <Compile Include="CustomDataGrid.cs">
@@ -337,7 +336,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>0FF77E3A2F14B52D2AC374BAFE7A8737BCB86A56</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Main.ico</ApplicationIcon>

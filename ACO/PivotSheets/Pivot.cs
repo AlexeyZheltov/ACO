@@ -37,7 +37,8 @@ namespace ACO.PivotSheets
 
         private void PasteTitleOffer12(int colPaste)
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            //int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             int rowCostWorks = ExcelHelper.FindCell(SheetUrv12, "СТОИМОСТЬ НЕКОТОРЫХ РАБОТ").Row;
             Excel.Range rngTitle = SheetUrv12.Range["F10:J12"];
             rngTitle.Copy();
@@ -115,7 +116,7 @@ namespace ACO.PivotSheets
                 Excel.Range cellNumber = _AnalisysSheet.Range[$"${letterNumber}{row}"];
                 int columnCellNumber = cellNumber.Column;
                 string number = cellNumber.Value?.ToString() ?? "";
-
+              
                 if (string.IsNullOrEmpty(number)) continue;
 
                 string name = _AnalisysSheet.Range[$"${letterName}{row}"].Value?.ToString() ?? "";
@@ -127,6 +128,8 @@ namespace ACO.PivotSheets
                 {
                     SheetUrv12.Rows[rowPaste].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
                     Excel.Range numberCell = SheetUrv12.Cells[rowPaste, 2];
+                    SheetUrv12.Cells[rowPaste, 1].Value = level; // Уровень 
+                    
                     numberCell.NumberFormat = "@";
                     numberCell.Value = number;
                     SheetUrv12.Cells[rowPaste, 3].Value = name;
@@ -194,7 +197,8 @@ namespace ACO.PivotSheets
         private void SetConditionFormat12()
         {
             int lastCol = SheetUrv12.UsedRange.Column + SheetUrv12.UsedRange.Columns.Count;
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            //int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row -1 ;
 
             ConditonsFormatManager formatManager = new ConditonsFormatManager();
             /// Удаление правил
@@ -249,7 +253,8 @@ namespace ACO.PivotSheets
         /// <param name="addresses"></param>
         private void SetNumberFormat12(int addressesCount)
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            //int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             int lastRow = rowBottomTotal + 2;
             // int colPaste6 = 6;
             Excel.Range rng = SheetUrv12.Range[SheetUrv12.Cells[_rowStart, 4], SheetUrv12.Cells[lastRow, 4]];
@@ -270,7 +275,8 @@ namespace ACO.PivotSheets
         }
         private void SetNumberFormat11(int addressesCount)
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            //int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             int lastRow = rowBottomTotal + 2;
             Excel.Range rng = SheetUrv11.Range[SheetUrv11.Cells[_rowStart, 7], SheetUrv11.Cells[lastRow, 7]];
             rng.NumberFormat = "#,##0,00";
@@ -304,7 +310,8 @@ namespace ACO.PivotSheets
             string letterNumber = projectWorkbook.GetLetter(StaticColumns.Number);
             Excel.Range cellNumber = _AnalisysSheet.Range[$"${letterNumber}{_project.RowStart}"];
             int columnCellNumber = cellNumber.Column;
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            // int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             int lastRow = rowBottomTotal - 2;
 
             pb.SetSubBarVolume(addresses.Count);
@@ -404,7 +411,8 @@ namespace ACO.PivotSheets
         private void TotalFormuls12()
         {
             List<OfferColumns> addresses = new ProjectWorkbook().OfferColumns;
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            // int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             int lastRow = rowBottomTotal - 2;
             string formulaSumm = "";
             for (int row = _rowStart; row <= lastRow; row++)
@@ -465,7 +473,8 @@ namespace ACO.PivotSheets
         /// </summary>
         private void TotalFormuls11()
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            // int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             int lastRow = rowBottomTotal - 2;
             int colPaste = 7;
             string formulaSumm = "";
@@ -529,12 +538,14 @@ namespace ACO.PivotSheets
 
         private int GetLastRowUrv12()
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            // int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             return rowBottomTotal - 2;
         }
         private int GetLastRowUrv11()
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            // int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             return rowBottomTotal - 2;
         }
 
@@ -544,7 +555,8 @@ namespace ACO.PivotSheets
         /// <param name="colPaste"></param>
         private void PasteTitleOffer11(int colPaste)
         {
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            //int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
             Excel.Range rngTitle = SheetUrv11.Range["I10:K12"];
             rngTitle.Copy();
             SheetUrv11.Cells[10, colPaste].PasteSpecial(Excel.XlPasteType.xlPasteAll);
