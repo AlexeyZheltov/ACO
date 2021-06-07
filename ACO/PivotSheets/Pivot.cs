@@ -164,7 +164,7 @@ namespace ACO.PivotSheets
 
                         // % отклонения всего
                         string letterOutTotalDiff = ExcelHelper.GetColumnLetter(SheetUrv12.Cells[rowPaste, colPaste]);
-                        SheetUrv12.Cells[rowPaste, colPaste + 3].Formula = $"=${letterOutTotalDiff}{rowPaste}/$D{rowPaste}-1";
+                        SheetUrv12.Cells[rowPaste, colPaste + 3].Formula = $"=IF(D{rowPaste}>0, ${letterOutTotalDiff}{rowPaste}/$D{rowPaste}-1, \"\")";
 
                         //КОММЕНТАРИИ К СТОИМОСТИ
                         col = address.ColComments - columnCellNumber + 1;

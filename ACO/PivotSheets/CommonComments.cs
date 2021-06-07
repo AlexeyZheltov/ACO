@@ -103,7 +103,7 @@ namespace ACO.PivotSheets
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address},\"#НД\",{rngOfferSum.Address} )";
 
             row = ExcelHelper.FindCell(_SheetUrv12, "НЕ оценено на сумму").Row;
-            _SheetUrv12.Cells[row, column].Formula = $"=SUMIF({rngOfferCommentCost.Address}, \"=#НД\",{rngBasisSum.Address} )";
+            _SheetUrv12.Cells[row, column].Formula = $"=SUMIFS({rngBasisSum.Address}, {rngOfferSum.Address},\"\", {rngOfferSum.Address},0)";
         }
 
         /// <summary>
