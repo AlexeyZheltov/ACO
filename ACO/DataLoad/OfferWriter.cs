@@ -118,28 +118,6 @@ namespace ACO
             pb.Writeline("Формулы \"Комментарии Спектрум к заявке участника\"");          
         }
 
-     
-
-        /// <summary>
-        ///  Найти столбец начала комментариев. 
-        /// </summary>
-        /// <returns></returns>
-        private int GetColumnStartFormuls()
-        {
-            int lastCol = _sheetProject.Cells[1, _sheetProject.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
-
-            for (int col = lastCol; lastCol > 1; col--)
-            {
-                Excel.Range cell = _sheetProject.Cells[1, col];
-                string text = cell.Value?.ToString() ?? "";
-                if (text == "offer_end")
-                {
-                    return col;
-                }
-            }
-            throw new AddInException("Столбец начала формул не найден.");
-        }
-
         /// <summary>
         /// Собрать пары маппингов столбцов
         /// </summary>
@@ -249,7 +227,6 @@ namespace ACO
                 }
             }
             pb.ClearSubBar();
-
         }
 
         /// <summary>

@@ -194,14 +194,7 @@ namespace ACO.ProjectManager
                 }
             }
         }
-
-        public ColumnMapping GetColumn(StaticColumns name)
-        {
-            ColumnMapping mapping = Columns.Find(x => x.Name == ColumnsNames[name]);
-            if (mapping is null) throw new AddInException($"Маппинг столбца \"{ColumnsNames[name]}\" не найден!");
-            return mapping;
-        }
-
+             
         internal void Delete()
         {
             if (File.Exists(FileName)) File.Delete(FileName);

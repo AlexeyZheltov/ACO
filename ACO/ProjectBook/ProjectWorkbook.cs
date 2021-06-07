@@ -112,25 +112,6 @@ namespace ACO
         Excel.Worksheet _AnalisysSheet;
         readonly Excel.Worksheet _SheetPallet;
 
-        //public List<OfferAddress> OfferAddress
-        //{
-        //    get
-        //    {
-        //        if (_OfferAddress == null)
-        //        {
-        //            _OfferAddress = GetAddersses();
-        //        }
-        //        return _OfferAddress;
-        //    }
-        //    set
-        //    {
-        //        _OfferAddress = value;
-        //    }
-        //}
-        //List<OfferAddress> _OfferAddress;
-
-
-
         /// <summary>
         ///  Столбцы 
         /// </summary>
@@ -277,6 +258,7 @@ namespace ACO
         {
             return _project.RowStart;
         }
+
         public string GetLetter(StaticColumns column)
         {
             ColumnMapping mapping = _project.Columns.Find(x => x.Name == Project.ColumnsNames[column]);

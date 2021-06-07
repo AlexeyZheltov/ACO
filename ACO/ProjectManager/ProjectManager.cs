@@ -113,7 +113,6 @@ namespace ACO.ProjectManager
             ActiveProject = newProject;
         }
 
-       
         public static string GetFolderProjects()
         {
             string path = Path.Combine(
@@ -124,6 +123,5 @@ namespace ACO.ProjectManager
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             return path;
         }
-              
     }
 }

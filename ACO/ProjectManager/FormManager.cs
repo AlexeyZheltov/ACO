@@ -204,20 +204,6 @@ namespace ACO.ProjectManager
         }
 
         /// <summary>
-        ///  Кнопка Выделенный диапазон \ вкладка 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnSetSelectedRangeValues_Click(object sender, EventArgs e)
-        {
-            Excel.Range rng = _app.Selection;
-            if (rng is null) return;
-            TBoxSheetName.Text = rng.Parent.name;
-            int rowStart = rng.Row + rng.Rows.Count;
-            TBoxFirstRowRangeValues.Text = rowStart.ToString();
-        }
-
-        /// <summary>
         ///  Сохранение активного проекта
         /// </summary>
         private void Save()
@@ -307,12 +293,7 @@ namespace ACO.ProjectManager
         {
             Close();
         }
-
-        private void FormManager_Load(object sender, EventArgs e)
-        {
-
-        }
-
+             
         static readonly char[] _allowLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
         private void TableColumns_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
@@ -337,8 +318,6 @@ namespace ACO.ProjectManager
             e.KeyChar = keyChar;
         }
     }
-
-
 }
 
 

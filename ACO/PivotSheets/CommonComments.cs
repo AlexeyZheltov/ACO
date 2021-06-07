@@ -91,11 +91,11 @@ namespace ACO.PivotSheets
             Excel.Range rngBasisSum = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, 4], _SheetUrv12.Cells[rowTotalSumm - 2, 4]];
             Excel.Range rngLvl = _SheetUrv12.Range[_SheetUrv12.Cells[_rowStart, 1], _SheetUrv12.Cells[rowTotalSumm - 2, 1]];
 
-            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышеных работ по разделам").Row;
+            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма завышенных работ по разделам").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIFS({rngOfferSum.Address}, {rngLvl.Address}, 5, {rngOfferCommentCost.Address},\">0\") - " +
                                                      $"SUMIFS({rngBasisSum.Address},{rngLvl.Address}, 5, {rngOfferCommentCost.Address}, \">0\")";
 
-            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма заниженижений по разделам").Row;
+            row = ExcelHelper.FindCell(_SheetUrv12, "Сумма занижений по разделам").Row;
             _SheetUrv12.Cells[row, column].Formula = $"=SUMIFS({rngOfferSum.Address}, {rngLvl.Address}, 5, {rngOfferCommentCost.Address},\"<0\") - " +
                                                      $"SUMIFS({rngBasisSum.Address},{rngLvl.Address}, 5, {rngOfferCommentCost.Address}, \"<0\")";
 

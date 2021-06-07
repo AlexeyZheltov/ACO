@@ -894,7 +894,7 @@ namespace ACO
                 if (lastRow > firstRow)
                 {
                     Excel.Range destination = ws.Range[ws.Cells[firstRow, offerColumns.ColStartOfferComments], ws.Cells[lastRow, offerColumns.ColComments]];
-                    rng.AutoFill(destination);
+                    rng.AutoFill(destination, Excel.XlAutoFillType.xlFillValues);
                     destination.Interior.Color = Color.FromArgb(232, 242, 238);
                     destination.Columns[3].NumberFormat = "0%";
                     destination.Columns[5].NumberFormat = "0%";
@@ -902,7 +902,7 @@ namespace ACO
                     destination.Columns[8].NumberFormat = "0%";
 
                     Excel.Range rangeAvgAnalysis = ws.Range[CellAvgAmount, ws.Cells[lastRow, CellMedianTotalCost.Column]];
-                    rangeAvgAnalysis.Rows[1].AutoFill(rangeAvgAnalysis);
+                    rangeAvgAnalysis.Rows[1].AutoFill(rangeAvgAnalysis, Excel.XlAutoFillType.xlFillValues);
                     rangeAvgAnalysis.NumberFormat = "#,##0.00";
                 }
             }
