@@ -346,7 +346,7 @@ namespace ACO.PivotSheets
                     }
                 }
 
-                int col = address.ColDeviationCost - columnCellNumber + 1;
+                int col = address.ColCostTotalOffer - columnCellNumber + 1;
                 //РУБ. РФ
                 SheetUrv12.Cells[_rowStart, colPaste].Formula =
                    $"= VLOOKUP($B{_rowStart}, '{_project.AnalysisSheetName}'! {dataRange.Address}, {col}, FALSE)";
@@ -545,7 +545,7 @@ namespace ACO.PivotSheets
         private int GetLastRowUrv11()
         {
             // int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "ОБЩАЯ СУММА РАСХОДОВ (без НДС)").Row;
-            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv12, "НДС, 20%").Row - 1;
+            int rowBottomTotal = ExcelHelper.FindCell(SheetUrv11, "НДС, 20%").Row - 1;
             return rowBottomTotal - 2;
         }
 

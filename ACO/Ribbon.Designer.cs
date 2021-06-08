@@ -205,7 +205,7 @@
             this.SptBtnUpdateFormate.ScreenTip = "Обновляет формат таблицы на листе Анализ";
             this.SptBtnUpdateFormate.SuperTip = "Обновляет нумерацию, Группирует данные, Устанавливает цвет строк в зависимости от" +
     " уровня списка";
-            this.SptBtnUpdateFormate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUpdateFormuls_Click);
+            this.SptBtnUpdateFormate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UpdateFormateList_Click);
             // 
             // BtnFormatNumber
             // 
@@ -277,7 +277,7 @@
             this.SptBtnFormatComments.Name = "SptBtnFormatComments";
             this.SptBtnFormatComments.ScreenTip = "Форматирование комментариев";
             this.SptBtnFormatComments.SuperTip = "Добавлят правила условного форматирования  на листе Анализ";
-            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SptBtnFormatComments_Click);
+            this.SptBtnFormatComments.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UpdateFormateAnalysis_Click);
             // 
             // BtnSetFormul
             // 
@@ -321,7 +321,7 @@
             this.BtnProjectManager.Name = "BtnProjectManager";
             this.BtnProjectManager.ScreenTip = "Настройки столбцов проектов";
             this.BtnProjectManager.ShowImage = true;
-            this.BtnProjectManager.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnProjectManager_Click);
+            this.BtnProjectManager.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ProjectManager_Click);
             // 
             // BtnKP
             // 
@@ -331,7 +331,7 @@
             this.BtnKP.Name = "BtnKP";
             this.BtnKP.ScreenTip = "Настройки столбцов в файлах КП.";
             this.BtnKP.ShowImage = true;
-            this.BtnKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnKP_Click);
+            this.BtnKP.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ManagerKP_Click);
             // 
             // BtnSettings
             // 
@@ -360,7 +360,7 @@
             this.comboBoxLvlCost.Label = "Уровень цен";
             this.comboBoxLvlCost.Name = "comboBoxLvlCost";
             this.comboBoxLvlCost.Text = null;
-            this.comboBoxLvlCost.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.comboBox1_TextChanged);
+            this.comboBoxLvlCost.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CostLvl_TextChanged);
             // 
             // group4
             // 

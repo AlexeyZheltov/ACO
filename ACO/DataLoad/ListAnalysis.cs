@@ -335,6 +335,9 @@ namespace ACO
                   {StaticColumnsComments.Comments,          "Комментарии к строкам" }
               };
 
+        /// <summary>
+        ///  Группировать столбцы
+        /// </summary>
         public void GroupColumn()
         {
             ExcelHelper.UnGroupColumns(SheetAnalysis);

@@ -18,6 +18,12 @@ namespace ACO
     {
         readonly ACO.Properties.Settings settings = ACO.Properties.Settings.Default;
         Excel.Application _app = null;
+
+        /// <summary>
+        /// Установление параметров приложения Excel для ускорения работы программы \ 
+        /// обновление экрана, пересчет формул. 
+        /// </summary>
+        /// <param name="mode"></param>
         private void ExcelAcselerate(bool mode)
         {
             _app.Calculation = mode ? Excel.XlCalculation.xlCalculationManual : Excel.XlCalculation.xlCalculationAutomatic;
@@ -139,6 +145,11 @@ namespace ACO
             });
         }
 
+        /// <summary>
+        /// Загрузка Базовой оценки
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void BtnBaseEstimate_Click(object sender, RibbonControlEventArgs e)
         {
             string file = GetFile();
@@ -192,6 +203,10 @@ namespace ACO
             });
         }
 
+        /// <summary>
+        ///  Показать форму с выбором Натстроек КП.
+        /// </summary>
+        /// <returns></returns>
         private string GetOfferSettings()
         {
             string settingsFile = "";
@@ -225,7 +240,13 @@ namespace ACO
             _app.Dialogs[Excel.XlBuiltInDialog.xlDialogSaveAs].Show();
         }
 
-        private void BtnProjectManager_Click(object sender, RibbonControlEventArgs e)
+
+        /// <summary>
+        /// Показать форму менеджера проекта
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ProjectManager_Click(object sender, RibbonControlEventArgs e)
         {
             ProjectManager.FormManager manager = new ProjectManager.FormManager();
             manager.Show(new AddinWindow(Globals.ThisAddIn));
@@ -236,7 +257,7 @@ namespace ACO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnKP_Click(object sender, RibbonControlEventArgs e)
+        private void ManagerKP_Click(object sender, RibbonControlEventArgs e)
         {
             new Offers.FormManagerKP().Show(new AddinWindow(Globals.ThisAddIn));
         }
@@ -252,7 +273,13 @@ namespace ACO
             form.ShowDialog(new AddinWindow(Globals.ThisAddIn));
         }
 
-        private async void BtnUpdateFormuls_Click(object sender, RibbonControlEventArgs e)
+
+        /// <summary>
+        /// Обновить формат списка
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void UpdateFormateList_Click(object sender, RibbonControlEventArgs e)
         {
             if (ExcelHelper.IsEditing()) return;
             IProgressBarWithLogUI pb = new ProgressBarWithLog();
@@ -338,7 +365,7 @@ namespace ACO
             Excel.Range celEndBasis = ws.Cells[1, ws.Range[$"{ letterComment}1"].Column + 8];
             string letterEndBasis = celEndBasis.Address.Split(new char[] { '$' }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-            //раз
+            //раз // маппинг столбцов для формул
             FMapping mappin = new FMapping()
             {
                 Amount = letterAmount,
@@ -349,10 +376,10 @@ namespace ACO
                 PricePerUnit = letterPricePerUnit,
                 Total = letterTotal
             };
-            //два
+            //два // Формулы для подсчета стоимости по уровням
             ExcelHelper.SetFormulas(ws, mappin, root, pb); //Прогресс бар только для отмены
                                                            // Обновление формул КП
-            HashSet<int> columnsAmount = GetNumbersCoumnsOfCount(ws);
+            HashSet<int> columnsAmount = GetNumbersColumnsOfCount(ws);
             foreach (int col in columnsAmount)
             {
                 ExcelHelper.SetFormulas(ws, mappin.Shift(ws, col), root, pb);
@@ -363,15 +390,18 @@ namespace ACO
 
             //======4=======
             pb.MainBarTick("Форматирование списка");
-            //три
+            //три // Кпирует ячейки палитры
             var pallet = ExcelReader.ReadPallet(pws);
+
             int count = ws.UsedRange.Rows.Count;
             pb.SetSubBarVolume(count);
+            
+            /// Определить диапазоны столбцов, которые будут окрашены
             List<(string, string)> colored_columns = ProjectWorkbook.GetColredColumns(ws);
             colored_columns.Add(("A", letterEndBasis));
             (string, string)[] columns = colored_columns.ToArray();
 
-            //четыре
+            //четыре // Окраска ячеек по уровню
             ExcelHelper.Repaint(ws, pallet, project.RowStart, letterLevel, pb, columns);
 
             List<(string, string)> columns_format = ProjectWorkbook.GetFormatColumns(ws);
@@ -388,6 +418,7 @@ namespace ACO
             pb.MainBarTick("Группировка списка");
             pb.ClearSubBar();
 
+            /// Группировка строк по уровню
             ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
 
             pb.ClearMainBar();
@@ -398,7 +429,7 @@ namespace ACO
         /// </summary>
         /// <param name="ws"></param>
         /// <returns></returns>
-        private HashSet<int> GetNumbersCoumnsOfCount(Excel.Worksheet ws)
+        private HashSet<int> GetNumbersColumnsOfCount(Excel.Worksheet ws)
         {
             HashSet<int> columnsAmount = new HashSet<int>();
             int lastCol = ws.Cells[1, ws.Columns.Count].End[Excel.XlDirection.xlToLeft].Column;
@@ -503,6 +534,12 @@ namespace ACO
             });
         }
 
+
+        /// <summary>
+        ///  Итоги. Загружается ур 12. затем ур 11.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SptBtn_Click(object sender, RibbonControlEventArgs e)
         {
             if (ExcelHelper.IsEditing()) return;
@@ -537,7 +574,11 @@ namespace ACO
             });
         }
 
-
+        /// <summary>
+        /// Обновление урв11. Загрузка только кп новых кп. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void BtnUpdateLvl11_Click(object sender, RibbonControlEventArgs e)
         {
             if (ExcelHelper.IsEditing()) return; // ячейка редактируется
@@ -566,6 +607,11 @@ namespace ACO
             });
         }
 
+        /// <summary>
+        /// Обновление урв12. Загрузка только кп новых кп. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void BtnUpdateLvl12_Click(object sender, RibbonControlEventArgs e)
         {
             if (ExcelHelper.IsEditing()) return; // ячейка редактируется
@@ -594,18 +640,28 @@ namespace ACO
             });
         }
 
+        /// <summary>
+        /// Разблокировка
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnExcelScreenUpdating_Click(object sender, RibbonControlEventArgs e)
         {
             ExcelAcselerate(false);
         }
 
+        /// <summary>
+        ///  Форма настроек услоовного форматирования для блока комментариев 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnFormatComments_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
                 if (new FrmColorCommentsFomat().ShowDialog() == DialogResult.OK)
                 {
-                    SetAnalysis();
+                    SetAnalysis(); // Добавить правила к диапазону и Заполнить формулы анализа заново.
                 }
             }
             catch (Exception ex)
@@ -618,12 +674,19 @@ namespace ACO
             }
         }
 
-        private void SptBtnFormatComments_Click(object sender, RibbonControlEventArgs e)
+
+        /// <summary>
+        ///  Щелчек по раскрывающейся кнопке
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdateFormateAnalysis_Click(object sender, RibbonControlEventArgs e)
         {
             SetAnalysis();
         }
 
         /// <summary>
+        ///  Добавить правила форматирования к диапазону и Заполнить формулы анализа заново.
         ///  Окраска комментариев
         ///  Формулы Анализа
         /// </summary>
@@ -908,23 +971,41 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Удалить все правила условного форматирования в выделенном диапазоне
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnClearFormateContions_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Range rng = _app.Selection;
             // Удалить условное форматирование            
             rng.FormatConditions.Delete();
         }
-
-        private void BtnCol_Click(object sender, RibbonControlEventArgs e)
+        private void BtnGroupColumns_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Range rng = _app.Selection;
-            // Удалить условное форматирование
-            rng.FormatConditions.Delete();
-            ConditonsFormatManager formatManager = new ConditonsFormatManager();
-            List<ConditionFormat> conditions = formatManager.ListConditionFormats.FindAll(a => a.ColumnName == "Выделение");
-            conditions.ForEach(x => x.SetCondition(rng));
+            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
+            try
+            {
+                ExcelAcselerate(true);
+                GroupColumns();
+            }
+            catch (Exception ex)
+            {
+                string message = $"Ошибка:{ex.Message }";
+                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
+                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ExcelAcselerate(false);
+            }
         }
 
+
+        /// <summary>
+        ///  Группировать столбцы
+        /// </summary>
         private void GroupColumns()
         {
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
@@ -967,26 +1048,6 @@ namespace ACO
             }
         }
 
-        private void BtnGroupColumns_Click(object sender, RibbonControlEventArgs e)
-        {
-            if (ExcelHelper.IsEditing()) return; // ячейка редактируется
-            try
-            {
-                ExcelAcselerate(true);
-                GroupColumns();
-            }
-            catch (Exception ex)
-            {
-                string message = $"Ошибка:{ex.Message }";
-                if (ex.InnerException != null) message += $"{ex.InnerException.Message}";
-                MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                ExcelAcselerate(false);
-            }
-        }
-
         private void BtnGroupRows_Click(object sender, RibbonControlEventArgs e)
         {
             if (ExcelHelper.IsEditing()) return; // ячейка редактируется
@@ -1007,6 +1068,11 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Разгруппировка столбцов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnUngroupColumns_Click(object sender, RibbonControlEventArgs e)
         {
             if (ExcelHelper.IsEditing()) return;
@@ -1022,11 +1088,21 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Разгруппировка строк
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnUngroupRows_Click(object sender, RibbonControlEventArgs e)
         {
             ExcelHelper.UnGroupRows(_app.ActiveSheet);
         }
 
+        /// <summary>
+        ///  Устоновить форматы ячеек для столбцов на листе анализ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnFormatNumber_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -1063,6 +1139,11 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Форма настроек формул
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSetFormul_Click(object sender, RibbonControlEventArgs e)
         {
             FormSettingFormuls form = new FormSettingFormuls();
@@ -1071,6 +1152,7 @@ namespace ACO
                 SetAnalysis();
             }
         }
+
 
         private void BtnDataFilter_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1087,13 +1169,19 @@ namespace ACO
             }
         }
 
+        /// <summary>
+        ///  Филь
+        /// </summary>
         private void SetDataFilter()
         {
             ProjectManager.ProjectManager projectManager = new ProjectManager.ProjectManager();
             ProjectManager.Project project = projectManager.ActiveProject;
             SetFilter(project);
         }
-
+        /// <summary>
+        /// Фильтр даннных
+        /// </summary>
+        /// <param name="project"></param>
         private void SetFilter(Project project)
         {
             Excel.Workbook wb = Globals.ThisAddIn.Application.ActiveWorkbook;
@@ -1106,7 +1194,12 @@ namespace ACO
             rng.AutoFilter(1);
         }
 
-        private void comboBox1_TextChanged(object sender, RibbonControlEventArgs e)
+        /// <summary>
+        ///  Изменить уровень цен
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CostLvl_TextChanged(object sender, RibbonControlEventArgs e)
         {
             Excel.Workbook workbook = _app.ActiveWorkbook;
             string without = "БЕЗ НДС"; //РУБ БЕЗ НДС

@@ -326,7 +326,6 @@
             this.Name = "FormManager";
             this.ShowIcon = false;
             this.Text = "Диспетчер проектов";
-            this.Load += new System.EventHandler(this.FormManager_Load);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.PageColumns.ResumeLayout(false);
