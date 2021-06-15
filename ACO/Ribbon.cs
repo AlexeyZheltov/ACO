@@ -289,7 +289,7 @@ namespace ACO
                 try
                 {
                     ExcelAcselerate(true);
-                    UpdateFormuls(pb);
+                    UpdateFormuls(pb);                    
                     pb.CloseFrm();
                 }
                 catch (AddInException addInEx)
@@ -417,9 +417,10 @@ namespace ACO
             PbAbortedStopProcess(pb);
             pb.MainBarTick("Группировка списка");
             pb.ClearSubBar();
-
             /// Группировка строк по уровню
             ExcelHelper.Group(ws, pb, letterLevel); //Этот метод сам установит Max для прогрессбара
+            pb.Writeline("Группировка столбцов");
+            GroupColumns();
 
             pb.ClearMainBar();
         }

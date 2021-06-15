@@ -109,8 +109,8 @@ namespace ACO
                         offerRecord.KeyFilds.Add(text);
                     }
                 }
+               
                 SheetAnalysis.PrintRecord(offerRecord);
-
             }
             pb.Writeline("Группировка столбцов");
             SheetAnalysis.GroupColumn();

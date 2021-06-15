@@ -24,7 +24,7 @@ namespace ACO.ExcelHelpers
             ".xls"
         };
 
-        Dictionary<string, Excel.Worksheet> _wsCache = null;
+      // Dictionary<string, Excel.Worksheet> _wsCache = null;
 
         /// <summary>
         /// Ссылка на открытую книгу
@@ -67,7 +67,7 @@ namespace ACO.ExcelHelpers
         {
             WorkBook?.Close(false);
             WorkBook = null;
-            _wsCache = null;
+            //_wsCache = null;
         }
         /// <summary>
         /// Инициализирует статические поля.

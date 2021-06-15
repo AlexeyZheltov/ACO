@@ -24,7 +24,7 @@ namespace ACO.PivotSheets
         readonly Properties.Settings settings = Properties.Settings.Default;
         readonly Excel.Application _app = Globals.ThisAddIn.Application;
         readonly Excel.Worksheet _SheetUrv12;
-        readonly Excel.Worksheet _SheetComments;
+        //readonly Excel.Worksheet _SheetComments;
         readonly Excel.Worksheet _AnalisysSheet;
         readonly ProjectWorkbook _projectWorkbook;
         readonly ProjectManager.ProjectManager _projectManager;

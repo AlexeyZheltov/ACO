@@ -121,15 +121,7 @@ namespace ACO.ProjectManager
                         Check = false,
                         Obligatory = true,
                         ColumnSymbol = "N"
-                    },
-
-                      new ColumnMapping()
-                    {
-                        Name = Project.ColumnsNames[StaticColumns.ContractorAmount],
-                        Check = false,
-                        Obligatory = false,
-                        ColumnSymbol = ""
-                    },
+                    },                    
                    
                     new ColumnMapping()
                     {

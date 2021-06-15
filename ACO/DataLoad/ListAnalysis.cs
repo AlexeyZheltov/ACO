@@ -7,6 +7,7 @@ using ACO.ProjectManager;
 using System.Windows.Forms;
 using ACO.ExcelHelpers;
 using ACO.ProjectBook;
+using System.Diagnostics;
 
 namespace ACO
 {
@@ -46,7 +47,7 @@ namespace ACO
             SheetAnalysis = sheetProjerct;
             CurrentProject = currentProject;
             _rowStart = CurrentProject.RowStart;
-            _lastRow = SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 1;
+            _lastRow = GetLastRow(); // SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 1;
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace ACO
             int rowNextLvl;
             int row = _rowStart;
             Record recordAnalysis = GetRecocdAnalysis(_rowStart);
-
+ 
             /// Последний уровень ищем пока уровень не изменится на любой другой
             if (recordPrint.Level == 0) return;
             if (recordPrint.Level == 6)
@@ -78,6 +79,7 @@ namespace ACO
             SheetAnalysis.Rows[rowNextLvl].Insert(Excel.XlInsertShiftDirection.xlShiftDown);
             PrintValues(recordPrint, rowNextLvl);
             SetLevel(recordPrint.Level, rowNextLvl);
+            _lastRow = GetLastRow();
         }
 
         private bool PrintEqualRecord(Record recordPrint, int rowStart, int rowEnd)
@@ -144,9 +146,10 @@ namespace ACO
                     }
                 }
             }
-            _lastRow++;
+            _lastRow = GetLastRow() + 1;
             return _lastRow;
         }
+
 
         /// <summary>
         /// Поиск строки указанного уровня вниз по списку, если не найдена возвращает 
@@ -169,7 +172,7 @@ namespace ACO
                     }
                 }
             }
-            _lastRow++;
+            _lastRow = GetLastRow()+1 ;
             return _lastRow;
         }
 
@@ -198,6 +201,17 @@ namespace ACO
                     }
                 }
             }
+        }
+
+        /// <summary>
+        ///  Последняя строка с значением в столбце Уровень
+        /// </summary>
+        /// <returns></returns>
+        private int GetLastRow()
+        {
+            string letterLevel = CurrentProject.Columns.Find(x => x.Name == Project.ColumnsNames[StaticColumns.Level]).ColumnSymbol;            
+           Excel.Range lastCellColumn =  SheetAnalysis.Range[$"{letterLevel}{SheetAnalysis.Rows.Count}"].End[Excel.XlDirection.xlUp] ;
+            return lastCellColumn.Row;
         }
               
 
