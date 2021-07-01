@@ -46,7 +46,7 @@ namespace ACO
             SheetAnalysis = sheetProjerct;
             CurrentProject = currentProject;
             _rowStart = CurrentProject.RowStart;
-            _lastRow = GetLastRow(); // SheetAnalysis.UsedRange.Row + SheetAnalysis.UsedRange.Rows.Count - 1;
+            _lastRow = GetLastRow(); 
         }
 
         /// <summary>
@@ -190,8 +190,7 @@ namespace ACO
                 { // Ошибка формулы в загружаемом файле
                     if (double.TryParse(val.ToString(), out double dv))
                     {
-                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);
-                        // cell.NumberFormat = "#,##0.00";
+                        if (dv < 0) cell.Interior.Color = System.Drawing.Color.FromArgb(176, 119, 237);                        
                         cell.Value = Math.Round(dv, 2);
                     }
                     else

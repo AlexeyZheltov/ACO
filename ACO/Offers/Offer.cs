@@ -13,7 +13,6 @@ namespace ACO
     /// </summary>
     class Offer
     {      
-
        public Offer()
         {         
         }
